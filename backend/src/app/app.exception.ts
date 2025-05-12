@@ -9,6 +9,9 @@ import { AdvancedExceptionFilter, ValidatorExceptionFilter } from '@/filters';
 export const loadErrorHandling = (app: INestApplication): void => {
   app.useGlobalPipes(
     new ValidationPipe({
+      skipMissingProperties: false,
+      forbidUnknownValues: false,
+      whitelist: true,
       transform: true,
       exceptionFactory: (validationErrors: ValidationError[] = []) => {
         return new ValidatorException({ errors: validationErrors });

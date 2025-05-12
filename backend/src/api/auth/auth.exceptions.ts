@@ -4,7 +4,7 @@ import { HttpStatus, BadRequestException } from '@nestjs/common';
 
 export class UserAlreadyException extends BadRequestException {
   constructor() {
-    super('User with that email or phone number already exists.');
+    super('User with that email already exists.');
   }
 }
 

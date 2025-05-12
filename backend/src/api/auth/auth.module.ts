@@ -6,6 +6,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AdminModule } from '@/api/admin/admin.module';
 import { TokenModule } from '@/api/token/token.module';
 import { CandidateModule } from '@/api/candidate/candidate.module';
+import { EmployerModule } from '@/api/employer/employer.module';
 
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
@@ -18,6 +19,7 @@ import { JwtStrategy, LocalStrategy } from './strategies';
     ConfigModule,
     PassportModule,
     CandidateModule,
+    EmployerModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],

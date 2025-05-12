@@ -1,9 +1,10 @@
-import { Column } from 'typeorm';
+import { Column, JoinColumn, OneToOne } from 'typeorm';
 import { Base as BaseEntity } from './base.entity';
 import { Exclude } from 'class-transformer';
 import { Gender } from '../enums';
+import { File } from '@/api/file/entities/file.entity';
 
-export abstract class BaseUserEntity extends BaseEntity {
+export class BaseUserEntity extends BaseEntity {
   @Column({ unique: true })
   email: string;
 
@@ -22,4 +23,11 @@ export abstract class BaseUserEntity extends BaseEntity {
 
   @Column({ type: 'date', nullable: true })
   bod?: Date;
+
+  @Column({ name: 'avatar_id', nullable: true })
+  avatarId?: string;
+
+  @OneToOne(() => File)
+  @JoinColumn({ name: 'avatar_id' })
+  avatar?: File;
 }

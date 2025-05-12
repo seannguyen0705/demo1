@@ -12,6 +12,7 @@ import { DatabaseModule } from '@/database/database.module';
 import { CandidateModule } from '@/api/candidate/candidate.module';
 import LogsMiddleware from '@/middleware/log.middleware';
 import { ScheduleModule } from '@nestjs/schedule';
+import { FileModule } from '@/api/file/file.module';
 const EnvSchema = {
   PORT: Joi.number(),
   NODE_ENV: Joi.string(),
@@ -38,6 +39,7 @@ const EnvSchema = {
     CandidateModule,
     DatabaseModule,
     ScheduleModule.forRoot(),
+    FileModule,
   ],
   controllers: [AppController],
   providers: [],

@@ -1,4 +1,3 @@
-import { IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 import { ActionedBaseDto } from '@/common/dto';
@@ -14,12 +13,8 @@ class LoggedInUserInfoDto extends ActionedBaseDto {
   @ApiProperty({ format: 'email' })
   email: string;
 
-  @ApiProperty({ example: 'Lorem' })
-  firstName: string;
-
-  @IsString()
-  @ApiProperty({ example: 'Lorem' })
-  lastName: string;
+  @ApiProperty()
+  fullName: string;
 
   @ApiProperty({
     enum: Gender,
@@ -33,8 +28,11 @@ class LoggedInUserInfoDto extends ActionedBaseDto {
   })
   bod?: Date;
 
+  @ApiProperty({})
+  avatarId?: string;
+
   @ApiProperty({ example: '0123456789' })
-  phoneNumber: string;
+  phoneNumber?: string;
 }
 
 export class LoggedInDto {

@@ -3,15 +3,19 @@ import { HttpStatus, RequestMethod } from '@nestjs/common';
 import type { IRouteParams } from '@/decorators';
 
 import { LogInDto, LoggedInDto, RegisteredDto } from './dto';
+import { RegisterCandidateDto } from './dto/registerCandidate.dto';
 
 export default {
   index: 'auth',
-  register: <IRouteParams>{
+  registerCandidate: <IRouteParams>{
     jwtSecure: false,
-    path: '/register',
+    path: '/register/candidate',
     code: HttpStatus.CREATED,
     method: RequestMethod.POST,
     swaggerInfo: {
+      body: {
+        type: RegisterCandidateDto,
+      },
       responses: [{ status: HttpStatus.CREATED, type: RegisteredDto }],
     },
   },

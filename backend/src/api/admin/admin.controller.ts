@@ -7,12 +7,7 @@ import adminRoutes from './admin.routes';
 import { AdminService } from './admin.service';
 import { CreateAdminDto, UpdateAdminDto } from './dto';
 
-import type {
-  GotAdminDto,
-  CreatedAdminDto,
-  UpdatedAdminDto,
-  GotAdminDetailDto,
-} from './dto';
+import type { ResponseAdminDetailDto, ResponseAdminDto } from './dto';
 import type { Admin } from './entities/admin.entity';
 
 @InjectController({ name: adminRoutes.index })
@@ -20,21 +15,21 @@ export class AdminController {
   constructor(private readonly adminService: AdminService) {}
 
   @InjectRoute(adminRoutes.create)
-  public async create(@Body() data: CreateAdminDto): Promise<CreatedAdminDto> {
+  public async create(@Body() data: CreateAdminDto): Promise<ResponseAdminDto> {
     const createdAdmin = await this.adminService.create(data);
 
-    return createdAdmin;
+    return createdAdmin.toResponse();
   }
 
   @InjectRoute(adminRoutes.getAll)
-  public async getAll(): Promise<GotAdminDto[]> {
+  public async getAll(): Promise<ResponseAdminDto[]> {
     const gotAdmins = await this.adminService.getAll();
 
     return gotAdmins;
   }
 
   @InjectRoute(adminRoutes.getMe)
-  public async getMe(@ReqUser() user: Admin): Promise<GotAdminDetailDto> {
+  public async getMe(@ReqUser() user: Admin): Promise<ResponseAdminDetailDto> {
     const gotAdmin = await this.adminService.getDetailById(user?.id);
 
     return gotAdmin;
@@ -44,7 +39,7 @@ export class AdminController {
   public async updateMe(
     @ReqUser() user: IJwtStrategy,
     @Body() data: UpdateAdminDto,
-  ): Promise<UpdatedAdminDto> {
+  ): Promise<ResponseAdminDto> {
     const updatedAdmin = await this.adminService.updateByAdmin({
       admin: <Admin>user.element,
       data,
@@ -54,7 +49,9 @@ export class AdminController {
   }
 
   @InjectRoute(adminRoutes.getById)
-  public async getById(@Param('id') id: string): Promise<GotAdminDetailDto> {
+  public async getById(
+    @Param('id') id: string,
+  ): Promise<ResponseAdminDetailDto> {
     const gotAdmin = await this.adminService.getDetailById(id);
 
     return gotAdmin;
@@ -64,7 +61,7 @@ export class AdminController {
   public async updateById(
     @Param('id') id: string,
     @Body() data: UpdateAdminDto,
-  ): Promise<GotAdminDto> {
+  ): Promise<ResponseAdminDto> {
     const updatedAdmin = await this.adminService.updateById({
       id,
       data,

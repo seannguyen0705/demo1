@@ -5,20 +5,19 @@ import { UserRole } from '@/common/enums';
 import { IRouteParams } from '@/decorators';
 
 import {
-  GotCandidateDto,
-  CreatedCandidateDto,
-  UpdatedCandidateDto,
-  GotCandidateDetailDto,
+  ResponseCandidateDto,
+  ResponseCandidateDetailDto,
+  UpdateCandidateDto,
 } from './dto';
 
 export default {
-  index: 'customers',
+  index: 'candidates',
   create: <IRouteParams>{
     path: '/',
     method: RequestMethod.POST,
     roles: [UserRole.ADMIN],
     swaggerInfo: {
-      responses: [{ status: HttpStatus.OK, type: CreatedCandidateDto }],
+      responses: [{ status: HttpStatus.OK, type: ResponseCandidateDto }],
     },
   },
   getAll: <IRouteParams>{
@@ -27,7 +26,7 @@ export default {
     roles: [UserRole.ADMIN],
     swaggerInfo: {
       responses: [
-        { status: HttpStatus.OK, type: GotCandidateDto, isArray: true },
+        { status: HttpStatus.OK, type: ResponseCandidateDto, isArray: true },
       ],
     },
   },
@@ -36,7 +35,7 @@ export default {
     method: RequestMethod.GET,
     roles: [UserRole.CANDIDATE],
     swaggerInfo: {
-      responses: [{ status: HttpStatus.OK, type: GotCandidateDetailDto }],
+      responses: [{ status: HttpStatus.OK, type: ResponseCandidateDetailDto }],
     },
   },
   updateMe: <IRouteParams>{
@@ -44,7 +43,7 @@ export default {
     method: RequestMethod.PUT,
     roles: [UserRole.CANDIDATE],
     swaggerInfo: {
-      responses: [{ status: HttpStatus.OK, type: UpdatedCandidateDto }],
+      responses: [{ status: HttpStatus.OK, type: UpdateCandidateDto }],
     },
   },
   updateAvatar: <IRouteParams>{
@@ -74,7 +73,7 @@ export default {
     method: RequestMethod.GET,
     roles: [UserRole.ADMIN],
     swaggerInfo: {
-      responses: [{ status: HttpStatus.OK, type: GotCandidateDetailDto }],
+      responses: [{ status: HttpStatus.OK, type: ResponseCandidateDetailDto }],
     },
   },
   updateById: <IRouteParams>{
@@ -82,7 +81,7 @@ export default {
     method: RequestMethod.PUT,
     roles: [UserRole.ADMIN],
     swaggerInfo: {
-      responses: [{ status: HttpStatus.OK, type: UpdatedCandidateDto }],
+      responses: [{ status: HttpStatus.OK, type: ResponseCandidateDto }],
     },
   },
   deleteById: <IRouteParams>{

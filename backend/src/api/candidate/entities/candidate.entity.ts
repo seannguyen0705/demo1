@@ -1,41 +1,17 @@
-import { Exclude, plainToInstance } from 'class-transformer';
-
-import { Column, Entity, BeforeInsert } from 'typeorm';
+import { BeforeInsert, Entity } from 'typeorm';
 
 import { hash } from '@/utils/helpers';
-import { Gender, UserRole } from '@/common/enums';
-import { Base as BaseEntity } from '@/common/entities';
+import { UserRole } from '@/common/enums';
 
 import type { Token } from '@/api/token/entities';
+import { BaseUserEntity } from '@/common/entities/baseUser.entity';
+import {
+  ResponseCandidateDetailDto,
+  ResponseCandidateDto,
+} from '../dto/response-candidate.dto';
 
 @Entity({ name: 'candidates' })
-export class Candidate extends BaseEntity {
-  @Column({ unique: true })
-  email: string;
-
-  @Exclude()
-  @Column()
-  password: string;
-
-  @Column({ name: 'first_name' })
-  firstName: string;
-
-  @Column({ name: 'last_name' })
-  lastName: string;
-
-  @Column({ type: 'date', nullable: true })
-  bod?: Date;
-
-  @Column({
-    type: 'enum',
-    enum: Gender,
-    nullable: true,
-  })
-  gender?: Gender;
-
-  @Column({ name: 'phone_number', unique: true })
-  phoneNumber: string;
-
+export class Candidate extends BaseUserEntity {
   @BeforeInsert()
   private async setInsertingData(): Promise<void> {
     const saltRounds = 10;
@@ -46,31 +22,19 @@ export class Candidate extends BaseEntity {
     });
   }
 
-  public fullName(): string {
-    return `${this.firstName} ${this.lastName}`;
-  }
-
-  public toResponse(): Omit<
-    Candidate,
-    'fullName' | 'toResponse' | 'toResponseHavingSessions' | 'password'
-  > & {
-    role: UserRole;
-  } {
+  public toResponse(): ResponseCandidateDto {
     return {
-      ...plainToInstance(Candidate, this),
+      ...this,
       role: UserRole.CANDIDATE,
     };
   }
 
-  public toResponseHavingSessions(sessions: Token[]): Omit<
-    Candidate,
-    'fullName' | 'toResponse' | 'toResponseHavingSessions' | 'password'
-  > & {
-    sessions: Token[];
-    role: UserRole;
-  } {
+  public toResponseHavingSessions(
+    sessions: Token[],
+  ): ResponseCandidateDetailDto {
     return {
-      ...this.toResponse(),
+      ...this,
+      role: UserRole.CANDIDATE,
       sessions,
     };
   }

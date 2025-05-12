@@ -8,15 +8,13 @@ import { UserAlreadyException } from '@/api/auth/auth.exceptions';
 import { Admin } from './entities/admin.entity';
 import { AdminRepository } from './admin.repository';
 
-import type {
-  GotAdminDto,
-  CreateAdminDto,
-  UpdateAdminDto,
-  CreatedAdminDto,
-  GotAdminDetailDto,
-} from './dto';
+import type { CreateAdminDto, UpdateAdminDto } from './dto';
 import { UserRole } from '@/common/enums';
 import { TokenService } from '../token/token.service';
+import {
+  ResponseAdminDetailDto,
+  ResponseAdminDto,
+} from './dto/response-admin.dto';
 @Injectable()
 export class AdminService {
   constructor(
@@ -25,7 +23,7 @@ export class AdminService {
     private tokenService: TokenService,
   ) {}
 
-  public async create(data: CreateAdminDto): Promise<CreatedAdminDto> {
+  public async create(data: CreateAdminDto): Promise<Admin> {
     const { email, phoneNumber } = data;
 
     const admin = await this.findOneByEmailOrPhoneNumber({
@@ -36,11 +34,11 @@ export class AdminService {
       throw new UserAlreadyException();
     }
 
-    const createdAdmin = await this.adminRepository.create(data);
+    const createdAdmin = this.adminRepository.create(data);
 
     await this.adminRepository.save(createdAdmin);
 
-    return createdAdmin.toResponse();
+    return createdAdmin;
   }
 
   public async findOneByEmail(email: string): Promise<Admin> {
@@ -57,13 +55,13 @@ export class AdminService {
     return this.adminRepository.findOneBy([{ email }, { phoneNumber }]);
   }
 
-  public async getAll(): Promise<GotAdminDto[]> {
+  public async getAll(): Promise<ResponseAdminDto[]> {
     const admins = await this.adminRepository.find();
 
     return admins.map((admin) => admin.toResponse());
   }
 
-  public async getDetailById(id: string): Promise<GotAdminDetailDto> {
+  public async getDetailById(id: string): Promise<ResponseAdminDetailDto> {
     const admin = await this.adminRepository.findOneBy({ id });
 
     const sessions = await this.tokenService.getAllByUser({
@@ -109,7 +107,7 @@ export class AdminService {
   }: {
     id: string;
     data: UpdateAdminDto;
-  }): Promise<GotAdminDto> {
+  }): Promise<ResponseAdminDto> {
     const admin = await this.adminRepository.findOneBy({ id });
 
     const updatedAdmin = await this.handleUpdateAdmin({ admin, data });
@@ -123,7 +121,7 @@ export class AdminService {
   }: {
     admin: Admin;
     data: UpdateAdminDto;
-  }): Promise<GotAdminDto> {
+  }): Promise<ResponseAdminDto> {
     const updatedAdmin = await this.handleUpdateAdmin({ admin, data });
 
     return updatedAdmin.toResponse();

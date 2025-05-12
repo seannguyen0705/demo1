@@ -1,3 +1,3 @@
 import { UpdateUserDto } from '@/common/dto/update-user.dto';
 
-export class UpdateCandidateDto extends UpdateUserDto {}
+export class UpdateEmployerDto extends UpdateUserDto {}

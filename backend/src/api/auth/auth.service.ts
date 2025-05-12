@@ -11,12 +11,9 @@ import { TokenService } from '@/api/token/token.service';
 import type { Admin } from '@/api/admin/entities';
 import type { Candidate } from '@/api/candidate/entities';
 
-import {
-  UserAlreadyException,
-  WrongCredentialsException,
-} from './auth.exceptions';
+import { WrongCredentialsException } from './auth.exceptions';
 
-import type { RegisterDto, LoggedInDto, RegisteredDto } from './dto';
+import type { LoggedInDto } from './dto';
 
 import type {
   ITokenPayload,
@@ -25,40 +22,41 @@ import type {
 } from './auth.interface';
 import { UserRole } from '@/common/enums';
 import { ILocalStrategy } from './strategies';
+import { RegisterCandidateDto } from './dto/registerCandidate.dto';
+import { ResponseCandidateDto } from '../candidate/dto';
+import { EmployerService } from '../employer/employer.service';
+import { Employer } from '../employer/entities/employer.entity';
 
-export type TUser = Admin | Candidate;
+export type TUser = Admin | Candidate | Employer;
 
 @Injectable()
 export class AuthService {
+  private services: Record<
+    UserRole,
+    CandidateService | AdminService | EmployerService
+  >;
+
   constructor(
     private jwtService: JwtService,
     private adminService: AdminService,
     private tokenService: TokenService,
     private configService: ConfigService,
     private candidateService: CandidateService,
-  ) {}
-
-  public async register(userInfo: RegisterDto): Promise<RegisteredDto> {
-    const services = {
+    private employerService: EmployerService,
+  ) {
+    this.services = {
       [UserRole.CANDIDATE]: this.candidateService,
+      [UserRole.ADMIN]: this.adminService,
+      [UserRole.EMPLOYER]: this.employerService,
     };
+  }
 
-    const userService = services[userInfo.role];
+  public async registerCandidate(
+    userInfo: RegisterCandidateDto,
+  ): Promise<ResponseCandidateDto> {
+    const registeredCandidate = await this.candidateService.create(userInfo);
 
-    const { email, phoneNumber } = userInfo;
-
-    const user = await userService.findOneByEmailOrPhoneNumber({
-      email,
-      phoneNumber,
-    });
-
-    if (user) {
-      throw new UserAlreadyException();
-    }
-
-    const registeredUser = await userService.create(userInfo);
-
-    return registeredUser;
+    return registeredCandidate;
   }
 
   public async login(user: ILocalStrategy): Promise<LoggedInDto> {
@@ -97,12 +95,7 @@ export class AuthService {
     role,
     password,
   }: IValidateUserParams): Promise<TUser> {
-    const services = {
-      [UserRole.ADMIN]: this.adminService,
-      [UserRole.CANDIDATE]: this.candidateService,
-    };
-
-    const userService = services[role];
+    const userService = this.services[role];
 
     const user = await userService.findOneByEmail(email);
 

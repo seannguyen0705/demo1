@@ -2,10 +2,10 @@ import { UserRole } from '@/common/enums';
 import { IRouteParams } from '@/decorators';
 import { HttpStatus, RequestMethod, UseGuards } from '@nestjs/common';
 import {
-  GotAdminDto,
-  CreatedAdminDto,
-  UpdatedAdminDto,
-  GotAdminDetailDto,
+  ResponseAdminDto,
+  ResponseAdminDetailDto,
+  CreateAdminDto,
+  UpdateAdminDto,
 } from './dto';
 import { SelfGuard } from '../auth/guards';
 
@@ -16,7 +16,7 @@ export default {
     method: RequestMethod.POST,
     roles: [UserRole.ADMIN],
     swaggerInfo: {
-      responses: [{ status: HttpStatus.OK, type: CreatedAdminDto }],
+      responses: [{ status: HttpStatus.OK, type: CreateAdminDto }],
     },
   },
   getAll: <IRouteParams>{
@@ -24,7 +24,9 @@ export default {
     method: RequestMethod.GET,
     roles: [UserRole.ADMIN],
     swaggerInfo: {
-      responses: [{ status: HttpStatus.OK, type: GotAdminDto, isArray: true }],
+      responses: [
+        { status: HttpStatus.OK, type: ResponseAdminDto, isArray: true },
+      ],
     },
   },
   getMe: <IRouteParams>{
@@ -32,7 +34,7 @@ export default {
     method: RequestMethod.GET,
     roles: [UserRole.ADMIN],
     swaggerInfo: {
-      responses: [{ status: HttpStatus.OK, type: GotAdminDetailDto }],
+      responses: [{ status: HttpStatus.OK, type: ResponseAdminDetailDto }],
     },
   },
   updateMe: <IRouteParams>{
@@ -40,7 +42,7 @@ export default {
     method: RequestMethod.PUT,
     roles: [UserRole.ADMIN],
     swaggerInfo: {
-      responses: [{ status: HttpStatus.OK, type: UpdatedAdminDto }],
+      responses: [{ status: HttpStatus.OK, type: UpdateAdminDto }],
     },
   },
   getById: <IRouteParams>{
@@ -48,7 +50,7 @@ export default {
     method: RequestMethod.GET,
     roles: [UserRole.ADMIN],
     swaggerInfo: {
-      responses: [{ status: HttpStatus.OK, type: GotAdminDetailDto }],
+      responses: [{ status: HttpStatus.OK, type: ResponseAdminDetailDto }],
     },
   },
   updateById: <IRouteParams>{
@@ -57,7 +59,7 @@ export default {
     roles: [UserRole.ADMIN],
     extraDecorators: [UseGuards(SelfGuard)],
     swaggerInfo: {
-      responses: [{ status: HttpStatus.OK, type: UpdatedAdminDto }],
+      responses: [{ status: HttpStatus.OK, type: UpdateAdminDto }],
     },
   },
   deleteById: <IRouteParams>{

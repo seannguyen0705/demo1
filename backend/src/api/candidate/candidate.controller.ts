@@ -6,16 +6,15 @@ import { FileValidatorPipe } from '@/pipes';
 
 import { CandidateService } from './candidate.service';
 
-import type {
-  GotCandidateDto,
-  CreatedCandidateDto,
-  UpdatedCandidateDto,
-  GotCandidateDetailDto,
+import {
+  ResponseCandidateDto,
+  ResponseCandidateDetailDto,
   CreateCandidateDto,
   UpdateCandidateDto,
 } from './dto';
 import type { Candidate } from './entities';
 import candidateRoutes from './candidate.routes';
+import { plainToInstance } from 'class-transformer';
 
 @InjectController({ name: candidateRoutes.index })
 export class CandidateController {
@@ -24,14 +23,14 @@ export class CandidateController {
   @InjectRoute(candidateRoutes.create)
   public async create(
     @Body() data: CreateCandidateDto,
-  ): Promise<CreatedCandidateDto> {
+  ): Promise<ResponseCandidateDto> {
     const createdCandidate = await this.candidateService.create(data);
 
     return createdCandidate;
   }
 
   @InjectRoute(candidateRoutes.getAll)
-  public async getAll(): Promise<GotCandidateDto[]> {
+  public async getAll(): Promise<ResponseCandidateDto[]> {
     const gotCandidates = await this.candidateService.getAll();
 
     return gotCandidates;
@@ -40,10 +39,10 @@ export class CandidateController {
   @InjectRoute(candidateRoutes.getMe)
   public async getMe(
     @ReqUser() user: Candidate,
-  ): Promise<GotCandidateDetailDto> {
+  ): Promise<ResponseCandidateDetailDto> {
     const gotCandidate = await this.candidateService.getDetailById(user?.id);
 
-    return gotCandidate;
+    return plainToInstance(ResponseCandidateDetailDto, gotCandidate);
   }
 
   @InjectRoute(candidateRoutes.updateAvatar)
@@ -70,7 +69,7 @@ export class CandidateController {
   public async updateMe(
     @ReqUser() user: IJwtStrategy,
     @Body() data: UpdateCandidateDto,
-  ): Promise<UpdatedCandidateDto> {
+  ): Promise<ResponseCandidateDto> {
     const updatedCandidate = await this.candidateService.updateByCandidate({
       candidate: <Candidate>user.element,
       data,
@@ -79,26 +78,26 @@ export class CandidateController {
     return updatedCandidate;
   }
 
-  @InjectRoute(candidateRoutes.getById)
-  public async getById(
-    @Param('id') id: string,
-  ): Promise<GotCandidateDetailDto> {
-    const gotCandidate = await this.candidateService.getDetailById(id);
+  // @InjectRoute(candidateRoutes.getById)
+  // public async getById(
+  //   @Param('id') id: string,
+  // ): Promise<ResponseCandidateDetailDto> {
+  //   const gotCandidate = await this.candidateService.getDetailById(id);
 
-    return gotCandidate;
-  }
+  //   return gotCandidate;
+  // }
 
   @InjectRoute(candidateRoutes.updateById)
   public async updateById(
     @Param('id') id: string,
     @Body() data: UpdateCandidateDto,
-  ): Promise<GotCandidateDto> {
+  ): Promise<ResponseCandidateDto> {
     const updatedCandidate = await this.candidateService.updateById({
       id,
       data,
     });
 
-    return updatedCandidate;
+    return updatedCandidate.toResponse();
   }
 
   @InjectRoute(candidateRoutes.deleteById)

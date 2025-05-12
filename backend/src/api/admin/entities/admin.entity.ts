@@ -1,41 +1,17 @@
-import { Exclude, plainToInstance } from 'class-transformer';
-
-import { Column, Entity, BeforeInsert } from 'typeorm';
+import { BeforeInsert, Entity } from 'typeorm';
 
 import { hash } from '@/utils/helpers';
-import { Gender, UserRole } from '@/common/enums';
-import { Base as BaseEntity } from '@/common/entities';
+import { UserRole } from '@/common/enums';
 
 import type { Token } from '@/api/token/entities';
+import { BaseUserEntity } from '@/common/entities/baseUser.entity';
+import {
+  ResponseAdminDetailDto,
+  ResponseAdminDto,
+} from '../dto/response-admin.dto';
 
 @Entity({ name: 'admins' })
-export class Admin extends BaseEntity {
-  @Column({ unique: true })
-  email: string;
-
-  @Column()
-  @Exclude()
-  password: string;
-
-  @Column({ name: 'first_name' })
-  firstName: string;
-
-  @Column({ name: 'last_name' })
-  lastName: string;
-
-  @Column({ type: 'date', nullable: true })
-  bod?: Date;
-
-  @Column({
-    type: 'enum',
-    enum: Gender,
-    nullable: true,
-  })
-  gender?: Gender;
-
-  @Column({ name: 'phone_number', unique: true })
-  phoneNumber: string;
-
+export class Admin extends BaseUserEntity {
   @BeforeInsert()
   private async setInsertingData(): Promise<void> {
     const saltRounds = 10;
@@ -46,31 +22,17 @@ export class Admin extends BaseEntity {
     });
   }
 
-  public fullName(): string {
-    return `${this.firstName} ${this.lastName}`;
-  }
-
-  public toResponse(): Omit<
-    Admin,
-    'fullName' | 'toResponse' | 'toResponseHavingSessions' | 'password'
-  > & {
-    role: UserRole;
-  } {
+  public toResponse(): ResponseAdminDto {
     return {
-      ...plainToInstance(Admin, this),
+      ...this,
       role: UserRole.ADMIN,
     };
   }
 
-  public toResponseHavingSessions(sessions: Token[]): Omit<
-    Admin,
-    'fullName' | 'toResponse' | 'toResponseHavingSessions' | 'password'
-  > & {
-    sessions: Token[];
-    role: UserRole;
-  } {
+  public toResponseHavingSessions(sessions: Token[]): ResponseAdminDetailDto {
     return {
-      ...this.toResponse(),
+      ...this,
+      role: UserRole.ADMIN,
       sessions,
     };
   }

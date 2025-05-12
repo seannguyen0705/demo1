@@ -10,11 +10,10 @@ import { Candidate } from './entities/candidate.entity';
 import { CandidateRepository } from './candidate.repository';
 
 import type {
-  GotCandidateDto,
   CreateCandidateDto,
   UpdateCandidateDto,
-  CreatedCandidateDto,
-  GotCandidateDetailDto,
+  ResponseCandidateDto,
+  ResponseCandidateDetailDto,
 } from './dto';
 import { TokenService } from '../token/token.service';
 
@@ -26,18 +25,15 @@ export class CandidateService {
     private tokenService: TokenService,
   ) {}
 
-  public async create(data: CreateCandidateDto): Promise<CreatedCandidateDto> {
-    const { email, phoneNumber } = data;
+  public async create(data: CreateCandidateDto): Promise<ResponseCandidateDto> {
+    const { email } = data;
 
-    const candidate = await this.findOneByEmailOrPhoneNumber({
-      email,
-      phoneNumber,
-    });
+    const candidate = await this.findOneByEmail(email);
     if (candidate) {
       throw new UserAlreadyException();
     }
 
-    const createdCandidate = await this.candidateRepository.create(data);
+    const createdCandidate = this.candidateRepository.create(data);
 
     await this.candidateRepository.save(createdCandidate);
 
@@ -58,16 +54,13 @@ export class CandidateService {
     return this.candidateRepository.findOneBy([{ email }, { phoneNumber }]);
   }
 
-  public async getAll(): Promise<GotCandidateDto[]> {
+  public async getAll(): Promise<ResponseCandidateDto[]> {
     const candidates = await this.candidateRepository.find();
 
-    return candidates.map((candidate) => ({
-      ...candidate,
-      role: UserRole.CANDIDATE,
-    }));
+    return candidates.map((candidate) => candidate.toResponse());
   }
 
-  public async getDetailById(id: string): Promise<GotCandidateDetailDto> {
+  public async getDetailById(id: string): Promise<ResponseCandidateDetailDto> {
     const candidate = await this.candidateRepository.findOneBy({ id });
 
     const sessions = await this.tokenService.getAllByUser({
@@ -113,7 +106,7 @@ export class CandidateService {
   }: {
     id: string;
     data: UpdateCandidateDto;
-  }): Promise<GotCandidateDto> {
+  }): Promise<Candidate> {
     const candidate = await this.candidateRepository.findOneBy({ id });
 
     const updatedCandidate = await this.handleUpdateCandidate({
@@ -121,7 +114,7 @@ export class CandidateService {
       data,
     });
 
-    return updatedCandidate.toResponse();
+    return updatedCandidate;
   }
 
   public async updateByCandidate({
@@ -130,7 +123,7 @@ export class CandidateService {
   }: {
     candidate: Candidate;
     data: UpdateCandidateDto;
-  }): Promise<GotCandidateDto> {
+  }): Promise<ResponseCandidateDto> {
     const updatedCandidate = await this.handleUpdateCandidate({
       candidate,
       data,
