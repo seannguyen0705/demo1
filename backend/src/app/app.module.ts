@@ -15,6 +15,7 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { FileModule } from '@/api/file/file.module';
 import { GithubModule } from '@/api/github/github.module';
 import { GoogleModule } from '@/api/google/google.module';
+import { LinkedinModule } from '@/api/linkedin/linkedin.module';
 const EnvSchema = {
   PORT: Joi.number(),
   NODE_ENV: Joi.string(),
@@ -32,6 +33,9 @@ const EnvSchema = {
   GOOGLE_CLIENT_ID: Joi.string().required(),
   GOOGLE_CLIENT_SECRET: Joi.string().required(),
   GOOGLE_CALLBACK_URL: Joi.string().required(),
+  LINKEDIN_CLIENT_ID: Joi.string().required(),
+  LINKEDIN_CLIENT_SECRET: Joi.string().required(),
+  LINKEDIN_CALLBACK_URL: Joi.string().required(),
 };
 
 @Module({
@@ -50,6 +54,7 @@ const EnvSchema = {
     FileModule,
     GithubModule,
     GoogleModule,
+    LinkedinModule,
   ],
   controllers: [AppController],
   providers: [],

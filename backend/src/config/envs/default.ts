@@ -48,6 +48,11 @@ export const config = {
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     callbackUrl: process.env.GOOGLE_CALLBACK_URL,
   },
+  linkedin: {
+    clientId: process.env.LINKEDIN_CLIENT_ID,
+    clientSecret: process.env.LINKEDIN_CLIENT_SECRET,
+    callbackUrl: process.env.LINKEDIN_CALLBACK_URL,
+  },
   swagger: {
     siteTitle: 'Basic NestJS Template | Documentation',
     title: 'Basic NestJS Template | Documentation',
