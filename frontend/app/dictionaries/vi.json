@@ -1,0 +1,10 @@
+{
+  "navs": {
+    "home": "Trang chủ",
+    "jobs": "Việc làm",
+    "about": "Về chúng tôi",
+    "contact": "Liên hệ",
+    "login": "Đăng nhập",
+    "register": "Đăng ký"
+  }
+}

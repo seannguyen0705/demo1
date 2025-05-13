@@ -1,0 +1,10 @@
+{
+  "navs": {
+    "home": "Home",
+    "jobs": "Jobs",
+    "about": "About",
+    "contact": "Contact",
+    "login": "Login",
+    "register": "Register"
+  }
+}
