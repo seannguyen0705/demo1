@@ -16,6 +16,7 @@ import type {
   ResponseCandidateDetailDto,
 } from './dto';
 import { TokenService } from '../token/token.service';
+import { ThirdPartyUser } from '../auth/dto/thirPartyUser';
 
 @Injectable()
 export class CandidateService {
@@ -134,5 +135,11 @@ export class CandidateService {
 
   public async deleteById(id: string): Promise<DeleteResult> {
     return this.candidateRepository.delete({ id });
+  }
+
+  public async createThirdPartyUser(user: ThirdPartyUser) {
+    const newCandidate = this.candidateRepository.create(user);
+    await this.candidateRepository.save(newCandidate);
+    return newCandidate;
   }
 }

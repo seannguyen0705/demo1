@@ -13,6 +13,7 @@ import { CandidateModule } from '@/api/candidate/candidate.module';
 import LogsMiddleware from '@/middleware/log.middleware';
 import { ScheduleModule } from '@nestjs/schedule';
 import { FileModule } from '@/api/file/file.module';
+import { GithubModule } from '@/api/github/github.module';
 const EnvSchema = {
   PORT: Joi.number(),
   NODE_ENV: Joi.string(),
@@ -24,6 +25,9 @@ const EnvSchema = {
   DB_PASSWORD: Joi.string().required(),
   JWT_SECRET: Joi.string().required(),
   JWT_REFRESH_SECRET: Joi.string().required(),
+  GITHUB_CLIENT_ID: Joi.string().required(),
+  GITHUB_CLIENT_SECRET: Joi.string().required(),
+  GITHUB_CALLBACK_URL: Joi.string().required(),
 };
 
 @Module({
@@ -40,6 +44,7 @@ const EnvSchema = {
     DatabaseModule,
     ScheduleModule.forRoot(),
     FileModule,
+    GithubModule,
   ],
   controllers: [AppController],
   providers: [],

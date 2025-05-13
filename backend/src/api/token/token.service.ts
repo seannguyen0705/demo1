@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { Token } from './entities';
@@ -39,6 +39,18 @@ export class TokenService {
     });
 
     return sessions;
+  }
+
+  public async getByRefreshToken(refreshToken: string): Promise<Token> {
+    const token = await this.tokenRepository.findOneBy({
+      refreshToken,
+    });
+
+    if (!token) {
+      throw new UnauthorizedException('Token not found');
+    }
+
+    return token;
   }
 
   @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)

@@ -20,10 +20,6 @@ export class Token extends BaseEntity {
   userRole: UserRole;
 
   @Exclude()
-  @Column({ name: 'access_token' })
-  accessToken: string;
-
-  @Exclude()
   @Column({ name: 'refresh_token' })
   refreshToken: string;
 }

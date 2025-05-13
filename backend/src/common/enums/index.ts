@@ -10,4 +10,11 @@ enum UserRole {
   EMPLOYER = 'employer',
 }
 
-export { Gender, UserRole };
+enum AuthBy {
+  LOCAL = 'local',
+  GITHUB = 'github',
+  GOOGLE = 'google',
+  LINKEDIN = 'linkedin',
+}
+
+export { Gender, UserRole, AuthBy };

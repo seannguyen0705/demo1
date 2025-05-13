@@ -4,6 +4,7 @@ import Exception from './exception';
 
 const ROLES_KEY = 'roles';
 const IS_PUBLIC_KEY = 'isPublic';
+export const JWT_REFRESH_TOKEN = 'jwt-refresh-token';
 
 const Env = {
   STAGING: 'staging',

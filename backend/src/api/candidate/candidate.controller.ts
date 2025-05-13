@@ -1,6 +1,6 @@
 import { Body, Param, UploadedFile } from '@nestjs/common';
 
-import { IJwtStrategy } from '@/api/auth/strategies';
+import { IJwtStrategy, ILocalStrategy } from '@/api/auth/strategies';
 import { InjectController, InjectRoute, ReqUser } from '@/decorators';
 import { FileValidatorPipe } from '@/pipes';
 
@@ -38,9 +38,11 @@ export class CandidateController {
 
   @InjectRoute(candidateRoutes.getMe)
   public async getMe(
-    @ReqUser() user: Candidate,
+    @ReqUser() user: ILocalStrategy,
   ): Promise<ResponseCandidateDetailDto> {
-    const gotCandidate = await this.candidateService.getDetailById(user?.id);
+    const gotCandidate = await this.candidateService.getDetailById(
+      user.element.id,
+    );
 
     return plainToInstance(ResponseCandidateDetailDto, gotCandidate);
   }

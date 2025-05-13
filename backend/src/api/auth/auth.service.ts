@@ -13,19 +13,17 @@ import type { Candidate } from '@/api/candidate/entities';
 
 import { WrongCredentialsException } from './auth.exceptions';
 
-import type { LoggedInDto } from './dto';
-
 import type {
   ITokenPayload,
   IValidateUserParams,
   IValidateJwtUserParams,
 } from './auth.interface';
 import { UserRole } from '@/common/enums';
-import { ILocalStrategy } from './strategies';
 import { RegisterCandidateDto } from './dto/registerCandidate.dto';
 import { ResponseCandidateDto } from '../candidate/dto';
 import { EmployerService } from '../employer/employer.service';
 import { Employer } from '../employer/entities/employer.entity';
+import { ThirdPartyUser } from './dto/thirPartyUser';
 
 export type TUser = Admin | Candidate | Employer;
 
@@ -59,34 +57,33 @@ export class AuthService {
     return registeredCandidate;
   }
 
-  public async login(user: ILocalStrategy): Promise<LoggedInDto> {
-    const { element, role } = user;
-
-    const payload: ITokenPayload = {
-      role,
-      email: element?.email,
-    };
-
+  public async getCookieWithJwtAccessToken(payload: ITokenPayload) {
+    const ttl = this.configService.get('token.authentication.lifetime') / 1000;
     const accessToken = this.jwtService.sign(payload);
+    const cookie = `Authentication=${accessToken}; HttpOnly; Path=/; Max-Age=${ttl}`;
+    return {
+      accessToken,
+      cookie,
+      ttl,
+    };
+  }
+
+  public async getCookieWithJwtRefreshToken(payload: ITokenPayload) {
+    const ttl =
+      (this.configService.get('token.authentication.lifetime') / 1000) *
+      this.configService.get('token.authentication.renewedTimes');
 
     const refreshToken = this.jwtService.sign(payload, {
       secret: this.configService.get('jwt.refreshSecret'),
-      expiresIn:
-        (this.configService.get('token.authentication.lifetime') / 1000) *
-        this.configService.get('token.authentication.renewedTimes'), // access token will be only renewed n times with refresh token
+      expiresIn: ttl,
     });
 
-    await this.tokenService.create({
-      accessToken,
-      refreshToken,
-      userRole: role,
-      userId: element?.id,
-    });
+    const cookie = `Refresh=${refreshToken}; HttpOnly; Path=/; Max-Age=${ttl}`;
 
     return {
-      accessToken,
       refreshToken,
-      userInfo: element.toResponse(),
+      cookie,
+      ttl,
     };
   }
 
@@ -104,6 +101,39 @@ export class AuthService {
     }
 
     return user;
+  }
+
+  public async validateThirdPartyUser(user: ThirdPartyUser) {
+    const { email } = user;
+    const candidate = await this.candidateService.findOneByEmail(email);
+    if (candidate) {
+      return this.handleRegisterdUser(candidate);
+    }
+    return this.registerUser(user);
+  }
+
+  private async handleRegisterdUser(candidate: Candidate) {
+    const payload: ITokenPayload = {
+      role: UserRole.CANDIDATE,
+      email: candidate.email,
+    };
+    const accessTokenCookie = await this.getCookieWithJwtAccessToken(payload);
+
+    const refreshTokenCookie = await this.getCookieWithJwtRefreshToken(payload);
+
+    await this.tokenService.create({
+      refreshToken: refreshTokenCookie.refreshToken,
+      userRole: UserRole.CANDIDATE,
+      userId: candidate.id,
+    });
+    return {
+      accessTokenCookie,
+      refreshTokenCookie,
+    };
+  }
+  private async registerUser(user: ThirdPartyUser) {
+    const newCandidate = await this.candidateService.createThirdPartyUser(user);
+    return this.handleRegisterdUser(newCandidate);
   }
 
   public async validateJwtUser({

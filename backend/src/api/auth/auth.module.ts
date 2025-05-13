@@ -11,6 +11,7 @@ import { EmployerModule } from '@/api/employer/employer.module';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { JwtStrategy, LocalStrategy } from './strategies';
+import { JwtRefreshTokenStrategy } from './strategies/jwtRefresh.strategy';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { JwtStrategy, LocalStrategy } from './strategies';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy, LocalStrategy],
+  providers: [AuthService, JwtStrategy, LocalStrategy, JwtRefreshTokenStrategy],
+  exports: [AuthService],
 })
 export class AuthModule {}

@@ -9,7 +9,7 @@ export class BaseUserEntity extends BaseEntity {
   email: string;
 
   @Exclude()
-  @Column()
+  @Column({ nullable: true })
   password: string;
 
   @Column({ name: 'full_name' })
