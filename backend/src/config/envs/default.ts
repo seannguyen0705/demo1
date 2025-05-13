@@ -38,6 +38,16 @@ export const config = {
       from: `"Basic NestJS Template" <${process.env.MAIL_USERNAME}>`,
     },
   },
+  github: {
+    clientId: process.env.GITHUB_CLIENT_ID,
+    clientSecret: process.env.GITHUB_CLIENT_SECRET,
+    callbackUrl: process.env.GITHUB_CALLBACK_URL,
+  },
+  google: {
+    clientId: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    callbackUrl: process.env.GOOGLE_CALLBACK_URL,
+  },
   swagger: {
     siteTitle: 'Basic NestJS Template | Documentation',
     title: 'Basic NestJS Template | Documentation',

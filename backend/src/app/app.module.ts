@@ -14,6 +14,7 @@ import LogsMiddleware from '@/middleware/log.middleware';
 import { ScheduleModule } from '@nestjs/schedule';
 import { FileModule } from '@/api/file/file.module';
 import { GithubModule } from '@/api/github/github.module';
+import { GoogleModule } from '@/api/google/google.module';
 const EnvSchema = {
   PORT: Joi.number(),
   NODE_ENV: Joi.string(),
@@ -28,6 +29,9 @@ const EnvSchema = {
   GITHUB_CLIENT_ID: Joi.string().required(),
   GITHUB_CLIENT_SECRET: Joi.string().required(),
   GITHUB_CALLBACK_URL: Joi.string().required(),
+  GOOGLE_CLIENT_ID: Joi.string().required(),
+  GOOGLE_CLIENT_SECRET: Joi.string().required(),
+  GOOGLE_CALLBACK_URL: Joi.string().required(),
 };
 
 @Module({
@@ -45,6 +49,7 @@ const EnvSchema = {
     ScheduleModule.forRoot(),
     FileModule,
     GithubModule,
+    GoogleModule,
   ],
   controllers: [AppController],
   providers: [],
