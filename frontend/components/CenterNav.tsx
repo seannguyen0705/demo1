@@ -1,37 +1,38 @@
 'use client';
 
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { Link, usePathname } from '@/i18n/navigation';
+import { useTranslations } from 'next-intl';
 
 export default function CenterNav() {
+  const t = useTranslations('navs');
   const navs = [
     {
-      name: 'Home',
+      name: t('home'),
       href: '/',
     },
     {
-      name: 'Jobs',
-      href: '/jobs',
+      name: t('jobs'),
+      href: '/job',
     },
     {
-      name: 'About',
+      name: t('about'),
       href: '/about',
     },
     {
-      name: 'Contact us',
+      name: t('contact'),
       href: '/contact',
     },
   ];
   const currentPath = usePathname();
-  const pathWithoutLang = currentPath.split('/').slice(2).join('/') || '/';
 
   return (
-    <div className=" text-[#999] flex flex-row gap-x-[20px]">
+    <div className=" hidden lg:flex text-[#999]  flex-row gap-x-[20px]">
       {navs.map((nav) => (
         <Link
           className={`${
-            pathWithoutLang === nav.href && 'text-white font-semibold'
-          }`}
+            currentPath === nav.href &&
+            'dark:text-white text-black font-semibold'
+          } hover:dark:text-white hover:text-black`}
           href={nav.href}
           key={nav.name}
         >

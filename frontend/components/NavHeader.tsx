@@ -1,31 +1,46 @@
-import Image from 'next/image';
-import Link from 'next/link';
+import { Link } from '@/i18n/navigation';
 import CenterNav from './CenterNav';
+import { ModeToggle } from './ModeToggle';
+import LanguageSelector from './Language-selector';
+import { Suspense } from 'react';
+import { BriefcaseBusiness } from 'lucide-react';
 
-export default function NavHeader() {
+import { getTranslations } from 'next-intl/server';
+import MenuSide from './MenuSide';
+
+export default async function NavHeader() {
+  const t = await getTranslations('navs');
+
   return (
     <header className=" py-[20px]">
       <nav className=" flex items-center justify-between">
         <Link href={'/'} className=" flex items-center flex-row gap-x-[10px]">
-          <Image src={'/logo.svg'} width={20} height={20} alt="logo" />
+          <BriefcaseBusiness className="dark:text-white text-black" />
           <span className=" text-xl font-semibold ">Job Portal</span>
         </Link>
 
-        <CenterNav />
+        <Suspense>
+          <CenterNav />
+        </Suspense>
 
-        <div>
+        <div className=" flex items-center gap-x-[10px] md:gap-x-[10px]">
           <Link
-            className=" py-2 px-4 text-white font-semibold "
+            className=" hover:opacity-60 py-2 px-4 dark:text-white text-black font-semibold hidden md:block"
             href={'/sign-in'}
           >
-            Login
+            {t('login')}
           </Link>
           <Link
-            className="py-2 px-4 font-semibold bg-[#309689] text-white rounded-md"
+            className="hover:opacity-60 hidden md:block py-2 px-4 font-semibold bg-[#309689] text-white rounded-md"
             href={'/sign-up'}
           >
-            Register
+            {t('register')}
           </Link>
+          <Suspense>
+            <LanguageSelector />
+          </Suspense>
+          <ModeToggle />
+          <MenuSide />
         </div>
       </nav>
     </header>

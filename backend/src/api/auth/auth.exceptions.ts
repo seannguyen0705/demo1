@@ -1,17 +1,21 @@
 import { BaseException } from '@/exceptions';
 import { Exception } from '@/utils/constants';
-import { HttpStatus, BadRequestException } from '@nestjs/common';
+import { HttpStatus } from '@nestjs/common';
 
-export class UserAlreadyException extends BadRequestException {
+export class UserAlreadyException extends BaseException {
   constructor() {
-    super('User with that email already exists.');
+    super({
+      code: Exception.USER_ALREADY_EXISTS_CODE,
+      message: 'User with that email already exists.',
+      status: HttpStatus.BAD_REQUEST,
+    });
   }
 }
 
 export class WrongCredentialsException extends BaseException {
   constructor() {
     super({
-      code: Exception.UNAUTHORIZED_CODE,
+      code: Exception.WRONG_CREDENTIALS_CODE,
       message: 'Wrong credentials provided.',
       status: HttpStatus.UNAUTHORIZED,
     });

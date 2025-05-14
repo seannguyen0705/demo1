@@ -36,6 +36,7 @@ const EnvSchema = {
   LINKEDIN_CLIENT_ID: Joi.string().required(),
   LINKEDIN_CLIENT_SECRET: Joi.string().required(),
   LINKEDIN_CALLBACK_URL: Joi.string().required(),
+  FRONTEND_URL: Joi.string().required(),
 };
 
 @Module({
