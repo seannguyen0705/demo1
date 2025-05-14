@@ -16,16 +16,38 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { useTranslations } from 'next-intl';
-import { createFormSchema } from '../util/createFormRegisterSchema';
 import useRegisterCandidate from '../hook/useRegisterCandidate';
 
 // Define the form schema with Zod
+const formSchema = z
+  .object({
+    fullName: z
+      .string()
+      .min(2, { message: 'Tên phải có ít nhất 2 ký tự' })
+      .max(50, { message: 'Tên phải có tối đa 50 ký tự' }),
+    email: z.string().email({ message: 'Email không hợp lệ' }),
+    password: z
+      .string()
+      .min(8, { message: 'Mật khẩu phải có ít nhất 8 ký tự' })
+      .regex(/[A-Z]/, {
+        message: 'Mật khẩu phải có ít nhất 1 chữ cái viết hoa',
+      })
+      .regex(/[a-z]/, {
+        message: 'Mật khẩu phải có ít nhất 1 chữ cái viết thường',
+      })
+      .regex(/[0-9]/, { message: 'Mật khẩu phải có ít nhất 1 chữ số' })
+      .regex(/[^A-Za-z0-9]/, {
+        message: 'Mật khẩu phải có ít nhất 1 ký tự đặc biệt',
+      }),
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: 'Mật khẩu không khớp',
+    path: ['confirmPassword'],
+  });
+type FormValues = z.infer<typeof formSchema>;
 
 export function RegisterForm() {
-  const t = useTranslations('register-page');
-  const formSchema = createFormSchema(t);
-  type FormValues = z.infer<typeof formSchema>;
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
@@ -55,9 +77,9 @@ export function RegisterForm() {
           name="fullName"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t('fullName')}</FormLabel>
+              <FormLabel>Họ và tên</FormLabel>
               <FormControl>
-                <Input placeholder={t('fullNamePlaceholder')} {...field} />
+                <Input placeholder="Nguyen Van A" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -69,11 +91,11 @@ export function RegisterForm() {
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t('email')}</FormLabel>
+              <FormLabel>Email</FormLabel>
               <FormControl>
                 <Input
                   type="email"
-                  placeholder={t('emailPlaceholder')}
+                  placeholder="nguyenvan@gmail.com"
                   {...field}
                 />
               </FormControl>
@@ -87,7 +109,7 @@ export function RegisterForm() {
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t('password')}</FormLabel>
+              <FormLabel>Mật khẩu</FormLabel>
               <FormControl>
                 <div className="relative">
                   <Input
@@ -123,7 +145,7 @@ export function RegisterForm() {
           name="confirmPassword"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t('confirmPassword')}</FormLabel>
+              <FormLabel>Nhập lại mật khẩu</FormLabel>
               <FormControl>
                 <div className="relative">
                   <Input
@@ -159,7 +181,7 @@ export function RegisterForm() {
           className="w-full bg-[#309689] hover:bg-[#309689]/80"
           disabled={isPending}
         >
-          {isPending ? t('creatingAccount') : t('register')}
+          {isPending ? 'Đang tạo tài khoản' : 'Đăng ký'}
         </Button>
       </form>
     </Form>

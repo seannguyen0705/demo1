@@ -10,7 +10,7 @@ export default function AuthGithub() {
       className="w-full"
     >
       <FaGithub />
-      Sign in with Github
+      Đăng nhập với Github
     </Button>
   );
 }
