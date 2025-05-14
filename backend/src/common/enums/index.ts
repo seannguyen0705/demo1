@@ -17,4 +17,10 @@ enum AuthBy {
   LINKEDIN = 'linkedin',
 }
 
-export { Gender, UserRole, AuthBy };
+enum UserStatus {
+  BANNED = 'banned',
+  ACTIVE = 'active',
+  INACTIVE = 'inactive',
+}
+
+export { Gender, UserRole, AuthBy, UserStatus };

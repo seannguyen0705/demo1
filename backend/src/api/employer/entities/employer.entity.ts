@@ -1,5 +1,5 @@
 import { BaseUserEntity } from '@/common/entities/baseUser.entity';
-import { UserRole } from '@/common/enums';
+import { UserRole, UserStatus } from '@/common/enums';
 import { BeforeInsert, Column, Entity } from 'typeorm';
 import {
   ResponseEmployerDetailDto,
@@ -12,6 +12,9 @@ import { hash } from '@/utils/helpers';
 export class Employer extends BaseUserEntity {
   @Column({ name: 'work_title' })
   workTitle: string;
+
+  @Column({ type: 'enum', enum: UserStatus, default: UserStatus.INACTIVE })
+  status: UserStatus;
 
   @BeforeInsert()
   private async setInsertingData(): Promise<void> {

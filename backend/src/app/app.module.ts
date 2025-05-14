@@ -16,6 +16,7 @@ import { FileModule } from '@/api/file/file.module';
 import { GithubModule } from '@/api/github/github.module';
 import { GoogleModule } from '@/api/google/google.module';
 import { LinkedinModule } from '@/api/linkedin/linkedin.module';
+import { CompanyModule } from '@/api/company/company.module';
 const EnvSchema = {
   PORT: Joi.number(),
   NODE_ENV: Joi.string(),
@@ -56,6 +57,7 @@ const EnvSchema = {
     GithubModule,
     GoogleModule,
     LinkedinModule,
+    CompanyModule,
   ],
   controllers: [AppController],
   providers: [],
