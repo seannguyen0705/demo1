@@ -3,7 +3,7 @@ import { Lexend } from 'next/font/google';
 import './globals.css';
 
 import NavHeader from '@/components/NavHeader';
-import Container from '../provider/Container';
+
 import { ThemeProvider } from '@/provider/theme-provider';
 
 import { Toaster } from '@/components/ui/sonner';
@@ -33,13 +33,12 @@ export default async function AppLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <Container>
-            <ReactQueryProvider>
-              <NavHeader />
-              {children}
-              <Toaster />
-            </ReactQueryProvider>
-          </Container>
+          <ReactQueryProvider>
+            <NavHeader />
+
+            {children}
+            <Toaster />
+          </ReactQueryProvider>
         </ThemeProvider>
       </body>
     </html>

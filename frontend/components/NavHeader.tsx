@@ -8,7 +8,7 @@ import Link from 'next/link';
 
 export default async function NavHeader() {
   return (
-    <header className=" py-[20px]">
+    <header className=" container mx-auto px-4 md:px-6 py-[20px]">
       <nav className=" flex items-center justify-between">
         <Link href={'/'} className=" flex items-center flex-row gap-x-[10px]">
           <BriefcaseBusiness className="dark:text-white text-black" />
