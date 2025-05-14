@@ -27,9 +27,5 @@ export class GithubController {
       refreshTokenCookie.cookie,
     ]);
     res.redirect(this.configService.get('FRONTEND_URL'));
-    return {
-      accessTokenCookie,
-      refreshTokenCookie,
-    };
   }
 }
