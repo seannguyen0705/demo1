@@ -1,7 +1,7 @@
 import { BeforeInsert, Column, Entity } from 'typeorm';
 
 import { hash } from '@/utils/helpers';
-import { AuthBy, UserRole } from '@/common/enums';
+import { AuthBy, UserRole, UserStatus } from '@/common/enums';
 
 import type { Token } from '@/api/token/entities';
 import { BaseUserEntity } from '@/common/entities/baseUser.entity';
@@ -14,6 +14,9 @@ import {
 export class Candidate extends BaseUserEntity {
   @Column({ type: 'enum', enum: AuthBy, default: AuthBy.LOCAL })
   authBy: AuthBy;
+
+  @Column({ type: 'enum', enum: UserStatus, default: UserStatus.ACTIVE })
+  status: UserStatus;
 
   @Column({ nullable: true })
   avatar_url: string;

@@ -10,6 +10,12 @@ enum UserRole {
   EMPLOYER = 'employer',
 }
 
+enum UserStatus {
+  BANNED = 'banned',
+  ACTIVE = 'active',
+  INACTIVE = 'inactive',
+}
+
 enum AuthBy {
   LOCAL = 'local',
   GITHUB = 'github',
@@ -17,4 +23,4 @@ enum AuthBy {
   LINKEDIN = 'linkedin',
 }
 
-export { Gender, UserRole, AuthBy };
+export { Gender, UserRole, AuthBy, UserStatus };
