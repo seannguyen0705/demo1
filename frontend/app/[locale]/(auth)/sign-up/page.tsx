@@ -1,6 +1,7 @@
 import { getTranslations } from 'next-intl/server';
 import { RegisterForm } from '../components/RegisterForm';
 import BenefitItem from '../components/BenefitItem';
+import AuthThirdParty from '../components/AuthThirdParty';
 
 export default async function SignUpPage() {
   const t = await getTranslations('register-page');
@@ -15,6 +16,7 @@ export default async function SignUpPage() {
             <p className="text-muted-foreground">{t('enterInformation')}</p>
           </div>
           <RegisterForm />
+          <AuthThirdParty />
         </div>
 
         {/* Right Column - Benefits */}
