@@ -30,7 +30,7 @@ export default function MenuSide() {
   ];
 
   return (
-    <div className="  block md:hidden">
+    <div className="  block lg:hidden">
       {/* Burger Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}

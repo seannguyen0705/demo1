@@ -26,7 +26,7 @@ export default function CenterNav() {
   const currentPath = usePathname();
 
   return (
-    <div className=" hidden md:flex text-[#999]  flex-row gap-x-[20px]">
+    <div className=" hidden lg:flex text-[#999]  flex-row gap-x-[20px]">
       {navs.map((nav) => (
         <Link
           className={`${
