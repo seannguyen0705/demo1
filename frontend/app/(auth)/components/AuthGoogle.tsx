@@ -9,7 +9,7 @@ export default function AuthGoogle() {
       className="w-full"
     >
       <FcGoogle />
-      Sign in with Google
+      Đăng nhập với Google
     </Button>
   );
 }

@@ -1,26 +1,29 @@
 'use client';
 
-import { Link, usePathname } from '@/i18n/navigation';
-import { useTranslations } from 'next-intl';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 export default function CenterNav() {
-  const t = useTranslations('navs');
   const navs = [
     {
-      name: t('home'),
+      name: 'Trang chủ',
       href: '/',
     },
     {
-      name: t('jobs'),
+      name: 'Việc làm',
       href: '/job',
     },
     {
-      name: t('about'),
+      name: 'Về chúng tôi',
       href: '/about',
     },
     {
-      name: t('contact'),
+      name: 'Liên hệ',
       href: '/contact',
+    },
+    {
+      name: 'Tuyển dụng',
+      href: '/recruitment',
     },
   ];
   const currentPath = usePathname();

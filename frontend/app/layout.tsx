@@ -3,10 +3,9 @@ import { Lexend } from 'next/font/google';
 import './globals.css';
 
 import NavHeader from '@/components/NavHeader';
-import Container from '../../provider/Container';
+import Container from '../provider/Container';
 import { ThemeProvider } from '@/provider/theme-provider';
-import { NextIntlClientProvider } from 'next-intl';
-import { getMessages } from 'next-intl/server';
+
 import { Toaster } from '@/components/ui/sonner';
 import ReactQueryProvider from '@/provider/ReactQueryProvider';
 
@@ -22,15 +21,11 @@ export const metadata: Metadata = {
 
 export default async function AppLayout({
   children,
-  params,
 }: Readonly<{
   children: React.ReactNode;
-  params: Promise<{ locale: 'en' | 'vi' }>;
 }>) {
-  const { locale } = await params;
-  const messages = await getMessages();
   return (
-    <html lang={locale}>
+    <html lang="vi">
       <body className={` ${lexend.variable} antialiased`}>
         <ThemeProvider
           attribute="class"
@@ -38,15 +33,13 @@ export default async function AppLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <NextIntlClientProvider messages={messages}>
-            <Container>
-              <ReactQueryProvider>
-                <NavHeader />
-                {children}
-                <Toaster />
-              </ReactQueryProvider>
-            </Container>
-          </NextIntlClientProvider>
+          <Container>
+            <ReactQueryProvider>
+              <NavHeader />
+              {children}
+              <Toaster />
+            </ReactQueryProvider>
+          </Container>
         </ThemeProvider>
       </body>
     </html>

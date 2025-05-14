@@ -1,16 +1,12 @@
-import { Link } from '@/i18n/navigation';
 import CenterNav from './CenterNav';
 import { ModeToggle } from './ModeToggle';
-import LanguageSelector from './Language-selector';
 import { Suspense } from 'react';
 import { BriefcaseBusiness } from 'lucide-react';
 
-import { getTranslations } from 'next-intl/server';
 import MenuSide from './MenuSide';
+import Link from 'next/link';
 
 export default async function NavHeader() {
-  const t = await getTranslations('navs');
-
   return (
     <header className=" py-[20px]">
       <nav className=" flex items-center justify-between">
@@ -28,17 +24,15 @@ export default async function NavHeader() {
             className=" hover:opacity-60 py-2 px-4 dark:text-white text-black font-semibold hidden md:block"
             href={'/sign-in'}
           >
-            {t('login')}
+            Đăng nhập
           </Link>
           <Link
             className="hover:opacity-60 hidden md:block py-2 px-4 font-semibold bg-[#309689] text-white rounded-md"
             href={'/sign-up'}
           >
-            {t('register')}
+            Đăng ký
           </Link>
-          <Suspense>
-            <LanguageSelector />
-          </Suspense>
+
           <ModeToggle />
           <MenuSide />
         </div>

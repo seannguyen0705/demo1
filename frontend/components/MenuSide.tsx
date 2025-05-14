@@ -2,30 +2,33 @@
 
 import { useState } from 'react';
 import { AlignJustify, BriefcaseBusiness, X } from 'lucide-react';
-import { Link, usePathname } from '@/i18n/navigation';
-import { useTranslations } from 'next-intl';
+import { usePathname } from 'next/navigation';
+import Link from 'next/link';
 
 export default function MenuSide() {
   const [isOpen, setIsOpen] = useState(false);
-  const t = useTranslations('navs');
 
   const currentPath = usePathname();
   const navs = [
     {
-      name: t('home'),
+      name: 'Trang chủ',
       href: '/',
     },
     {
-      name: t('jobs'),
+      name: 'Việc làm',
       href: '/job',
     },
     {
-      name: t('about'),
+      name: 'Về chúng tôi',
       href: '/about',
     },
     {
-      name: t('contact'),
+      name: 'Liên hệ',
       href: '/contact',
+    },
+    {
+      name: 'Tuyển dụng',
+      href: '/recruitment',
     },
   ];
 
@@ -85,14 +88,14 @@ export default function MenuSide() {
                 href={'/sign-in'}
                 className=" px-4 py-2 dark:active:bg-gray-800 active:bg-gray-100"
               >
-                {t('login')}
+                Đăng nhập
               </Link>
 
               <Link
                 href={'/sign-up'}
                 className=" px-4 py-2 bg-[#309689] text-white rounded-md dark:active:bg-gray-800 active:bg-gray-100"
               >
-                {t('register')}
+                Đăng ký
               </Link>
             </div>
           </nav>
