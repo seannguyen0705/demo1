@@ -12,6 +12,7 @@ import {
 } from './dto/response-employer.dto';
 import { UserRole } from '@/common/enums';
 import { UpdateEmployerDto } from './dto/update-employer.dto';
+import { QueryRunner } from 'typeorm';
 
 @Injectable()
 export class EmployerService {
@@ -21,18 +22,23 @@ export class EmployerService {
     private tokenService: TokenService,
   ) {}
 
-  public async create(data: CreateEmployerDto): Promise<ResponseEmployerDto> {
-    const { email } = data;
+  public async create(
+    data: CreateEmployerDto,
+    queryRunner: QueryRunner,
+  ): Promise<ResponseEmployerDto> {
+    const { email, phoneNumber } = data;
 
-    const employer = await this.findOneByEmail(email);
+    const employer = await this.findOneByEmailOrPhoneNumber({
+      email,
+      phoneNumber,
+    });
+
     if (employer) {
       throw new UserAlreadyException();
     }
 
-    const createdEmployer = this.employerRepository.create(data);
-
-    await this.employerRepository.save(createdEmployer);
-
+    const createdEmployer = queryRunner.manager.create(Employer, data);
+    await queryRunner.manager.save(Employer, createdEmployer);
     return createdEmployer.toResponse();
   }
 

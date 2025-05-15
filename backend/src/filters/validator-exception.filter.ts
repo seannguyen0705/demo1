@@ -28,8 +28,8 @@ export class ValidatorExceptionFilter implements ExceptionFilter {
       const { errors } = exception as unknown as {
         errors: ValidationError[];
       };
-      const firstMessage = errors[0];
-      const dto = firstMessage.target.constructor.name;
+
+      console.log(errors);
 
       const detail = errors?.reduce((result, { property, constraints }) => {
         result[property] = Object.values(constraints);
@@ -50,7 +50,7 @@ export class ValidatorExceptionFilter implements ExceptionFilter {
       if (isDevelopment) {
         resBody = {
           ...resBody,
-          message: `${firstError?.[0]} Invalid Attribute(s) in ${dto}`,
+          message: firstError?.[0],
           detail,
         };
       }

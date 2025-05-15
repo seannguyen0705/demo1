@@ -20,6 +20,10 @@ export class Employer extends BaseUserEntity {
   private async setInsertingData(): Promise<void> {
     const saltRounds = 10;
 
+    if (!this.password) {
+      return;
+    }
+
     this.password = await hash.generateWithBcrypt({
       source: this.password,
       salt: saltRounds,
