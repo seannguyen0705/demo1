@@ -49,9 +49,11 @@ export class AuthController {
       new FileValidatorPipe({
         fileTypeConfig: {
           type: /^(application\/pdf|application\/msword|application\/vnd\.openxmlformats-officedocument\.wordprocessingml\.document)$/,
+          errorMessage: 'Định dạng file không hợp lệ',
         },
         maxSizeConfig: {
           size: 5 * 1024 * 1024,
+          errorMessage: 'File không được vượt quá 5MB',
         },
         fileIsRequired: true,
       }),

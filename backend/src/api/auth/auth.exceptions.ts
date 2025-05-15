@@ -1,6 +1,6 @@
-import { BadGatewayException, BadRequestException } from '@nestjs/common';
+import { BadRequestException } from '@nestjs/common';
 
-export class UserAlreadyException extends BadGatewayException {
+export class UserAlreadyException extends BadRequestException {
   constructor() {
     super('Email hoặc số điện thoại đã có người sử dụng');
   }

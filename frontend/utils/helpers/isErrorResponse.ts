@@ -1,8 +1,6 @@
-export function isErrorResponse(
-  response: any,
-): response is { code: number; message: string; status: number } {
+export function isErrorResponse(response: any): response is ErrorReponse {
   if (!response) {
     return false;
   }
-  return 'code' in response;
+  return 'errorCode' in response;
 }

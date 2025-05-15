@@ -29,8 +29,6 @@ export class ValidatorExceptionFilter implements ExceptionFilter {
         errors: ValidationError[];
       };
 
-      console.log(errors);
-
       const detail = errors?.reduce((result, { property, constraints }) => {
         result[property] = Object.values(constraints);
 
@@ -42,7 +40,7 @@ export class ValidatorExceptionFilter implements ExceptionFilter {
       );
 
       let resBody = <IValidatorExceptionResponse>{
-        code: Exception.UNPROCESSABLE_ENTITY_CODE,
+        errorCode: Exception.UNPROCESSABLE_ENTITY_CODE,
         status: HttpStatus.UNPROCESSABLE_ENTITY,
         message: firstError?.[0] || 'Invalid Information',
       };
@@ -58,7 +56,7 @@ export class ValidatorExceptionFilter implements ExceptionFilter {
       return response.status(422).send(resBody);
     } catch (error) {
       const resBody = <IBaseExceptionResponse>{
-        code: Exception.INTERNAL_ERROR_CODE,
+        errorCode: Exception.INTERNAL_ERROR_CODE,
         status: HttpStatus.INTERNAL_SERVER_ERROR,
         message: 'Something went wrong!',
       };
