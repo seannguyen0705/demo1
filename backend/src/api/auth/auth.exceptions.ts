@@ -1,23 +1,13 @@
-import { BaseException } from '@/exceptions';
-import { Exception } from '@/utils/constants';
-import { HttpStatus } from '@nestjs/common';
+import { BadGatewayException, BadRequestException } from '@nestjs/common';
 
-export class UserAlreadyException extends BaseException {
+export class UserAlreadyException extends BadGatewayException {
   constructor() {
-    super({
-      code: Exception.USER_ALREADY_EXISTS_CODE,
-      message: 'User with that email already exists.',
-      status: HttpStatus.BAD_REQUEST,
-    });
+    super('Email hoặc số điện thoại đã có người sử dụng');
   }
 }
 
-export class WrongCredentialsException extends BaseException {
+export class WrongCredentialsException extends BadRequestException {
   constructor() {
-    super({
-      code: Exception.WRONG_CREDENTIALS_CODE,
-      message: 'Wrong credentials provided.',
-      status: HttpStatus.UNAUTHORIZED,
-    });
+    super('Thông tin đăng nhập không chính xác');
   }
 }

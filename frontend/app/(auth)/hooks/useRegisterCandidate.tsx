@@ -1,8 +1,8 @@
 import { useMutation } from '@tanstack/react-query';
 import { registerCandidate } from '@/api/auth/action';
 import { toast } from 'sonner';
-import EXCEPTION_CODE from '@/util/constant/exception';
-import { isErrorResponse } from '@/util/helper/isErrorResponse';
+import EXCEPTION_CODE from '@/utils/constants/exception';
+import { isErrorResponse } from '@/utils/helpers/isErrorResponse';
 
 export default function useRegisterCandidate() {
   return useMutation({

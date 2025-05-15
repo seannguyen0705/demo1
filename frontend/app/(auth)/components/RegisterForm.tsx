@@ -16,7 +16,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import useRegisterCandidate from '../hook/useRegisterCandidate';
+import useRegisterCandidate from '../hooks/useRegisterCandidate';
 
 // Define the form schema with Zod
 const formSchema = z
