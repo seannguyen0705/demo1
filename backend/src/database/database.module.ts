@@ -11,6 +11,5 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       useFactory: (configService: ConfigService) => configService.get('db'),
     }),
   ],
-  exports: [TypeOrmModule],
 })
 export class DatabaseModule {}
