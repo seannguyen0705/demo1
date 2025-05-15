@@ -55,7 +55,7 @@ export default function BusinessForm() {
   }
 
   return (
-    <div className="min-h-screen bg-[#EBF5F4] py-[30px] md:py-[60px]">
+    <div className="min-h-screen dark:bg-[#111827] rounded-lg bg-[#EBF5F4] py-[30px] md:py-[60px]">
       <div className="container mx-auto px-[20px] md:px-[40px]">
         <h3 className=" text-center text-2xl font-bold">
           Đăng ký tài khoản doanh nghiệp
