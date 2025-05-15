@@ -1,3 +1,5 @@
+import EXCEPTION_CODE from '../constants/exception';
+
 export default async function customFetch<T>(
   input: string,
   init?: RequestInit,
@@ -11,9 +13,9 @@ export default async function customFetch<T>(
 
     return data as T;
   } catch (error: unknown) {
-    console.log({ error });
+    console.error({ error });
     return {
-      code: 500,
+      errorCode: EXCEPTION_CODE.INTERNAL_ERROR_CODE,
       status: 500,
       message: 'Internal Server Error',
     };

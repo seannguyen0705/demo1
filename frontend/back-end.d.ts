@@ -10,7 +10,7 @@ declare global {
   class createCandidateDto extends createUserDto {}
 
   interface ErrorReponse {
-    code: number;
+    errorCode: number;
     status: number;
     message: string;
   }

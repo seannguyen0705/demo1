@@ -6,6 +6,9 @@ const nextConfig: NextConfig = {
       bodySizeLimit: '6mb',
     },
   },
+  env: {
+    BACKEND_URL: process.env.BACKEND_URL,
+  },
 };
 
 export default nextConfig;

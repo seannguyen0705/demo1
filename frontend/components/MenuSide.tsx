@@ -33,11 +33,11 @@ export default function MenuSide() {
   ];
 
   return (
-    <div className="  block lg:hidden">
+    <div className="block lg:hidden">
       {/* Burger Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className=" py-2 rounded-lg hover:bg-gray-100 transition-colors"
+        className="py-2 rounded-lg hover:bg-gray-100 transition-colors"
       >
         {isOpen ? <X /> : <AlignJustify className="w-6 h-6" />}
       </button>
@@ -56,19 +56,19 @@ export default function MenuSide() {
           isOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
-        <div className=" h-full flex flex-col py-6">
+        <div className="h-full flex flex-col py-6">
           <Link
             href={'/'}
-            className=" px-4 flex items-center flex-row gap-x-[10px]"
+            className="px-4 flex items-center flex-row gap-x-[10px]"
           >
             <BriefcaseBusiness className="dark:text-white text-black" />
-            <span className=" text-xl font-semibold ">Job Portal</span>
+            <span className="text-xl font-semibold ">Job Portal</span>
           </Link>
           <nav className="mt-6  flex-1 flex flex-col justify-between">
-            <ul className=" text-lg  ">
+            <ul className="text-lg  ">
               {navs.map((nav) => (
                 <li
-                  className=" px-4 py-2 dark:active:bg-gray-800 active:bg-gray-100"
+                  className="px-4 py-2 dark:active:bg-gray-800 active:bg-gray-100"
                   key={nav.name}
                 >
                   <Link
@@ -83,17 +83,17 @@ export default function MenuSide() {
                 </li>
               ))}
             </ul>
-            <div className=" flex flex-row justify-center  items-center gap-x-[10px]">
+            <div className="flex flex-row justify-center  items-center gap-x-[10px]">
               <Link
                 href={'/sign-in'}
-                className=" px-4 py-2 dark:active:bg-gray-800 active:bg-gray-100"
+                className="px-4 py-2 dark:active:bg-gray-800 active:bg-gray-100"
               >
                 Đăng nhập
               </Link>
 
               <Link
                 href={'/sign-up'}
-                className=" px-4 py-2 bg-[#309689] text-white rounded-md dark:active:bg-gray-800 active:bg-gray-100"
+                className="px-4 py-2 bg-[#309689] text-white rounded-md dark:active:bg-gray-800 active:bg-gray-100"
               >
                 Đăng ký
               </Link>

@@ -8,7 +8,6 @@ export default function useRegisterBusiness() {
     mutationFn: registerBusiness,
     onSuccess: (data: unknown) => {
       if (isErrorResponse(data)) {
-        console.log(data);
         toast.error(data.message);
       } else {
         toast.success('Đăng ký thành công, vui lòng đợi xác thực tài khoản');

@@ -9,7 +9,7 @@ export default function useRegisterCandidate() {
     mutationFn: registerCandidate,
     onSuccess: (data: unknown) => {
       if (isErrorResponse(data)) {
-        if (data.code === EXCEPTION_CODE.USER_ALREADY_EXISTS_CODE) {
+        if (data.errorCode === EXCEPTION_CODE.USER_ALREADY_EXISTS_CODE) {
           toast.error('Email đã có người sử dụng');
         } else {
           toast.error('Lỗi hệ thống');

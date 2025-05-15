@@ -28,7 +28,7 @@ export class AdvancedExceptionFilter implements ExceptionFilter {
     const response = host.switchToHttp().getResponse<Response>();
 
     let data = <IBaseExceptionResponse>{
-      code: Exception.INTERNAL_ERROR_CODE,
+      errorCode: Exception.INTERNAL_ERROR_CODE,
       status: HttpStatus.INTERNAL_SERVER_ERROR,
       message: 'Something went wrong!',
     };
@@ -38,10 +38,10 @@ export class AdvancedExceptionFilter implements ExceptionFilter {
         exception?.getStatus?.() || HttpStatus.INTERNAL_SERVER_ERROR;
 
       if (exception instanceof BaseException) {
-        const { code, message } = exception;
+        const { errorCode, message } = exception;
 
         data = {
-          code,
+          errorCode,
           status,
           message,
         };
@@ -50,32 +50,32 @@ export class AdvancedExceptionFilter implements ExceptionFilter {
 
         if (exception instanceof BadRequestException) {
           data = {
-            code: Exception.BAD_REQUEST_CODE,
+            errorCode: Exception.BAD_REQUEST_CODE,
             status,
             message,
           };
         } else if (exception instanceof ForbiddenException) {
           data = {
-            code: Exception.FORBIDDEN_CODE,
+            errorCode: Exception.FORBIDDEN_CODE,
             status,
             message,
           };
         } else if (exception instanceof UnauthorizedException) {
           data = {
-            code: Exception.UNAUTHORIZED_CODE,
+            errorCode: Exception.UNAUTHORIZED_CODE,
             status,
             message,
           };
         } else if (exception instanceof NotFoundException) {
           data = {
-            code: Exception.NOT_FOUND_CODE,
+            errorCode: Exception.NOT_FOUND_CODE,
             status,
             message,
           };
         } else {
           if (isDevelopment) {
             data = {
-              code: Exception.NOT_FOUND_CODE,
+              errorCode: Exception.NOT_FOUND_CODE,
               status,
               message,
               stack: exception?.cause
