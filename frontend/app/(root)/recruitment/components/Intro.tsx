@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { CheckCircle, Users, Briefcase, TrendingUp } from 'lucide-react';
 import Link from 'next/link';
-
+import ScrollToForm from './ScrollToForm';
 export default function Intro() {
   return (
     <section className="w-full py-12 md:py-24 bg-gradient-to-b dark:from-black dark:to-gray-900 from-white to-gray-50">
@@ -22,9 +22,7 @@ export default function Intro() {
               quá trình tuyển dụng.
             </p>
 
-            <Button asChild size="lg" className="font-medium">
-              <Link href="/employer/register">Đăng ký miễn phí</Link>
-            </Button>
+            <ScrollToForm />
           </div>
 
           {/* card */}
