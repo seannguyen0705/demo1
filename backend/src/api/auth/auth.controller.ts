@@ -1,4 +1,4 @@
-import { Body, Req, UploadedFile } from '@nestjs/common';
+import { Body, Req } from '@nestjs/common';
 
 import { InjectRoute, InjectController } from '@/decorators';
 
@@ -14,7 +14,6 @@ import { ITokenPayload } from './auth.interface';
 import { CompanyService } from '../company/company.service';
 import { EmployerService } from '../employer/employer.service';
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
-import { FileValidatorPipe } from '@/pipes';
 import { CreateBusinessDto } from './dto/create-business.dto';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
@@ -43,23 +42,7 @@ export class AuthController {
   }
 
   @InjectRoute(authRoutes.registerBusiness)
-  public async registerBusiness(
-    @Body() data: CreateBusinessDto,
-    @UploadedFile(
-      new FileValidatorPipe({
-        fileTypeConfig: {
-          type: /^(application\/pdf|application\/msword|application\/vnd\.openxmlformats-officedocument\.wordprocessingml\.document)$/,
-          errorMessage: 'Định dạng file không hợp lệ',
-        },
-        maxSizeConfig: {
-          size: 5 * 1024 * 1024,
-          errorMessage: 'File không được vượt quá 5MB',
-        },
-        fileIsRequired: true,
-      }),
-    )
-    file: Express.Multer.File,
-  ) {
+  public async registerBusiness(@Body() data: CreateBusinessDto) {
     const { email, phoneNumber } = data;
     let responseUploadFile;
     const employer = await this.employerService.findOneByEmailOrPhoneNumber({
@@ -80,25 +63,11 @@ export class AuthController {
         data,
         queryRunner,
       );
-      responseUploadFile = await this.cloudinaryService.uploadFile(
-        file,
-        'company_proof',
-      );
-      const { key, url } = responseUploadFile;
-      const newFile = await this.fileService.create(
-        {
-          key,
-          url,
-          name: file.originalname,
-          format: file.mimetype,
-        },
-        queryRunner,
-      );
 
       await this.companyService.create(
         {
           ...data,
-          proofId: newFile.id,
+
           employerId: createdEmployer.id,
         },
         queryRunner,

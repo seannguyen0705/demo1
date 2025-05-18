@@ -44,6 +44,9 @@ export class CreateCompanyDto {
   })
   website: string;
 
+  @IsNotEmpty()
+  @IsString()
   proofId: string;
+
   employerId: string;
 }

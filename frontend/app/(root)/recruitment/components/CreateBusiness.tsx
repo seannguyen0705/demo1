@@ -1,7 +1,6 @@
 import { Clock, Mail, MapPin, Phone } from 'lucide-react';
 import ContactItem from './ContactItem';
 import BusinessForm from './BusinessForm';
-import Image from 'next/image';
 
 export default function CreateBusiness() {
   const contacts = [

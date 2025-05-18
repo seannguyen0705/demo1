@@ -1,9 +1,4 @@
-import {
-  HttpStatus,
-  RequestMethod,
-  UseGuards,
-  UseInterceptors,
-} from '@nestjs/common';
+import { HttpStatus, RequestMethod, UseGuards } from '@nestjs/common';
 
 import type { IRouteParams } from '@/decorators';
 
@@ -11,7 +6,6 @@ import { LogInDto, LoggedInDto, RegisteredDto } from './dto';
 import { RegisterCandidateDto } from './dto/registerCandidate.dto';
 import JwtRefreshGuard from './guards/jwtRefresh.guard';
 import { CreateBusinessDto } from './dto/create-business.dto';
-import { FileInterceptor } from '@nestjs/platform-express';
 
 export default {
   index: 'auth',
@@ -37,7 +31,6 @@ export default {
         type: CreateBusinessDto,
       },
     },
-    extraDecorators: [UseInterceptors(FileInterceptor('file'))],
   },
   login: <IRouteParams>{
     path: '/login',

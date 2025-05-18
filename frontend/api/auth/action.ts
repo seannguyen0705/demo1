@@ -16,20 +16,12 @@ export async function registerCandidate(data: createCandidateDto) {
 }
 
 export async function registerBusiness(data: BusinessFormSchema) {
-  const formData = new FormData();
-  formData.append('file', data.document);
-  formData.append('name', data.companyName);
-  data.companyAddress.forEach((address) => {
-    formData.append('address', address);
-  });
-  formData.append('website', data.website);
-  formData.append('email', data.email);
-  formData.append('fullName', data.fullName);
-  formData.append('workTitle', data.position);
-  formData.append('phoneNumber', data.phone);
   const response = await customFetch('business/register', {
     method: 'POST',
-    body: formData,
+    body: JSON.stringify(data),
+    headers: {
+      'Content-Type': 'application/json',
+    },
   });
 
   return response;

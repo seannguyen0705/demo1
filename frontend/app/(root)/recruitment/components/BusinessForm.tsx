@@ -15,23 +15,27 @@ import {
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import useRegisterBusiness from '@/app/(auth)/hooks/useRegisterBusiness';
-import { Minus, Plus } from 'lucide-react';
+import { Circle, LoaderCircle, Minus, Plus } from 'lucide-react';
+import useUploadFile from '@/app/hooks/useUploadFile';
+import useDeleteFile from '@/app/hooks/useDeleteFile';
+import { useEffect } from 'react';
 
 const formSchema = z.object({
   // Personal Information
   fullName: z.string().min(2, 'Họ tên phải có ít nhất 2 ký tự'),
-  position: z.string().min(2, 'Chức vụ phải có ít nhất 2 ký tự'),
+  workTitle: z.string().min(2, 'Chức vụ phải có ít nhất 2 ký tự'),
   email: z.string().email('Email không hợp lệ'),
-  phone: z.string().min(10, 'Số điện thoại phải có ít nhất 10 số'),
+  phoneNumber: z.string().min(10, 'Số điện thoại phải có ít nhất 10 số'),
 
   // Company Information
-  companyName: z.string().min(2, 'Tên công ty phải có ít nhất 2 ký tự'),
-  companyAddress: z
+  name: z.string().min(2, 'Tên công ty phải có ít nhất 2 ký tự'),
+  address: z
     .array(z.string().min(1, 'Địa chỉ công ty phải có ít nhất 1 ký tự'))
     .min(1, 'Phải nhập ít nhất 1 địa chỉ')
     .max(3, 'Chỉ được nhập tối đa 3 địa chỉ'),
   website: z.string().url('Địa chỉ website không hợp lệ'),
-  document: z.instanceof(File, { message: 'File không hợp lệ' }),
+
+  proofId: z.string().min(1, 'Vui lòng tải lên tài liệu minh chứng'),
 });
 export type BusinessFormSchema = z.infer<typeof formSchema>;
 
@@ -40,12 +44,13 @@ export default function BusinessForm() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       fullName: '',
-      position: '',
+      workTitle: '',
       email: '',
-      phone: '',
-      companyName: '',
-      companyAddress: [''],
+      phoneNumber: '',
+      name: '',
+      address: [''],
       website: '',
+      proofId: '',
     },
   });
   const { mutate: registerBusiness, isPending } = useRegisterBusiness();
@@ -53,6 +58,16 @@ export default function BusinessForm() {
   function onSubmit(values: BusinessFormSchema) {
     registerBusiness(values);
   }
+  const {
+    fileId,
+    mutate: uploadFile,
+    isPending: isUploading,
+  } = useUploadFile();
+  const { mutate: deleteFile, isPending: isDeleting } = useDeleteFile();
+
+  useEffect(() => {
+    form.setValue('proofId', fileId);
+  }, [fileId, form]);
 
   return (
     <div className="min-h-screen dark:bg-[#111827] rounded-lg bg-[#EBF5F4] py-[30px] md:py-[60px]">
@@ -86,7 +101,7 @@ export default function BusinessForm() {
                 />
                 <FormField
                   control={form.control}
-                  name="position"
+                  name="workTitle"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Chức vụ</FormLabel>
@@ -116,7 +131,7 @@ export default function BusinessForm() {
                 />
                 <FormField
                   control={form.control}
-                  name="phone"
+                  name="phoneNumber"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Số điện thoại</FormLabel>
@@ -138,7 +153,7 @@ export default function BusinessForm() {
               <CardContent className="space-y-4">
                 <FormField
                   control={form.control}
-                  name="companyName"
+                  name="name"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Tên công ty</FormLabel>
@@ -151,7 +166,7 @@ export default function BusinessForm() {
                 />
                 <FormField
                   control={form.control}
-                  name="companyAddress"
+                  name="address"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className=" flex justify-between items-center">
@@ -220,7 +235,7 @@ export default function BusinessForm() {
                 />
                 <FormField
                   control={form.control}
-                  name="document"
+                  name="proofId"
                   render={({ field: { value, onChange, ...field } }) => (
                     <FormItem>
                       <FormLabel>
@@ -230,11 +245,31 @@ export default function BusinessForm() {
                         </span>
                       </FormLabel>
                       <FormControl>
-                        <Input
-                          type="file"
-                          onChange={(e) => onChange(e.target.files?.[0])}
-                          {...field}
-                        />
+                        <div className="relative">
+                          <Input
+                            id="proofId"
+                            type="file"
+                            accept=".pdf,.doc,.docx"
+                            disabled={isUploading || isDeleting}
+                            onChange={(e) => {
+                              const file = e.target.files?.[0];
+                              if (!file) {
+                                return;
+                              }
+                              if (fileId) {
+                                deleteFile(fileId);
+                              }
+                              uploadFile({ file, folder: 'company_proof' });
+                              form.setValue('proofId', fileId);
+                            }}
+                            {...field}
+                          />
+                          {(isUploading || isDeleting) && (
+                            <div className="absolute top-0 translate-y-1/2 right-0">
+                              <LoaderCircle className="size-4 mr-2 animate-spin" />
+                            </div>
+                          )}
+                        </div>
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -246,9 +281,14 @@ export default function BusinessForm() {
             <Button
               type="submit"
               className="w-full disabled:opacity-50"
-              disabled={isPending}
+              disabled={isPending || isUploading || isDeleting}
             >
-              {isPending ? 'Đang đăng ký...' : 'Đăng ký'}
+              {(isPending || isUploading || isDeleting) && (
+                <div className="flex items-center justify-center">
+                  <Circle className="size-4 mr-2 animate-spin" />
+                </div>
+              )}
+              Đăng ký
             </Button>
           </form>
         </Form>

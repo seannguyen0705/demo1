@@ -11,7 +11,7 @@ export default async function customFetch<T>(
     );
     const data = await response.json();
 
-    return data as T;
+    return data as { data: T };
   } catch (error: unknown) {
     console.error({ error });
     return {
