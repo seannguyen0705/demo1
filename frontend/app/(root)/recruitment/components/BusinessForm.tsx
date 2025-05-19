@@ -76,7 +76,7 @@ export default function BusinessForm() {
       className="min-h-screen dark:bg-[#111827] rounded-lg bg-[#EBF5F4] py-[30px] md:py-[60px]"
     >
       <div className="container mx-auto px-[20px] md:px-[40px]">
-        <h3 className=" text-center text-2xl font-bold">
+        <h3 className="text-center text-2xl font-bold">
           Đăng ký tài khoản doanh nghiệp
         </h3>
         <p className="text-center text-muted-foreground mb-[30px]">
@@ -284,7 +284,7 @@ export default function BusinessForm() {
 
             <Button
               type="submit"
-              className="w-full  bg-[#309689] hover:bg-[#309689]/80 disabled:opacity-50"
+              className="w-full bg-[#309689] hover:bg-[#309689]/80 disabled:opacity-50"
               disabled={isPending || isUploading || isDeleting}
             >
               {(isPending || isUploading || isDeleting) && (
@@ -296,7 +296,7 @@ export default function BusinessForm() {
             </Button>
           </form>
         </Form>
-        <div className=" mt-[10px]  text-sm flex  justify-end items-center gap-x-1">
+        <div className="mt-[10px]  text-sm flex  justify-end items-center gap-x-1">
           <span className="text-muted-foreground">
             Đã có tài khoản doanh nghiệp?
           </span>

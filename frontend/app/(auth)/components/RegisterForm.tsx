@@ -184,7 +184,7 @@ export default function RegisterForm() {
         >
           {isPending ? 'Đang tạo tài khoản' : 'Đăng ký'}
         </Button>
-        <div className="   text-sm flex  justify-end items-center gap-x-1">
+        <div className="text-sm flex  justify-end items-center gap-x-1">
           <span className="text-muted-foreground">Đã có tài khoản?</span>
           <Link href="/sign-in" className="underline">
             Đăng nhập

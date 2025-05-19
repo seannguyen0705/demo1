@@ -32,7 +32,7 @@ export class GoogleController {
         refreshTokenCookie.cookie,
       ]);
       res.redirect(this.configService.get('FRONTEND_URL'));
-    } catch (error: any) {
+    } catch (error) {
       res.redirect(
         this.configService.get('FRONTEND_URL') +
           '/sign-in' +
