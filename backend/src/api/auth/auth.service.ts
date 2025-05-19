@@ -100,17 +100,14 @@ export class AuthService {
 
     const user = await userService.findOneByEmail(email);
 
-    if (!(user instanceof Admin)) {
-      if (user.status === UserStatus.BANNED) {
-        throw new BannedUserException();
-      }
-      if (!user.password || user.status === UserStatus.INACTIVE) {
-        throw new InactiveEmployerException();
-      }
-    }
-
     if (!(user && compareSync(password, user?.password))) {
       throw new WrongCredentialsException();
+    }
+    if (user.status === UserStatus.BANNED) {
+      throw new BannedUserException();
+    }
+    if (user.status === UserStatus.INACTIVE) {
+      throw new InactiveEmployerException();
     }
     return user;
   }
@@ -171,13 +168,11 @@ export class AuthService {
       throw new WrongCredentialsException();
     }
 
-    if (!(user instanceof Admin)) {
-      if (user.status === UserStatus.BANNED) {
-        throw new BannedUserException();
-      }
-      if (user.status === UserStatus.INACTIVE) {
-        throw new InactiveEmployerException();
-      }
+    if (user.status === UserStatus.BANNED) {
+      throw new BannedUserException();
+    }
+    if (user.status === UserStatus.INACTIVE) {
+      throw new InactiveEmployerException();
     }
     return user;
   }

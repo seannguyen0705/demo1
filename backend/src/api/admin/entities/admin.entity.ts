@@ -1,7 +1,7 @@
-import { BeforeInsert, Entity } from 'typeorm';
+import { BeforeInsert, Column, Entity } from 'typeorm';
 
 import { hash } from '@/utils/helpers';
-import { UserRole } from '@/common/enums';
+import { UserRole, UserStatus } from '@/common/enums';
 
 import type { Token } from '@/api/token/entities';
 import { BaseUserEntity } from '@/common/entities/baseUser.entity';
@@ -12,6 +12,9 @@ import {
 
 @Entity({ name: 'admins' })
 export class Admin extends BaseUserEntity {
+  @Column({ type: 'enum', enum: UserStatus, default: UserStatus.ACTIVE })
+  status: UserStatus;
+
   @BeforeInsert()
   private async setInsertingData(): Promise<void> {
     const saltRounds = 10;
