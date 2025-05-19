@@ -31,7 +31,12 @@ export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const currentPath = usePathname();
 
-  const isEmployer = currentPath.includes('recruitment');
+  let role = UserRole.CANDIDATE;
+  if (currentPath.includes('recruitment')) {
+    role = UserRole.EMPLOYER;
+  } else if (currentPath.includes('admin')) {
+    role = UserRole.ADMIN;
+  }
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -44,7 +49,7 @@ export default function LoginForm() {
   const onSubmit = (data: FormValues) => {
     login({
       ...data,
-      role: isEmployer ? UserRole.EMPLOYER : UserRole.CANDIDATE,
+      role,
     });
   };
 
@@ -115,15 +120,17 @@ export default function LoginForm() {
         >
           {isPending ? 'Đang đăng nhập' : 'Đăng nhập'}
         </Button>
-        <div className="   text-sm flex  justify-end items-center gap-x-1">
-          <span className="text-muted-foreground">Chưa có tài khoản?</span>
-          <Link
-            href={isEmployer ? '/recruitment' : '/sign-up'}
-            className="underline"
-          >
-            Đăng ký
-          </Link>
-        </div>
+        {role !== UserRole.ADMIN && (
+          <div className="   text-sm flex  justify-end items-center gap-x-1">
+            <span className="text-muted-foreground">Chưa có tài khoản?</span>
+            <Link
+              href={role === UserRole.EMPLOYER ? '/recruitment' : '/sign-up'}
+              className="underline"
+            >
+              Đăng ký
+            </Link>
+          </div>
+        )}
       </form>
     </Form>
   );
