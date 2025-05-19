@@ -5,6 +5,7 @@ import githubRoutes from './github.routes';
 import { AuthService } from '../auth/auth.service';
 import { Response } from 'express';
 import { ConfigService } from '@nestjs/config';
+import { RequestWithThirdPartyUser } from '@/common/interfaces';
 
 @InjectController({ name: githubRoutes.index })
 export class GithubController {
@@ -18,7 +19,10 @@ export class GithubController {
   public async login() {}
 
   @InjectRoute(githubRoutes.callback)
-  public async callback(@Req() req, @Res() res: Response) {
+  public async callback(
+    @Req() req: RequestWithThirdPartyUser,
+    @Res() res: Response,
+  ) {
     try {
       const { accessTokenCookie, refreshTokenCookie } =
         await this.authService.validateThirdPartyUser(req.user);
