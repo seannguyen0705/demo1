@@ -7,9 +7,9 @@ import adminRoutes from './admin.routes';
 import { AdminService } from './admin.service';
 import { CreateAdminDto, UpdateAdminDto } from './dto';
 
-import type { ResponseAdminDetailDto, ResponseAdminDto } from './dto';
+import { ResponseAdminDetailDto, ResponseAdminDto } from './dto';
 import type { Admin } from './entities/admin.entity';
-
+import { plainToInstance } from 'class-transformer';
 @InjectController({ name: adminRoutes.index })
 export class AdminController {
   constructor(private readonly adminService: AdminService) {}
@@ -17,8 +17,7 @@ export class AdminController {
   @InjectRoute(adminRoutes.create)
   public async create(@Body() data: CreateAdminDto): Promise<ResponseAdminDto> {
     const createdAdmin = await this.adminService.create(data);
-
-    return createdAdmin.toResponse();
+    return plainToInstance(ResponseAdminDto, createdAdmin);
   }
 
   @InjectRoute(adminRoutes.getAll)

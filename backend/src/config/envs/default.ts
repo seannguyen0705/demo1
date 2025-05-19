@@ -1,4 +1,5 @@
 import { Time } from '@/utils/constants';
+import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 
 export const config = {
   db: {
@@ -33,9 +34,18 @@ export const config = {
         user: process.env.MAIL_USERNAME || 'username',
         pass: process.env.MAIL_PASSWORD || 'password',
       },
+      secure: true,
+      ignoreTLS: true,
     },
-    options: {
-      from: `"Basic NestJS Template" <${process.env.MAIL_USERNAME}>`,
+    defaults: {
+      from: '"No Reply" <no-reply@localhost>',
+    },
+    template: {
+      dir: 'src/api/email/templates/',
+      adapter: new HandlebarsAdapter(), // or new PugAdapter() or new EjsAdapter()
+      options: {
+        strict: true,
+      },
     },
   },
   github: {

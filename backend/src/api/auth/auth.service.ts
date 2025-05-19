@@ -8,17 +8,21 @@ import { CandidateService } from '@/api/candidate/candidate.service';
 
 import { TokenService } from '@/api/token/token.service';
 
-import type { Admin } from '@/api/admin/entities';
+import { Admin } from '@/api/admin/entities';
 import type { Candidate } from '@/api/candidate/entities';
 
-import { WrongCredentialsException } from './auth.exceptions';
+import {
+  BannedUserException,
+  InactiveEmployerException,
+  WrongCredentialsException,
+} from './auth.exceptions';
 
 import type {
   ITokenPayload,
   IValidateUserParams,
   IValidateJwtUserParams,
 } from './auth.interface';
-import { UserRole } from '@/common/enums';
+import { UserRole, UserStatus } from '@/common/enums';
 import { RegisterCandidateDto } from './dto/registerCandidate.dto';
 import { ResponseCandidateDto } from '../candidate/dto';
 import { EmployerService } from '../employer/employer.service';
@@ -96,10 +100,18 @@ export class AuthService {
 
     const user = await userService.findOneByEmail(email);
 
+    if (!(user instanceof Admin)) {
+      if (user.status === UserStatus.BANNED) {
+        throw new BannedUserException();
+      }
+      if (!user.password || user.status === UserStatus.INACTIVE) {
+        throw new InactiveEmployerException();
+      }
+    }
+
     if (!(user && compareSync(password, user?.password))) {
       throw new WrongCredentialsException();
     }
-
     return user;
   }
 
@@ -107,12 +119,18 @@ export class AuthService {
     const { email } = user;
     const candidate = await this.candidateService.findOneByEmail(email);
     if (candidate) {
-      return this.handleRegisterdUser(candidate);
+      if (candidate.status === UserStatus.BANNED) {
+        throw new BannedUserException();
+      }
+      if (candidate.status === UserStatus.INACTIVE) {
+        throw new InactiveEmployerException();
+      }
+      return this.handleRegisteredUser(candidate);
     }
     return this.registerUser(user);
   }
 
-  private async handleRegisterdUser(candidate: Candidate) {
+  private async handleRegisteredUser(candidate: Candidate) {
     const payload: ITokenPayload = {
       role: UserRole.CANDIDATE,
       email: candidate.email,
@@ -133,7 +151,7 @@ export class AuthService {
   }
   private async registerUser(user: ThirdPartyUser) {
     const newCandidate = await this.candidateService.createThirdPartyUser(user);
-    return this.handleRegisterdUser(newCandidate);
+    return this.handleRegisteredUser(newCandidate);
   }
 
   public async validateJwtUser({
@@ -153,6 +171,14 @@ export class AuthService {
       throw new WrongCredentialsException();
     }
 
+    if (!(user instanceof Admin)) {
+      if (user.status === UserStatus.BANNED) {
+        throw new BannedUserException();
+      }
+      if (user.status === UserStatus.INACTIVE) {
+        throw new InactiveEmployerException();
+      }
+    }
     return user;
   }
 

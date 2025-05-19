@@ -17,6 +17,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import useRegisterCandidate from '../hooks/useRegisterCandidate';
+import Link from 'next/link';
 
 // Define the form schema with Zod
 const formSchema = z
@@ -183,6 +184,12 @@ export default function RegisterForm() {
         >
           {isPending ? 'Đang tạo tài khoản' : 'Đăng ký'}
         </Button>
+        <div className="   text-sm flex  justify-end items-center gap-x-1">
+          <span className="text-muted-foreground">Đã có tài khoản?</span>
+          <Link href="/sign-in" className="underline">
+            Đăng nhập
+          </Link>
+        </div>
       </form>
     </Form>
   );
