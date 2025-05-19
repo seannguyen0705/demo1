@@ -114,4 +114,28 @@ export class AuthController {
       refreshTokenCookie,
     };
   }
+
+  @InjectRoute(authRoutes.refreshToken)
+  public async refreshToken(@Req() req: any) {
+    const accessToken = await this.authService.getCookieWithJwtAccessToken(
+      req.user,
+    );
+
+    req.res.setHeader('Set-Cookie', [accessToken.cookie]);
+
+    return {
+      accessTokenCookie: accessToken,
+    };
+  }
+
+  @InjectRoute(authRoutes.logout)
+  public async logout(@Req() req: any) {
+    req.res.setHeader('Set-Cookie', this.authService.getCookieForLogOut());
+
+    await this.tokenService.deleteByRefreshToken(req.cookies.Refresh);
+
+    return {
+      message: 'Logged out successfully',
+    };
+  }
 }

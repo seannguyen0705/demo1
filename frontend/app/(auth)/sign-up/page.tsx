@@ -1,26 +1,8 @@
 import { RegisterForm } from '../components/RegisterForm';
-import BenefitItem from '../components/BenefitItem';
 import AuthThirdParty from '../components/AuthThirdParty';
+import Benefits from '../components/Benefits';
 
 export default async function SignUpPage() {
-  const benefits = [
-    {
-      title: 'Tiếp cận hàng nghìn cơ hội việc làm',
-      description:
-        'Tìm kiếm việc làm dễ dàng với hàng ngàn tin tuyển dụng được cập nhật liên tục từ nhiều ngành nghề và khu vực khác nhau.',
-    },
-    {
-      title: 'Nhận gợi ý việc làm phù hợp',
-      description:
-        'Hệ thống đề xuất thông minh giúp bạn nhanh chóng tìm thấy công việc phù hợp với kỹ năng và sở thích cá nhân.',
-    },
-    {
-      title: 'Ứng tuyển nhanh chóng, tiện lợi',
-      description:
-        'Chỉ với vài cú nhấp chuột, bạn có thể ứng tuyển ngay đến nhà tuyển dụng mà không cần gửi email thủ công.',
-    },
-  ];
-
   return (
     <main className=" flex  w-full items-center justify-center">
       <div className="grid w-full max-w-6xl grid-cols-1 gap-8 lg:grid-cols-2">
@@ -44,13 +26,7 @@ export default async function SignUpPage() {
         {/* Right Column - Benefits */}
         <div className="flex flex-col justify-center space-y-6 rounded-lg dark:bg-muted bg-[#f9f9f9] p-8">
           <h2 className="text-2xl font-bold">Tạo tài khoản</h2>
-          {benefits.map((benefit) => (
-            <BenefitItem
-              key={benefit.title}
-              title={benefit.title}
-              description={benefit.description}
-            />
-          ))}
+          <Benefits />
         </div>
       </div>
     </main>
