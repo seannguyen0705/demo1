@@ -104,7 +104,7 @@ export class AuthController {
     ]);
 
     await this.tokenService.create({
-      refreshToken: refreshTokenCookie.refreshToken,
+      refreshToken: refreshTokenCookie.token,
       userRole: req.user.role,
       userId: req.user.element.id,
     });
