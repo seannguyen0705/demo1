@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { EmployerRepository } from './employer.repository';
@@ -92,6 +92,25 @@ export class EmployerService {
       }
     }
 
+    return this.employerRepository.save({
+      ...employer,
+      ...data,
+    });
+  }
+
+  public async findOneById(id: string): Promise<Employer> {
+    const employer = await this.employerRepository.findOneBy({ id });
+    if (!employer) {
+      throw new NotFoundException('Employer not found');
+    }
+    return employer;
+  }
+
+  public async updateEmployer(
+    id: string,
+    data: Partial<Employer>,
+  ): Promise<Employer> {
+    const employer = await this.findOneById(id);
     return this.employerRepository.save({
       ...employer,
       ...data,

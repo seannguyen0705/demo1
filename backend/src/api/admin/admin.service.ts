@@ -24,12 +24,9 @@ export class AdminService {
   ) {}
 
   public async create(data: CreateAdminDto): Promise<Admin> {
-    const { email, phoneNumber } = data;
+    const { email } = data;
 
-    const admin = await this.findOneByEmailOrPhoneNumber({
-      email,
-      phoneNumber,
-    });
+    const admin = await this.findOneByEmail(email);
     if (admin) {
       throw new UserAlreadyException();
     }

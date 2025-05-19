@@ -16,6 +16,8 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { useState } from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 const formSchema = z.object({
   email: z.string().email({ message: 'Email không hợp lệ' }),
@@ -27,6 +29,9 @@ type FormValues = z.infer<typeof formSchema>;
 export default function LoginForm() {
   const { mutate: login, isPending } = useLogin();
   const [showPassword, setShowPassword] = useState(false);
+  const currentPath = usePathname();
+
+  const isEmployer = currentPath.includes('recruitment');
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -37,7 +42,10 @@ export default function LoginForm() {
   });
 
   const onSubmit = (data: FormValues) => {
-    login({ ...data, role: UserRole.CANDIDATE });
+    login({
+      ...data,
+      role: isEmployer ? UserRole.EMPLOYER : UserRole.CANDIDATE,
+    });
   };
 
   return (
@@ -107,6 +115,15 @@ export default function LoginForm() {
         >
           {isPending ? 'Đang đăng nhập' : 'Đăng nhập'}
         </Button>
+        <div className="   text-sm flex  justify-end items-center gap-x-1">
+          <span className="text-muted-foreground">Chưa có tài khoản?</span>
+          <Link
+            href={isEmployer ? '/recruitment' : '/sign-up'}
+            className="underline"
+          >
+            Đăng ký
+          </Link>
+        </div>
       </form>
     </Form>
   );

@@ -18,6 +18,8 @@ import { GoogleModule } from '@/api/google/google.module';
 import { LinkedinModule } from '@/api/linkedin/linkedin.module';
 import { CompanyModule } from '@/api/company/company.module';
 import { CloudinaryModule } from '@/api/cloudinary/cloudinary.module';
+import { EmailModule } from '@/api/email/email.module';
+import { EmployerModule } from '@/api/employer/employer.module';
 
 const EnvSchema = {
   PORT: Joi.number(),
@@ -43,6 +45,8 @@ const EnvSchema = {
   CLOUDINARY_API_KEY: Joi.string().required(),
   CLOUDINARY_API_SECRET: Joi.string().required(),
   CLOUDINARY_CLOUD_NAME: Joi.string().required(),
+  MAIL_USERNAME: Joi.string().required(),
+  MAIL_PASSWORD: Joi.string().required(),
 };
 
 @Module({
@@ -57,6 +61,7 @@ const EnvSchema = {
     TokenModule,
     AdminModule,
     CandidateModule,
+    EmployerModule,
     ScheduleModule.forRoot(),
     FileModule,
     GithubModule,
@@ -64,6 +69,9 @@ const EnvSchema = {
     LinkedinModule,
     CompanyModule,
     CloudinaryModule,
+    CompanyModule,
+    EmployerModule,
+    EmailModule,
   ],
   controllers: [AppController],
   providers: [],

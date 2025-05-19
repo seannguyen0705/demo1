@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { FcGoogle } from 'react-icons/fc';
 
-export default function AuthGoogle() {
+export default async function AuthGoogle() {
   return (
     <Link
       href={process.env.BACKEND_URL + '/api/v1/google/login'}

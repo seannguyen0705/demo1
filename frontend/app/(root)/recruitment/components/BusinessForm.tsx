@@ -19,6 +19,7 @@ import { Circle, LoaderCircle, Minus, Plus } from 'lucide-react';
 import useUploadFile from '@/app/hooks/useUploadFile';
 import useDeleteFile from '@/app/hooks/useDeleteFile';
 import { useEffect } from 'react';
+import Link from 'next/link';
 
 const formSchema = z.object({
   // Personal Information
@@ -283,7 +284,7 @@ export default function BusinessForm() {
 
             <Button
               type="submit"
-              className="w-full disabled:opacity-50"
+              className="w-full  bg-[#309689] hover:bg-[#309689]/80 disabled:opacity-50"
               disabled={isPending || isUploading || isDeleting}
             >
               {(isPending || isUploading || isDeleting) && (
@@ -295,6 +296,14 @@ export default function BusinessForm() {
             </Button>
           </form>
         </Form>
+        <div className=" mt-[10px]  text-sm flex  justify-end items-center gap-x-1">
+          <span className="text-muted-foreground">
+            Đã có tài khoản doanh nghiệp?
+          </span>
+          <Link href="/recruitment/sign-in" className="underline">
+            Đăng nhập
+          </Link>
+        </div>
       </div>
     </div>
   );

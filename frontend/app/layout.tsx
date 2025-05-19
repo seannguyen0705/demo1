@@ -35,8 +35,7 @@ export default async function AppLayout({
         >
           <ReactQueryProvider>
             <NavHeader />
-
-            {children}
+            <div className="pt-[100px]">{children}</div>
             <Toaster />
           </ReactQueryProvider>
         </ThemeProvider>

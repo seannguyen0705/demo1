@@ -14,7 +14,7 @@ export default {
   create: <IRouteParams>{
     path: '/',
     method: RequestMethod.POST,
-    roles: [UserRole.ADMIN],
+    jwtSecure: false,
     swaggerInfo: {
       responses: [{ status: HttpStatus.OK, type: CreateAdminDto }],
     },

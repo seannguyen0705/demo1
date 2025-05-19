@@ -33,8 +33,9 @@ export default function CenterNav() {
       {navs.map((nav) => (
         <Link
           className={`${
-            currentPath === nav.href &&
-            'dark:text-white text-black font-semibold'
+            currentPath === nav.href || currentPath.startsWith(nav.href + '/')
+              ? 'dark:text-white text-black font-semibold'
+              : ''
           } hover:dark:text-white hover:text-black`}
           href={nav.href}
           key={nav.name}

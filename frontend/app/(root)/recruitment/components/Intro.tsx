@@ -1,8 +1,8 @@
-import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { CheckCircle, Users, Briefcase, TrendingUp } from 'lucide-react';
-import Link from 'next/link';
 import ScrollToForm from './ScrollToForm';
+import Link from 'next/link';
+import IntroCards from './IntroCards';
 export default function Intro() {
   return (
     <section className="w-full py-12 md:py-24 bg-gradient-to-b dark:from-black dark:to-gray-900 from-white to-gray-50">
@@ -23,56 +23,18 @@ export default function Intro() {
             </p>
 
             <ScrollToForm />
+            <div className="  text-sm flex items-center gap-x-1">
+              <span className="text-muted-foreground">
+                Đã có tài khoản doanh nghiệp?
+              </span>
+              <Link href="/recruitment/sign-in" className="underline">
+                Đăng nhập
+              </Link>
+            </div>
           </div>
 
           {/* card */}
-          <div className="grid gap-4 md:grid-cols-2">
-            <Card>
-              <CardContent className="p-6 space-y-2">
-                <Users className="h-12 w-12 text-primary" />
-                <h3 className="text-xl font-bold">
-                  Tiếp cận ứng viên chất lượng
-                </h3>
-                <p className="text-muted-foreground">
-                  Kết nối với hàng nghìn ứng viên đã được sàng lọc phù hợp với
-                  nhu cầu của doanh nghiệp.
-                </p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardContent className="p-6 space-y-2">
-                <Briefcase className="h-12 w-12 text-primary" />
-                <h3 className="text-xl font-bold">
-                  Đăng tin tuyển dụng dễ dàng
-                </h3>
-                <p className="text-muted-foreground">
-                  Tạo và quản lý tin tuyển dụng chỉ trong vài phút với giao diện
-                  thân thiện.
-                </p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardContent className="p-6 space-y-2">
-                <TrendingUp className="h-12 w-12 text-primary" />
-                <h3 className="text-xl font-bold">Phân tích hiệu quả</h3>
-                <p className="text-muted-foreground">
-                  Theo dõi hiệu suất tin tuyển dụng và tối ưu hóa chiến lược
-                  tuyển dụng của bạn.
-                </p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardContent className="p-6 space-y-2">
-                <CheckCircle className="h-12 w-12 text-primary" />
-                <h3 className="text-xl font-bold">
-                  Công cụ sàng lọc thông minh
-                </h3>
-                <p className="text-muted-foreground">
-                  Sử dụng bộ lọc tìm kiếm ứng viên phù hợp nhất với vị trí.
-                </p>
-              </CardContent>
-            </Card>
-          </div>
+          <IntroCards />
         </div>
       </div>
     </section>

@@ -12,7 +12,7 @@ export default function useLogin() {
     mutationFn: login,
     onSuccess: (data: object) => {
       if (isErrorResponse(data)) {
-        toast.error('Email hoặc mật khẩu không chính xác');
+        toast.error(data.message);
       } else {
         router.replace('/');
       }
