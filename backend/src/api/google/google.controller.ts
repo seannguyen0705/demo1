@@ -5,6 +5,7 @@ import { AuthService } from '../auth/auth.service';
 import { Req, Res } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Response } from 'express';
+import { RequestWithThirdPartyUser } from '@/common/interfaces';
 
 @InjectController({ name: googleRoutes.index })
 export class GoogleController {
@@ -18,7 +19,10 @@ export class GoogleController {
   public async login() {}
 
   @InjectRoute(googleRoutes.callback)
-  public async callback(@Req() req, @Res() res: Response) {
+  public async callback(
+    @Req() req: RequestWithThirdPartyUser,
+    @Res() res: Response,
+  ) {
     try {
       const { accessTokenCookie, refreshTokenCookie } =
         await this.authService.validateThirdPartyUser(req.user);

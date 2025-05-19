@@ -18,7 +18,7 @@ import { CreateBusinessDto } from './dto/create-business.dto';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 import { UserAlreadyException } from './auth.exceptions';
-import { FileService } from '../file/file.service';
+import { RequestWithUser } from '@/common/interfaces';
 
 @InjectController({ name: authRoutes.index, isCore: true })
 export class AuthController {
@@ -29,7 +29,6 @@ export class AuthController {
     private readonly employerService: EmployerService,
     private readonly cloudinaryService: CloudinaryService,
     @InjectDataSource() private readonly dataSource: DataSource,
-    private readonly fileService: FileService,
   ) {}
 
   @InjectRoute(authRoutes.registerCandidate)
@@ -86,7 +85,7 @@ export class AuthController {
   }
 
   @InjectRoute(authRoutes.login)
-  public async login(@Req() req: any) {
+  public async login(@Req() req: RequestWithUser) {
     const user = req.user;
     const payload: ITokenPayload = {
       role: user.role,
@@ -116,10 +115,14 @@ export class AuthController {
   }
 
   @InjectRoute(authRoutes.refreshToken)
-  public async refreshToken(@Req() req: any) {
-    const accessToken = await this.authService.getCookieWithJwtAccessToken(
-      req.user,
-    );
+  public async refreshToken(@Req() req: RequestWithUser) {
+    const user = req.user;
+    const payload: ITokenPayload = {
+      role: user.role,
+      email: user.element?.email,
+    };
+    const accessToken =
+      await this.authService.getCookieWithJwtAccessToken(payload);
 
     req.res.setHeader('Set-Cookie', [accessToken.cookie]);
 
@@ -129,7 +132,7 @@ export class AuthController {
   }
 
   @InjectRoute(authRoutes.logout)
-  public async logout(@Req() req: any) {
+  public async logout(@Req() req: RequestWithUser) {
     req.res.setHeader('Set-Cookie', this.authService.getCookieForLogOut());
 
     await this.tokenService.deleteByRefreshToken(req.cookies.Refresh);
