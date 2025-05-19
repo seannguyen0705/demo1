@@ -1,5 +1,3 @@
-import { Card, CardContent } from '@/components/ui/card';
-import { CheckCircle, Users, Briefcase, TrendingUp } from 'lucide-react';
 import ScrollToForm from './ScrollToForm';
 import Link from 'next/link';
 import IntroCards from './IntroCards';
@@ -23,7 +21,7 @@ export default function Intro() {
             </p>
 
             <ScrollToForm />
-            <div className="  text-sm flex items-center gap-x-1">
+            <div className="text-sm flex items-center gap-x-1">
               <span className="text-muted-foreground">
                 Đã có tài khoản doanh nghiệp?
               </span>

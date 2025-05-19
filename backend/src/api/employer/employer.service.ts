@@ -10,16 +10,21 @@ import {
   ResponseEmployerDetailDto,
   ResponseEmployerDto,
 } from './dto/response-employer.dto';
-import { UserRole } from '@/common/enums';
+import { UserRole, UserStatus } from '@/common/enums';
 import { UpdateEmployerDto } from './dto/update-employer.dto';
 import { QueryRunner } from 'typeorm';
-
+import { UpdateStatusUserDto } from '@/common/dto/update-status-user.dto';
+import generateSecurePassword from '@/utils/helpers/generateSecurePassword';
+import { EmailService } from '../email/email.service';
+import { plainToInstance } from 'class-transformer';
+import { hash } from '@/utils/helpers';
 @Injectable()
 export class EmployerService {
   constructor(
     @InjectRepository(Employer)
     private employerRepository: EmployerRepository,
     private tokenService: TokenService,
+    private emailService: EmailService,
   ) {}
 
   public async create(
@@ -115,5 +120,31 @@ export class EmployerService {
       ...employer,
       ...data,
     });
+  }
+
+  public async updateStatus(id: string, data: UpdateStatusUserDto) {
+    const employer = await this.findOneById(id);
+    if (
+      employer.status === UserStatus.INACTIVE &&
+      data.status == UserStatus.ACTIVE
+    ) {
+      const password = generateSecurePassword();
+      await this.emailService.activeEmployer(
+        employer.email,
+        employer.fullName,
+        password,
+      );
+      const hashedPassword = await hash.generateWithBcrypt({
+        source: password,
+        salt: 10,
+      });
+      const updatedEmployer = await this.updateEmployer(id, {
+        password: hashedPassword,
+        ...data,
+      });
+      return plainToInstance(ResponseEmployerDto, updatedEmployer);
+    }
+    const updatedEmployer = await this.updateEmployer(id, data);
+    return plainToInstance(ResponseEmployerDto, updatedEmployer);
   }
 }
