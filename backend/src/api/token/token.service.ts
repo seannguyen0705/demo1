@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { Token } from './entities';
@@ -42,20 +42,21 @@ export class TokenService {
   }
 
   public async getByRefreshToken(refreshToken: string): Promise<Token> {
-    const token = await this.tokenRepository.findOneBy({
+    return this.tokenRepository.findOneBy({
       refreshToken,
     });
+  }
 
-    if (!token) {
-      throw new UnauthorizedException('Token not found');
-    }
-
-    return token;
+  public async deleteByRefreshToken(
+    refreshToken: string,
+  ): Promise<DeleteResult> {
+    return this.tokenRepository.delete({
+      refreshToken,
+    });
   }
 
   @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
   public async deleteExpiredTokens(): Promise<DeleteResult> {
-    console.log('Deleting expired tokens');
     const ttlRefreshToken =
       this.configService.get('token.authentication.lifetime') *
       this.configService.get('token.authentication.renewedTimes');

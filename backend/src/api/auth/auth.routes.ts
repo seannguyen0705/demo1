@@ -51,5 +51,17 @@ export default {
     code: HttpStatus.OK,
     method: RequestMethod.POST,
     extraDecorators: [UseGuards(JwtRefreshGuard)],
+    swaggerInfo: {
+      secure: false,
+    },
+  },
+  logout: <IRouteParams>{
+    path: '/logout',
+    jwtSecure: true,
+    code: HttpStatus.OK,
+    method: RequestMethod.POST,
+    swaggerInfo: {
+      secure: true,
+    },
   },
 };
