@@ -59,10 +59,10 @@ export class AuthService {
 
   public async getCookieWithJwtAccessToken(payload: ITokenPayload) {
     const ttl = this.configService.get('token.authentication.lifetime') / 1000;
-    const accessToken = this.jwtService.sign(payload);
-    const cookie = `Authentication=${accessToken}; HttpOnly; Path=/; Max-Age=${ttl}`;
+    const token = this.jwtService.sign(payload);
+    const cookie = `Authentication=${token}; HttpOnly; Path=/; Max-Age=${ttl}`;
     return {
-      accessToken,
+      token,
       cookie,
       ttl,
     };
@@ -73,15 +73,15 @@ export class AuthService {
       (this.configService.get('token.authentication.lifetime') / 1000) *
       this.configService.get('token.authentication.renewedTimes');
 
-    const refreshToken = this.jwtService.sign(payload, {
+    const token = this.jwtService.sign(payload, {
       secret: this.configService.get('jwt.refreshSecret'),
       expiresIn: ttl,
     });
 
-    const cookie = `Refresh=${refreshToken}; HttpOnly; Path=/; Max-Age=${ttl}`;
+    const cookie = `Refresh=${token}; HttpOnly; Path=/; Max-Age=${ttl}`;
 
     return {
-      refreshToken,
+      token,
       cookie,
       ttl,
     };
@@ -122,7 +122,7 @@ export class AuthService {
     const refreshTokenCookie = await this.getCookieWithJwtRefreshToken(payload);
 
     await this.tokenService.create({
-      refreshToken: refreshTokenCookie.refreshToken,
+      refreshToken: refreshTokenCookie.token,
       userRole: UserRole.CANDIDATE,
       userId: candidate.id,
     });
