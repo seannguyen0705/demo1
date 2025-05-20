@@ -1,4 +1,4 @@
-import { Gender, UserRole, UserStatus } from '@/utils/enums';
+import { AuthBy, Gender, UserRole, UserStatus } from '@/utils/enums';
 import { IFile } from './file/interface';
 
 interface ErrorReponse {
@@ -13,7 +13,7 @@ interface CreateUserDto {
   fullName: string;
 }
 
-interface User {
+interface IUser {
   email: string;
   fullName: string;
   phoneNumber?: string;
@@ -21,8 +21,11 @@ interface User {
   bod?: Date;
   role: UserRole;
   countViolation: number;
-  avatar: IFile;
+  avatar?: IFile;
   status: UserStatus;
+  authBy?: AuthBy;
+  avatar_url?: string;
+  workTitle?: string;
 }
 
-export type { CreateUserDto, ErrorReponse, User };
+export type { CreateUserDto, ErrorReponse, IUser };

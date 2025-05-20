@@ -1,11 +1,5 @@
-import { AuthBy } from '@/utils/enums';
-import { CreateUserDto, User } from '../interface';
+import { CreateUserDto } from '../interface';
 
 type CreateCandidateDto = CreateUserDto;
 
-interface Candidate extends User {
-  authBy: AuthBy;
-  avatar_url: string;
-}
-
-export type { CreateCandidateDto, Candidate };
+export type { CreateCandidateDto };

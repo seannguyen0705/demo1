@@ -1,8 +1,9 @@
 import customFetch from '../../utils/helpers/customFetch';
-import { Candidate } from './interface';
+import { IUser } from '../interface';
 
 export const getCandidateMe = async () => {
-  const response = await customFetch<Candidate>('candidates/me', {
+  const response = await customFetch<IUser>('candidates/me', {
+    method: 'GET',
     credentials: 'include',
   });
   return response;

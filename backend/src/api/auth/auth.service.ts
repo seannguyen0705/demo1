@@ -169,12 +169,7 @@ export class AuthService {
     email,
     role,
   }: IValidateJwtUserParams): Promise<TUser> {
-    const services = {
-      [UserRole.ADMIN]: this.adminService,
-      [UserRole.CANDIDATE]: this.candidateService,
-    };
-
-    const userService = services[role];
+    const userService = this.services[role];
 
     const user = await userService.findOneByEmail(email);
 

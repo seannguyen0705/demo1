@@ -1,8 +1,8 @@
 import customFetch from '@/utils/helpers/customFetch';
-import { Employer } from './interface';
+import { IUser } from '../interface';
 
 export const getEmployerMe = async () => {
-  const response = await customFetch<Employer>('employers/me', {
+  const response = await customFetch<IUser>('employers/me', {
     credentials: 'include',
   });
   return response;

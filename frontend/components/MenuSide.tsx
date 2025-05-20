@@ -5,7 +5,10 @@ import { AlignJustify, BriefcaseBusiness, X } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 
-export default function MenuSide() {
+interface IProps {
+  isLogin: boolean;
+}
+export default function MenuSide({ isLogin }: IProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   const currentPath = usePathname();
@@ -56,7 +59,10 @@ export default function MenuSide() {
           isOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
-        <div className="h-full flex flex-col py-6">
+        <div
+          onClick={() => setIsOpen(false)}
+          className="h-full flex flex-col py-6"
+        >
           <Link
             href={'/'}
             className="px-4 flex items-center flex-row gap-x-[10px]"
@@ -83,21 +89,23 @@ export default function MenuSide() {
                 </li>
               ))}
             </ul>
-            <div className="flex flex-row justify-center  items-center gap-x-[10px]">
-              <Link
-                href={'/sign-in'}
-                className="px-4 py-2 dark:active:bg-gray-800 active:bg-gray-100"
-              >
-                Đăng nhập
-              </Link>
+            {!isLogin && (
+              <div className="flex flex-row justify-center  items-center gap-x-[10px]">
+                <Link
+                  href={'/sign-in'}
+                  className="px-4 py-2 dark:active:bg-gray-800 active:bg-gray-100"
+                >
+                  Đăng nhập
+                </Link>
 
-              <Link
-                href={'/sign-up'}
-                className="px-4 py-2 bg-[#309689] text-white rounded-md dark:active:bg-gray-800 active:bg-gray-100"
-              >
-                Đăng ký
-              </Link>
-            </div>
+                <Link
+                  href={'/sign-up'}
+                  className="px-4 py-2 bg-[#309689] text-white rounded-md dark:active:bg-gray-800 active:bg-gray-100"
+                >
+                  Đăng ký
+                </Link>
+              </div>
+            )}
           </nav>
         </div>
       </div>

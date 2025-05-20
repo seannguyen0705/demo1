@@ -3,10 +3,8 @@ import { NextResponse } from 'next/server';
 import { NextRequest } from 'next/server';
 import redirectUnAuth from './utils/helpers/redirectUnAuth';
 import { UserRole } from './utils/enums';
-import { refreshToken } from './api/auth/action';
-import { isErrorResponse } from './utils/helpers/isErrorResponse';
 
-const privatePath = ['profile'];
+const privatePath = ['/profile-personal'];
 const authPath = [
   '/sign-in',
   '/sign-up',

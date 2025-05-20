@@ -98,3 +98,15 @@ export const getAuthCookie = async () => {
   const Refresh = cookieStore.get('Refresh');
   return `${Authentication?.name}=${Authentication?.value}; ${Refresh?.name}=${Refresh?.value}`;
 };
+
+export const logout = async () => {
+  const cookieStore = await cookies();
+  await customFetch('logout', {
+    method: 'POST',
+    credentials: 'include',
+  });
+  cookieStore.delete('Authentication');
+  cookieStore.delete('Refresh');
+  cookieStore.delete('Role');
+  redirect('/');
+};
