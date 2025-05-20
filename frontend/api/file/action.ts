@@ -1,6 +1,7 @@
 'use server';
 
 import customFetch from '@/utils/helpers/customFetch';
+import { IFile } from './interface';
 
 export async function uploadFile({
   file,

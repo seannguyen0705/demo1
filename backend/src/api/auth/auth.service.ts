@@ -91,6 +91,20 @@ export class AuthService {
     };
   }
 
+  public getRoleCookie(role: UserRole) {
+    const ttl =
+      (this.configService.get('token.authentication.lifetime') / 1000) *
+      this.configService.get('token.authentication.renewedTimes');
+
+    const cookie = `Role=${role}; HttpOnly; Path=/; Max-Age=${ttl}`;
+
+    return {
+      cookie,
+      ttl,
+      role,
+    };
+  }
+
   public async validateUser({
     email,
     role,

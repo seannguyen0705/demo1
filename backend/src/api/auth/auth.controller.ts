@@ -97,9 +97,12 @@ export class AuthController {
     const refreshTokenCookie =
       await this.authService.getCookieWithJwtRefreshToken(payload);
 
+    const roleCookie = this.authService.getRoleCookie(user.role);
+
     req.res.setHeader('Set-Cookie', [
       accessTokenCookie.cookie,
       refreshTokenCookie.cookie,
+      roleCookie.cookie,
     ]);
 
     await this.tokenService.create({
@@ -111,6 +114,7 @@ export class AuthController {
     return {
       accessTokenCookie,
       refreshTokenCookie,
+      roleCookie,
     };
   }
 

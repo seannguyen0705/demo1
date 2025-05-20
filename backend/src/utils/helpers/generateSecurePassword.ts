@@ -2,7 +2,7 @@ import { randomBytes } from 'crypto';
 
 export default function generateSecurePassword(length: number = 8): string {
   const chars =
-    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+-=[]{}|;:,.<>?';
+    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#';
   const charsLength = chars.length;
 
   const randomBuffer = randomBytes(length);

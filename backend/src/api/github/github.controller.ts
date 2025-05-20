@@ -26,10 +26,12 @@ export class GithubController {
     try {
       const { accessTokenCookie, refreshTokenCookie } =
         await this.authService.validateThirdPartyUser(req.user);
+      const roleCookie = this.authService.getRoleCookie(req.user.role);
 
       res.setHeader('Set-Cookie', [
         accessTokenCookie.cookie,
         refreshTokenCookie.cookie,
+        roleCookie.cookie,
       ]);
       res.redirect(this.configService.get('FRONTEND_URL'));
     } catch (error) {

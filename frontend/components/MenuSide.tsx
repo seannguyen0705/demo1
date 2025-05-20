@@ -37,7 +37,7 @@ export default function MenuSide() {
       {/* Burger Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="py-2 rounded-lg hover:bg-gray-100 transition-colors"
+        className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
       >
         {isOpen ? <X /> : <AlignJustify className="w-6 h-6" />}
       </button>

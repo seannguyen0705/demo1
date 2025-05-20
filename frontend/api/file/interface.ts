@@ -5,3 +5,5 @@ interface IFile {
   key: string;
   format: string;
 }
+
+export type { IFile };
