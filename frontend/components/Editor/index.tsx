@@ -33,7 +33,8 @@ export default function Editor({ onChange, value }: IProps) {
     content: value,
     editorProps: {
       attributes: {
-        class: 'min-h-[156px] border rounded-md bg-slate-50 py-2 px-3',
+        class:
+          'min-h-[156px] border rounded-md dark:bg-gray-800 dark:text-white py-2 px-3',
       },
     },
     onUpdate: ({ editor }) => {

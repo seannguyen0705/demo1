@@ -10,22 +10,29 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { Trash2 } from 'lucide-react';
 import { useState } from 'react';
 
 interface IProps {
   title: string;
   description: string;
   action: () => void;
+  icon: React.ReactNode;
+  disabled?: boolean;
 }
 
-export default function ConfirmDelete({ title, description, action }: IProps) {
+export default function ConfirmDelete({
+  title,
+  description,
+  action,
+  icon,
+  disabled,
+}: IProps) {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button variant="destructive">
-          <Trash2 />
+        <Button disabled={disabled} variant="destructive">
+          {icon}
         </Button>
       </DialogTrigger>
       <DialogContent>
@@ -35,16 +42,16 @@ export default function ConfirmDelete({ title, description, action }: IProps) {
         </DialogHeader>
         <DialogFooter>
           <Button onClick={() => setIsOpen(false)} variant="outline">
-            Cancel
+            Hủy
           </Button>
           <Button
             variant="destructive"
             onClick={async () => {
-              await action();
+              action();
               setIsOpen(false);
             }}
           >
-            Delete
+            Xóa
           </Button>
         </DialogFooter>
       </DialogContent>

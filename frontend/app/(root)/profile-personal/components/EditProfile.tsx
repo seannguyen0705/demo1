@@ -130,7 +130,12 @@ export default function EditProfile({ user }: IProps) {
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input className="bg-gray-100" readOnly value={user.email} />
+                  <Input
+                    disabled
+                    className="bg-gray-100"
+                    readOnly
+                    value={user.email}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -219,7 +224,11 @@ export default function EditProfile({ user }: IProps) {
             </div>
 
             <DialogFooter>
-              <Button type="submit" disabled={isPending}>
+              <Button
+                className="bg-[#309689] hover:bg-[#309689] hover:opacity-80"
+                type="submit"
+                disabled={isPending}
+              >
                 {isPending ? 'Đang cập nhật...' : 'Lưu thay đổi'}
               </Button>
             </DialogFooter>

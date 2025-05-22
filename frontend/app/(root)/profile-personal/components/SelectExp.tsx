@@ -30,14 +30,19 @@ interface IProps {
 export default function SelectExp({ onChange, skillYear }: IProps) {
   return (
     <Select onValueChange={onChange} value={skillYear}>
-      <SelectTrigger className="w-full hover:bg-gray-100">
+      <SelectTrigger className="w-full ">
         <SelectValue placeholder="Chọn năm kinh nghiệm" />
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
           <SelectLabel>Năm kinh nghiệm</SelectLabel>
           {expList.map((exp) => (
-            <SelectItem key={exp} value={exp} onClick={() => onChange(exp)}>
+            <SelectItem
+              className="hover:bg-gray-100 dark:hover:bg-gray-800"
+              key={exp}
+              value={exp}
+              onClick={() => onChange(exp)}
+            >
               {exp}
             </SelectItem>
           ))}

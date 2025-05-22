@@ -38,7 +38,7 @@ export default function EditIntro({ introduction }: IProps) {
         </DialogHeader>
         <div className="mt-4">
           <textarea
-            className="w-full min-h-[200px] p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#309689]"
+            className="w-full min-h-[200px] p-3 border rounded-md dark:bg-gray-800 dark:text-white"
             value={value}
             onChange={(e) => setValue(e.target.value)}
             placeholder="Nhập nội dung giới thiệu của bạn..."

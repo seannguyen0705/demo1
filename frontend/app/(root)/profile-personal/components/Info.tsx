@@ -50,7 +50,7 @@ export default function Info({ user }: IProps) {
     },
   ];
   return (
-    <section className="bg-[#EBF5F4] rounded-[20px] relative  ">
+    <section className="dark:bg-gray-900 bg-[#EBF5F4] rounded-[20px] relative  ">
       <div className=" flex items-center">
         <Image
           src={getUserAvatar(user)}
@@ -61,7 +61,9 @@ export default function Info({ user }: IProps) {
         />
         <div>
           <h6 className="text-lg md:text-2xl font-bold">{user.fullName}</h6>
-          <p className="text-sm text-gray-500">{user.title}</p>
+          <p className="text-sm dark:text-gray-400 text-gray-500">
+            {user.title}
+          </p>
         </div>
       </div>
 

@@ -121,7 +121,7 @@ export default function NavSide({ user }: IProps) {
 
   return (
     <div>
-      <aside className=" fixed w-64 bg-[#EBF5F4] rounded-[20px] p-4 hidden lg:block">
+      <aside className=" fixed w-64 dark:bg-gray-900 bg-[#EBF5F4] rounded-[20px] p-4 hidden lg:block">
         <p className=" flex items-center gap-2 text-sm">
           <PiHandWaving size={25} color="#309689" />
           Xin chào

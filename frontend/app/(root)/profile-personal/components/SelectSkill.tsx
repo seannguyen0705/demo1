@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { ChevronDown, Search } from 'lucide-react';
+import { Check, ChevronDown, Search } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 
@@ -47,7 +47,7 @@ export default function SelectSkill({ onChange, skill }: IProps) {
           {skill?.label ? (
             <p>{skill.label}</p>
           ) : (
-            <p className="text-gray-500">Chọn kĩ năng</p>
+            <p className="text-gray-500 dark:text-gray-200">Chọn kĩ năng</p>
           )}
           <ChevronDown className="opacity-50" />
         </Button>
@@ -64,16 +64,20 @@ export default function SelectSkill({ onChange, skill }: IProps) {
         </div>
 
         <ul>
-          {skillLists?.map((skill) => (
-            <li className="p-2 hover:bg-gray-100" key={skill.value}>
+          {skillLists?.map((item) => (
+            <li
+              className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800"
+              key={item.value}
+            >
               <button
-                className="w-full text-left"
+                className="w-full text-left flex items-center justify-between"
                 onClick={() => {
                   setOpen(false);
-                  onChange(skill);
+                  onChange(item);
                 }}
               >
-                {skill.label}
+                {item.label}
+                {item.value === skill.value && <Check className="w-4 h-4" />}
               </button>
             </li>
           ))}

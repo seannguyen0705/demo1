@@ -8,7 +8,7 @@ export default async function Skill() {
     data: ICandidateSkill[];
   };
   return (
-    <section className="bg-[#EBF5F4] rounded-[20px] relative p-6">
+    <section className="mb-[30px] dark:bg-gray-900 bg-[#EBF5F4] rounded-[20px] relative p-6">
       <h6 className="text-xl">Kỹ năng</h6>
       <p className=" mb-[20px] text-sm text-gray-500">
         Liệt kê các kỹ năng chuyên môn của bạn
