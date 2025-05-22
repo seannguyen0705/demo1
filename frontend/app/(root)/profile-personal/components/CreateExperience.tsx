@@ -115,7 +115,7 @@ export default function CreateExperience() {
           <FiPlusCircle />
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[600px]">
+      <DialogContent className="sm:max-w-[600px] h-full sm:h-auto overflow-auto">
         <DialogHeader>
           <DialogTitle>Kinh nghiệm làm việc</DialogTitle>
           <DialogDescription>
@@ -153,7 +153,7 @@ export default function CreateExperience() {
                 )}
               />
 
-              <div className=" col-span-2 flex items-center space-x-2">
+              <div className="md:col-span-2 flex items-center space-x-2">
                 <Checkbox
                   checked={isCurrent}
                   onCheckedChange={(checked: boolean) => setIsCurrent(checked)}
@@ -168,7 +168,7 @@ export default function CreateExperience() {
                 </label>
               </div>
 
-              <Label className="col-span-2">Ngày bắt đầu</Label>
+              <Label className="md:col-span-2">Ngày bắt đầu</Label>
               <FormField
                 control={form.control}
                 name="startMonth"
@@ -225,7 +225,7 @@ export default function CreateExperience() {
                 )}
               />
 
-              <Label className="col-span-2">Ngày kết thúc</Label>
+              <Label className="md:col-span-2">Ngày kết thúc</Label>
               <FormField
                 disabled={isCurrent}
                 control={form.control}
@@ -290,7 +290,7 @@ export default function CreateExperience() {
                 control={form.control}
                 name="description"
                 render={({ field }) => (
-                  <FormItem className="col-span-2">
+                  <FormItem className="md:col-span-2">
                     <FormLabel>Mô tả</FormLabel>
                     <FormControl>
                       <Editor onChange={field.onChange} value={field.value} />

@@ -89,7 +89,7 @@ export default function EditProfile({ user }: IProps) {
           <SquarePen />
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[600px]">
+      <DialogContent className="sm:max-w-[600px] h-full sm:h-auto overflow-auto">
         <DialogHeader>
           <DialogTitle>Thông tin cá nhân</DialogTitle>
           <DialogDescription>

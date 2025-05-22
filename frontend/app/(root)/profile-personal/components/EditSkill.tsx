@@ -79,7 +79,7 @@ export default function EditSkill({ candidateSkills }: IProps) {
           <FiPlusCircle />
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[600px]">
+      <DialogContent className="sm:max-w-[600px] h-full sm:h-auto overflow-auto ">
         <DialogHeader>
           <DialogTitle>Giới thiệu bản thân</DialogTitle>
           <DialogDescription>
@@ -110,6 +110,7 @@ export default function EditSkill({ candidateSkills }: IProps) {
                 }}
               />
               <Button
+                disabled={candidateSkills.length >= 20}
                 onClick={handleSubmit(handleCreateSkill)}
                 className="bg-[#309689] hover:bg-[#309689] hover:opacity-80 disabled:opacity-50"
               >
@@ -123,6 +124,9 @@ export default function EditSkill({ candidateSkills }: IProps) {
             )}
           </div>
         </div>
+        <p className="text-sm text-gray-500">
+          Kĩ năng đã chọn {candidateSkills.length}/20
+        </p>
         <MySkill candidateSkills={candidateSkills} />
         <DialogFooter></DialogFooter>
       </DialogContent>

@@ -124,7 +124,7 @@ export default function UpdateExperience({
           <SquarePen />
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[600px]">
+      <DialogContent className="sm:max-w-[600px] h-full sm:h-auto overflow-auto">
         <DialogHeader>
           <DialogTitle>Kinh nghiệm làm việc</DialogTitle>
           <DialogDescription>
