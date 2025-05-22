@@ -4,7 +4,6 @@ import getUserAvatar from '@/utils/helpers/getUserAvatar';
 import {
   Briefcase,
   Building,
-  FileText,
   LayoutDashboard,
   LogOut,
   Mail,
@@ -125,7 +124,7 @@ export default function UserNavSide({
         openNavSide ? 'translate-x-0' : 'translate-x-full'
       }`}
     >
-      <nav>
+      <nav onClick={() => setOpenNavSide(false)}>
         <ul className="text-sm">
           <li className="flex justify-center items-center gap-2 py-2 px-4">
             <Link href={'/'}>

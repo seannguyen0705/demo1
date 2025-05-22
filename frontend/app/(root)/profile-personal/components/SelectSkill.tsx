@@ -22,7 +22,7 @@ export default function SelectSkill({ onChange, skill }: IProps) {
 
   const [keyword, setKeyword] = React.useState('');
 
-  const { data, isLoading } = useGetSkill({
+  const { data } = useGetSkill({
     page: 1,
     limit: 5,
     keyword,

@@ -7,7 +7,6 @@ import {
   Mail,
   MapPin,
   Phone,
-  SquarePen,
   Transgender,
 } from 'lucide-react';
 import Image from 'next/image';

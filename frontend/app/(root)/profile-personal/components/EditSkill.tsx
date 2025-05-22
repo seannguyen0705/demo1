@@ -20,7 +20,6 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import SelectExp from './SelectExp';
 import { isErrorResponse } from '@/utils/helpers/isErrorResponse';
-import SkillList from './SkillList';
 import MySkill from './MySkill';
 import { ICandidateSkill } from '@/api/candidate-skill/interface';
 

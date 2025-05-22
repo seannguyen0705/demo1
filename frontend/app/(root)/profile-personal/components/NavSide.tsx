@@ -3,7 +3,6 @@ import { UserRole } from '@/utils/enums';
 import {
   Briefcase,
   Building,
-  FileText,
   LayoutDashboard,
   Mail,
   PencilLine,

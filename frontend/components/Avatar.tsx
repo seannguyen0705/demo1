@@ -41,8 +41,8 @@ export default function Avatar({ user }: IProps) {
       )}
       <UserNavSide
         openNavSide={openNavSide}
-        setOpenNavSide={setOpenNavSide}
         user={user}
+        setOpenNavSide={setOpenNavSide}
       />
     </>
   );

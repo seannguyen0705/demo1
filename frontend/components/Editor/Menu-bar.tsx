@@ -6,7 +6,6 @@ import {
   Heading1,
   Heading2,
   Heading3,
-  Highlighter,
   Italic,
   List,
   ListOrdered,
