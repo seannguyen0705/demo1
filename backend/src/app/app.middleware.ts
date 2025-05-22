@@ -13,7 +13,12 @@ export const loadMiddlewares = (app: INestApplication): void => {
     defaultVersion: '1',
   });
 
-  app.enableCors();
+  app.enableCors({
+    origin: ['http://localhost:3000'], // allow other origin access to API
+    credentials: true, //Access-Control-Allow-Credentials: true response header.
+    allowedHeaders: ['Authorization', 'Content-Type'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  });
 
   /**
    * ! If you use GraphQL, we can have some problems

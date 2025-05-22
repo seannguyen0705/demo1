@@ -26,6 +26,16 @@ interface IUser {
   authBy?: AuthBy;
   avatar_url?: string;
   workTitle?: string;
+  title?: string;
+  address?: string;
+  personal_website?: string;
+  introduction?: string;
 }
 
-export type { CreateUserDto, ErrorReponse, IUser };
+interface IQueryPagination {
+  page?: number;
+  limit?: number;
+  keyword?: string;
+}
+
+export type { CreateUserDto, ErrorReponse, IUser, IQueryPagination };

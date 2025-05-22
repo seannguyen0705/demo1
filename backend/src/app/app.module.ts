@@ -20,6 +20,9 @@ import { CompanyModule } from '@/api/company/company.module';
 import { CloudinaryModule } from '@/api/cloudinary/cloudinary.module';
 import { EmailModule } from '@/api/email/email.module';
 import { EmployerModule } from '@/api/employer/employer.module';
+import { ExperienceModule } from '@/api/experience/experience.module';
+import { SkillModule } from '@/api/skill/skill.module';
+import { CandidateSkillModule } from '@/api/candidate-skill/candidate-skill.module';
 
 const EnvSchema = {
   PORT: Joi.number(),
@@ -72,6 +75,9 @@ const EnvSchema = {
     CompanyModule,
     EmployerModule,
     EmailModule,
+    ExperienceModule,
+    SkillModule,
+    CandidateSkillModule,
   ],
   controllers: [AppController],
   providers: [],

@@ -1,6 +1,6 @@
 import { IUser } from '@/api/interface';
 import { UserRole } from '@/utils/enums';
-import getUserAvatar from '@/utils/helpers/getUserAvatart';
+import getUserAvatar from '@/utils/helpers/getUserAvatar';
 import {
   Briefcase,
   Building,
@@ -55,11 +55,11 @@ const navCandidate = [
     href: '/profile-dashboard',
     icon: <LayoutDashboard />,
   },
-  {
-    name: 'Cv của tôi',
-    href: '/profile-cv',
-    icon: <FileText />,
-  },
+  // {
+  //   name: 'Cv của tôi',
+  //   href: '/profile-cv',
+  //   icon: <FileText />,
+  // },
   {
     name: 'Hồ sơ cá nhân',
     href: '/profile-personal',

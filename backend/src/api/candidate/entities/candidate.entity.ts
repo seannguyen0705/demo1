@@ -21,6 +21,18 @@ export class Candidate extends BaseUserEntity {
   @Column({ nullable: true })
   avatar_url: string;
 
+  @Column({ nullable: true })
+  title: string;
+
+  @Column({ nullable: true })
+  address: string;
+
+  @Column({ nullable: true })
+  personal_website: string;
+
+  @Column({ nullable: true })
+  introduction: string;
+
   @BeforeInsert()
   private async setInsertingData(): Promise<void> {
     const saltRounds = 10;

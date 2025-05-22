@@ -6,7 +6,7 @@ import { useState } from 'react';
 
 import UserNavSide from './UserNavSide';
 import { IUser } from '@/api/interface';
-import getUserAvatar from '@/utils/helpers/getUserAvatart';
+import getUserAvatar from '@/utils/helpers/getUserAvatar';
 interface IProps {
   user: IUser;
 }

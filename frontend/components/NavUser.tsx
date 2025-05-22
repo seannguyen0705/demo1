@@ -58,11 +58,11 @@ const navCandidate = [
     href: '/profile-dashboard',
     icon: <LayoutDashboard />,
   },
-  {
-    name: 'Cv của tôi',
-    href: '/profile-cv',
-    icon: <FileText />,
-  },
+  // {
+  //   name: 'Cv của tôi',
+  //   href: '/profile-cv',
+  //   icon: <FileText />,
+  // },
   {
     name: 'Hồ sơ cá nhân',
     href: '/profile-personal',

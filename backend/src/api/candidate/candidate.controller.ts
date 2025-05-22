@@ -15,6 +15,7 @@ import {
 import type { Candidate } from './entities';
 import candidateRoutes from './candidate.routes';
 import { plainToInstance } from 'class-transformer';
+import { hash } from '@/utils/helpers';
 
 @InjectController({ name: candidateRoutes.index })
 export class CandidateController {
@@ -72,6 +73,11 @@ export class CandidateController {
     @ReqUser() user: IJwtStrategy,
     @Body() data: UpdateCandidateDto,
   ): Promise<ResponseCandidateDto> {
+    if (data.password) {
+      data.password = await hash.generateWithBcrypt({
+        source: data.password,
+      });
+    }
     const updatedCandidate = await this.candidateService.updateByCandidate({
       candidate: <Candidate>user.element,
       data,
