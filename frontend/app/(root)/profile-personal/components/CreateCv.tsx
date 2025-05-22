@@ -21,7 +21,7 @@ export default function CreateCv({ countCv }: IProps) {
     >
       <label
         htmlFor="cv-upload"
-        className={`flex items-center justify-center gap-2 ${disable && 'opacity-50'}`}
+        className={`flex items-center justify-center cursor-pointer gap-2 ${disable && 'opacity-50'}`}
       >
         <CirclePlus size={30} />
         <span className="text-sm font-medium">Tạo CV {countCv}/3 </span>
