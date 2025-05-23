@@ -75,7 +75,8 @@ export class EmployerService {
       role: UserRole.EMPLOYER,
     });
 
-    return employer.toResponseHavingSessions(sessions);
+    const gotEmployer = employer.toResponseHavingSessions(sessions);
+    return plainToInstance(ResponseEmployerDetailDto, gotEmployer);
   }
 
   private async handleUpdateEmployer({

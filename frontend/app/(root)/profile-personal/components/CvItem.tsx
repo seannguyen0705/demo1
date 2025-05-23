@@ -1,7 +1,8 @@
 'use client';
 import { ICv } from '@/api/cv/interface';
 import Link from 'next/link';
-import { FileText, Trash2 } from 'lucide-react';
+import { FileText } from 'lucide-react';
+import dayjs from 'dayjs';
 import UpdateCv from './UpdateCv';
 import useDeleteCv from '../hooks/useDeleteCv';
 import ConfirmDelete from '@/components/ConfirmDelete';
@@ -28,11 +29,7 @@ export default function CvItem({ cv }: { cv: ICv }) {
         <div className="flex items-center gap-2">
           <span className="text-sm text-gray-500">Cập nhật lần cuối:</span>
           <p className="text-sm text-gray-500">
-            {new Date(cv.updatedAt).toLocaleDateString('vi-VN', {
-              day: '2-digit',
-              month: '2-digit',
-              year: 'numeric',
-            })}
+            {dayjs(cv.updatedAt).format('DD/MM/YYYY')}
           </p>
         </div>
       </Link>

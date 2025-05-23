@@ -30,14 +30,6 @@ export default {
       ],
     },
   },
-  getMe: <IRouteParams>{
-    path: '/me',
-    method: RequestMethod.GET,
-    roles: [UserRole.CANDIDATE],
-    swaggerInfo: {
-      responses: [{ status: HttpStatus.OK, type: ResponseCandidateDetailDto }],
-    },
-  },
   updateMe: <IRouteParams>{
     path: '/me',
     method: RequestMethod.PUT,

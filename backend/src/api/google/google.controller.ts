@@ -1,4 +1,3 @@
-import { GoogleService } from './google.service';
 import { InjectController, InjectRoute } from '@/decorators';
 import googleRoutes from './google.routes';
 import { AuthService } from '../auth/auth.service';
@@ -10,7 +9,6 @@ import { RequestWithThirdPartyUser } from '@/common/interfaces';
 @InjectController({ name: googleRoutes.index })
 export class GoogleController {
   constructor(
-    private readonly googleService: GoogleService,
     private readonly authService: AuthService,
     private readonly configService: ConfigService,
   ) {}
@@ -26,12 +24,10 @@ export class GoogleController {
     try {
       const { accessTokenCookie, refreshTokenCookie } =
         await this.authService.validateThirdPartyUser(req.user);
-      const roleCookie = this.authService.getRoleCookie(req.user.role);
 
       res.setHeader('Set-Cookie', [
         accessTokenCookie.cookie,
         refreshTokenCookie.cookie,
-        roleCookie.cookie,
       ]);
       res.redirect(this.configService.get('FRONTEND_URL'));
     } catch (error) {

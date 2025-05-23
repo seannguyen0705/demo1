@@ -1,8 +1,6 @@
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 import { NextRequest } from 'next/server';
-import redirectUnAuth from './utils/helpers/redirectUnAuth';
-import { UserRole } from './utils/enums';
 
 const privatePath = ['/profile-personal'];
 const authPath = [
@@ -13,27 +11,24 @@ const authPath = [
 ];
 
 export async function middleware(request: NextRequest) {
-  const Refresh = request.cookies.get('Refresh');
-  const Role = request.cookies.get('Role');
+  const refreshToken = request.cookies.get('Refresh');
   const currentPath = request.nextUrl.pathname;
-  const urlRedirect = redirectUnAuth(Role?.value as UserRole);
-  const Authentication = request.cookies.get('Authentication');
+  const authentication = request.cookies.get('Authentication');
 
-  if (Refresh && !Authentication) {
+  if (refreshToken && !authentication) {
     const responseRefresh = await fetch(
       `${process.env.BACKEND_URL}/api/v1/refresh-token`,
       {
         method: 'POST',
         headers: {
-          Cookie: `${Refresh?.name}=${Refresh?.value}`,
+          Cookie: `${refreshToken?.name}=${refreshToken?.value}`,
         },
       },
     );
     if (!responseRefresh.ok) {
       const cookieStore = await cookies();
       cookieStore.delete('Refresh');
-      cookieStore.delete('Role');
-      return NextResponse.redirect(new URL(urlRedirect, request.url), {});
+      return NextResponse.redirect(new URL('sign-in', request.url), {});
     } else {
       return NextResponse.redirect(new URL(currentPath, request.url), {
         headers: {
@@ -43,10 +38,13 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  if (privatePath.some((path) => currentPath.startsWith(path)) && !Refresh) {
-    return NextResponse.redirect(new URL(urlRedirect, request.url));
+  if (
+    privatePath.some((path) => currentPath.startsWith(path)) &&
+    !refreshToken
+  ) {
+    return NextResponse.redirect(new URL('sign-in', request.url));
   }
-  if (authPath.some((path) => currentPath.startsWith(path)) && Refresh) {
+  if (authPath.some((path) => currentPath.startsWith(path)) && refreshToken) {
     return NextResponse.redirect(new URL('/', request.url));
   }
   const response = NextResponse.next();

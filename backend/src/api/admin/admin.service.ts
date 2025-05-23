@@ -15,6 +15,7 @@ import {
   ResponseAdminDetailDto,
   ResponseAdminDto,
 } from './dto/response-admin.dto';
+import { plainToInstance } from 'class-transformer';
 @Injectable()
 export class AdminService {
   constructor(
@@ -66,7 +67,8 @@ export class AdminService {
       role: UserRole.ADMIN,
     });
 
-    return admin.toResponseHavingSessions(sessions);
+    const gotAdmin = admin.toResponseHavingSessions(sessions);
+    return plainToInstance(ResponseAdminDetailDto, gotAdmin);
   }
 
   private async handleUpdateAdmin({

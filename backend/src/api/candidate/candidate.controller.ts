@@ -1,6 +1,6 @@
 import { Body, Param, UploadedFile } from '@nestjs/common';
 
-import { IJwtStrategy, ILocalStrategy } from '@/api/auth/strategies';
+import { IJwtStrategy } from '@/api/auth/strategies';
 import { InjectController, InjectRoute, ReqUser } from '@/decorators';
 import { FileValidatorPipe } from '@/pipes';
 
@@ -8,13 +8,11 @@ import { CandidateService } from './candidate.service';
 
 import {
   ResponseCandidateDto,
-  ResponseCandidateDetailDto,
   CreateCandidateDto,
   UpdateCandidateDto,
 } from './dto';
 import type { Candidate } from './entities';
 import candidateRoutes from './candidate.routes';
-import { plainToInstance } from 'class-transformer';
 import { hash } from '@/utils/helpers';
 
 @InjectController({ name: candidateRoutes.index })
@@ -35,17 +33,6 @@ export class CandidateController {
     const gotCandidates = await this.candidateService.getAll();
 
     return gotCandidates;
-  }
-
-  @InjectRoute(candidateRoutes.getMe)
-  public async getMe(
-    @ReqUser() user: ILocalStrategy,
-  ): Promise<ResponseCandidateDetailDto> {
-    const gotCandidate = await this.candidateService.getDetailById(
-      user.element.id,
-    );
-
-    return plainToInstance(ResponseCandidateDetailDto, gotCandidate);
   }
 
   @InjectRoute(candidateRoutes.updateAvatar)

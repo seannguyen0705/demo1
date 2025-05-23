@@ -35,7 +35,7 @@ export default function Avatar({ user }: IProps) {
       {/* Overlay */}
       {openNavSide && (
         <div
-          className="fixed inset-0 bg-black/20 bg-opacity-50 z-40"
+          className="fixed lg:hidden inset-0 bg-black/20 bg-opacity-50 z-40"
           onClick={() => setOpenNavSide(false)}
         />
       )}

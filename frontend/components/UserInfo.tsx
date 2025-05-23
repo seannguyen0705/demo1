@@ -1,14 +1,14 @@
-import { IUser } from '@/api/interface';
-import { getMe } from '@/api/query';
+import { getMe } from '@/api/auth/query';
 import { UserRole } from '@/utils/enums';
 import NavUser from './NavUser';
 import Avatar from './Avatar';
+import { IUser } from '@/api/interface';
 
 interface IProps {
   role: UserRole;
 }
 export default async function UserInfo({ role = UserRole.CANDIDATE }: IProps) {
-  const user = (await getMe(role)) as { data: IUser };
+  const user = (await getMe()) as { data: IUser };
 
   return (
     <div className="flex items-center gap-2 cursor-pointer relative group">

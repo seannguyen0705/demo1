@@ -12,23 +12,23 @@ import { UserRole } from '@/utils/enums';
 export default async function NavHeader() {
   const cookieStore = await cookies();
   const Role = cookieStore.get('Role');
-  const isLogin = cookieStore.has('Refresh');
+  const isAuth = cookieStore.has('Refresh');
 
   return (
     <header className=" fixed top-0 left-0 right-0 z-50 bg-white dark:bg-black">
       <nav className=" container mx-auto px-4 md:px-6 py-[20px] flex items-center justify-between">
-        <MenuSide isLogin={isLogin} />
+        <MenuSide isAuth={isAuth} />
         <Link href={'/'} className=" flex items-center flex-row gap-x-[10px]">
           <BriefcaseBusiness className="dark:text-white text-black" />
           <span className=" text-xl font-semibold ">Job Portal</span>
         </Link>
 
         <Suspense>
-          <CenterNav />
+          <CenterNav isAuth={isAuth} />
         </Suspense>
 
         <div className=" flex items-center gap-x-[10px] md:gap-x-[10px]">
-          {isLogin ? (
+          {isAuth ? (
             <UserInfo role={Role?.value as UserRole} />
           ) : (
             <>

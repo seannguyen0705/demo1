@@ -11,6 +11,5 @@ export default function useGetSkill({
     queryKey: ['skills', page, limit, keyword],
     queryFn: () => getSkills({ page, limit, keyword }),
   });
-
   return { data, isLoading };
 }

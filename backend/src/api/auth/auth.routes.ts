@@ -64,4 +64,13 @@ export default {
       secure: true,
     },
   },
+  getMe: <IRouteParams>{
+    path: '/me',
+    jwtSecure: true,
+    code: HttpStatus.OK,
+    method: RequestMethod.GET,
+    swaggerInfo: {
+      secure: true,
+    },
+  },
 };

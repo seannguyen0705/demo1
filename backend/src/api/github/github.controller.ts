@@ -1,5 +1,4 @@
 import { Req, Res } from '@nestjs/common';
-import { GithubService } from './github.service';
 import { InjectController, InjectRoute } from '@/decorators';
 import githubRoutes from './github.routes';
 import { AuthService } from '../auth/auth.service';
@@ -10,7 +9,6 @@ import { RequestWithThirdPartyUser } from '@/common/interfaces';
 @InjectController({ name: githubRoutes.index })
 export class GithubController {
   constructor(
-    private readonly githubService: GithubService,
     private readonly authService: AuthService,
     private readonly configService: ConfigService,
   ) {}
@@ -26,12 +24,10 @@ export class GithubController {
     try {
       const { accessTokenCookie, refreshTokenCookie } =
         await this.authService.validateThirdPartyUser(req.user);
-      const roleCookie = this.authService.getRoleCookie(req.user.role);
 
       res.setHeader('Set-Cookie', [
         accessTokenCookie.cookie,
         refreshTokenCookie.cookie,
-        roleCookie.cookie,
       ]);
       res.redirect(this.configService.get('FRONTEND_URL'));
     } catch (error) {

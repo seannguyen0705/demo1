@@ -1,32 +1,57 @@
 'use client';
 
+import { UserRole } from '@/utils/enums';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-export default function CenterNav() {
-  const navs = [
-    {
-      name: 'Trang chủ',
-      href: '/',
-    },
-    {
-      name: 'Việc làm',
-      href: '/job',
-    },
-    {
-      name: 'Về chúng tôi',
-      href: '/about',
-    },
-    {
-      name: 'Liên hệ',
-      href: '/contact',
-    },
-    {
-      name: 'Tuyển dụng',
-      href: '/recruitment',
-    },
-  ];
+const defaultNavs = [
+  {
+    name: 'Trang chủ',
+    href: '/',
+  },
+  {
+    name: 'Việc làm',
+    href: '/job',
+  },
+  {
+    name: 'Về chúng tôi',
+    href: '/about',
+  },
+  {
+    name: 'Liên hệ',
+    href: '/contact',
+  },
+  {
+    name: 'Tuyển dụng',
+    href: '/recruitment',
+  },
+];
+
+const authNavs = [
+  {
+    name: 'Trang chủ',
+    href: '/',
+  },
+  {
+    name: 'Việc làm',
+    href: '/job',
+  },
+  {
+    name: 'Về chúng tôi',
+    href: '/about',
+  },
+  {
+    name: 'Liên hệ',
+    href: '/contact',
+  },
+];
+
+interface IProps {
+  isAuth: boolean;
+}
+export default function CenterNav({ isAuth }: IProps) {
   const currentPath = usePathname();
+  const navs = isAuth ? authNavs : defaultNavs;
 
   return (
     <div className=" hidden lg:flex text-[#999]  flex-row gap-x-[20px]">

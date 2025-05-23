@@ -1,7 +1,11 @@
+import 'server-only';
+
+import { getAuthCookie } from '@/utils/helpers/getAuthCookie';
 import EXCEPTION_CODE from '../constants/exception';
-import { getAuthCookie } from '@/api/auth/action';
+
 import { isErrorResponse } from './isErrorResponse';
 import { notFound } from 'next/navigation';
+
 export default async function customFetch<T>(
   input: string,
   init?: RequestInit,
@@ -22,6 +26,7 @@ export default async function customFetch<T>(
 
     if (response.status === 404) {
       notFound();
+    } else if (response.status === 401) {
     } else if (isErrorResponse(data) && init?.method === 'GET') {
       throw new Error('Server Error'); // throw error to naviagate to error page
     }

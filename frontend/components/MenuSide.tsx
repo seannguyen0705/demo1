@@ -5,36 +5,56 @@ import { AlignJustify, BriefcaseBusiness, X } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 
+const defaultNavs = [
+  {
+    name: 'Trang chủ',
+    href: '/',
+  },
+  {
+    name: 'Việc làm',
+    href: '/job',
+  },
+  {
+    name: 'Về chúng tôi',
+    href: '/about',
+  },
+  {
+    name: 'Liên hệ',
+    href: '/contact',
+  },
+  {
+    name: 'Tuyển dụng',
+    href: '/recruitment',
+  },
+];
+
+const authNavs = [
+  {
+    name: 'Trang chủ',
+    href: '/',
+  },
+  {
+    name: 'Việc làm',
+    href: '/job',
+  },
+  {
+    name: 'Về chúng tôi',
+    href: '/about',
+  },
+  {
+    name: 'Liên hệ',
+    href: '/contact',
+  },
+];
+
 interface IProps {
-  isLogin: boolean;
+  isAuth: boolean;
 }
-export default function MenuSide({ isLogin }: IProps) {
+export default function MenuSide({ isAuth }: IProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   const currentPath = usePathname();
-  const navs = [
-    {
-      name: 'Trang chủ',
-      href: '/',
-    },
-    {
-      name: 'Việc làm',
-      href: '/job',
-    },
-    {
-      name: 'Về chúng tôi',
-      href: '/about',
-    },
-    {
-      name: 'Liên hệ',
-      href: '/contact',
-    },
-    {
-      name: 'Tuyển dụng',
-      href: '/recruitment',
-    },
-  ];
-
+  const navs = isAuth ? authNavs : defaultNavs;
   return (
     <div className="block lg:hidden">
       {/* Burger Button */}
@@ -89,7 +109,7 @@ export default function MenuSide({ isLogin }: IProps) {
                 </li>
               ))}
             </ul>
-            {!isLogin && (
+            {!isAuth && (
               <div className="flex flex-row justify-center  items-center gap-x-[10px]">
                 <Link
                   href={'/sign-in'}

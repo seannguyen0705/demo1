@@ -9,7 +9,7 @@ import { UserAlreadyException } from '@/api/auth/auth.exceptions';
 import { Candidate } from './entities/candidate.entity';
 import { CandidateRepository } from './candidate.repository';
 
-import type {
+import {
   CreateCandidateDto,
   UpdateCandidateDto,
   ResponseCandidateDto,
@@ -17,6 +17,7 @@ import type {
 } from './dto';
 import { TokenService } from '../token/token.service';
 import { ThirdPartyUser } from '../auth/dto/thirPartyUser';
+import { plainToInstance } from 'class-transformer';
 
 @Injectable()
 export class CandidateService {
@@ -69,7 +70,8 @@ export class CandidateService {
       role: UserRole.CANDIDATE,
     });
 
-    return candidate.toResponseHavingSessions(sessions);
+    const gotCandidate = candidate.toResponseHavingSessions(sessions);
+    return plainToInstance(ResponseCandidateDetailDto, gotCandidate);
   }
 
   private async handleUpdateCandidate({

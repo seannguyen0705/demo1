@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { IsOptional, IsPositive, IsString } from 'class-validator';
 
@@ -9,7 +9,7 @@ export class QueryPaginationDto {
   @IsNumber()
   @IsPositive()
   @Type(() => Number)
-  @ApiProperty({
+  @ApiPropertyOptional({
     required: false,
     type: Number,
     description: 'Page number',
@@ -20,7 +20,7 @@ export class QueryPaginationDto {
   @IsNumber()
   @IsPositive()
   @Type(() => Number)
-  @ApiProperty({
+  @ApiPropertyOptional({
     required: false,
     type: Number,
     description: 'Limit number',
@@ -29,7 +29,7 @@ export class QueryPaginationDto {
 
   @IsOptional()
   @IsString()
-  @ApiProperty({
+  @ApiPropertyOptional({
     required: false,
     type: String,
     description: 'Keyword',

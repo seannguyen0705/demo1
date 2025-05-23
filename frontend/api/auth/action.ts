@@ -47,7 +47,7 @@ export const login = async (data: LoginDto) => {
   }
 
   const cookieStore = await cookies();
-  const { accessTokenCookie, refreshTokenCookie, roleCookie } = response.data;
+  const { accessTokenCookie, refreshTokenCookie } = response.data;
   cookieStore.set('Authentication', accessTokenCookie.token, {
     httpOnly: true,
     path: '/',
@@ -57,11 +57,6 @@ export const login = async (data: LoginDto) => {
     httpOnly: true,
     path: '/',
     maxAge: refreshTokenCookie.ttl,
-  });
-  cookieStore.set('Role', roleCookie.role, {
-    httpOnly: true,
-    path: '/',
-    maxAge: roleCookie.ttl,
   });
 
   return response;
@@ -92,13 +87,6 @@ export const checkCookie = async () => {
   }
 };
 
-export const getAuthCookie = async () => {
-  const cookieStore = await cookies();
-  const Authentication = cookieStore.get('Authentication');
-  const Refresh = cookieStore.get('Refresh');
-  return `${Authentication?.name}=${Authentication?.value}; ${Refresh?.name}=${Refresh?.value}`;
-};
-
 export const logout = async () => {
   const cookieStore = await cookies();
   await customFetch('logout', {
@@ -107,6 +95,5 @@ export const logout = async () => {
   });
   cookieStore.delete('Authentication');
   cookieStore.delete('Refresh');
-  cookieStore.delete('Role');
-  redirect('/');
+  redirect('/sign-in');
 };
