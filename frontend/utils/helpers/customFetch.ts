@@ -26,7 +26,6 @@ export default async function customFetch<T>(
 
     if (response.status === 404) {
       notFound();
-    } else if (response.status === 401) {
     } else if (isErrorResponse(data) && init?.method === 'GET') {
       throw new Error('Server Error'); // throw error to naviagate to error page
     }

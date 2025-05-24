@@ -1,10 +1,9 @@
 import { jwtVerify } from 'jose';
 import { cookies } from 'next/headers';
-import { NextResponse } from 'next/server';
-import { NextRequest } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
-const privatePath = ['/profile-personal'];
-const authPath = [
+const privatePaths = ['/profile-personal'];
+const authPaths = [
   '/sign-in',
   '/sign-up',
   '/recruitment/sign-in',
@@ -13,42 +12,59 @@ const authPath = [
 
 export async function middleware(request: NextRequest) {
   const refreshToken = await checkRefreshToken(request);
-  const authentication = await checkAccessToken(request);
+  const accessToken = await checkAccessToken(request);
   const currentPath = request.nextUrl.pathname;
+  const cookieStore = await cookies();
 
-  if (refreshToken && !authentication) {
-    const responseRefresh = await fetch(
+  if (!refreshToken && request.cookies.get('Refresh')) {
+    const res = NextResponse.redirect(new URL('/sign-in', request.url));
+    cookieStore.delete('Refresh');
+    cookieStore.delete('Authentication');
+
+    return res;
+  }
+
+  // Nếu có refresh token nhưng không có access token → gọi API refresh
+  if (refreshToken && !accessToken) {
+    const response = await fetch(
       `${process.env.BACKEND_URL}/api/v1/refresh-token`,
       {
         method: 'POST',
         headers: {
-          Cookie: `${refreshToken?.name}=${refreshToken?.value}`,
+          Cookie: `${refreshToken.name}=${refreshToken.value}`,
         },
       },
     );
-    if (!responseRefresh.ok) {
-      request.cookies.delete('Refresh');
-      return NextResponse.redirect(new URL('sign-in', request.url), {});
-    } else {
-      return NextResponse.redirect(new URL(currentPath, request.url), {
-        headers: {
-          'Set-Cookie': responseRefresh.headers.get('set-cookie') as string,
-        },
-      });
+
+    if (!response.ok) {
+      const res = NextResponse.redirect(new URL('/sign-in', request.url));
+      cookieStore.delete('Refresh');
+      cookieStore.delete('Authentication');
+      return res;
+    }
+
+    const newAccessToken = response.headers.get('set-cookie');
+    if (newAccessToken) {
+      const res = NextResponse.redirect(new URL(currentPath, request.url));
+      res.headers.set('Set-Cookie', newAccessToken);
+      return res;
     }
   }
 
+  // Nếu vào route private mà không có refresh token → chuyển về đăng nhập
   if (
-    privatePath.some((path) => currentPath.startsWith(path)) &&
+    privatePaths.some((path) => currentPath.startsWith(path)) &&
     !refreshToken
   ) {
-    return NextResponse.redirect(new URL('sign-in', request.url));
+    return NextResponse.redirect(new URL('/sign-in', request.url));
   }
-  if (authPath.some((path) => currentPath.startsWith(path)) && refreshToken) {
+
+  // Nếu đã login mà vào trang auth → chuyển về homepage
+  if (authPaths.some((path) => currentPath.startsWith(path)) && refreshToken) {
     return NextResponse.redirect(new URL('/', request.url));
   }
-  const response = NextResponse.next();
-  return response;
+
+  return NextResponse.next();
 }
 
 export const config = {
@@ -58,45 +74,34 @@ export const config = {
 };
 
 const checkRefreshToken = async (request: NextRequest) => {
-  const refreshToken = request.cookies.get('Refresh');
-  const cookieStore = await cookies();
-  if (!refreshToken) {
-    return null;
-  }
+  const token = request.cookies.get('Refresh');
+  if (!token) return null;
+
   try {
     const secret = process.env.JWT_REFRESH_SECRET;
-    if (!secret) {
-      throw new Error('JWT_REFRESH_SECRET is not defined');
-    }
-    await jwtVerify(
-      refreshToken.value as string,
-      new TextEncoder().encode(secret),
-    );
-    return refreshToken;
+    if (!secret) throw new Error('JWT_REFRESH_SECRET is not defined');
+
+    await jwtVerify(token.value, new TextEncoder().encode(secret));
+    return token;
   } catch {
+    const cookieStore = await cookies();
     cookieStore.delete('Refresh');
-    return NextResponse.redirect(new URL('sign-in', request.url));
+    return null;
   }
 };
 
 const checkAccessToken = async (request: NextRequest) => {
-  const accessToken = request.cookies.get('Authentication');
-  const cookieStore = await cookies();
-  if (!accessToken) {
-    return null;
-  }
+  const token = request.cookies.get('Authentication');
+  if (!token) return null;
+
   try {
     const secret = process.env.JWT_SECRET;
-    if (!secret) {
-      throw new Error('JWT_SECRET is not defined');
-    }
-    await jwtVerify(
-      accessToken.value as string,
-      new TextEncoder().encode(secret),
-    );
+    if (!secret) throw new Error('JWT_SECRET is not defined');
 
-    return accessToken;
+    await jwtVerify(token.value, new TextEncoder().encode(secret));
+    return token;
   } catch {
+    const cookieStore = await cookies();
     cookieStore.delete('Authentication');
     return null;
   }
