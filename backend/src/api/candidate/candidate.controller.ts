@@ -73,15 +73,6 @@ export class CandidateController {
     return updatedCandidate;
   }
 
-  // @InjectRoute(candidateRoutes.getById)
-  // public async getById(
-  //   @Param('id') id: string,
-  // ): Promise<ResponseCandidateDetailDto> {
-  //   const gotCandidate = await this.candidateService.getDetailById(id);
-
-  //   return gotCandidate;
-  // }
-
   @InjectRoute(candidateRoutes.updateById)
   public async updateById(
     @Param('id') id: string,

@@ -5,6 +5,9 @@ export const getMe = async () => {
   const response = await queryFetch<IUser>('me', {
     method: 'GET',
     credentials: 'include',
+    next: {
+      tags: ['me'],
+    },
   });
 
   return response;

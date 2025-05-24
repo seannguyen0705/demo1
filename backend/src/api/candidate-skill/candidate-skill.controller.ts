@@ -3,16 +3,11 @@ import { CandidateSkillService } from './candidate-skill.service';
 import { InjectController, InjectRoute } from '@/decorators';
 import candidateSkillRoutes from './candidate-skill.routes';
 import { RequestWithUser } from '@/common/interfaces';
-import { InjectDataSource } from '@nestjs/typeorm';
-import { DataSource } from 'typeorm';
 import { CreateCandidateSkillDto } from './dto/create-candidate-skill.dto';
 
 @InjectController({ name: candidateSkillRoutes.index })
 export class CandidateSkillController {
-  constructor(
-    private readonly candidateSkillService: CandidateSkillService,
-    @InjectDataSource() private readonly dataSource: DataSource,
-  ) {}
+  constructor(private readonly candidateSkillService: CandidateSkillService) {}
 
   @InjectRoute(candidateSkillRoutes.create)
   async create(
@@ -23,8 +18,8 @@ export class CandidateSkillController {
   }
 
   @InjectRoute(candidateSkillRoutes.delete)
-  async delete(@Param('id') id: string) {
-    await this.candidateSkillService.delete(id);
+  async delete(@Param('id') id: string, @Req() req: RequestWithUser) {
+    return await this.candidateSkillService.delete(id, req.user.element.id);
   }
 
   @InjectRoute(candidateSkillRoutes.getMySkills)

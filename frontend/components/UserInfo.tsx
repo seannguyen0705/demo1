@@ -11,7 +11,7 @@ export default async function UserInfo() {
       <Avatar user={user.data} />
       <span className="hidden lg:block">{user.data.fullName}</span>
       <div className="group-hover:block hidden absolute top-full right-0 bg-white dark:bg-gray-800 shadow-md rounded-md w-56">
-        <NavUser role={user.data.role} />
+        <NavUser user={user.data} />
       </div>
     </div>
   );

@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import Image from 'next/image';
 import EditProfile from './EditProfile';
+import { UserRole } from '@/utils/enums';
 
 interface IProps {
   user: IUser;
@@ -48,6 +49,10 @@ export default function Info({ user }: IProps) {
       value: user.personal_website,
     },
   ];
+  if (user.role === UserRole.EMPLOYER) {
+    // remove address
+    fields.splice(4, 1);
+  }
   return (
     <section className="dark:bg-gray-900 bg-[#EBF5F4] rounded-[20px] relative  ">
       <div className=" flex items-center gap-2 p-4  ">
@@ -61,7 +66,7 @@ export default function Info({ user }: IProps) {
         <div>
           <h6 className="text-lg md:text-2xl font-bold">{user.fullName}</h6>
           <p className="text-sm dark:text-gray-400 text-gray-500">
-            {user.title}
+            {user.title || user.workTitle}
           </p>
         </div>
       </div>

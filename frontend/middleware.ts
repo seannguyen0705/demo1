@@ -7,6 +7,7 @@ const authPaths = [
   '/sign-in',
   '/sign-up',
   '/recruitment/sign-in',
+  '/recruitment',
   '/admin/sign-in',
 ];
 

@@ -40,7 +40,10 @@ export class Company extends BaseEntity {
   @Column({ name: 'employer_id' })
   employerId: string;
 
-  @OneToOne(() => Employer, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
+  @OneToOne(() => Employer, (employer) => employer.company, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   @JoinColumn({ name: 'employer_id' })
   employer: Employer;
 }

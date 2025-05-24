@@ -12,7 +12,6 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
-import useUpdateCandidate from '../hooks/useUpdateCandidate';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -31,10 +30,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Gender } from '@/utils/enums';
+import { Gender, UserRole } from '@/utils/enums';
 import { format } from 'date-fns';
 import { useState } from 'react';
 import { isErrorResponse } from '@/utils/helpers/isErrorResponse';
+import useUpdateUser from '../hooks/useUpdateUser';
 
 const formSchema = z.object({
   fullName: z.string().min(2, 'Full name must be at least 2 characters'),
@@ -46,7 +46,7 @@ const formSchema = z.object({
   bod: z.string().refine((date) => !isNaN(Date.parse(date)), {
     message: 'Ngày sinh không hợp lệ',
   }),
-  address: z.string().min(5, 'Địa chỉ phải có ít nhất 5 ký tự'),
+  address: z.string(),
   personal_website: z
     .string()
     .url('Invalid website URL')
@@ -59,14 +59,16 @@ interface IProps {
 }
 
 export default function EditProfile({ user }: IProps) {
-  const { mutate: updateCandidate, isPending } = useUpdateCandidate();
+  const { mutate: updateUser, isPending } = useUpdateUser({
+    role: user.role,
+  });
   const [isOpen, setIsOpen] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       fullName: user.fullName || '',
-      title: user.title || '',
+      title: user.title || user.workTitle || '',
       phoneNumber: user.phoneNumber || '',
       gender: user.gender || Gender.MALE,
       bod: user.bod ? format(new Date(user.bod), 'yyyy-MM-dd') : '',
@@ -76,7 +78,7 @@ export default function EditProfile({ user }: IProps) {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    updateCandidate(values, {
+    updateUser(values, {
       onSuccess: (data: object) => {
         if (!isErrorResponse(data)) {
           setIsOpen(false);
@@ -197,19 +199,21 @@ export default function EditProfile({ user }: IProps) {
                 )}
               />
 
-              <FormField
-                control={form.control}
-                name="address"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Địa chỉ</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              {user.role !== UserRole.EMPLOYER && (
+                <FormField
+                  control={form.control}
+                  name="address"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Địa chỉ</FormLabel>
+                      <FormControl>
+                        <Input {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              )}
 
               <FormField
                 control={form.control}

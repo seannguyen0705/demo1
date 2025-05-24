@@ -11,7 +11,6 @@ import {
   ResponseEmployerDto,
 } from './dto/response-employer.dto';
 import { UserRole, UserStatus } from '@/common/enums';
-import { UpdateEmployerDto } from './dto/update-employer.dto';
 import { QueryRunner } from 'typeorm';
 import { UpdateStatusUserDto } from '@/common/dto/update-status-user.dto';
 import generateSecurePassword from '@/utils/helpers/generateSecurePassword';
@@ -51,6 +50,10 @@ export class EmployerService {
     return this.employerRepository.findOneBy({ email });
   }
 
+  public async findOneByPhoneNumber(phoneNumber: string): Promise<Employer> {
+    return this.employerRepository.findOneBy({ phoneNumber });
+  }
+
   public async findOneByEmailOrPhoneNumber({
     email,
     phoneNumber,
@@ -68,7 +71,10 @@ export class EmployerService {
   }
 
   public async getDetailById(id: string): Promise<ResponseEmployerDetailDto> {
-    const employer = await this.employerRepository.findOneBy({ id });
+    const employer = await this.employerRepository.findOne({
+      where: { id },
+      relations: ['company'],
+    });
 
     const sessions = await this.tokenService.getAllByUser({
       id,
@@ -77,31 +83,6 @@ export class EmployerService {
 
     const gotEmployer = employer.toResponseHavingSessions(sessions);
     return plainToInstance(ResponseEmployerDetailDto, gotEmployer);
-  }
-
-  private async handleUpdateEmployer({
-    employer,
-    data,
-  }: {
-    employer: Employer;
-    data: UpdateEmployerDto;
-  }): Promise<Employer> {
-    const { phoneNumber } = data;
-
-    if (phoneNumber && phoneNumber !== employer?.phoneNumber) {
-      const existedEmployer = await this.findOneByEmailOrPhoneNumber({
-        phoneNumber,
-      });
-
-      if (existedEmployer) {
-        throw new UserAlreadyException();
-      }
-    }
-
-    return this.employerRepository.save({
-      ...employer,
-      ...data,
-    });
   }
 
   public async findOneById(id: string): Promise<Employer> {

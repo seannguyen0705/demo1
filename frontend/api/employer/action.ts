@@ -1,12 +1,10 @@
-'use server';
-
 import actionFetch from '@/utils/helpers/actionFetch';
-import { UpdateCandidateDto } from './interface';
+import { UpdateEmployerDto } from './interface';
 import { isErrorResponse } from '@/utils/helpers/isErrorResponse';
 import { revalidateTag } from 'next/cache';
 
-export const updateCandidate = async (data: UpdateCandidateDto) => {
-  const response = await actionFetch('candidates/me', {
+export const updateEmployer = async (data: UpdateEmployerDto) => {
+  const response = await actionFetch('employers/me', {
     method: 'PUT',
     body: JSON.stringify(data),
     headers: {

@@ -1,6 +1,6 @@
 import { AuthBy, Gender, UserRole, UserStatus } from '@/utils/enums';
 import { IFile } from './file/interface';
-
+import { ICompany } from './company/interface';
 interface ErrorReponse {
   errorCode: number;
   status: number;
@@ -30,6 +30,7 @@ interface IUser {
   address?: string;
   personal_website?: string;
   introduction?: string;
+  company?: ICompany;
 }
 
 interface IQueryPagination {

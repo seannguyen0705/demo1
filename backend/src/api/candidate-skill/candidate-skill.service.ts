@@ -30,8 +30,8 @@ export class CandidateSkillService {
     return this.candidateSkillRepository.save(candidateSkill);
   }
 
-  public async delete(id: string): Promise<void> {
-    await this.candidateSkillRepository.delete(id);
+  public async delete(id: string, candidateId: string): Promise<void> {
+    await this.candidateSkillRepository.delete({ id, candidateId });
   }
 
   public async findAllByCandidateId(
