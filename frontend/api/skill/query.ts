@@ -5,13 +5,6 @@ export const getSkills = async ({
   limit = 10,
   keyword = '',
 }: IQueryPagination) => {
-  // const response = await customFetch<ISkillResponse>(
-  //   `skills?page=${page}&limit=${limit}&keyword=${keyword}`,
-  //   {
-  //     method: 'GET',
-  //     credentials: 'include',
-  //   },
-  // );
   const response = await fetch(
     `${process.env.BACKEND_URL}/api/v1/skills?page=${page}&limit=${limit}&keyword=${keyword}`,
     {

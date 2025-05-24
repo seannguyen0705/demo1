@@ -1,3 +1,4 @@
+import { jwtVerify } from 'jose';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 import { NextRequest } from 'next/server';
@@ -11,9 +12,9 @@ const authPath = [
 ];
 
 export async function middleware(request: NextRequest) {
-  const refreshToken = request.cookies.get('Refresh');
+  const refreshToken = await checkRefreshToken(request);
+  const authentication = await checkAccessToken(request);
   const currentPath = request.nextUrl.pathname;
-  const authentication = request.cookies.get('Authentication');
 
   if (refreshToken && !authentication) {
     const responseRefresh = await fetch(
@@ -26,8 +27,7 @@ export async function middleware(request: NextRequest) {
       },
     );
     if (!responseRefresh.ok) {
-      const cookieStore = await cookies();
-      cookieStore.delete('Refresh');
+      request.cookies.delete('Refresh');
       return NextResponse.redirect(new URL('sign-in', request.url), {});
     } else {
       return NextResponse.redirect(new URL(currentPath, request.url), {
@@ -52,28 +52,52 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  // matcher: [
-  //     /*
-  //      * Match all request paths except for the ones starting with:
-  //      * - api (API routes)
-  //      * - _next/static (static files)
-  //      * - _next/image (image optimization files)
-  //      * - favicon.ico, sitemap.xml, robots.txt (metadata files)
-  //      */
-  //     '/profile',
-  //     '/login',
-  //     '/',
-  //     '/register',
-  //     '/product'
-  // ],
   matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - api (API routes)
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico, sitemap.xml, robots.txt (metadata files)
-     */
     '/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)',
   ],
+};
+
+const checkRefreshToken = async (request: NextRequest) => {
+  const refreshToken = request.cookies.get('Refresh');
+  const cookieStore = await cookies();
+  if (!refreshToken) {
+    return null;
+  }
+  try {
+    const secret = process.env.JWT_REFRESH_SECRET;
+    if (!secret) {
+      throw new Error('JWT_REFRESH_SECRET is not defined');
+    }
+    await jwtVerify(
+      refreshToken.value as string,
+      new TextEncoder().encode(secret),
+    );
+    return refreshToken;
+  } catch {
+    cookieStore.delete('Refresh');
+    return NextResponse.redirect(new URL('sign-in', request.url));
+  }
+};
+
+const checkAccessToken = async (request: NextRequest) => {
+  const accessToken = request.cookies.get('Authentication');
+  const cookieStore = await cookies();
+  if (!accessToken) {
+    return null;
+  }
+  try {
+    const secret = process.env.JWT_SECRET;
+    if (!secret) {
+      throw new Error('JWT_SECRET is not defined');
+    }
+    await jwtVerify(
+      accessToken.value as string,
+      new TextEncoder().encode(secret),
+    );
+
+    return accessToken;
+  } catch {
+    cookieStore.delete('Authentication');
+    return null;
+  }
 };

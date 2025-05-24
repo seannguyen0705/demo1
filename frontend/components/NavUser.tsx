@@ -121,10 +121,7 @@ export default function NavUser({ role }: IProps) {
   return (
     <ul className=" dark:bg-gray-800 dark:text-white  ">
       {navs.map((nav) => (
-        <li
-          className=" border-b  py-2 px-4 dark:hover:bg-gray-700 hover:bg-gray-100"
-          key={nav.name}
-        >
+        <li className=" border-b  " key={nav.name}>
           <NavItem
             key={nav.name}
             name={nav.name}
@@ -153,7 +150,10 @@ interface INavItem {
 }
 const NavItem = ({ name, href, icon }: INavItem) => {
   return (
-    <Link href={href} className="flex text-sm items-center gap-2">
+    <Link
+      href={href}
+      className=" py-2 px-4 dark:hover:bg-gray-700 hover:bg-gray-100 flex text-sm items-center gap-2"
+    >
       {icon}
       <span>{name}</span>
     </Link>

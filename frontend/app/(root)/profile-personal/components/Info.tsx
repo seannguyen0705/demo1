@@ -7,7 +7,7 @@ import {
   Mail,
   MapPin,
   Phone,
-  Transgender,
+  VenusAndMars,
 } from 'lucide-react';
 import Image from 'next/image';
 import EditProfile from './EditProfile';
@@ -34,7 +34,7 @@ export default function Info({ user }: IProps) {
     },
     {
       name: 'gender',
-      icon: <Transgender />,
+      icon: <VenusAndMars />,
       value: user.gender,
     },
     {

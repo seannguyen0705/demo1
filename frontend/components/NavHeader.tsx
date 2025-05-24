@@ -7,11 +7,9 @@ import MenuSide from './MenuSide';
 import Link from 'next/link';
 import { cookies } from 'next/headers';
 import UserInfo from './UserInfo';
-import { UserRole } from '@/utils/enums';
 
 export default async function NavHeader() {
   const cookieStore = await cookies();
-  const Role = cookieStore.get('Role');
   const isAuth = cookieStore.has('Refresh');
 
   return (
@@ -29,7 +27,7 @@ export default async function NavHeader() {
 
         <div className=" flex items-center gap-x-[10px] md:gap-x-[10px]">
           {isAuth ? (
-            <UserInfo role={Role?.value as UserRole} />
+            <UserInfo />
           ) : (
             <>
               <Link

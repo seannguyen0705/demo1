@@ -34,6 +34,7 @@ export default async function customFetch<T>(
     return data as { data: T };
   } catch (error: unknown) {
     console.error(error);
+
     if (init?.method === 'GET') {
       throw new Error('Server Error');
     }
