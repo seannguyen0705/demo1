@@ -1,12 +1,12 @@
 'use server';
 
-import customFetch from '@/utils/helpers/customFetch';
+import actionFetch from '@/utils/helpers/actionFetch';
 import { ICreateExperience, IUpdateExperience } from './interface';
 import { isErrorResponse } from '@/utils/helpers/isErrorResponse';
-import { revalidatePath, revalidateTag } from 'next/cache';
+import { revalidateTag } from 'next/cache';
 
 export const createExperience = async (data: ICreateExperience) => {
-  const response = await customFetch('experiences', {
+  const response = await actionFetch('experiences', {
     method: 'POST',
     body: JSON.stringify(data),
     credentials: 'include',
@@ -21,7 +21,7 @@ export const createExperience = async (data: ICreateExperience) => {
 };
 
 export const deleteExperience = async (id: string) => {
-  const response = await customFetch(`experiences/${id}`, {
+  const response = await actionFetch(`experiences/${id}`, {
     method: 'DELETE',
     credentials: 'include',
   });
@@ -34,7 +34,7 @@ export const deleteExperience = async (id: string) => {
 };
 
 export const updateExperience = async (data: IUpdateExperience) => {
-  const response = await customFetch(`experiences/${data.id}`, {
+  const response = await actionFetch(`experiences/${data.id}`, {
     method: 'PUT',
     body: JSON.stringify(data),
     credentials: 'include',

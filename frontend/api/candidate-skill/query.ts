@@ -1,8 +1,8 @@
-import customFetch from '@/utils/helpers/customFetch';
 import { ICandidateSkill } from '../candidate-skill/interface';
+import queryFetch from '@/utils/helpers/queryFetch';
 
 export const getMySkills = async () => {
-  const response = await customFetch<ICandidateSkill[]>(
+  const response = await queryFetch<ICandidateSkill[]>(
     `candidate-skills/my-skills`,
     {
       method: 'GET',

@@ -34,6 +34,7 @@ import {
 import { Gender } from '@/utils/enums';
 import { format } from 'date-fns';
 import { useState } from 'react';
+import { isErrorResponse } from '@/utils/helpers/isErrorResponse';
 
 const formSchema = z.object({
   fullName: z.string().min(2, 'Full name must be at least 2 characters'),
@@ -76,8 +77,10 @@ export default function EditProfile({ user }: IProps) {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     updateCandidate(values, {
-      onSuccess: () => {
-        setIsOpen(false);
+      onSuccess: (data: object) => {
+        if (!isErrorResponse(data)) {
+          setIsOpen(false);
+        }
       },
     });
   }

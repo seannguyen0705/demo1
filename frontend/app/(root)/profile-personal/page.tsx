@@ -1,13 +1,12 @@
 import { getMe } from '@/api/auth/query';
 import NavSide from './components/NavSide';
-import { IUser } from '@/api/interface';
 import Info from './components/Info';
 import MyCv from './components/MyCv';
 import Intro from './components/Intro';
 import Experience from './components/Experience';
 import Skill from './components/Skill';
 export default async function ProfilePersonal() {
-  const user = (await getMe()) as { data: IUser };
+  const user = await getMe();
   return (
     <main className="container mx-auto ">
       <NavSide user={user.data} />

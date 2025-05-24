@@ -1,7 +1,7 @@
-import customFetch from '@/utils/helpers/customFetch';
+import queryFetch from '@/utils/helpers/queryFetch';
 import { ICv } from './interface';
 export const getMyCv = async () => {
-  const response = await customFetch<ICv[]>('cvs', {
+  const response = await queryFetch<ICv[]>('cvs', {
     method: 'GET',
     credentials: 'include',
     next: {

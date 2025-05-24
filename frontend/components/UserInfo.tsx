@@ -2,10 +2,9 @@ import { getMe } from '@/api/auth/query';
 
 import NavUser from './NavUser';
 import Avatar from './Avatar';
-import { IUser } from '@/api/interface';
 
 export default async function UserInfo() {
-  const user = (await getMe()) as { data: IUser };
+  const user = await getMe();
 
   return (
     <div className="flex items-center gap-2 cursor-pointer relative group">

@@ -1,12 +1,9 @@
-import { ICandidateSkill } from '@/api/candidate-skill/interface';
 import EditSkill from './EditSkill';
 import MySkill from './MySkill';
 import { getMySkills } from '@/api/candidate-skill/query';
 
 export default async function Skill() {
-  const candidateSkills = (await getMySkills()) as {
-    data: ICandidateSkill[];
-  };
+  const candidateSkills = await getMySkills();
   return (
     <section className="mb-[30px] dark:bg-gray-900 bg-[#EBF5F4] rounded-[20px] relative p-6">
       <h6 className="text-xl">Kỹ năng</h6>

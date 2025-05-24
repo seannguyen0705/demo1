@@ -1,8 +1,8 @@
-import customFetch from '@/utils/helpers/customFetch';
+import queryFetch from '@/utils/helpers/queryFetch';
 import { IExperience } from './interface';
 
 export const getMyExperiences = async () => {
-  const response = await customFetch<IExperience[]>('experiences', {
+  const response = await queryFetch<IExperience[]>('experiences', {
     method: 'GET',
     credentials: 'include',
     next: {

@@ -1,6 +1,6 @@
 'use server';
 
-import customFetch from '@/utils/helpers/customFetch';
+import actionFetch from '@/utils/helpers/actionFetch';
 import { IFile } from './interface';
 
 export async function uploadFile({
@@ -13,7 +13,7 @@ export async function uploadFile({
   const formData = new FormData();
   formData.append('file', file);
 
-  const response = await customFetch<IFile>(`file/${folder}`, {
+  const response = await actionFetch<IFile>(`file/${folder}`, {
     method: 'POST',
     body: formData,
   });
@@ -21,7 +21,7 @@ export async function uploadFile({
 }
 
 export async function deleteFile(id: string) {
-  const response = await customFetch(`file/${id}`, {
+  const response = await actionFetch(`file/${id}`, {
     method: 'DELETE',
   });
 

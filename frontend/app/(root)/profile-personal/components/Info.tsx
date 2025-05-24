@@ -50,7 +50,7 @@ export default function Info({ user }: IProps) {
   ];
   return (
     <section className="dark:bg-gray-900 bg-[#EBF5F4] rounded-[20px] relative  ">
-      <div className=" flex items-center">
+      <div className=" flex items-center gap-2 p-4  ">
         <Image
           src={getUserAvatar(user)}
           height={96}

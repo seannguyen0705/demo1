@@ -1,15 +1,14 @@
 import 'server-only';
 
 import { getAuthCookie } from '@/utils/helpers/getAuthCookie';
-import EXCEPTION_CODE from '../constants/exception';
 
 import { isErrorResponse } from './isErrorResponse';
 import { notFound } from 'next/navigation';
 
-export default async function customFetch<T>(
+export default async function queryFetch<T>(
   input: string,
   init?: RequestInit,
-) {
+): Promise<{ data: T }> {
   try {
     if (init?.credentials === 'include') {
       const authCookie = await getAuthCookie();
@@ -33,14 +32,6 @@ export default async function customFetch<T>(
     return data as { data: T };
   } catch (error: unknown) {
     console.error(error);
-
-    if (init?.method === 'GET') {
-      throw new Error('Server Error');
-    }
-    return {
-      errorCode: EXCEPTION_CODE.INTERNAL_ERROR_CODE,
-      status: 500,
-      message: 'Internal Server Error',
-    };
+    throw new Error('Server Error');
   }
 }

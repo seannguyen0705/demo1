@@ -1,6 +1,6 @@
 'use server';
 
-import customFetch from '@/utils/helpers/customFetch';
+import actionFetch from '@/utils/helpers/actionFetch';
 import { ICv } from './interface';
 import { isErrorResponse } from '@/utils/helpers/isErrorResponse';
 import { revalidateTag } from 'next/cache';
@@ -9,7 +9,7 @@ export const createCv = async (file: Blob) => {
   const formData = new FormData();
   formData.append('file', file);
 
-  const response = await customFetch<ICv>('cvs', {
+  const response = await actionFetch<ICv>('cvs', {
     method: 'POST',
     body: formData,
     credentials: 'include',
@@ -21,7 +21,7 @@ export const createCv = async (file: Blob) => {
 };
 
 export const deleteCv = async (id: string) => {
-  const response = await customFetch(`cvs/${id}`, {
+  const response = await actionFetch(`cvs/${id}`, {
     method: 'DELETE',
     credentials: 'include',
   });
@@ -35,7 +35,7 @@ export const updateCv = async (data: { id: string; file: Blob }) => {
   const formData = new FormData();
   formData.append('file', data.file);
 
-  const response = await customFetch(`cvs/${data.id}`, {
+  const response = await actionFetch(`cvs/${data.id}`, {
     method: 'PUT',
     body: formData,
     credentials: 'include',

@@ -1,7 +1,7 @@
 'use server';
 
 import { BusinessFormSchema } from '@/app/(root)/recruitment/components/BusinessForm';
-import customFetch from '@/utils/helpers/customFetch';
+import actionFetch from '@/utils/helpers/actionFetch';
 import { isErrorResponse } from '@/utils/helpers/isErrorResponse';
 import { cookies } from 'next/headers';
 import { LoginDto, ResponseLoginDto, TokenCookie } from './interface';
@@ -11,7 +11,7 @@ import { UserRole } from '@/utils/enums';
 import { redirect } from 'next/navigation';
 
 export const registerCandidate = async (data: CreateCandidateDto) => {
-  const response = await customFetch('candidate/register', {
+  const response = await actionFetch('candidate/register', {
     method: 'POST',
     body: JSON.stringify(data),
     headers: {
@@ -23,7 +23,7 @@ export const registerCandidate = async (data: CreateCandidateDto) => {
 };
 
 export const registerBusiness = async (data: BusinessFormSchema) => {
-  const response = await customFetch('business/register', {
+  const response = await actionFetch('business/register', {
     method: 'POST',
     body: JSON.stringify(data),
     headers: {
@@ -35,7 +35,7 @@ export const registerBusiness = async (data: BusinessFormSchema) => {
 };
 
 export const login = async (data: LoginDto) => {
-  const response = await customFetch<ResponseLoginDto>('login', {
+  const response = await actionFetch<ResponseLoginDto>('login', {
     method: 'POST',
     body: JSON.stringify(data),
     headers: {
@@ -63,7 +63,7 @@ export const login = async (data: LoginDto) => {
 };
 
 export const refreshToken = async () => {
-  const response = await customFetch<{ accessTokenCookie: TokenCookie }>(
+  const response = await actionFetch<{ accessTokenCookie: TokenCookie }>(
     'refresh-token',
     {
       method: 'POST',
@@ -89,7 +89,7 @@ export const checkCookie = async () => {
 
 export const logout = async () => {
   const cookieStore = await cookies();
-  await customFetch('logout', {
+  await actionFetch('logout', {
     method: 'POST',
     credentials: 'include',
   });

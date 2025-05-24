@@ -1,9 +1,8 @@
-import { ICv } from '@/api/cv/interface';
 import { getMyCv } from '@/api/cv/query';
 import CvItem from './CvItem';
 import CreateCv from './CreateCv';
 export default async function MyCv() {
-  const myCvs = (await getMyCv()) as { data: ICv[] };
+  const myCvs = await getMyCv();
 
   return (
     <div className="container mx-auto lg:w-62 px-4 lg:px-0 mb-[30px]">
