@@ -31,7 +31,7 @@ const getNavMenus = (user: IUser): NavItem[] => {
       { name: 'Hồ sơ cá nhân', href: '/profile-personal', icon: <UserRound /> },
       {
         name: 'Công ty',
-        href: `/company/${user.company?.name}`,
+        href: `/company/${decodeURIComponent(user.company?.name || '')}`,
         icon: <Building />,
       },
       {

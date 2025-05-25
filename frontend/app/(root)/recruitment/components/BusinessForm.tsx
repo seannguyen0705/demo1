@@ -73,7 +73,7 @@ export default function BusinessForm() {
   return (
     <div
       id="business-form"
-      className="min-h-screen dark:bg-[#111827] rounded-lg bg-[#EBF5F4] py-[30px] md:py-[60px]"
+      className="min-h-screen dark:bg-[#111827] rounded-lg bg-light-green py-[30px] md:py-[60px]"
     >
       <div className="container mx-auto px-[20px] md:px-[40px]">
         <h3 className="text-center text-2xl font-bold">
@@ -179,7 +179,7 @@ export default function BusinessForm() {
                           <Button
                             type="button"
                             variant="outline"
-                            className="bg-[#309689] size-[36px] text-white hover:text-white hover:bg-[#309689]/80"
+                            className="bg-green size-[36px] text-white hover:text-white hover:bg-[#309689]/80"
                             onClick={() => {
                               field.onChange([...field.value, '']);
                             }}

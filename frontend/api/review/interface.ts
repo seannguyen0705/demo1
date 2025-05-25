@@ -13,8 +13,8 @@ interface QueryReview {
 }
 
 interface StatisticReviewCompany {
-  avg: number;
-  count: number;
+  avg: string;
+  count: string;
 }
 
 interface CreateReview {

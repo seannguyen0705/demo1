@@ -42,12 +42,16 @@ export class ReviewService {
     return { reviews, currentPage: page, nextPage: page + 1, total };
   }
 
-  public async getStatisticReviewCompany(companyId: string) {
+  public async getStatisticsReviewCompany(companyId: string) {
     const queryBuilder = this.reviewRepository
       .createQueryBuilder('review')
       .where('review.companyId = :companyId', { companyId })
       .select(['AVG(review.rating)', 'COUNT(review.id)']);
 
-    return queryBuilder.getRawOne();
+    const result = await queryBuilder.getRawOne();
+    return {
+      avg: parseFloat(result.avg).toFixed(1),
+      count: result.count,
+    };
   }
 }

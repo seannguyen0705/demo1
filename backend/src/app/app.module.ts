@@ -25,6 +25,9 @@ import { SkillModule } from '@/api/skill/skill.module';
 import { CandidateSkillModule } from '@/api/candidate-skill/candidate-skill.module';
 import { CvModule } from '@/api/cv/cv.module';
 import { ReviewModule } from '@/api/review/review.module';
+import { JobModule } from '@/api/job/job.module';
+import { JobSkillModule } from '@/api/job-skill/job-skill.module';
+
 const EnvSchema = {
   PORT: Joi.number(),
   NODE_ENV: Joi.string(),
@@ -81,6 +84,9 @@ const EnvSchema = {
     CandidateSkillModule,
     CvModule,
     ReviewModule,
+    CompanyModule,
+    JobModule,
+    JobSkillModule,
   ],
   controllers: [AppController],
   providers: [],

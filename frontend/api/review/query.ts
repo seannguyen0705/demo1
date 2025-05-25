@@ -8,9 +8,9 @@ export const getReviewByCompanyId = async (companyId: string) => {
   return response;
 };
 
-export const getStatisticReviewCompany = async (companyId: string) => {
+export const getStatisticsReviewCompany = async (companyId: string) => {
   const response = await queryFetch<StatisticReviewCompany>(
-    `reviews/statistic/${companyId}`,
+    `reviews/statistics/${companyId}`,
     {
       method: 'GET',
     },

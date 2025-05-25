@@ -30,7 +30,7 @@ export default function TopCompany() {
     },
   ];
   return (
-    <section className="dark:bg-[#111111] mb-[30px] bg-[#EBF5F4] pt-[60px] pb-[120px]">
+    <section className="dark:bg-[#111111] mb-[30px] bg-light-green pt-[60px] pb-[120px]">
       <h3 className="text-center mb-[20px] dark:text-muted-foreground text-[#222] text-2xl font-bold">
         Được tin tưởng bởi các doanh nghiệp hàng đầu
       </h3>

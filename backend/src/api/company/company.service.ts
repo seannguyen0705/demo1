@@ -1,9 +1,14 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CompanyRepository } from './company.repository';
 import { CreateCompanyDto } from './dtos/create-company.dto';
 import { Company } from './entities/company.entity';
 import { QueryRunner } from 'typeorm';
+import UpdateCompanyDto from './dtos/update-company.dto';
 @Injectable()
 export class CompanyService {
   constructor(
@@ -12,7 +17,7 @@ export class CompanyService {
   ) {}
 
   public async create(data: CreateCompanyDto, queryRunner: QueryRunner) {
-    const existingCompany = await this.findByName(data.name);
+    const existingCompany = await this.findOneByName(data.name);
     if (existingCompany) {
       throw new BadRequestException('Tên công ty đã tồn tại');
     }
@@ -20,7 +25,19 @@ export class CompanyService {
     return queryRunner.manager.save(Company, company);
   }
 
-  public async findByName(name: string) {
+  public async findOneByName(name: string) {
     return this.companyRepository.findOneBy({ name });
+  }
+
+  public async findOneById(id: string) {
+    return this.companyRepository.findOneBy({ id });
+  }
+
+  public async update(id: string, data: UpdateCompanyDto, employerId: string) {
+    const company = await this.companyRepository.findOneBy({ id, employerId });
+    if (!company) {
+      throw new NotFoundException('Không tìm thấy công ty');
+    }
+    return this.companyRepository.update(id, data);
   }
 }

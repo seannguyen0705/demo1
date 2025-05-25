@@ -54,7 +54,7 @@ export default function Info({ user }: IProps) {
     fields.splice(4, 1);
   }
   return (
-    <section className="dark:bg-gray-900 bg-[#EBF5F4] rounded-[20px] relative  ">
+    <section className="dark:bg-gray-900 bg-light-green rounded-[20px] relative  ">
       <div className=" flex items-center gap-2 p-4  ">
         <Image
           src={getUserAvatar(user)}

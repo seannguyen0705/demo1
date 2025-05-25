@@ -86,48 +86,51 @@ export default function EditSkill({ candidateSkills }: IProps) {
             Giới thiệu điểm mạnh và số năm kinh nghiệm của bạn
           </DialogDescription>
         </DialogHeader>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <SelectSkill
-              skill={getValues('skill')}
-              onChange={(value) => {
-                setValue('skill.value', value.value);
-                setValue('skill.label', value.label);
-              }}
-            />
-            {errors.skill?.value && (
-              <p className="text-sm text-red-500">Vui lòng chọn kĩ năng</p>
-            )}
-          </div>
 
-          <div>
-            <div className="flex items-center gap-2">
-              <SelectExp
-                skillYear={skillYear}
+        <div className=" space-y-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <SelectSkill
+                skill={getValues('skill')}
                 onChange={(value) => {
-                  setSkillYear(value);
-                  setValue('skillYear', value);
+                  setValue('skill.value', value.value);
+                  setValue('skill.label', value.label);
                 }}
               />
-              <Button
-                disabled={candidateSkills.length >= 20}
-                onClick={handleSubmit(handleCreateSkill)}
-                className="bg-[#309689] hover:bg-[#309689] hover:opacity-80 disabled:opacity-50"
-              >
-                <FiPlusCircle />
-              </Button>
+              {errors.skill?.value && (
+                <p className="text-sm text-red-500">Vui lòng chọn kĩ năng</p>
+              )}
             </div>
-            {errors.skillYear && (
-              <p className="text-sm text-red-500">
-                Vui lòng chọn năm kinh nghiệm
-              </p>
-            )}
+
+            <div>
+              <div className="flex items-center gap-2">
+                <SelectExp
+                  skillYear={skillYear}
+                  onChange={(value) => {
+                    setSkillYear(value);
+                    setValue('skillYear', value);
+                  }}
+                />
+                <Button
+                  disabled={candidateSkills.length >= 20}
+                  onClick={handleSubmit(handleCreateSkill)}
+                  className="bg-[#309689] hover:bg-[#309689] hover:opacity-80 disabled:opacity-50"
+                >
+                  <FiPlusCircle />
+                </Button>
+              </div>
+              {errors.skillYear && (
+                <p className="text-sm text-red-500">
+                  Vui lòng chọn năm kinh nghiệm
+                </p>
+              )}
+            </div>
           </div>
+          <p className="text-sm text-gray-500">
+            Kĩ năng đã chọn {candidateSkills.length}/20
+          </p>
+          <MySkill candidateSkills={candidateSkills} />
         </div>
-        <p className="text-sm text-gray-500">
-          Kĩ năng đã chọn {candidateSkills.length}/20
-        </p>
-        <MySkill candidateSkills={candidateSkills} />
         <DialogFooter></DialogFooter>
       </DialogContent>
     </Dialog>

@@ -28,8 +28,8 @@ export class ReviewController {
     return this.reviewService.findReviewByCompanyId(query, companyId);
   }
 
-  @InjectRoute(reviewRoutes.getStatisticReviewCompany)
-  getStatisticReviewCompany(@Param('companyId') companyId: string) {
-    return this.reviewService.getStatisticReviewCompany(companyId);
+  @InjectRoute(reviewRoutes.getStatisticsReviewCompany)
+  getStatisticsReviewCompany(@Param('companyId') companyId: string) {
+    return this.reviewService.getStatisticsReviewCompany(companyId);
   }
 }

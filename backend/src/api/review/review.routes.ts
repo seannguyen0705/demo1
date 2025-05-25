@@ -12,8 +12,8 @@ export default {
     jwtSecure: true,
     roles: [UserRole.CANDIDATE],
   },
-  getStatisticReviewCompany: <IRouteParams>{
-    path: '/statistic/:companyId',
+  getStatisticsReviewCompany: <IRouteParams>{
+    path: '/statistics/:companyId',
     method: RequestMethod.GET,
     code: HttpStatus.OK,
     jwtSecure: false,
