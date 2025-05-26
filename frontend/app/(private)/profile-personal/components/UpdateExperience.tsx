@@ -27,7 +27,6 @@ import { Select } from '@/components/ui/select';
 import { SelectItem } from '@/components/ui/select';
 import { SelectContent } from '@/components/ui/select';
 import { SelectTrigger } from '@/components/ui/select';
-import { FiPlusCircle } from 'react-icons/fi';
 import { SelectValue } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
@@ -124,7 +123,7 @@ export default function UpdateExperience({
           <SquarePen />
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[600px] h-full sm:h-auto overflow-auto">
+      <DialogContent className="sm:max-w-[600px] h-full md:h-auto overflow-auto">
         <DialogHeader>
           <DialogTitle>Kinh nghiệm làm việc</DialogTitle>
           <DialogDescription>

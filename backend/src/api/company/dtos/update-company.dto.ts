@@ -53,10 +53,10 @@ export default class UpdateCompanyDto {
   @IsString()
   @IsOptional()
   @ApiPropertyOptional({
-    description: 'Mô tả công ty',
-    example: 'Công ty cổ phần',
+    description: 'Quyền lợi công ty',
+    example: 'Ăn ngủ nghỉ ngơi',
   })
-  description?: string;
+  benefits?: string;
 
   @IsString()
   @IsOptional()

@@ -100,7 +100,7 @@ export class AuthService {
 
     const user = await userService.findOneByEmail(email);
 
-    if (!(user && compareSync(password, user?.password))) {
+    if (!(user && compareSync(password, user?.password || ''))) {
       throw new WrongCredentialsException();
     }
     if (user.status === UserStatus.BANNED) {

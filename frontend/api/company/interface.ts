@@ -4,7 +4,7 @@ interface ICompany {
   id: string;
   name: string;
   overview: string;
-  description: string;
+  benefits: string;
   address: string[];
   website: string;
   logo: IFile;
@@ -27,7 +27,7 @@ interface IUpdateCompany {
   workingDay?: string;
   workingTime?: string;
   overview?: string;
-  description?: string;
+  benefits?: string;
   country?: string;
 }
 

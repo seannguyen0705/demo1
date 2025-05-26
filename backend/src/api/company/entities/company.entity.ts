@@ -23,11 +23,11 @@ export class Company extends BaseEntity {
   @Column({ nullable: true })
   workingTime?: string; // 8:00 - 17:00
 
-  @Column({ type: 'text', nullable: true })
+  @Column({ type: 'text', nullable: true, default: '' })
   overview?: string;
 
-  @Column({ type: 'text', nullable: true })
-  description?: string;
+  @Column({ type: 'text', nullable: true, default: '' })
+  benefits?: string;
 
   @Column({ type: 'varchar', array: true, nullable: true })
   address: string[];

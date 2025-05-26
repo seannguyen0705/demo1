@@ -115,7 +115,7 @@ export default function CreateExperience() {
           <FiPlusCircle />
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[600px] h-full sm:h-auto overflow-auto">
+      <DialogContent className="sm:max-w-[600px] h-full md:h-auto overflow-auto">
         <DialogHeader>
           <DialogTitle>Kinh nghiệm làm việc</DialogTitle>
           <DialogDescription>

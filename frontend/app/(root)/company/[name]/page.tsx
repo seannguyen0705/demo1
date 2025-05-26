@@ -9,6 +9,7 @@ import {
 import CompanyInfo from '../components/CompanyInfo';
 import CompanyIntro from '../components/CompanyIntro';
 import { getMe } from '@/api/auth/query';
+import CompanyBenefit from '../components/CompanyBenefit';
 interface IProps {
   params: Promise<{ name: string }>;
 }
@@ -33,6 +34,7 @@ export default async function CompanyPage({ params }: IProps) {
         />
         <CompanyInfo company={company.data} isOwner={isOwner} />
         <CompanyIntro company={company.data} />
+        <CompanyBenefit company={company.data} />
       </main>
       <aside className="w-[300px]">{/* JOB LIST */}</aside>
     </div>

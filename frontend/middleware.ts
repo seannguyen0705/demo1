@@ -21,7 +21,6 @@ export async function middleware(request: NextRequest) {
     const res = NextResponse.redirect(new URL('/sign-in', request.url));
     cookieStore.delete('Refresh');
     cookieStore.delete('Authentication');
-
     return res;
   }
 
