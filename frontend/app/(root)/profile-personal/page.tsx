@@ -7,10 +7,8 @@ import Experience from './components/Experience';
 import Skill from './components/Skill';
 import useGetMe from '@/app/hooks/useGetMe';
 export default function ProfilePersonal() {
-  const { user, isLoading } = useGetMe();
-  if (isLoading || !user) {
-    return;
-  }
+  const { user } = useGetMe();
+
   return (
     <main className="container mx-auto ">
       <NavSide user={user} />

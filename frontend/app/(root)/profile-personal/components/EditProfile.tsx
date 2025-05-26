@@ -55,7 +55,7 @@ const formSchema = z.object({
 });
 
 interface IProps {
-  user: IUser;
+  user: IUser | undefined;
 }
 
 export default function EditProfile({ user }: IProps) {
@@ -65,13 +65,13 @@ export default function EditProfile({ user }: IProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      fullName: user.fullName || '',
-      title: user.title || '',
-      phoneNumber: user.phoneNumber || '',
-      gender: user.gender || Gender.MALE,
-      bod: user.bod ? format(new Date(user.bod), 'yyyy-MM-dd') : '',
-      address: user.address || '',
-      personal_website: user.personal_website || '',
+      fullName: user?.fullName || '',
+      title: user?.title || '',
+      phoneNumber: user?.phoneNumber || '',
+      gender: user?.gender || Gender.MALE,
+      bod: user?.bod ? format(new Date(user.bod), 'yyyy-MM-dd') : '',
+      address: user?.address || '',
+      personal_website: user?.personal_website || '',
     },
   });
 
@@ -137,7 +137,7 @@ export default function EditProfile({ user }: IProps) {
                     disabled
                     className="bg-gray-100"
                     readOnly
-                    value={user.email}
+                    value={user?.email}
                   />
                 </FormControl>
                 <FormMessage />

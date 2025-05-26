@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 
 const getMyExperiences = async () => {
   const response = await axiosInstance.get<{ data: IExperience[] }>(
-    '/api/v1/experiences',
+    '/experiences',
   );
   return response.data;
 };

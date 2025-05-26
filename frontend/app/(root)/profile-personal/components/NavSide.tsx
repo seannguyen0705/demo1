@@ -1,4 +1,5 @@
 import { IUser } from '@/api/interface';
+import { Skeleton } from '@/components/ui/skeleton';
 import { UserRole } from '@/utils/enums';
 import {
   Briefcase,
@@ -107,25 +108,56 @@ const navAdmin = [
   },
 ];
 
-interface IProps {
-  user: IUser;
+function SkeletonSidebar() {
+  return (
+    <div>
+      <aside className="fixed w-64 dark:bg-gray-900 bg-[#EBF5F4] rounded-[20px] p-4 hidden lg:block">
+        <div className="flex items-center gap-2">
+          <Skeleton className="h-6 w-6 bg-white/50" />
+          <Skeleton className="h-4 w-20 bg-white/50" />
+        </div>
+        <Skeleton className="h-6 w-32 mt-2 bg-white/50" />
+
+        <ul className="mt-4 space-y-2">
+          {[1, 2, 3, 4, 5].map((item) => (
+            <li key={item}>
+              <div className="flex items-center gap-2 p-2 rounded-md bg-white/50">
+                <Skeleton className="h-5 w-5 bg-white/70" />
+                <Skeleton className="h-4 w-24 bg-white/70" />
+              </div>
+            </li>
+          ))}
+        </ul>
+      </aside>
+    </div>
+  );
 }
+
+interface IProps {
+  user: IUser | undefined;
+}
+
 export default function NavSide({ user }: IProps) {
+  if (!user) {
+    return <SkeletonSidebar />;
+  }
+
   const navs =
-    user.role === UserRole.EMPLOYER
-      ? navEmployers
-      : user.role === UserRole.CANDIDATE
-        ? navCandidate
-        : navAdmin;
+    user?.role === UserRole.ADMIN
+      ? navAdmin
+      : user?.role === UserRole.EMPLOYER
+        ? navEmployers
+        : navCandidate;
 
   return (
     <div>
-      <aside className=" fixed w-64 dark:bg-gray-900 bg-[#EBF5F4] rounded-[20px] p-4 hidden lg:block">
-        <p className=" flex items-center gap-2 text-sm">
+      <aside className="fixed w-64 dark:bg-gray-900 bg-[#EBF5F4] rounded-[20px] p-4 hidden lg:block">
+        <p className="flex items-center gap-2 text-sm">
           <PiHandWaving size={25} color="#309689" />
           Xin chào
         </p>
-        <p className="text-lg">{user.fullName}</p>
+
+        <p className="text-lg">{user?.fullName}</p>
 
         <ul className="mt-4">
           {navs.map((nav) => (
