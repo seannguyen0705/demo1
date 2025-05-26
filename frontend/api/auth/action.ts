@@ -6,9 +6,8 @@ import { isErrorResponse } from '@/utils/helpers/isErrorResponse';
 import { cookies } from 'next/headers';
 import { LoginDto, ResponseLoginDto, TokenCookie } from './interface';
 import { CreateCandidateDto } from '../candidate/interface';
-import redirectUnAuth from '@/utils/helpers/redirectUnAuth';
-import { UserRole } from '@/utils/enums';
 import { redirect } from 'next/navigation';
+import { getAuthCookie } from '@/utils/helpers/getAuthCookie';
 
 export const registerCandidate = async (data: CreateCandidateDto) => {
   const response = await actionFetch('candidate/register', {
@@ -63,27 +62,36 @@ export const login = async (data: LoginDto) => {
 };
 
 export const refreshToken = async () => {
-  const response = await actionFetch<{ accessTokenCookie: TokenCookie }>(
-    'refresh-token',
+  const cookieStore = await cookies();
+  const refresh = cookieStore.get('Refresh');
+  if (!refresh) {
+    cookieStore.delete('Authentication');
+    cookieStore.delete('Refresh');
+    redirect('/sign-in');
+  }
+  const refreshCookie = `${refresh?.name}=${refresh?.value}`;
+  const response = await fetch(
+    `${process.env.BACKEND_URL}/api/v1/refresh-token`,
     {
       method: 'POST',
-      credentials: 'include',
+      headers: {
+        Cookie: refreshCookie,
+      },
     },
   );
-  return response;
-};
-
-export const checkCookie = async () => {
-  const cookieStore = await cookies();
-  const Refresh = cookieStore.get('Refresh');
-  const Authentication = cookieStore.get('Authentication');
-  const Role = cookieStore.get('Role');
-  const urlRedirect = redirectUnAuth(Role?.value as UserRole);
-
-  if (!Refresh && !Authentication) {
-    redirect(urlRedirect);
-  } else if (Refresh && !Authentication) {
-    await refreshToken();
+  if (response.ok) {
+    const data: { data: { accessTokenCookie: TokenCookie } } =
+      await response.json();
+    const { accessTokenCookie } = data.data;
+    cookieStore.set('Authentication', accessTokenCookie.token, {
+      httpOnly: true,
+      path: '/',
+      maxAge: accessTokenCookie.ttl,
+    });
+  } else {
+    cookieStore.delete('Authentication');
+    cookieStore.delete('Refresh');
+    redirect('/sign-in');
   }
 };
 

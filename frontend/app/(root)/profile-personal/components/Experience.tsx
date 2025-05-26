@@ -1,6 +1,6 @@
 import CreateExperience from './CreateExperience';
 import MyExperience from './MyExperience';
-export default async function Experience() {
+export default function Experience() {
   return (
     <section className="dark:bg-gray-900 bg-[#EBF5F4] rounded-[20px] relative p-6">
       <h6 className="text-xl">Kinh nghiệm làm việc</h6>

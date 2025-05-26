@@ -1,11 +1,21 @@
-import { getMyExperiences } from '@/api/experience/query';
+'use client';
+import { Skeleton } from '@/components/ui/skeleton';
 import ExperienceItem from './ExperienceItem';
+import useGetExperience from '../hooks/useGetExperience';
 
-export default async function MyExperience() {
-  const experiences = await getMyExperiences();
+export default function MyExperience() {
+  const { data, isLoading } = useGetExperience();
+  if (isLoading)
+    return (
+      <ul>
+        <Skeleton className="w-full h-[100px]" />
+        <Skeleton className="w-full h-[100px]" />
+        <Skeleton className="w-full h-[100px]" />
+      </ul>
+    );
   return (
     <ul>
-      {experiences.data.map((experience) => (
+      {data?.map((experience) => (
         <ExperienceItem key={experience.id} experience={experience} />
       ))}
     </ul>

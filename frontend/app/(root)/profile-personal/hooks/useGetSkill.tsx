@@ -1,6 +1,19 @@
 import { IQueryPagination } from '@/api/interface';
 import { useQuery } from '@tanstack/react-query';
-import { getSkills } from '@/api/skill/query';
+
+import { ISkill } from '@/api/skill/interface';
+import axiosInstance from '@/config/axios-config';
+
+const getSkills = async ({
+  page = 1,
+  limit = 10,
+  keyword = '',
+}: IQueryPagination) => {
+  const response = await axiosInstance.get<{ data: ISkill[] }>(
+    `/skills?page=${page}&limit=${limit}&keyword=${keyword}`,
+  );
+  return response.data;
+};
 
 export default function useGetSkill({
   page,

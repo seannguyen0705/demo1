@@ -10,8 +10,8 @@ import { hash } from '@/utils/helpers';
 
 @Entity('employers')
 export class Employer extends BaseUserEntity {
-  @Column({ name: 'work_title' })
-  workTitle: string;
+  @Column({ name: 'title' })
+  title: string;
 
   @Column({ type: 'enum', enum: UserStatus, default: UserStatus.INACTIVE })
   status: UserStatus;
