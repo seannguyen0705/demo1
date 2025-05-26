@@ -1,3 +1,5 @@
+import { UserRole } from '@/utils/enums';
+
 interface LoginDto {
   email: string;
   password: string;
@@ -14,3 +16,5 @@ interface ResponseLoginDto {
   accessTokenCookie: TokenCookie;
   refreshTokenCookie: TokenCookie;
 }
+
+export type { LoginDto, TokenCookie, ResponseLoginDto };

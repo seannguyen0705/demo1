@@ -1,3 +1,5 @@
+import { ErrorReponse } from '@/api/interface';
+
 export function isErrorResponse(response: object): response is ErrorReponse {
   if (!response) {
     return false;

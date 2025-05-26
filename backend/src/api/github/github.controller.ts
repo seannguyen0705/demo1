@@ -1,5 +1,4 @@
 import { Req, Res } from '@nestjs/common';
-import { GithubService } from './github.service';
 import { InjectController, InjectRoute } from '@/decorators';
 import githubRoutes from './github.routes';
 import { AuthService } from '../auth/auth.service';
@@ -10,7 +9,6 @@ import { RequestWithThirdPartyUser } from '@/common/interfaces';
 @InjectController({ name: githubRoutes.index })
 export class GithubController {
   constructor(
-    private readonly githubService: GithubService,
     private readonly authService: AuthService,
     private readonly configService: ConfigService,
   ) {}

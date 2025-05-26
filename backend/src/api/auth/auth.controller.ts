@@ -1,6 +1,6 @@
 import { Body, Req } from '@nestjs/common';
 
-import { InjectRoute, InjectController } from '@/decorators';
+import { InjectRoute, InjectController, ReqUser } from '@/decorators';
 
 import authRoutes from './auth.routes';
 
@@ -19,6 +19,7 @@ import { InjectDataSource } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 import { UserAlreadyException } from './auth.exceptions';
 import { RequestWithUser } from '@/common/interfaces';
+import { IJwtStrategy } from './strategies/jwt.strategy';
 
 @InjectController({ name: authRoutes.index, isCore: true })
 export class AuthController {
@@ -43,7 +44,6 @@ export class AuthController {
   @InjectRoute(authRoutes.registerBusiness)
   public async registerBusiness(@Body() data: CreateBusinessDto) {
     const { email, phoneNumber } = data;
-    let responseUploadFile;
     const employer = await this.employerService.findOneByEmailOrPhoneNumber({
       email,
       phoneNumber,
@@ -75,9 +75,6 @@ export class AuthController {
       await queryRunner.commitTransaction();
     } catch (error) {
       await queryRunner.rollbackTransaction();
-      if (responseUploadFile) {
-        await this.cloudinaryService.deleteFile(responseUploadFile.key);
-      }
       throw error;
     } finally {
       await queryRunner.release();
@@ -121,13 +118,14 @@ export class AuthController {
       role: user.role,
       email: user.element?.email,
     };
-    const accessToken =
+
+    const accessTokenCookie =
       await this.authService.getCookieWithJwtAccessToken(payload);
 
-    req.res.setHeader('Set-Cookie', [accessToken.cookie]);
+    req.res.setHeader('Set-Cookie', [accessTokenCookie.cookie]);
 
     return {
-      accessTokenCookie: accessToken,
+      accessTokenCookie,
     };
   }
 
@@ -140,5 +138,15 @@ export class AuthController {
     return {
       message: 'Logged out successfully',
     };
+  }
+
+  @InjectRoute(authRoutes.getMe)
+  public async getMe(@ReqUser() user: IJwtStrategy) {
+    const userDetail = await this.authService.getUserDetailById(
+      user.element.id,
+      user.role,
+    );
+
+    return userDetail;
   }
 }

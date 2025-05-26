@@ -27,13 +27,6 @@ export class AdminController {
     return gotAdmins;
   }
 
-  @InjectRoute(adminRoutes.getMe)
-  public async getMe(@ReqUser() user: Admin): Promise<ResponseAdminDetailDto> {
-    const gotAdmin = await this.adminService.getDetailById(user?.id);
-
-    return gotAdmin;
-  }
-
   @InjectRoute(adminRoutes.updateMe)
   public async updateMe(
     @ReqUser() user: IJwtStrategy,

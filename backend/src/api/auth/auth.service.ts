@@ -155,12 +155,7 @@ export class AuthService {
     email,
     role,
   }: IValidateJwtUserParams): Promise<TUser> {
-    const services = {
-      [UserRole.ADMIN]: this.adminService,
-      [UserRole.CANDIDATE]: this.candidateService,
-    };
-
-    const userService = services[role];
+    const userService = this.services[role];
 
     const user = await userService.findOneByEmail(email);
 
@@ -182,5 +177,13 @@ export class AuthService {
       'Authentication=; HttpOnly; Path=/; Max-Age=0',
       'Refresh=; HttpOnly; Path=/; Max-Age=0',
     ];
+  }
+
+  public async getUserDetailById(id: string, role: UserRole) {
+    const userService = this.services[role];
+
+    const user = await userService.getDetailById(id);
+
+    return user;
   }
 }

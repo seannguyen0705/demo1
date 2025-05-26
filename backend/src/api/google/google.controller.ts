@@ -1,4 +1,3 @@
-import { GoogleService } from './google.service';
 import { InjectController, InjectRoute } from '@/decorators';
 import googleRoutes from './google.routes';
 import { AuthService } from '../auth/auth.service';
@@ -10,7 +9,6 @@ import { RequestWithThirdPartyUser } from '@/common/interfaces';
 @InjectController({ name: googleRoutes.index })
 export class GoogleController {
   constructor(
-    private readonly googleService: GoogleService,
     private readonly authService: AuthService,
     private readonly configService: ConfigService,
   ) {}

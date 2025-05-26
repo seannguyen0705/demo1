@@ -1,1 +1,4 @@
-{ "eslint.workingDirectories": ["./frontend", "./backend"] }
+{
+  "eslint.workingDirectories": ["./frontend", "./backend"],
+  "prettier.configPath": "./.prettierrc"
+}

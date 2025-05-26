@@ -1,12 +1,31 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
+import { refreshToken } from './api/auth/action';
 
-export default function middleware() {
+const privatePaths = ['/profile-personal'];
+const authPaths = [
+  '/sign-in',
+  '/sign-up',
+  '/recruitment/sign-in',
+  '/admin/sign-in',
+];
+
+export async function middleware(request: NextRequest) {
+  const isAuth =
+    request.cookies.has('Refresh') || request.cookies.has('Authentication');
+  const currentPath = request.nextUrl.pathname;
+
+  if (privatePaths.some((path) => currentPath.startsWith(path)) && !isAuth) {
+    return NextResponse.redirect(new URL('/sign-in', request.url));
+  }
+
+  if (authPaths.some((path) => currentPath.startsWith(path)) && isAuth) {
+    return NextResponse.redirect(new URL('/', request.url));
+  }
   return NextResponse.next();
 }
 
 export const config = {
-  // Match all pathnames except for
-  // - … if they start with `/api`, `/trpc`, `/_next` or `/_vercel`
-  // - … the ones containing a dot (e.g. `favicon.ico`)
-  matcher: '/((?!api|trpc|_next|_vercel|.*\\..*).*)',
+  matcher: [
+    '/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)',
+  ],
 };

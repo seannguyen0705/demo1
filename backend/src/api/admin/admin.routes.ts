@@ -29,14 +29,7 @@ export default {
       ],
     },
   },
-  getMe: <IRouteParams>{
-    path: '/me',
-    method: RequestMethod.GET,
-    roles: [UserRole.ADMIN],
-    swaggerInfo: {
-      responses: [{ status: HttpStatus.OK, type: ResponseAdminDetailDto }],
-    },
-  },
+
   updateMe: <IRouteParams>{
     path: '/me',
     method: RequestMethod.PUT,
