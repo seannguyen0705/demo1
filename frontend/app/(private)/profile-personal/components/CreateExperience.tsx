@@ -111,11 +111,11 @@ export default function CreateExperience() {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button className="absolute top-[10px] right-[10px]" variant="outline">
+        <Button className="" variant="outline">
           <FiPlusCircle />
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[600px] h-full md:h-auto overflow-auto">
+      <DialogContent className="h-full overflow-auto sm:max-w-[600px] md:h-auto">
         <DialogHeader>
           <DialogTitle>Kinh nghiệm làm việc</DialogTitle>
           <DialogDescription>
@@ -124,7 +124,7 @@ export default function CreateExperience() {
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <FormField
                 control={form.control}
                 name="workTitle"
@@ -153,7 +153,7 @@ export default function CreateExperience() {
                 )}
               />
 
-              <div className="md:col-span-2 flex items-center space-x-2">
+              <div className="flex items-center space-x-2 md:col-span-2">
                 <Checkbox
                   checked={isCurrent}
                   onCheckedChange={(checked: boolean) => setIsCurrent(checked)}
@@ -162,7 +162,7 @@ export default function CreateExperience() {
                 />
                 <label
                   htmlFor="current"
-                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  className="text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                 >
                   Tôi đang làm việc tại đây
                 </label>

@@ -1,21 +1,22 @@
-import { getMe } from '@/api/auth/query';
+'use client';
 import Info from './components/Info';
 import MyCv from './components/MyCv';
 import Intro from './components/Intro';
 import Experience from './components/Experience';
 import Skill from './components/Skill';
 import { UserRole } from '@/utils/enums';
-export default async function ProfilePersonal() {
-  const user = await getMe();
+import useGetMe from '@/app/hooks/useGetMe';
+export default function ProfilePersonal() {
+  const { user } = useGetMe();
   return (
-    <main className="  flex lg:flex-row flex-col ">
-      <div className=" flex-1 px-4 space-y-4">
-        <Info user={user.data} />
-        {user.data.role === UserRole.CANDIDATE && <Intro user={user.data} />}
-        {user.data.role === UserRole.CANDIDATE && <Experience />}
-        {user.data.role === UserRole.CANDIDATE && <Skill />}
+    <main className="  flex flex-col lg:flex-row ">
+      <div className=" flex-1 space-y-4 px-4">
+        <Info user={user} />
+        <Intro user={user} />
+        {user?.role === UserRole.CANDIDATE && <Experience />}
+        {user?.role === UserRole.CANDIDATE && <Skill />}
       </div>
-      {user.data.role === UserRole.CANDIDATE && <MyCv />}
+      {user?.role === UserRole.CANDIDATE && <MyCv />}
     </main>
   );
 }

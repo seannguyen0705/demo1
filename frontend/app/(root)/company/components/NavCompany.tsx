@@ -16,7 +16,7 @@ export default function NavCompany({ pathName, companyName }: IProps) {
     },
   ];
   return (
-    <nav className="border-b mb-3 w-full bg-light-green ">
+    <nav className="mb-3 w-full border-b ">
       <ul className="flex items-center  gap-4">
         {navs.map((nav) => (
           <li

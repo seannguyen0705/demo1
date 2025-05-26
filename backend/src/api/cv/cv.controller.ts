@@ -43,16 +43,14 @@ export class CvController {
     const queryRunner = this.dataSource.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
+    let uploadedFile: { url: string; key: string };
 
     try {
-      const { url, key } = await this.cloudinaryService.uploadFile(
-        file,
-        this.folder,
-      );
+      uploadedFile = await this.cloudinaryService.uploadFile(file, this.folder);
       const data: CreateCvDto = {
         name: file.originalname,
-        url,
-        key,
+        url: uploadedFile.url,
+        key: uploadedFile.key,
         format: file.mimetype,
         candidateId: req.user.element.id,
       };
@@ -60,6 +58,9 @@ export class CvController {
       await queryRunner.commitTransaction();
       return cv;
     } catch (error) {
+      if (uploadedFile) {
+        await this.cloudinaryService.deleteFile(uploadedFile.key);
+      }
       await queryRunner.rollbackTransaction();
       throw error;
     } finally {

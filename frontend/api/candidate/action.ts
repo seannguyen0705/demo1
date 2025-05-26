@@ -2,8 +2,6 @@
 
 import actionFetch from '@/utils/helpers/actionFetch';
 import { UpdateCandidateDto } from './interface';
-import { isErrorResponse } from '@/utils/helpers/isErrorResponse';
-import { revalidateTag } from 'next/cache';
 
 export const updateCandidate = async (data: UpdateCandidateDto) => {
   const response = await actionFetch('candidates/me', {
@@ -14,10 +12,6 @@ export const updateCandidate = async (data: UpdateCandidateDto) => {
     },
     credentials: 'include',
   });
-
-  if (!isErrorResponse(response)) {
-    revalidateTag('me');
-  }
 
   return response;
 };

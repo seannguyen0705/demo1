@@ -26,6 +26,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
+import useGetMe from '@/app/hooks/useGetMe';
 
 const formSchema = z.object({
   type: z.string(),
@@ -42,6 +43,8 @@ interface IProps {
 
 export default function EditCompanyInfo({ company }: IProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const { user } = useGetMe();
+  const isOwner = user?.id === company.employerId;
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -60,6 +63,9 @@ export default function EditCompanyInfo({ company }: IProps) {
     name: company.name,
   });
 
+  if (!isOwner) {
+    return null;
+  }
   function onSubmit(values: z.infer<typeof formSchema>) {
     updateCompany(values, {
       onSuccess: (data: object) => {
@@ -77,7 +83,7 @@ export default function EditCompanyInfo({ company }: IProps) {
           <SquarePen />
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[600px] h-full sm:h-auto overflow-auto">
+      <DialogContent className="h-full overflow-auto sm:h-auto sm:max-w-[600px]">
         <DialogHeader>
           <DialogTitle>Thông tin công ty</DialogTitle>
           <DialogDescription>
@@ -86,7 +92,7 @@ export default function EditCompanyInfo({ company }: IProps) {
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <FormField
                 control={form.control}
                 name="type"

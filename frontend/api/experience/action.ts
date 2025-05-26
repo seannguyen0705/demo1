@@ -2,8 +2,6 @@
 
 import actionFetch from '@/utils/helpers/actionFetch';
 import { ICreateExperience, IUpdateExperience } from './interface';
-import { isErrorResponse } from '@/utils/helpers/isErrorResponse';
-import { revalidateTag } from 'next/cache';
 
 export const createExperience = async (data: ICreateExperience) => {
   const response = await actionFetch('experiences', {
@@ -14,9 +12,7 @@ export const createExperience = async (data: ICreateExperience) => {
       'Content-Type': 'application/json',
     },
   });
-  if (!isErrorResponse(response)) {
-    revalidateTag('experiences');
-  }
+
   return response;
 };
 
@@ -25,11 +21,6 @@ export const deleteExperience = async (id: string) => {
     method: 'DELETE',
     credentials: 'include',
   });
-
-  if (!isErrorResponse(response)) {
-    revalidateTag('experiences');
-  }
-
   return response;
 };
 
@@ -42,8 +33,5 @@ export const updateExperience = async (data: IUpdateExperience) => {
       'Content-Type': 'application/json',
     },
   });
-  if (!isErrorResponse(response)) {
-    revalidateTag('experiences');
-  }
   return response;
 };

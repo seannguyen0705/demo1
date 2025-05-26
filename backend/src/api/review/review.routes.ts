@@ -24,4 +24,10 @@ export default {
     code: HttpStatus.OK,
     jwtSecure: false,
   },
+  getMyReview: <IRouteParams>{
+    path: '/my-review/:companyId',
+    method: RequestMethod.GET,
+    code: HttpStatus.OK,
+    jwtSecure: true,
+  },
 };

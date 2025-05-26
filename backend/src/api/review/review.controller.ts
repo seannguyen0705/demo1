@@ -32,4 +32,12 @@ export class ReviewController {
   getStatisticsReviewCompany(@Param('companyId') companyId: string) {
     return this.reviewService.getStatisticsReviewCompany(companyId);
   }
+
+  @InjectRoute(reviewRoutes.getMyReview)
+  getMyReview(
+    @Param('companyId') companyId: string,
+    @ReqUser() user: IJwtStrategy,
+  ) {
+    return this.reviewService.getMyReview(companyId, user.element.id);
+  }
 }

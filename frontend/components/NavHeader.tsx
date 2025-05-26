@@ -10,7 +10,8 @@ import UserInfo from './UserInfo';
 
 export default async function NavHeader() {
   const cookieStore = await cookies();
-  const isAuth = cookieStore.has('Refresh');
+  const isAuth =
+    cookieStore.has('Refresh') || cookieStore.has('Authentication');
 
   return (
     <header className=" border-b fixed top-0 left-0 right-0 z-50 bg-green ">

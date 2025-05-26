@@ -19,7 +19,7 @@ interface NavItem {
   icon: JSX.Element;
 }
 
-const getNavMenus = (user: IUser): NavItem[] => {
+const getNavMenus = (user: IUser | undefined): NavItem[] => {
   const navs = {
     [UserRole.EMPLOYER]: [
       {
@@ -31,7 +31,7 @@ const getNavMenus = (user: IUser): NavItem[] => {
       { name: 'Hồ sơ cá nhân', href: '/profile-personal', icon: <UserRound /> },
       {
         name: 'Công ty',
-        href: `/company/${decodeURIComponent(user.company?.name || '')}`,
+        href: `/company/${decodeURIComponent(user?.company?.name || '')}`,
         icon: <Building />,
       },
       {
@@ -68,7 +68,7 @@ const getNavMenus = (user: IUser): NavItem[] => {
       { name: 'Quản lí ứng viên', href: '/candidate', icon: <UserRoundPlus /> },
     ],
   };
-  return navs[user.role];
+  return navs[user?.role || UserRole.CANDIDATE];
 };
 
 export default getNavMenus;

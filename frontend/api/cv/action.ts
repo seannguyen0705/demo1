@@ -2,8 +2,6 @@
 
 import actionFetch from '@/utils/helpers/actionFetch';
 import { ICv } from './interface';
-import { isErrorResponse } from '@/utils/helpers/isErrorResponse';
-import { revalidateTag } from 'next/cache';
 
 export const createCv = async (file: Blob) => {
   const formData = new FormData();
@@ -14,9 +12,6 @@ export const createCv = async (file: Blob) => {
     body: formData,
     credentials: 'include',
   });
-  if (!isErrorResponse(response)) {
-    revalidateTag('cvs');
-  }
   return response;
 };
 
@@ -25,9 +20,6 @@ export const deleteCv = async (id: string) => {
     method: 'DELETE',
     credentials: 'include',
   });
-  if (!isErrorResponse(response)) {
-    revalidateTag('cvs');
-  }
   return response;
 };
 
@@ -40,8 +32,5 @@ export const updateCv = async (data: { id: string; file: Blob }) => {
     body: formData,
     credentials: 'include',
   });
-  if (!isErrorResponse(response)) {
-    revalidateTag('cvs');
-  }
   return response;
 };

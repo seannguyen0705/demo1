@@ -1,16 +1,13 @@
 import { findCompanyByName } from '@/api/company/query';
-import HeaderCompany from '../components/HeaderCompany';
 import { getJobByCompanyId } from '@/api/job/query';
 import { getStatisticsReviewCompany } from '@/api/review/query';
+import HeaderCompany from '../../components/HeaderCompany';
+import CompanyReview from '../../components/CompanyReview';
 
-import CompanyInfo from '../components/CompanyInfo';
-import CompanyIntro from '../components/CompanyIntro';
-
-import CompanyBenefit from '../components/CompanyBenefit';
 interface IProps {
   params: Promise<{ name: string }>;
 }
-export default async function CompanyPage({ params }: IProps) {
+export default async function CompanyReviewsPage({ params }: IProps) {
   const { name } = await params;
   const company = await findCompanyByName(name);
   const [jobs, statistics] = await Promise.all([
@@ -27,9 +24,7 @@ export default async function CompanyPage({ params }: IProps) {
           numJobs={numJobs}
           statistics={statistics.data}
         />
-        <CompanyInfo company={company.data} />
-        <CompanyIntro company={company.data} />
-        <CompanyBenefit company={company.data} />
+        <CompanyReview company={company.data} />
       </main>
       <aside className="w-[300px]">{/* JOB LIST */}</aside>
     </div>

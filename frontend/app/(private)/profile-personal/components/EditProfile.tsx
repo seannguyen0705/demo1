@@ -55,25 +55,25 @@ const formSchema = z.object({
 });
 
 interface IProps {
-  user: IUser;
+  user: IUser | undefined;
 }
 
 export default function EditProfile({ user }: IProps) {
   const { mutate: updateUser, isPending } = useUpdateUser({
-    role: user.role,
+    role: user?.role || UserRole.CANDIDATE,
   });
   const [isOpen, setIsOpen] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      fullName: user.fullName || '',
-      title: user.title || user.workTitle || '',
-      phoneNumber: user.phoneNumber || '',
-      gender: user.gender || Gender.MALE,
-      bod: user.bod ? format(new Date(user.bod), 'yyyy-MM-dd') : '',
-      address: user.address || '',
-      personal_website: user.personal_website || '',
+      fullName: user?.fullName || '',
+      title: user?.title || '',
+      phoneNumber: user?.phoneNumber || '',
+      gender: user?.gender || Gender.MALE,
+      bod: user?.bod ? format(new Date(user.bod), 'yyyy-MM-dd') : '',
+      address: user?.address || '',
+      personal_website: user?.personal_website || '',
     },
   });
 
@@ -90,11 +90,11 @@ export default function EditProfile({ user }: IProps) {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button className="absolute top-[10px] right-[10px]" variant="outline">
+        <Button className="absolute top-[20px] right-[24px]" variant="outline">
           <SquarePen />
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[600px] h-full sm:h-auto overflow-auto">
+      <DialogContent className="h-full overflow-auto sm:h-auto sm:max-w-[600px]">
         <DialogHeader>
           <DialogTitle>Thông tin cá nhân</DialogTitle>
           <DialogDescription>
@@ -103,7 +103,7 @@ export default function EditProfile({ user }: IProps) {
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <FormField
                 control={form.control}
                 name="fullName"
@@ -139,7 +139,7 @@ export default function EditProfile({ user }: IProps) {
                     disabled
                     className="bg-gray-100"
                     readOnly
-                    value={user.email}
+                    value={user?.email}
                   />
                 </FormControl>
                 <FormMessage />
@@ -199,7 +199,7 @@ export default function EditProfile({ user }: IProps) {
                 )}
               />
 
-              {user.role !== UserRole.EMPLOYER && (
+              {user?.role !== UserRole.EMPLOYER && (
                 <FormField
                   control={form.control}
                   name="address"

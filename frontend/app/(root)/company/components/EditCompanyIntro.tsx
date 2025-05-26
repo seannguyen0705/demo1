@@ -15,10 +15,13 @@ import { useState } from 'react';
 import useUpdateCompanyInfo from '../hooks/useUpdateCompanyInfo';
 import { isErrorResponse } from '@/utils/helpers/isErrorResponse';
 import Editor from '@/components/Editor';
+import useGetMe from '@/app/hooks/useGetMe';
 interface IProps {
   company: ICompany;
 }
 export default function EditCompanyIntro({ company }: IProps) {
+  const { user } = useGetMe();
+  const isOwner = user?.id === company.employerId;
   const { overview } = company;
   const { mutate: updateCompany, isPending } = useUpdateCompanyInfo({
     id: company.id,
@@ -26,6 +29,9 @@ export default function EditCompanyIntro({ company }: IProps) {
   });
   const [isOpen, setIsOpen] = useState(false);
   const [value, setValue] = useState(overview || '');
+  if (!isOwner) {
+    return null;
+  }
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
@@ -33,7 +39,7 @@ export default function EditCompanyIntro({ company }: IProps) {
           <SquarePen />
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[1000px] p-6 px-3 md:px-6">
+      <DialogContent className="p-6 px-3 sm:max-w-[1000px] md:px-6">
         <DialogHeader>
           <DialogTitle>Giới thiệu công ty</DialogTitle>
           <DialogDescription>

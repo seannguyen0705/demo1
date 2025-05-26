@@ -75,11 +75,11 @@ export default function EditSkill({ candidateSkills }: IProps) {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button className="absolute top-[10px] right-[10px]" variant="outline">
+        <Button className="absolute top-[20px] right-[24px]" variant="outline">
           <FiPlusCircle />
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[600px] h-full sm:h-auto overflow-auto ">
+      <DialogContent className="h-full overflow-auto sm:h-auto sm:max-w-[600px] ">
         <DialogHeader>
           <DialogTitle>Giới thiệu bản thân</DialogTitle>
           <DialogDescription>
@@ -88,7 +88,7 @@ export default function EditSkill({ candidateSkills }: IProps) {
         </DialogHeader>
 
         <div className=" space-y-3">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <div>
               <SelectSkill
                 skill={getValues('skill')}

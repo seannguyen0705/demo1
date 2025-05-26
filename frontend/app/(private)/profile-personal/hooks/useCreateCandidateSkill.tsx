@@ -14,6 +14,9 @@ export const useCreateCandidateSkill = () => {
         queryClient.invalidateQueries({
           queryKey: ['skills'],
         });
+        queryClient.invalidateQueries({
+          queryKey: ['candidate-skills'],
+        });
         toast.success('Tạo kĩ năng thành công');
       }
     },

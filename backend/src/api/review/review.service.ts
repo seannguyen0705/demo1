@@ -54,4 +54,11 @@ export class ReviewService {
       count: result.count,
     };
   }
+  public async getMyReview(companyId: string, candidateId: string) {
+    const review = await this.reviewRepository.findOneBy({
+      companyId,
+      candidateId,
+    });
+    return review;
+  }
 }

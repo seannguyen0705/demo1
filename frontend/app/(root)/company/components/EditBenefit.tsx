@@ -10,19 +10,28 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import useUpdateCandidate from '../hooks/useUpdateCandidate';
-
+import { ICompany } from '@/api/company/interface';
 import { useState } from 'react';
+import useUpdateCompanyInfo from '../hooks/useUpdateCompanyInfo';
 import { isErrorResponse } from '@/utils/helpers/isErrorResponse';
-
+import Editor from '@/components/Editor';
+import useGetMe from '@/app/hooks/useGetMe';
 interface IProps {
-  introduction: string | undefined;
+  company: ICompany;
 }
-export default function EditIntro({ introduction }: IProps) {
-  const { mutate: updateCandidate, isPending } = useUpdateCandidate();
+export default function EditCompanyBenefit({ company }: IProps) {
+  const { user } = useGetMe();
+  const isOwner = user?.id === company.employerId;
+  const { benefits } = company;
+  const { mutate: updateCompany, isPending } = useUpdateCompanyInfo({
+    id: company.id,
+    name: company.name,
+  });
   const [isOpen, setIsOpen] = useState(false);
-  const [value, setValue] = useState(introduction || '');
-
+  const [value, setValue] = useState(benefits || '');
+  if (!isOwner) {
+    return null;
+  }
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
@@ -30,27 +39,22 @@ export default function EditIntro({ introduction }: IProps) {
           <SquarePen />
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[600px]">
+      <DialogContent className="p-6 px-3 sm:max-w-[1000px] md:px-6">
         <DialogHeader>
-          <DialogTitle>Giới thiệu bản thân</DialogTitle>
+          <DialogTitle>Quyền lợi công ty</DialogTitle>
           <DialogDescription>
-            Giới thiệu điểm mạnh và số năm kinh nghiệm của bạn
+            Cập nhật quyền lợi công ty của bạn
           </DialogDescription>
         </DialogHeader>
         <div className="mt-4">
-          <textarea
-            className="min-h-[200px] w-full rounded-md border p-3 dark:bg-gray-800 dark:text-white"
-            value={value}
-            onChange={(e) => setValue(e.target.value)}
-            placeholder="Nhập nội dung giới thiệu của bạn..."
-          />
+          <Editor value={value} onChange={setValue} />
         </div>
 
         <DialogFooter>
           <Button
             onClick={() => {
-              updateCandidate(
-                { introduction: value },
+              updateCompany(
+                { benefits: value },
                 {
                   onSuccess: (data: object) => {
                     if (!isErrorResponse(data)) {

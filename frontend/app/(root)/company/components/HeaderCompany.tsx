@@ -16,23 +16,23 @@ export default function HeaderCompany({
   const { address } = company;
 
   return (
-    <section className="mb-6 rounded-lg bg-light-green overflow-hidden">
+    <section className="bg-light-green mb-6 overflow-hidden rounded-lg dark:bg-gray-900">
       <Image
         src={company.background?.url || '/default_bg.webp'}
         alt={company.name}
         width={800}
         height={130}
-        className="w-full h-[130px] object-cover"
+        className="h-[130px] w-full object-cover"
       />
       <Image
         src={company.logo?.url || '/default_logo.png'}
         alt={company.name}
         width={128}
         height={128}
-        className="size-[128px] border-2 border-white relative -top-14 rounded-sm left-8 bg-white"
+        className="relative -top-14 left-8 size-[128px] rounded-sm border-2 border-white bg-white"
       />
-      <div className="relative -top-12 px-8 space-y-2">
-        <h1 className="text-2xl font-medium text-gray-900 mb-2">
+      <div className="relative -top-12 space-y-2 px-8">
+        <h1 className="mb-2 text-2xl font-medium text-gray-900">
           {company.name}
         </h1>
 
@@ -43,8 +43,8 @@ export default function HeaderCompany({
           </div>
         ))}
 
-        <div className=" flex flex-col lg:flex-row lg:items-center gap-y-2 gap-x-5">
-          <div className="text-blue-500 flex items-center gap-2">
+        <div className=" flex flex-col gap-x-5 gap-y-2 lg:flex-row lg:items-center">
+          <div className="flex items-center gap-2 text-blue-500">
             <Briefcase />
             <span className="text-sm">{numJobs} Vị trí đang tuyển</span>
           </div>
@@ -58,7 +58,7 @@ export default function HeaderCompany({
             <StarRating
               rating={+statistics.avg}
               icon={
-                <Star size={16} className="text-yellow-500 fill-yellow-500" />
+                <Star size={16} className="fill-yellow-500 text-yellow-500" />
               }
             />
             <span className="">{statistics.avg}</span>

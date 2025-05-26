@@ -1,11 +1,14 @@
 import { ICompany } from '@/api/company/interface';
 import NavCompany from './NavCompany';
 import EditCompanyInfo from './EditCompanyInfo';
+import { cookies } from 'next/headers';
 interface IProps {
   company: ICompany;
-  isOwner: boolean;
 }
-export default function CompanyInfo({ company, isOwner }: IProps) {
+export default async function CompanyInfo({ company }: IProps) {
+  const cookieStore = await cookies();
+  const isAuth =
+    cookieStore.has('Authentication') || cookieStore.has('Refresh');
   const info = [
     {
       label: 'Mô hình công ty',
@@ -33,17 +36,17 @@ export default function CompanyInfo({ company, isOwner }: IProps) {
     },
   ];
   return (
-    <section className="rounded-lg mb-2 p-6 bg-light-green overflow-hidden">
+    <section className="bg-light-green mb-2 overflow-hidden rounded-lg p-6 dark:bg-gray-900">
       <NavCompany
         pathName={`/company/${company.name}`}
         companyName={company.name}
       />
 
-      <div className="flex justify-between mb-4 items-center">
+      <div className="mb-4 flex items-center justify-between">
         <h3 className="text-lg font-medium ">Thông tin chung</h3>
-        {isOwner && <EditCompanyInfo company={company} />}
+        {isAuth && <EditCompanyInfo company={company} />}
       </div>
-      <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <ul className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
         {info.map((item) => (
           <li key={item.label} className="">
             <h6 className="text-sm text-gray-600">{item.label}</h6>
