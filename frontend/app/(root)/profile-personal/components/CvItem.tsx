@@ -2,7 +2,7 @@
 import { ICv } from '@/api/cv/interface';
 import Link from 'next/link';
 import { FileText } from 'lucide-react';
-import dayjs from 'dayjs';
+import { format } from 'date-fns';
 import UpdateCv from './UpdateCv';
 import useDeleteCv from '../hooks/useDeleteCv';
 import ConfirmDelete from '@/components/ConfirmDelete';
@@ -29,7 +29,7 @@ export default function CvItem({ cv }: { cv: ICv }) {
         <div className="flex items-center gap-2">
           <span className="text-sm text-gray-500">Cập nhật lần cuối:</span>
           <p className="text-sm text-gray-500">
-            {dayjs(cv.updatedAt).format('DD/MM/YYYY')}
+            {format(new Date(cv.updatedAt), 'dd/MM/yyyy')}
           </p>
         </div>
       </Link>
