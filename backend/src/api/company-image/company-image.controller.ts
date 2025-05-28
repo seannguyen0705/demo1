@@ -22,7 +22,7 @@ export class CompanyImageController {
     private readonly cloudinaryService: CloudinaryService,
     private readonly companyService: CompanyService,
   ) {
-    this.folder = 'company-image';
+    this.folder = 'company/image';
   }
 
   @InjectRoute(companyImageRoutes.create)

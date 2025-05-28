@@ -26,7 +26,7 @@ export class CompanyImageService {
   }
 
   async getCompanyImage(companyId: string) {
-    return this.companyImageRepository.find({ where: { companyId } });
+    return this.companyImageRepository.find({ where: { companyId }, order: { createdAt: 'ASC' } });
   }
 
   async deleteCompanyImage(id: string, companyId: string, queryRunner: QueryRunner) {

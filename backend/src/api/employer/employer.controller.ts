@@ -15,36 +15,25 @@ export class EmployerController {
   constructor(private readonly employerService: EmployerService) {}
 
   @InjectRoute(employerRoutes.updateStatus)
-  public async updateStatus(
-    @Body() data: UpdateStatusUserDto,
-    @Param('id') id: string,
-  ) {
+  public async updateStatus(@Body() data: UpdateStatusUserDto, @Param('id') id: string) {
     return this.employerService.updateStatus(id, data);
   }
 
   @InjectRoute(employerRoutes.updateMe)
-  public async updateMe(
-    @ReqUser() user: IJwtStrategy,
-    @Body() data: UpdateEmployerDto,
-  ): Promise<Employer> {
+  public async updateMe(@ReqUser() user: IJwtStrategy, @Body() data: UpdateEmployerDto): Promise<Employer> {
     if (data.password) {
       data.password = await hash.generateWithBcrypt({
         source: data.password,
       });
     }
     if (data.phoneNumber && data.phoneNumber !== user.element.phoneNumber) {
-      const existedEmployer = await this.employerService.findOneByPhoneNumber(
-        data.phoneNumber,
-      );
+      const existedEmployer = await this.employerService.findOneByPhoneNumber(data.phoneNumber);
       if (existedEmployer) {
         throw new UserAlreadyException();
       }
     }
 
-    const updatedEmployer = await this.employerService.updateEmployer(
-      user.element.id,
-      data,
-    );
+    const updatedEmployer = await this.employerService.updateEmployer(user.element.id, data);
 
     return plainToInstance(Employer, updatedEmployer);
   }

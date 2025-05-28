@@ -37,10 +37,7 @@ export class SkillController {
   }
 
   @InjectRoute(skillRoutes.update)
-  public async update(
-    @Param('id') id: string,
-    @Body() data: UpdateSkillDto,
-  ): Promise<Skill> {
+  public async update(@Param('id') id: string, @Body() data: UpdateSkillDto): Promise<Skill> {
     return this.skillService.update(id, data);
   }
 

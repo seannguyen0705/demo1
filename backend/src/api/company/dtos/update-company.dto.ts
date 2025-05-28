@@ -65,4 +65,6 @@ export default class UpdateCompanyDto {
     example: 'Việt Nam',
   })
   country?: string;
+  logoId?: string;
+  backgroundId?: string;
 }

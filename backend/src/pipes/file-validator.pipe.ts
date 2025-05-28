@@ -1,9 +1,4 @@
-import {
-  Injectable,
-  HttpStatus,
-  PipeTransform,
-  HttpException,
-} from '@nestjs/common';
+import { Injectable, HttpStatus, PipeTransform, HttpException } from '@nestjs/common';
 
 export interface FileValidationOptions {
   errorHttpStatusCode?: HttpStatus;
@@ -35,19 +30,11 @@ export class FileValidatorPipe implements PipeTransform {
   }
 
   transform(file: Express.Multer.File) {
-    const {
-      maxSizeConfig,
-      fileIsRequired,
-      fileTypeConfig,
-      errorHttpStatusCode,
-    } = this.options;
+    const { maxSizeConfig, fileIsRequired, fileTypeConfig, errorHttpStatusCode } = this.options;
 
     if (!file) {
       if (fileIsRequired) {
-        throw new HttpException(
-          'File is required',
-          this.options.errorHttpStatusCode,
-        );
+        throw new HttpException('File is required', this.options.errorHttpStatusCode);
       }
 
       return;
@@ -59,10 +46,7 @@ export class FileValidatorPipe implements PipeTransform {
       }
 
       if (!fileTypeConfig.type.test(file.mimetype)) {
-        throw new HttpException(
-          fileTypeConfig.errorMessage,
-          errorHttpStatusCode,
-        );
+        throw new HttpException(fileTypeConfig.errorMessage, errorHttpStatusCode);
       }
     }
 
@@ -72,10 +56,7 @@ export class FileValidatorPipe implements PipeTransform {
       }
 
       if (file.size > maxSizeConfig.size) {
-        throw new HttpException(
-          maxSizeConfig.errorMessage,
-          errorHttpStatusCode,
-        );
+        throw new HttpException(maxSizeConfig.errorMessage, errorHttpStatusCode);
       }
     }
 

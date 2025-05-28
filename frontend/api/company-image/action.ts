@@ -28,3 +28,17 @@ export const deleteCompanyImage = async (id: string, companyId: string) => {
   }
   return response;
 };
+
+export const updateCompanyImage = async (file: Blob, id: string, companyId: string) => {
+  const formData = new FormData();
+  formData.append('file', file);
+  const response = await actionFetch(`employer/company/images/${id}`, {
+    method: 'PUT',
+    body: formData,
+    credentials: 'include',
+  });
+  if (!isErrorResponse(response)) {
+    revalidateTag(`company/${companyId}/images`);
+  }
+  return response;
+};

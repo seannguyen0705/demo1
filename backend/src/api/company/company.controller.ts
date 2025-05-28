@@ -1,15 +1,31 @@
-import { NotFoundException, Param, Body } from '@nestjs/common';
+import { NotFoundException, Param, Body, UploadedFile } from '@nestjs/common';
 import { CompanyService } from './company.service';
 import { InjectController, InjectRoute, ReqUser } from '@/decorators';
 import companyRoutes from './company.routes';
 import UpdateCompanyDto from './dtos/update-company.dto';
 import { IJwtStrategy } from '../auth/strategies';
-
+import { FileValidatorPipe } from '@/pipes/file-validator.pipe';
+import { InjectDataSource } from '@nestjs/typeorm';
+import { DataSource } from 'typeorm';
+import { CloudinaryService } from '../cloudinary/cloudinary.service';
+import { CreateFileDto } from '../file/dto/create-file.dto';
+import { FileService } from '../file/file.service';
 @InjectController({
   name: companyRoutes.index,
+  isCore: true,
 })
 export class CompanyController {
-  constructor(private readonly companyService: CompanyService) {}
+  private readonly folderLogo: string;
+  private readonly folderBackground: string;
+  constructor(
+    private readonly companyService: CompanyService,
+    @InjectDataSource() private readonly dataSource: DataSource,
+    private readonly cloudinaryService: CloudinaryService,
+    private readonly fileService: FileService,
+  ) {
+    this.folderLogo = 'company/logo';
+    this.folderBackground = 'company/background';
+  }
 
   @InjectRoute(companyRoutes.findOneByName)
   async findOneByName(@Param('name') name: string) {
@@ -21,16 +37,111 @@ export class CompanyController {
   }
 
   @InjectRoute(companyRoutes.update)
-  async update(
-    @Param('id') id: string,
-    @Body() data: UpdateCompanyDto,
+  async update(@Body() data: UpdateCompanyDto, @ReqUser() user: IJwtStrategy) {
+    const company = await this.companyService.findOneByEmployerId(user.element.id);
+    const updateResult = await this.companyService.update(company.id, data);
+    return updateResult;
+  }
+
+  @InjectRoute(companyRoutes.uploadLogo)
+  async uploadLogo(
+    @UploadedFile(
+      new FileValidatorPipe({
+        maxSizeConfig: {
+          size: 1024 * 1024 * 5,
+          errorMessage: 'File size must be less than 5MB',
+        },
+        fileTypeConfig: {
+          type: /image\/*/,
+          errorMessage: 'File type must be image',
+        },
+        fileIsRequired: true,
+      }),
+    )
+    file: Express.Multer.File,
     @ReqUser() user: IJwtStrategy,
   ) {
-    const updateResult = await this.companyService.update(
-      id,
-      data,
-      user.element.id,
-    );
-    return updateResult;
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+    let uploadedFile: { url: string; key: string };
+    try {
+      const company = await this.companyService.findOneByEmployerId(user.element.id);
+      uploadedFile = await this.cloudinaryService.uploadFile(file, this.folderLogo);
+      const createFile: CreateFileDto = {
+        name: file.originalname,
+        url: uploadedFile.url,
+        key: uploadedFile.key,
+        format: file.mimetype,
+      };
+      const createdFile = await this.fileService.create(createFile, queryRunner);
+      await this.companyService.update(company.id, { logoId: createdFile.id }, queryRunner);
+      if (company.logoId) {
+        const oldLogo = await this.fileService.findOneById(company.logoId);
+        await this.fileService.deleteById(oldLogo.id, queryRunner);
+        await this.cloudinaryService.deleteFile(oldLogo.key);
+      }
+      await queryRunner.commitTransaction();
+      return { message: 'Logo uploaded successfully' };
+    } catch (error) {
+      if (uploadedFile) {
+        await this.cloudinaryService.deleteFile(uploadedFile.key);
+      }
+      await queryRunner.rollbackTransaction();
+      throw error;
+    } finally {
+      await queryRunner.release();
+    }
+  }
+
+  @InjectRoute(companyRoutes.uploadBackground)
+  async uploadBackground(
+    @UploadedFile(
+      new FileValidatorPipe({
+        maxSizeConfig: {
+          size: 1024 * 1024 * 5,
+          errorMessage: 'File size must be less than 5MB',
+        },
+        fileTypeConfig: {
+          type: /image\/*/,
+          errorMessage: 'File type must be image',
+        },
+        fileIsRequired: true,
+      }),
+    )
+    file: Express.Multer.File,
+    @ReqUser() user: IJwtStrategy,
+  ) {
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+    let uploadedFile: { url: string; key: string };
+    try {
+      const company = await this.companyService.findOneByEmployerId(user.element.id);
+      uploadedFile = await this.cloudinaryService.uploadFile(file, this.folderBackground);
+      const createFile: CreateFileDto = {
+        name: file.originalname,
+        url: uploadedFile.url,
+        key: uploadedFile.key,
+        format: file.mimetype,
+      };
+      const createdFile = await this.fileService.create(createFile, queryRunner);
+      await this.companyService.update(company.id, { backgroundId: createdFile.id }, queryRunner);
+      if (company.backgroundId) {
+        const oldBackground = await this.fileService.findOneById(company.backgroundId);
+        await this.cloudinaryService.deleteFile(oldBackground.key);
+        await this.fileService.deleteById(oldBackground.id, queryRunner);
+      }
+      await queryRunner.commitTransaction();
+      return { message: 'Background uploaded successfully' };
+    } catch (error) {
+      if (uploadedFile) {
+        await this.cloudinaryService.deleteFile(uploadedFile.key);
+      }
+      await queryRunner.rollbackTransaction();
+      throw error;
+    } finally {
+      await queryRunner.release();
+    }
   }
 }

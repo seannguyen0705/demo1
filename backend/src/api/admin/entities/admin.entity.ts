@@ -5,10 +5,7 @@ import { UserRole, UserStatus } from '@/common/enums';
 
 import type { Token } from '@/api/token/entities';
 import { BaseUserEntity } from '@/common/entities/baseUser.entity';
-import {
-  ResponseAdminDetailDto,
-  ResponseAdminDto,
-} from '../dto/response-admin.dto';
+import { ResponseAdminDetailDto, ResponseAdminDto } from '../dto/response-admin.dto';
 
 @Entity({ name: 'admins' })
 export class Admin extends BaseUserEntity {

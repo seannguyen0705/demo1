@@ -10,10 +10,7 @@ export class ExperienceController {
   constructor(private readonly experienceService: ExperienceService) {}
 
   @InjectRoute(experienceRoutes.create)
-  public async create(
-    @Body() data: CreateExperienceDto,
-    @Req() req: RequestWithUser,
-  ) {
+  public async create(@Body() data: CreateExperienceDto, @Req() req: RequestWithUser) {
     return this.experienceService.create({
       ...data,
       candidateId: req.user.element.id,
@@ -31,11 +28,7 @@ export class ExperienceController {
   }
 
   @InjectRoute(experienceRoutes.update)
-  public async update(
-    @Param('id') id: string,
-    @Body() data: UpdateExperienceDto,
-    @Req() req: RequestWithUser,
-  ) {
+  public async update(@Param('id') id: string, @Body() data: UpdateExperienceDto, @Req() req: RequestWithUser) {
     return this.experienceService.update(id, req.user.element.id, data);
   }
 }

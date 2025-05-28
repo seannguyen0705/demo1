@@ -18,8 +18,7 @@ export class QueryJobDto extends QueryPaginationDto {
   @IsOptional()
   @IsString()
   @Matches(/^(Thương lượng|\d+|\d+-\d+)$/, {
-    message:
-      'Salary must be "Thương lượng", a number, or a number-number range',
+    message: 'Salary must be "Thương lượng", a number, or a number-number range',
   })
   salary?: string;
 

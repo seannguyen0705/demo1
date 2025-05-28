@@ -5,9 +5,7 @@ import { Job } from './entities/job.entity';
 import { JobStatus } from '@/common/enums';
 @Injectable()
 export class JobService {
-  constructor(
-    @InjectRepository(Job) private readonly jobRepository: JobRepository,
-  ) {}
+  constructor(@InjectRepository(Job) private readonly jobRepository: JobRepository) {}
 
   async findByCompanyId(companyId: string) {
     return this.jobRepository.find({

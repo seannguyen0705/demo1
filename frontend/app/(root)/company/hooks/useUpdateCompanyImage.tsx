@@ -1,21 +1,22 @@
-import { createReview } from '@/api/review/action';
-import { CreateReview } from '@/api/review/interface';
+import { updateCompanyImage } from '@/api/company-image/action';
 import { isErrorResponse } from '@/utils/helpers/isErrorResponse';
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
 interface IProps {
+  id: string;
   companyId: string;
 }
-export default function useCreateReview({ companyId }: IProps) {
+
+export const useUpdateCompanyImage = ({ id, companyId }: IProps) => {
   return useMutation({
-    mutationFn: (data: CreateReview) => createReview(data, companyId),
+    mutationFn: (file: Blob) => updateCompanyImage(file, id, companyId),
     onSuccess: (data: object) => {
       if (isErrorResponse(data)) {
         toast.error(data.message);
       } else {
-        toast.success('Đã gửi đánh giá');
+        toast.success('Upload ảnh thành công');
       }
     },
   });
-}
+};

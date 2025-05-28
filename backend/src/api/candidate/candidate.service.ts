@@ -9,12 +9,7 @@ import { UserAlreadyException } from '@/api/auth/auth.exceptions';
 import { Candidate } from './entities/candidate.entity';
 import { CandidateRepository } from './candidate.repository';
 
-import {
-  CreateCandidateDto,
-  UpdateCandidateDto,
-  ResponseCandidateDto,
-  ResponseCandidateDetailDto,
-} from './dto';
+import { CreateCandidateDto, UpdateCandidateDto, ResponseCandidateDto, ResponseCandidateDetailDto } from './dto';
 import { TokenService } from '../token/token.service';
 import { ThirdPartyUser } from '../auth/dto/thirPartyUser';
 import { plainToInstance } from 'class-transformer';
@@ -103,13 +98,7 @@ export class CandidateService {
     return updatedCandidate;
   }
 
-  public async updateById({
-    id,
-    data,
-  }: {
-    id: string;
-    data: UpdateCandidateDto;
-  }): Promise<Candidate> {
+  public async updateById({ id, data }: { id: string; data: UpdateCandidateDto }): Promise<Candidate> {
     const candidate = await this.candidateRepository.findOneBy({ id });
 
     const updatedCandidate = await this.handleUpdateCandidate({

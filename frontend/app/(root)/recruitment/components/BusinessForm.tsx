@@ -4,14 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { Button } from '@/components/ui/button';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import useRegisterBusiness from '@/app/(auth)/hooks/useRegisterBusiness';
@@ -59,11 +52,7 @@ export default function BusinessForm() {
   function onSubmit(values: BusinessFormSchema) {
     registerBusiness(values);
   }
-  const {
-    fileId,
-    mutate: uploadFile,
-    isPending: isUploading,
-  } = useUploadFile();
+  const { fileId, mutate: uploadFile, isPending: isUploading } = useUploadFile();
   const { mutate: deleteFile, isPending: isDeleting } = useDeleteFile();
 
   useEffect(() => {
@@ -71,14 +60,9 @@ export default function BusinessForm() {
   }, [fileId, form]);
 
   return (
-    <div
-      id="business-form"
-      className="bg-light-green min-h-screen rounded-lg py-[30px] md:py-[60px] dark:bg-[#111827]"
-    >
+    <div id="business-form" className="bg-light-green min-h-screen rounded-lg py-[30px] md:py-[60px] dark:bg-[#111827]">
       <div className="container mx-auto px-[20px] md:px-[40px]">
-        <h3 className="text-center text-2xl font-bold">
-          Đăng ký tài khoản doanh nghiệp
-        </h3>
+        <h3 className="text-center text-2xl font-bold">Đăng ký tài khoản doanh nghiệp</h3>
         <p className="text-muted-foreground mb-[30px] text-center">
           Vui lòng điền thông tin đầy đủ để đăng ký tài khoản doanh nghiệp
         </p>
@@ -123,11 +107,7 @@ export default function BusinessForm() {
                     <FormItem>
                       <FormLabel>Email</FormLabel>
                       <FormControl>
-                        <Input
-                          placeholder="Nhập email"
-                          type="email"
-                          {...field}
-                        />
+                        <Input placeholder="Nhập email" type="email" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -208,9 +188,7 @@ export default function BusinessForm() {
                                 variant="destructive"
                                 size="icon"
                                 onClick={() => {
-                                  const newValue = field.value.filter(
-                                    (_, i) => i !== index,
-                                  );
+                                  const newValue = field.value.filter((_, i) => i !== index);
                                   field.onChange(newValue);
                                 }}
                               >
@@ -243,10 +221,7 @@ export default function BusinessForm() {
                   render={({ field: { value, onChange, ...field } }) => (
                     <FormItem>
                       <FormLabel>
-                        File minh chứng{' '}
-                        <span className=" text-muted-foreground text-xs">
-                          *5MB (PDF, Word)
-                        </span>
+                        File minh chứng <span className=" text-muted-foreground text-xs">*5MB (PDF, Word)</span>
                       </FormLabel>
                       <FormControl>
                         <div className="relative">
@@ -263,7 +238,7 @@ export default function BusinessForm() {
                               if (fileId) {
                                 deleteFile(fileId);
                               }
-                              uploadFile({ file, folder: 'company_proof' });
+                              uploadFile({ file, folder: 'company/proof' });
                               form.setValue('proofId', fileId);
                             }}
                             {...field}
@@ -297,9 +272,7 @@ export default function BusinessForm() {
           </form>
         </Form>
         <div className="mt-[10px]  flex items-center  justify-end gap-x-1 text-sm">
-          <span className="text-muted-foreground">
-            Đã có tài khoản doanh nghiệp?
-          </span>
+          <span className="text-muted-foreground">Đã có tài khoản doanh nghiệp?</span>
           <Link href="/recruitment/sign-in" className="underline">
             Đăng nhập
           </Link>

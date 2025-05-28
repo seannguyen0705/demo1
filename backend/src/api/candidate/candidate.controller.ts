@@ -6,11 +6,7 @@ import { FileValidatorPipe } from '@/pipes';
 
 import { CandidateService } from './candidate.service';
 
-import {
-  ResponseCandidateDto,
-  CreateCandidateDto,
-  UpdateCandidateDto,
-} from './dto';
+import { ResponseCandidateDto, CreateCandidateDto, UpdateCandidateDto } from './dto';
 import type { Candidate } from './entities';
 import candidateRoutes from './candidate.routes';
 import { hash } from '@/utils/helpers';
@@ -20,9 +16,7 @@ export class CandidateController {
   constructor(private readonly candidateService: CandidateService) {}
 
   @InjectRoute(candidateRoutes.create)
-  public async create(
-    @Body() data: CreateCandidateDto,
-  ): Promise<ResponseCandidateDto> {
+  public async create(@Body() data: CreateCandidateDto): Promise<ResponseCandidateDto> {
     const createdCandidate = await this.candidateService.create(data);
 
     return createdCandidate;
@@ -74,10 +68,7 @@ export class CandidateController {
   }
 
   @InjectRoute(candidateRoutes.updateById)
-  public async updateById(
-    @Param('id') id: string,
-    @Body() data: UpdateCandidateDto,
-  ): Promise<ResponseCandidateDto> {
+  public async updateById(@Param('id') id: string, @Body() data: UpdateCandidateDto): Promise<ResponseCandidateDto> {
     const updatedCandidate = await this.candidateService.updateById({
       id,
       data,

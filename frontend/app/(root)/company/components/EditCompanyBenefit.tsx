@@ -28,7 +28,6 @@ export default function EditCompanyBenefit({ company, companyImages }: IProps) {
   const isOwner = user?.id === company.employerId;
   const { benefits } = company;
   const { mutate: updateCompany, isPending } = useUpdateCompanyInfo({
-    id: company.id,
     name: company.name,
   });
   const [isOpen, setIsOpen] = useState(false);

@@ -7,8 +7,7 @@ import { MailerModule } from '@nestjs-modules/mailer';
   imports: [
     MailerModule.forRootAsync({
       imports: [ConfigModule],
-      useFactory: async (confiService: ConfigService) =>
-        confiService.get('email'),
+      useFactory: async (confiService: ConfigService) => confiService.get('email'),
       inject: [ConfigService],
     }),
   ],

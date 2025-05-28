@@ -32,6 +32,18 @@ export default {
     jwtSecure: true,
     code: HttpStatus.OK,
     roles: [UserRole.EMPLOYER],
+    extraDecorators: [UseInterceptors(FileInterceptor('file'))],
+    swaggerInfo: {
+      body: {
+        required: true,
+        schema: {
+          type: 'object',
+          properties: {
+            file: { type: 'string', format: 'binary' },
+          },
+        },
+      },
+    },
   },
   delete: <IRouteParams>{
     path: 'employer/company/images/:id',

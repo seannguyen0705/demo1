@@ -5,12 +5,8 @@ import { IUpdateCompany } from './interface';
 import { isErrorResponse } from '@/utils/helpers/isErrorResponse';
 import { revalidateTag } from 'next/cache';
 
-export const updateCompany = async (
-  id: string,
-  data: IUpdateCompany,
-  name: string,
-) => {
-  const response = await actionFetch(`companies/${id}`, {
+export const updateCompany = async (data: IUpdateCompany, name: string) => {
+  const response = await actionFetch('employer/company', {
     method: 'PUT',
     body: JSON.stringify(data),
     credentials: 'include',
@@ -19,6 +15,34 @@ export const updateCompany = async (
     },
   });
 
+  if (!isErrorResponse(response)) {
+    revalidateTag(`company/${name}`);
+  }
+  return response;
+};
+
+export const uploadLogo = async (file: Blob, name: string) => {
+  const formData = new FormData();
+  formData.append('file', file);
+  const response = await actionFetch('employer/company/logo', {
+    method: 'POST',
+    body: formData,
+    credentials: 'include',
+  });
+  if (!isErrorResponse(response)) {
+    revalidateTag(`company/${name}`);
+  }
+  return response;
+};
+
+export const uploadBackground = async (file: Blob, name: string) => {
+  const formData = new FormData();
+  formData.append('file', file);
+  const response = await actionFetch('employer/company/background', {
+    method: 'POST',
+    body: formData,
+    credentials: 'include',
+  });
   if (!isErrorResponse(response)) {
     revalidateTag(`company/${name}`);
   }

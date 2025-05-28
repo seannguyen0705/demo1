@@ -1,10 +1,7 @@
 import { BaseUserEntity } from '@/common/entities/baseUser.entity';
 import { UserRole, UserStatus } from '@/common/enums';
 import { BeforeInsert, Column, Entity, OneToOne } from 'typeorm';
-import {
-  ResponseEmployerDetailDto,
-  ResponseEmployerDto,
-} from '../dto/response-employer.dto';
+import { ResponseEmployerDetailDto, ResponseEmployerDto } from '../dto/response-employer.dto';
 import { Token } from '@/api/token/entities';
 import { hash } from '@/utils/helpers';
 import { Company } from '@/api/company/entities/company.entity';
@@ -44,9 +41,7 @@ export class Employer extends BaseUserEntity {
     };
   }
 
-  public toResponseHavingSessions(
-    sessions: Token[],
-  ): ResponseEmployerDetailDto {
+  public toResponseHavingSessions(sessions: Token[]): ResponseEmployerDetailDto {
     return {
       ...this,
       role: UserRole.EMPLOYER,

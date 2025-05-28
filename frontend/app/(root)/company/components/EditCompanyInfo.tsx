@@ -18,14 +18,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { SquarePen } from 'lucide-react';
 import { Input } from '@/components/ui/input';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import useGetMe from '@/app/hooks/useGetMe';
 
 const formSchema = z.object({
@@ -59,7 +52,6 @@ export default function EditCompanyInfo({ company }: IProps) {
   });
 
   const { mutate: updateCompany, isPending } = useUpdateCompanyInfo({
-    id: company.id,
     name: company.name,
   });
 
@@ -86,9 +78,7 @@ export default function EditCompanyInfo({ company }: IProps) {
       <DialogContent className="h-full overflow-auto sm:h-auto sm:max-w-[600px]">
         <DialogHeader>
           <DialogTitle>Thông tin công ty</DialogTitle>
-          <DialogDescription>
-            Cập nhật thông tin công ty của bạn
-          </DialogDescription>
+          <DialogDescription>Cập nhật thông tin công ty của bạn</DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -100,11 +90,7 @@ export default function EditCompanyInfo({ company }: IProps) {
                   <FormItem>
                     <FormLabel>Loại hình công ty</FormLabel>
                     <FormControl>
-                      <Input
-                        placeholder="Ex: Công ty cổ phần"
-                        className="selection:bg-green"
-                        {...field}
-                      />
+                      <Input placeholder="Ex: Công ty cổ phần" className="selection:bg-green" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -118,11 +104,7 @@ export default function EditCompanyInfo({ company }: IProps) {
                   <FormItem>
                     <FormLabel>Lĩnh vực công ty</FormLabel>
                     <FormControl>
-                      <Input
-                        placeholder="Ex: Công nghệ thông tin"
-                        className="selection:bg-green"
-                        {...field}
-                      />
+                      <Input placeholder="Ex: Công nghệ thông tin" className="selection:bg-green" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -136,11 +118,7 @@ export default function EditCompanyInfo({ company }: IProps) {
                   <FormItem>
                     <FormLabel>Quy mô công ty</FormLabel>
                     <FormControl>
-                      <Input
-                        placeholder="Ex: 100-500"
-                        className="selection:bg-green"
-                        {...field}
-                      />
+                      <Input placeholder="Ex: 100-500" className="selection:bg-green" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -154,11 +132,7 @@ export default function EditCompanyInfo({ company }: IProps) {
                   <FormItem>
                     <FormLabel>Quốc gia</FormLabel>
                     <FormControl>
-                      <Input
-                        placeholder="Ex: Việt Nam"
-                        className="selection:bg-green"
-                        {...field}
-                      />
+                      <Input placeholder="Ex: Việt Nam" className="selection:bg-green" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -172,11 +146,7 @@ export default function EditCompanyInfo({ company }: IProps) {
                   <FormItem>
                     <FormLabel>Ngày làm việc</FormLabel>
                     <FormControl>
-                      <Input
-                        placeholder="Ex: Thứ 2 - Thứ 6"
-                        className="selection:bg-green"
-                        {...field}
-                      />
+                      <Input placeholder="Ex: Thứ 2 - Thứ 6" className="selection:bg-green" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -190,11 +160,7 @@ export default function EditCompanyInfo({ company }: IProps) {
                   <FormItem>
                     <FormLabel>Giờ làm việc</FormLabel>
                     <FormControl>
-                      <Input
-                        placeholder="Ex: 8h - 17h"
-                        className="selection:bg-green"
-                        {...field}
-                      />
+                      <Input placeholder="Ex: 8h - 17h" className="selection:bg-green" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -203,11 +169,7 @@ export default function EditCompanyInfo({ company }: IProps) {
             </div>
 
             <DialogFooter>
-              <Button
-                className="bg-[#309689] hover:bg-[#309689] hover:opacity-80"
-                type="submit"
-                disabled={isPending}
-              >
+              <Button className="bg-[#309689] hover:bg-[#309689] hover:opacity-80" type="submit" disabled={isPending}>
                 {isPending ? 'Đang cập nhật...' : 'Lưu thay đổi'}
               </Button>
             </DialogFooter>

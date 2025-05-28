@@ -1,8 +1,4 @@
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { CvExpository } from './cv.repository';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Cv } from './entities/cv.entity';
@@ -13,9 +9,7 @@ import { UpdateCvDto } from './dto/update-cv.dto';
 @Injectable()
 export class CvService {
   maxNumCv: number;
-  constructor(
-    @InjectRepository(Cv) private readonly cvRepository: CvExpository,
-  ) {
+  constructor(@InjectRepository(Cv) private readonly cvRepository: CvExpository) {
     this.maxNumCv = 3;
   }
 
@@ -28,12 +22,7 @@ export class CvService {
     return queryRunner.manager.save(Cv, cv);
   }
 
-  async updateCv(
-    id: string,
-    data: UpdateCvDto,
-    candidateId: string,
-    queryRunner: QueryRunner,
-  ) {
+  async updateCv(id: string, data: UpdateCvDto, candidateId: string, queryRunner: QueryRunner) {
     const cv = await queryRunner.manager.findOne(Cv, {
       where: { id, candidateId },
     });

@@ -5,12 +5,11 @@ import { toast } from 'sonner';
 import { isErrorResponse } from '@/utils/helpers/isErrorResponse';
 
 interface IProps {
-  id: string;
   name: string;
 }
-export default function useUpdateCompanyInfo({ id, name }: IProps) {
+export default function useUpdateCompanyInfo({ name }: IProps) {
   return useMutation({
-    mutationFn: (data: IUpdateCompany) => updateCompany(id, data, name),
+    mutationFn: (data: IUpdateCompany) => updateCompany(data, name),
     onSuccess: (data: object) => {
       if (isErrorResponse(data)) {
         toast.error(data.message);

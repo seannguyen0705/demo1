@@ -22,17 +22,16 @@ export class CompanyService {
   }
 
   public async findOneByName(name: string) {
-    return this.companyRepository.findOneBy({ name });
+    return this.companyRepository.findOne({ where: { name }, relations: ['logo', 'background'] });
   }
 
   public async findOneById(id: string) {
     return this.companyRepository.findOneBy({ id });
   }
 
-  public async update(id: string, data: UpdateCompanyDto, employerId: string) {
-    const company = await this.companyRepository.findOneBy({ id, employerId });
-    if (!company) {
-      throw new NotFoundException('Không tìm thấy công ty');
+  public async update(id: string, data: UpdateCompanyDto, queryRunner?: QueryRunner) {
+    if (queryRunner) {
+      return queryRunner.manager.update(Company, id, data);
     }
     return this.companyRepository.update(id, data);
   }

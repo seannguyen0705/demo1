@@ -18,8 +18,5 @@ export const loadErrorHandling = (app: INestApplication): void => {
     }),
   );
 
-  app.useGlobalFilters(
-    new AdvancedExceptionFilter(),
-    new ValidatorExceptionFilter(),
-  );
+  app.useGlobalFilters(new AdvancedExceptionFilter(), new ValidatorExceptionFilter());
 };

@@ -20,10 +20,7 @@ import type { IBaseExceptionResponse } from '@/exceptions';
 
 @Catch()
 export class AdvancedExceptionFilter implements ExceptionFilter {
-  catch(
-    exception: HttpException,
-    host: ArgumentsHost,
-  ): Response<IBaseExceptionResponse> {
+  catch(exception: HttpException, host: ArgumentsHost): Response<IBaseExceptionResponse> {
     const isDevelopment = isDevelopmentEnv();
     const response = host.switchToHttp().getResponse<Response>();
 
@@ -34,8 +31,7 @@ export class AdvancedExceptionFilter implements ExceptionFilter {
     };
 
     try {
-      const status =
-        exception?.getStatus?.() || HttpStatus.INTERNAL_SERVER_ERROR;
+      const status = exception?.getStatus?.() || HttpStatus.INTERNAL_SERVER_ERROR;
 
       if (exception instanceof BaseException) {
         const { errorCode, message } = exception;
@@ -78,9 +74,7 @@ export class AdvancedExceptionFilter implements ExceptionFilter {
               errorCode: Exception.NOT_FOUND_CODE,
               status,
               message,
-              stack: exception?.cause
-                ? (exception?.cause as any).stack
-                : undefined,
+              stack: exception?.cause ? (exception?.cause as any).stack : undefined,
             };
 
             console.log("Exception Filter's Exception");

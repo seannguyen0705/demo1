@@ -11,10 +11,7 @@ import { AdminRepository } from './admin.repository';
 import type { CreateAdminDto, UpdateAdminDto } from './dto';
 import { UserRole } from '@/common/enums';
 import { TokenService } from '../token/token.service';
-import {
-  ResponseAdminDetailDto,
-  ResponseAdminDto,
-} from './dto/response-admin.dto';
+import { ResponseAdminDetailDto, ResponseAdminDto } from './dto/response-admin.dto';
 import { plainToInstance } from 'class-transformer';
 @Injectable()
 export class AdminService {
@@ -71,13 +68,7 @@ export class AdminService {
     return plainToInstance(ResponseAdminDetailDto, gotAdmin);
   }
 
-  private async handleUpdateAdmin({
-    admin,
-    data,
-  }: {
-    admin: Admin;
-    data: UpdateAdminDto;
-  }): Promise<Admin> {
+  private async handleUpdateAdmin({ admin, data }: { admin: Admin; data: UpdateAdminDto }): Promise<Admin> {
     const { phoneNumber } = data;
 
     if (phoneNumber && phoneNumber !== admin?.phoneNumber) {
@@ -100,13 +91,7 @@ export class AdminService {
     return updatedAdmin;
   }
 
-  public async updateById({
-    id,
-    data,
-  }: {
-    id: string;
-    data: UpdateAdminDto;
-  }): Promise<ResponseAdminDto> {
+  public async updateById({ id, data }: { id: string; data: UpdateAdminDto }): Promise<ResponseAdminDto> {
     const admin = await this.adminRepository.findOneBy({ id });
 
     const updatedAdmin = await this.handleUpdateAdmin({ admin, data });
@@ -114,13 +99,7 @@ export class AdminService {
     return updatedAdmin.toResponse();
   }
 
-  public async updateByAdmin({
-    admin,
-    data,
-  }: {
-    admin: Admin;
-    data: UpdateAdminDto;
-  }): Promise<ResponseAdminDto> {
+  public async updateByAdmin({ admin, data }: { admin: Admin; data: UpdateAdminDto }): Promise<ResponseAdminDto> {
     const updatedAdmin = await this.handleUpdateAdmin({ admin, data });
 
     return updatedAdmin.toResponse();
