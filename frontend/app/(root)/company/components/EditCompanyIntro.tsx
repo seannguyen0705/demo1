@@ -24,7 +24,6 @@ export default function EditCompanyIntro({ company }: IProps) {
   const isOwner = user?.id === company.employerId;
   const { overview } = company;
   const { mutate: updateCompany, isPending } = useUpdateCompanyInfo({
-    id: company.id,
     name: company.name,
   });
   const [isOpen, setIsOpen] = useState(false);
@@ -42,9 +41,7 @@ export default function EditCompanyIntro({ company }: IProps) {
       <DialogContent className="p-6 px-3 sm:max-w-[1000px] md:px-6">
         <DialogHeader>
           <DialogTitle>Giới thiệu công ty</DialogTitle>
-          <DialogDescription>
-            Cập nhật giới thiệu công ty của bạn
-          </DialogDescription>
+          <DialogDescription>Cập nhật giới thiệu công ty của bạn</DialogDescription>
         </DialogHeader>
         <div className="mt-4">
           <Editor value={value} onChange={setValue} />
