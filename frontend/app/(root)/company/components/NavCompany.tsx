@@ -20,7 +20,7 @@ export default function NavCompany({ pathName, companyName }: IProps) {
       <ul className="flex items-center  gap-4">
         {navs.map((nav) => (
           <li
-            className={`border-b-2  px-2 ${pathName === nav.href ? 'border-green' : 'border-transparent hover:border-gray-300 '}`}
+            className={`border-b-2 px-2 ${pathName === nav.href ? 'border-green' : 'border-transparent hover:border-gray-300 '}`}
             key={nav.href}
           >
             <Link className="" href={nav.href}>

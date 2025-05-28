@@ -52,7 +52,7 @@ export default async function HeaderCompany({ company, numJobs, statistics }: IP
           </div>
         ))}
 
-        <div className=" flex flex-col gap-x-5 gap-y-2 lg:flex-row lg:items-center">
+        <div className="flex flex-col gap-x-5 gap-y-2 lg:flex-row lg:items-center">
           <div className="flex items-center gap-2 text-blue-500">
             <Briefcase />
             <span className="text-sm">{numJobs} Vị trí đang tuyển</span>

@@ -20,7 +20,7 @@ export default async function CompanyPage({ params }: IProps) {
 
   return (
     <div className="container mx-auto flex flex-col md:flex-row lg:p-2 ">
-      <main className=" flex-1 p-2 md:p-0 ">
+      <main className="flex-1 p-2 md:p-0 ">
         <HeaderCompany company={company.data} numJobs={numJobs} statistics={statistics.data} />
         <CompanyInfo company={company.data} />
         <CompanyIntro company={company.data} />

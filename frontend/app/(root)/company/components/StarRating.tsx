@@ -24,7 +24,7 @@ export default function StarRating({ rating, icon }: IProps) {
     }
     return stars;
   };
-  return <div className=" flex items-center">{renderStars()}</div>;
+  return <div className="flex items-center">{renderStars()}</div>;
 }
 
 interface PartialStarProps {
@@ -48,7 +48,5 @@ const PartialStar = ({ icon, remaining }: PartialStarProps) => {
 };
 
 const EmptyStar = () => {
-  return (
-    <Star size={16} className="text-yellow-500 fill-yellow-500 opacity-50" />
-  );
+  return <Star size={16} className="text-yellow-500 fill-yellow-500 opacity-50" />;
 };

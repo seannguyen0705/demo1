@@ -18,12 +18,8 @@ export default async function CompanyReviewsPage({ params }: IProps) {
 
   return (
     <div className="container mx-auto flex flex-col md:flex-row lg:p-2 ">
-      <main className=" flex-1 p-2 md:p-0 ">
-        <HeaderCompany
-          company={company.data}
-          numJobs={numJobs}
-          statistics={statistics.data}
-        />
+      <main className="flex-1 p-2 md:p-0 ">
+        <HeaderCompany company={company.data} numJobs={numJobs} statistics={statistics.data} />
         <CompanyReview company={company.data} />
       </main>
       <aside className="w-[300px]">{/* JOB LIST */}</aside>
