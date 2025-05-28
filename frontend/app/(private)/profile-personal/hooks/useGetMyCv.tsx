@@ -3,7 +3,7 @@ import axiosInstance from '@/config/axios-config';
 import { useQuery } from '@tanstack/react-query';
 
 const getMyCv = async () => {
-  const response = await axiosInstance.get<{ data: ICv[] }>('/cvs');
+  const response = await axiosInstance.get<{ data: ICv[] }>('/candidate/cv');
   return response.data;
 };
 

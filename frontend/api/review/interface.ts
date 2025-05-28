@@ -20,7 +20,6 @@ interface StatisticReviewCompany {
 interface CreateReview {
   rating: number;
   comment: string;
-  companyId: string;
 }
 
 export type { IReview, QueryReview, StatisticReviewCompany, CreateReview };

@@ -22,12 +22,6 @@ export class CreateReviewDto {
   })
   comment: string;
 
-  @IsNotEmpty()
-  @IsString()
-  @ApiProperty({
-    description: 'Company ID of the review',
-    example: '123e4567-e89b-12d3-a456-426614174000',
-  })
   companyId: string;
 
   candidateId: string;

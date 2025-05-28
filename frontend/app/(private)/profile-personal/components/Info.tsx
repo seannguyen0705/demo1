@@ -1,14 +1,7 @@
 import { IUser } from '@/api/interface';
 import { Skeleton } from '@/components/ui/skeleton';
 import getUserAvatar from '@/utils/helpers/getUserAvatar';
-import {
-  Calendar,
-  Globe,
-  Mail,
-  MapPin,
-  Phone,
-  VenusAndMars,
-} from 'lucide-react';
+import { Calendar, Globe, Mail, MapPin, Phone, VenusAndMars } from 'lucide-react';
 import Image from 'next/image';
 import EditProfile from './EditProfile';
 import { UserRole } from '@/utils/enums';
@@ -83,19 +76,11 @@ export default function Info({ user }: IProps) {
   }
   return (
     <section className="relative rounded-[20px] bg-[#EBF5F4] dark:bg-gray-900">
-      <div className="flex items-center gap-2 p-4">
-        <Image
-          src={getUserAvatar(user)}
-          height={96}
-          width={96}
-          className="rounded-full"
-          alt="avatar"
-        />
+      <div className="flex flex-col sm:flex-row items-center gap-2 p-4">
+        <Image src={getUserAvatar(user)} height={96} width={96} className="rounded-full" alt="avatar" />
         <div>
           <h6 className="text-lg font-bold md:text-2xl">{user?.fullName}</h6>
-          <p className="text-sm text-gray-500 dark:text-gray-400">
-            {user?.title}
-          </p>
+          <p className="text-sm text-gray-500 dark:text-gray-400">{user?.title}</p>
         </div>
       </div>
 

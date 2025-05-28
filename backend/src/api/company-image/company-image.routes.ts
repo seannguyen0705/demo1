@@ -1,17 +1,18 @@
 import { UserRole } from '@/common/enums';
+import { UseInterceptors } from '@nestjs/common';
+import { HttpStatus } from '@nestjs/common';
 import { IRouteParams } from '@/decorators';
-import { HttpStatus, UseInterceptors } from '@nestjs/common';
 import { RequestMethod } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 
 export default {
-  index: 'candidate/cv',
+  index: 'company/images',
   create: <IRouteParams>{
-    path: 'candidate/cv',
+    path: 'employer/company/images',
     method: RequestMethod.POST,
     jwtSecure: true,
     code: HttpStatus.CREATED,
-    roles: [UserRole.CANDIDATE],
+    roles: [UserRole.EMPLOYER],
     extraDecorators: [UseInterceptors(FileInterceptor('file'))],
     swaggerInfo: {
       body: {
@@ -23,50 +24,26 @@ export default {
           },
         },
       },
-      responses: [{ status: HttpStatus.CREATED, type: File }],
     },
   },
   update: <IRouteParams>{
-    path: 'candidate/cv/:id',
+    path: 'employer/company/images/:id',
     method: RequestMethod.PUT,
     jwtSecure: true,
     code: HttpStatus.OK,
-    roles: [UserRole.CANDIDATE],
-    extraDecorators: [UseInterceptors(FileInterceptor('file'))],
-    swaggerInfo: {
-      body: {
-        required: true,
-        schema: {
-          type: 'object',
-          properties: {
-            file: {
-              type: 'string',
-              format: 'binary',
-            },
-          },
-        },
-      },
-    },
+    roles: [UserRole.EMPLOYER],
   },
   delete: <IRouteParams>{
-    path: 'candidate/cv/:id',
+    path: 'employer/company/images/:id',
     method: RequestMethod.DELETE,
     jwtSecure: true,
     code: HttpStatus.OK,
-    roles: [UserRole.CANDIDATE],
-    swaggerInfo: {
-      params: {
-        id: {
-          type: String,
-        },
-      },
-    },
+    roles: [UserRole.EMPLOYER],
   },
-  getMyCv: <IRouteParams>{
-    path: 'candidate/cv',
+  getCompanyImage: <IRouteParams>{
+    path: 'company/:companyId/images',
     method: RequestMethod.GET,
-    jwtSecure: true,
+    jwtSecure: false,
     code: HttpStatus.OK,
-    roles: [UserRole.CANDIDATE],
   },
 };

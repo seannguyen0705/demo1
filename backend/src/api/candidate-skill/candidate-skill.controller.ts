@@ -5,15 +5,12 @@ import candidateSkillRoutes from './candidate-skill.routes';
 import { RequestWithUser } from '@/common/interfaces';
 import { CreateCandidateSkillDto } from './dto/create-candidate-skill.dto';
 
-@InjectController({ name: candidateSkillRoutes.index })
+@InjectController({ name: candidateSkillRoutes.index, isCore: true })
 export class CandidateSkillController {
   constructor(private readonly candidateSkillService: CandidateSkillService) {}
 
   @InjectRoute(candidateSkillRoutes.create)
-  async create(
-    @Body() data: CreateCandidateSkillDto,
-    @Req() req: RequestWithUser,
-  ) {
+  async create(@Body() data: CreateCandidateSkillDto, @Req() req: RequestWithUser) {
     return this.candidateSkillService.create(req.user.element.id, data);
   }
 

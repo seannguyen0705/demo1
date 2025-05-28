@@ -6,10 +6,7 @@ import { Employer } from './entities/employer.entity';
 import { TokenService } from '../token/token.service';
 import { CreateEmployerDto } from './dto/create-employer.dto';
 import { UserAlreadyException } from '../auth/auth.exceptions';
-import {
-  ResponseEmployerDetailDto,
-  ResponseEmployerDto,
-} from './dto/response-employer.dto';
+import { ResponseEmployerDetailDto, ResponseEmployerDto } from './dto/response-employer.dto';
 import { UserRole, UserStatus } from '@/common/enums';
 import { QueryRunner } from 'typeorm';
 import { UpdateStatusUserDto } from '@/common/dto/update-status-user.dto';
@@ -26,10 +23,7 @@ export class EmployerService {
     private emailService: EmailService,
   ) {}
 
-  public async create(
-    data: CreateEmployerDto,
-    queryRunner: QueryRunner,
-  ): Promise<ResponseEmployerDto> {
+  public async create(data: CreateEmployerDto, queryRunner: QueryRunner): Promise<ResponseEmployerDto> {
     const { email, phoneNumber } = data;
 
     const employer = await this.findOneByEmailOrPhoneNumber({
@@ -93,10 +87,7 @@ export class EmployerService {
     return employer;
   }
 
-  public async updateEmployer(
-    id: string,
-    data: Partial<Employer>,
-  ): Promise<Employer> {
+  public async updateEmployer(id: string, data: Partial<Employer>): Promise<Employer> {
     const employer = await this.findOneById(id);
     return this.employerRepository.save({
       ...employer,
@@ -106,16 +97,9 @@ export class EmployerService {
 
   public async updateStatus(id: string, data: UpdateStatusUserDto) {
     const employer = await this.findOneById(id);
-    if (
-      employer.status === UserStatus.INACTIVE &&
-      data.status == UserStatus.ACTIVE
-    ) {
+    if (employer.status === UserStatus.INACTIVE && data.status == UserStatus.ACTIVE) {
       const password = generateSecurePassword();
-      await this.emailService.activeEmployer(
-        employer.email,
-        employer.fullName,
-        password,
-      );
+      await this.emailService.activeEmployer(employer.email, employer.fullName, password);
       const hashedPassword = await hash.generateWithBcrypt({
         source: password,
         salt: 10,

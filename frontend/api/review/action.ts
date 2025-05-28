@@ -7,8 +7,8 @@ import { IReview } from './interface';
 import { isErrorResponse } from '@/utils/helpers/isErrorResponse';
 import { revalidateTag } from 'next/cache';
 
-export const createReview = async (data: CreateReview) => {
-  const response = await queryFetch<IReview>(`reviews`, {
+export const createReview = async (data: CreateReview, companyId: string) => {
+  const response = await queryFetch<IReview>(`company/reviews`, {
     method: 'POST',
     body: JSON.stringify(data),
     headers: {
@@ -16,8 +16,8 @@ export const createReview = async (data: CreateReview) => {
     },
   });
   if (!isErrorResponse(response)) {
-    revalidateTag(`reviews/${data.companyId}`);
-    revalidateTag(`reviews/statistics/${data.companyId}`);
+    revalidateTag(`company/${companyId}/reviews/`);
+    revalidateTag(`company/${companyId}/reviews/statistics`);
   }
   return response;
 };

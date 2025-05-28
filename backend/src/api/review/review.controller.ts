@@ -8,23 +8,22 @@ import { QueryReviewDto } from './dto/query-review.dto';
 
 @InjectController({
   name: reviewRoutes.index,
+  isCore: true,
 })
 export class ReviewController {
   constructor(private readonly reviewService: ReviewService) {}
 
   @InjectRoute(reviewRoutes.create)
-  createReview(@Body() data: CreateReviewDto, @ReqUser() user: IJwtStrategy) {
+  createReview(@Body() data: CreateReviewDto, @ReqUser() user: IJwtStrategy, @Param('companyId') companyId: string) {
     return this.reviewService.createReview({
       ...data,
       candidateId: user.element.id,
+      companyId,
     });
   }
 
   @InjectRoute(reviewRoutes.getReviewByCompanyId)
-  getReviewByCompanyId(
-    @Query() query: QueryReviewDto,
-    @Param('companyId') companyId: string,
-  ) {
+  getReviewByCompanyId(@Query() query: QueryReviewDto, @Param('companyId') companyId: string) {
     return this.reviewService.findReviewByCompanyId(query, companyId);
   }
 
@@ -34,10 +33,7 @@ export class ReviewController {
   }
 
   @InjectRoute(reviewRoutes.getMyReview)
-  getMyReview(
-    @Param('companyId') companyId: string,
-    @ReqUser() user: IJwtStrategy,
-  ) {
+  getMyReview(@Param('companyId') companyId: string, @ReqUser() user: IJwtStrategy) {
     return this.reviewService.getMyReview(companyId, user.element.id);
   }
 }

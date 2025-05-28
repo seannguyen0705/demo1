@@ -37,19 +37,13 @@ export default function MyExperience() {
 
   return (
     <>
-      <div className="flex items-center justify-between">
+      <div className="flex mb-3 items-center justify-between">
         <h6 className="text-xl">Kinh nghiệm làm việc</h6>
         <CreateExperience />
       </div>
 
-      <p className="text-sm text-gray-500">
-        Thể hiện những thông tin chi tiết về quá trình làm việc
-      </p>
-      <ul>
-        {data?.map((experience) => (
-          <ExperienceItem key={experience.id} experience={experience} />
-        ))}
-      </ul>
+      <p className="text-sm text-gray-500">Thể hiện những thông tin chi tiết về quá trình làm việc</p>
+      <ul>{data?.map((experience) => <ExperienceItem key={experience.id} experience={experience} />)}</ul>
     </>
   );
 }

@@ -27,6 +27,7 @@ import { CvModule } from '@/api/cv/cv.module';
 import { ReviewModule } from '@/api/review/review.module';
 import { JobModule } from '@/api/job/job.module';
 import { JobSkillModule } from '@/api/job-skill/job-skill.module';
+import { CompanyImageModule } from '@/api/company-image/company-image.module';
 
 const EnvSchema = {
   PORT: Joi.number(),
@@ -87,6 +88,7 @@ const EnvSchema = {
     CompanyModule,
     JobModule,
     JobSkillModule,
+    CompanyImageModule,
   ],
   controllers: [AppController],
   providers: [],

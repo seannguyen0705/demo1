@@ -3,9 +3,7 @@ import axiosInstance from '@/config/axios-config';
 import { useQuery } from '@tanstack/react-query';
 
 const getMySkills = async () => {
-  const response = await axiosInstance.get<{ data: ICandidateSkill[] }>(
-    `/candidate-skills/my-skills`,
-  );
+  const response = await axiosInstance.get<{ data: ICandidateSkill[] }>(`/candidate/skills`);
   return response.data;
 };
 

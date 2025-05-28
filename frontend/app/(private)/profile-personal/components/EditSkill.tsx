@@ -79,12 +79,10 @@ export default function EditSkill({ candidateSkills }: IProps) {
           <FiPlusCircle />
         </Button>
       </DialogTrigger>
-      <DialogContent className="h-full overflow-auto sm:h-auto sm:max-w-[600px] ">
+      <DialogContent className="overflow-auto h-auto max-h-full sm:max-w-[600px] ">
         <DialogHeader>
           <DialogTitle>Giới thiệu bản thân</DialogTitle>
-          <DialogDescription>
-            Giới thiệu điểm mạnh và số năm kinh nghiệm của bạn
-          </DialogDescription>
+          <DialogDescription>Giới thiệu điểm mạnh và số năm kinh nghiệm của bạn</DialogDescription>
         </DialogHeader>
 
         <div className=" space-y-3">
@@ -97,9 +95,7 @@ export default function EditSkill({ candidateSkills }: IProps) {
                   setValue('skill.label', value.label);
                 }}
               />
-              {errors.skill?.value && (
-                <p className="text-sm text-red-500">Vui lòng chọn kĩ năng</p>
-              )}
+              {errors.skill?.value && <p className="text-sm text-red-500">Vui lòng chọn kĩ năng</p>}
             </div>
 
             <div>
@@ -119,16 +115,10 @@ export default function EditSkill({ candidateSkills }: IProps) {
                   <FiPlusCircle />
                 </Button>
               </div>
-              {errors.skillYear && (
-                <p className="text-sm text-red-500">
-                  Vui lòng chọn năm kinh nghiệm
-                </p>
-              )}
+              {errors.skillYear && <p className="text-sm text-red-500">Vui lòng chọn năm kinh nghiệm</p>}
             </div>
           </div>
-          <p className="text-sm text-gray-500">
-            Kĩ năng đã chọn {candidateSkills.length}/20
-          </p>
+          <p className="text-sm text-gray-500">Kĩ năng đã chọn {candidateSkills.length}/20</p>
           <MySkill candidateSkills={candidateSkills} />
         </div>
         <DialogFooter></DialogFooter>

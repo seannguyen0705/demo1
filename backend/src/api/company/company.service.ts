@@ -1,8 +1,4 @@
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CompanyRepository } from './company.repository';
 import { CreateCompanyDto } from './dtos/create-company.dto';
@@ -39,5 +35,21 @@ export class CompanyService {
       throw new NotFoundException('Không tìm thấy công ty');
     }
     return this.companyRepository.update(id, data);
+  }
+
+  public async findOneByEmployerId(employerId: string) {
+    const company = await this.companyRepository.findOneBy({ employerId });
+    if (!company) {
+      throw new NotFoundException('Không tìm thấy công ty');
+    }
+    return company;
+  }
+
+  public async findOneByIdAndEmployerId(id: string, employerId: string) {
+    const company = await this.companyRepository.findOneBy({ id, employerId });
+    if (!company) {
+      throw new NotFoundException('Không tìm thấy công ty');
+    }
+    return company;
   }
 }

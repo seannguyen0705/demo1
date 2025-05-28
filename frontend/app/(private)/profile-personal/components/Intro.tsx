@@ -30,14 +30,12 @@ export default function Intro({ user }: IProps) {
 
   return (
     <section className="bg-light-green relative rounded-[20px] p-6 dark:bg-gray-900">
-      <div className="flex items-center justify-between">
+      <div className="flex mb-3 items-center justify-between">
         <h6 className="text-xl">Giới thiệu bản thân</h6>
         <EditIntro introduction={user?.introduction} />
       </div>
       <p className="text-sm text-gray-500 dark:text-gray-400">
-        {user?.introduction
-          ? user.introduction
-          : 'Chưa có thông tin giới thiệu bản thân, hãy cập nhật ngay!'}{' '}
+        {user?.introduction ? user.introduction : 'Chưa có thông tin giới thiệu bản thân, hãy cập nhật ngay!'}{' '}
       </p>
     </section>
   );

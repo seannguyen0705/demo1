@@ -11,7 +11,7 @@ import { CloudinaryService } from '../cloudinary/cloudinary.service';
 import { CreateCvDto } from './dto/create-cv.dto';
 import { UpdateCvDto } from './dto/update-cv.dto';
 import { Cv } from './entities/cv.entity';
-@InjectController({ name: CvRoutes.index })
+@InjectController({ name: CvRoutes.index, isCore: true })
 export class CvController {
   private readonly folder: string;
   constructor(
@@ -100,22 +100,14 @@ export class CvController {
         throw new NotFoundException('CV not found');
       }
       await this.cloudinaryService.deleteFile(cv.key);
-      const { url, key } = await this.cloudinaryService.uploadFile(
-        file,
-        this.folder,
-      );
+      const { url, key } = await this.cloudinaryService.uploadFile(file, this.folder);
       const data: UpdateCvDto = {
         name: file.originalname,
         url,
         key,
         format: file.mimetype,
       };
-      const updatedCv = await this.cvService.updateCv(
-        id,
-        data,
-        req.user.element.id,
-        queryRunner,
-      );
+      const updatedCv = await this.cvService.updateCv(id, data, req.user.element.id, queryRunner);
       await queryRunner.commitTransaction();
       return updatedCv;
     } catch (error) {
