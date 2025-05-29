@@ -13,8 +13,7 @@ export class ExperienceService {
   ) {}
 
   async create(data: CreateExperienceDto) {
-    const experience = this.experienceRepository.create(data);
-    return this.experienceRepository.save(experience);
+    return this.experienceRepository.save(data);
   }
 
   async findMyExperiences(userId: string) {

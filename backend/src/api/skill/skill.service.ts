@@ -1,8 +1,4 @@
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { SkillRepository } from './skill.repository';
 import { Skill } from './entities/skill.entity';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -49,8 +45,7 @@ export class SkillService {
     }
     if (candidateId) {
       // not get skill that candidate already have
-      const candidateSkills =
-        await this.candidateSkillService.findAllByCandidateId(candidateId);
+      const candidateSkills = await this.candidateSkillService.findAllByCandidateId(candidateId);
       const candidateSkillIds = candidateSkills.map((skill) => skill.skillId);
       if (candidateSkillIds.length) {
         queryBuilder.andWhere('skill.id NOT IN (:...candidateSkillIds)', {

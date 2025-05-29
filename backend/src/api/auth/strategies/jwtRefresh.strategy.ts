@@ -9,10 +9,7 @@ import { Request } from 'express';
 import { ITokenPayload } from '../auth.interface';
 
 @Injectable()
-export class JwtRefreshTokenStrategy extends PassportStrategy(
-  Strategy,
-  JWT_REFRESH_TOKEN,
-) {
+export class JwtRefreshTokenStrategy extends PassportStrategy(Strategy, JWT_REFRESH_TOKEN) {
   constructor(
     configService: ConfigService,
     private readonly authService: AuthService,

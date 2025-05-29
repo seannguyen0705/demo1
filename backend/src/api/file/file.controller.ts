@@ -34,10 +34,7 @@ export class FileController {
     await queryRunner.connect();
     await queryRunner.startTransaction();
     try {
-      const { url, key } = await this.cloudinaryService.uploadFile(
-        file,
-        folder,
-      );
+      const { url, key } = await this.cloudinaryService.uploadFile(file, folder);
       const newFile = await this.fileService.create(
         {
           name: file.originalname,
@@ -67,10 +64,7 @@ export class FileController {
       if (!file) {
         throw new NotFoundException('File not found');
       }
-      await Promise.all([
-        this.fileService.deleteById(id, queryRunner),
-        this.cloudinaryService.deleteFile(file.key),
-      ]);
+      await Promise.all([this.fileService.deleteById(id, queryRunner), this.cloudinaryService.deleteFile(file.key)]);
       await queryRunner.commitTransaction();
       return { message: 'File deleted successfully' };
     } catch (error) {

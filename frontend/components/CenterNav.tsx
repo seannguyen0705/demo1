@@ -54,14 +54,14 @@ export default function CenterNav({ isAuth }: IProps) {
   const navs = isAuth ? authNavs : defaultNavs;
 
   return (
-    <div className=" hidden lg:flex text-[#999]  flex-row gap-x-[20px]">
+    <div className=" hidden lg:flex   flex-row gap-x-[20px]">
       {navs.map((nav) => (
         <Link
           className={`${
             currentPath === nav.href || currentPath.startsWith(nav.href + '/')
-              ? 'dark:text-white text-black font-semibold'
+              ? 'underline font-semibold'
               : ''
-          } hover:dark:text-white hover:text-black`}
+          } `}
           href={nav.href}
           key={nav.name}
         >

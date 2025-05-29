@@ -38,4 +38,24 @@ enum SkillYear {
   MORE_THAN_10_YEAR = '>10 năm',
 }
 
-export { Gender, UserRole, AuthBy, UserStatus, SkillYear };
+enum JobType {
+  OFFICE = 'Tại văn phòng',
+  HYBRID = 'Linh hoạt',
+  REMOTE = 'Từ xa',
+  FREELANCE = 'Freelance',
+}
+
+enum JobStatus {
+  PUBLISHED = 'published',
+  DRAFT = 'draft',
+  HIDDEN = 'hidden',
+}
+
+enum SortJob {
+  NEWEST = 'newest',
+  OLDEST = 'oldest',
+  SALARY_ASC = 'salary_asc',
+  SALARY_DESC = 'salary_desc',
+}
+
+export { Gender, UserRole, AuthBy, UserStatus, SkillYear, JobType, JobStatus, SortJob };

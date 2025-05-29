@@ -1,9 +1,4 @@
-import {
-  Injectable,
-  CallHandler,
-  NestInterceptor,
-  ExecutionContext,
-} from '@nestjs/common';
+import { Injectable, CallHandler, NestInterceptor, ExecutionContext } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -37,13 +32,8 @@ function respond<T>(data: T | ISuccessResponseParams<T>): ISuccessResponse<T> {
 }
 
 @Injectable()
-export class ResponseInterceptor<T>
-  implements NestInterceptor<T, ISuccessResponse<T>>
-{
-  intercept(
-    context: ExecutionContext,
-    next: CallHandler,
-  ): Observable<ISuccessResponse<T>> {
+export class ResponseInterceptor<T> implements NestInterceptor<T, ISuccessResponse<T>> {
+  intercept(context: ExecutionContext, next: CallHandler): Observable<ISuccessResponse<T>> {
     return next.handle().pipe(map((data) => respond(data)));
   }
 }

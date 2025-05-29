@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { CandidateSkill } from './entities/candidate_skill.entity';
 import { CandidateSkillRepository } from './candidate-skill.repository';
 import { CreateCandidateSkillDto } from './dto/create-candidate-skill.dto';
+import { DeleteResult } from 'typeorm';
 
 @Injectable()
 export class CandidateSkillService {
@@ -11,10 +12,7 @@ export class CandidateSkillService {
     private readonly candidateSkillRepository: CandidateSkillRepository,
   ) {}
 
-  public async create(
-    candidateId: string,
-    data: CreateCandidateSkillDto,
-  ): Promise<CandidateSkill> {
+  public async create(candidateId: string, data: CreateCandidateSkillDto): Promise<CandidateSkill> {
     const existingCandidateSkill = await this.candidateSkillRepository.findOne({
       where: { candidateId, skillId: data.skillId },
     });
@@ -30,13 +28,11 @@ export class CandidateSkillService {
     return this.candidateSkillRepository.save(candidateSkill);
   }
 
-  public async delete(id: string): Promise<void> {
-    await this.candidateSkillRepository.delete(id);
+  public async delete(id: string, candidateId: string): Promise<DeleteResult> {
+    return this.candidateSkillRepository.delete({ id, candidateId });
   }
 
-  public async findAllByCandidateId(
-    candidateId: string,
-  ): Promise<CandidateSkill[]> {
+  public async findAllByCandidateId(candidateId: string): Promise<CandidateSkill[]> {
     return this.candidateSkillRepository.find({
       where: { candidateId },
       relations: {

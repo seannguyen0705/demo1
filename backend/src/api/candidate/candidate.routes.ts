@@ -4,11 +4,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { UserRole } from '@/common/enums';
 import { IRouteParams } from '@/decorators';
 
-import {
-  ResponseCandidateDto,
-  ResponseCandidateDetailDto,
-  UpdateCandidateDto,
-} from './dto';
+import { ResponseCandidateDto, ResponseCandidateDetailDto, UpdateCandidateDto } from './dto';
 
 export default {
   index: 'candidates',
@@ -25,9 +21,7 @@ export default {
     method: RequestMethod.GET,
     roles: [UserRole.ADMIN],
     swaggerInfo: {
-      responses: [
-        { status: HttpStatus.OK, type: ResponseCandidateDto, isArray: true },
-      ],
+      responses: [{ status: HttpStatus.OK, type: ResponseCandidateDto, isArray: true }],
     },
   },
   updateMe: <IRouteParams>{

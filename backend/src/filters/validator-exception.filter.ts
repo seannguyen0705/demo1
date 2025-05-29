@@ -16,10 +16,7 @@ export interface IValidatorExceptionResponse extends IBaseExceptionResponse {
 
 @Catch(ValidatorException)
 export class ValidatorExceptionFilter implements ExceptionFilter {
-  catch(
-    exception: ValidatorException,
-    host: ArgumentsHost,
-  ): Response<IBaseExceptionResponse> {
+  catch(exception: ValidatorException, host: ArgumentsHost): Response<IBaseExceptionResponse> {
     const isDevelopment = isDevelopmentEnv();
 
     const response = host.switchToHttp().getResponse<Response>();
@@ -35,9 +32,7 @@ export class ValidatorExceptionFilter implements ExceptionFilter {
         return result;
       }, {});
 
-      const firstError = Object.values(
-        Object.values(detail || {})?.[0] || [] || {},
-      );
+      const firstError = Object.values(Object.values(detail || {})?.[0] || [] || {});
 
       let resBody = <IValidatorExceptionResponse>{
         errorCode: Exception.UNPROCESSABLE_ENTITY_CODE,

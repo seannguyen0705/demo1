@@ -4,14 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { Button } from '@/components/ui/button';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import useRegisterBusiness from '@/app/(auth)/hooks/useRegisterBusiness';
@@ -24,7 +17,7 @@ import Link from 'next/link';
 const formSchema = z.object({
   // Personal Information
   fullName: z.string().min(2, 'Họ tên phải có ít nhất 2 ký tự'),
-  workTitle: z.string().min(2, 'Chức vụ phải có ít nhất 2 ký tự'),
+  title: z.string().min(2, 'Chức vụ phải có ít nhất 2 ký tự'),
   email: z.string().email('Email không hợp lệ'),
   phoneNumber: z.string().min(10, 'Số điện thoại phải có ít nhất 10 số'),
 
@@ -45,7 +38,7 @@ export default function BusinessForm() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       fullName: '',
-      workTitle: '',
+      title: '',
       email: '',
       phoneNumber: '',
       name: '',
@@ -59,11 +52,7 @@ export default function BusinessForm() {
   function onSubmit(values: BusinessFormSchema) {
     registerBusiness(values);
   }
-  const {
-    fileId,
-    mutate: uploadFile,
-    isPending: isUploading,
-  } = useUploadFile();
+  const { fileId, mutate: uploadFile, isPending: isUploading } = useUploadFile();
   const { mutate: deleteFile, isPending: isDeleting } = useDeleteFile();
 
   useEffect(() => {
@@ -71,15 +60,10 @@ export default function BusinessForm() {
   }, [fileId, form]);
 
   return (
-    <div
-      id="business-form"
-      className="min-h-screen dark:bg-[#111827] rounded-lg bg-[#EBF5F4] py-[30px] md:py-[60px]"
-    >
+    <div id="business-form" className="bg-light-green min-h-screen rounded-lg py-[30px] md:py-[60px] dark:bg-[#111827]">
       <div className="container mx-auto px-[20px] md:px-[40px]">
-        <h3 className="text-center text-2xl font-bold">
-          Đăng ký tài khoản doanh nghiệp
-        </h3>
-        <p className="text-center text-muted-foreground mb-[30px]">
+        <h3 className="text-center text-2xl font-bold">Đăng ký tài khoản doanh nghiệp</h3>
+        <p className="text-muted-foreground mb-[30px] text-center">
           Vui lòng điền thông tin đầy đủ để đăng ký tài khoản doanh nghiệp
         </p>
         <Form {...form}>
@@ -105,7 +89,7 @@ export default function BusinessForm() {
                 />
                 <FormField
                   control={form.control}
-                  name="workTitle"
+                  name="title"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Chức vụ</FormLabel>
@@ -123,11 +107,7 @@ export default function BusinessForm() {
                     <FormItem>
                       <FormLabel>Email</FormLabel>
                       <FormControl>
-                        <Input
-                          placeholder="Nhập email"
-                          type="email"
-                          {...field}
-                        />
+                        <Input placeholder="Nhập email" type="email" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -173,13 +153,13 @@ export default function BusinessForm() {
                   name="address"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className=" flex justify-between items-center">
+                      <FormLabel className=" flex items-center justify-between">
                         Địa chỉ công ty
                         {field.value.length < 3 && (
                           <Button
                             type="button"
                             variant="outline"
-                            className="bg-[#309689] size-[36px] text-white hover:text-white hover:bg-[#309689]/80"
+                            className="bg-green size-[36px] text-white hover:bg-[#309689]/80 hover:text-white"
                             onClick={() => {
                               field.onChange([...field.value, '']);
                             }}
@@ -208,9 +188,7 @@ export default function BusinessForm() {
                                 variant="destructive"
                                 size="icon"
                                 onClick={() => {
-                                  const newValue = field.value.filter(
-                                    (_, i) => i !== index,
-                                  );
+                                  const newValue = field.value.filter((_, i) => i !== index);
                                   field.onChange(newValue);
                                 }}
                               >
@@ -243,10 +221,7 @@ export default function BusinessForm() {
                   render={({ field: { value, onChange, ...field } }) => (
                     <FormItem>
                       <FormLabel>
-                        File minh chứng{' '}
-                        <span className=" text-xs text-muted-foreground">
-                          *5MB (PDF, Word)
-                        </span>
+                        File minh chứng <span className=" text-muted-foreground text-xs">*5MB (PDF, Word)</span>
                       </FormLabel>
                       <FormControl>
                         <div className="relative">
@@ -263,14 +238,14 @@ export default function BusinessForm() {
                               if (fileId) {
                                 deleteFile(fileId);
                               }
-                              uploadFile({ file, folder: 'company_proof' });
+                              uploadFile({ file, folder: 'company/proof' });
                               form.setValue('proofId', fileId);
                             }}
                             {...field}
                           />
                           {(isUploading || isDeleting) && (
-                            <div className="absolute top-0 translate-y-1/2 right-0">
-                              <LoaderCircle className="size-4 mr-2 animate-spin" />
+                            <div className="absolute top-0 right-0 translate-y-1/2">
+                              <LoaderCircle className="mr-2 size-4 animate-spin" />
                             </div>
                           )}
                         </div>
@@ -289,17 +264,15 @@ export default function BusinessForm() {
             >
               {(isPending || isUploading || isDeleting) && (
                 <div className="flex items-center justify-center">
-                  <Circle className="size-4 mr-2 animate-spin" />
+                  <Circle className="mr-2 size-4 animate-spin" />
                 </div>
               )}
               Đăng ký
             </Button>
           </form>
         </Form>
-        <div className="mt-[10px]  text-sm flex  justify-end items-center gap-x-1">
-          <span className="text-muted-foreground">
-            Đã có tài khoản doanh nghiệp?
-          </span>
+        <div className="mt-[10px]  flex items-center  justify-end gap-x-1 text-sm">
+          <span className="text-muted-foreground">Đã có tài khoản doanh nghiệp?</span>
           <Link href="/recruitment/sign-in" className="underline">
             Đăng nhập
           </Link>

@@ -5,9 +5,9 @@ import { RequestMethod } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 
 export default {
-  index: 'cvs',
+  index: 'candidate/cv',
   create: <IRouteParams>{
-    path: '/',
+    path: 'candidate/cv',
     method: RequestMethod.POST,
     jwtSecure: true,
     code: HttpStatus.CREATED,
@@ -27,7 +27,7 @@ export default {
     },
   },
   update: <IRouteParams>{
-    path: '/:id',
+    path: 'candidate/cv/:id',
     method: RequestMethod.PUT,
     jwtSecure: true,
     code: HttpStatus.OK,
@@ -49,7 +49,7 @@ export default {
     },
   },
   delete: <IRouteParams>{
-    path: '/:id',
+    path: 'candidate/cv/:id',
     method: RequestMethod.DELETE,
     jwtSecure: true,
     code: HttpStatus.OK,
@@ -63,7 +63,7 @@ export default {
     },
   },
   getMyCv: <IRouteParams>{
-    path: '/',
+    path: 'candidate/cv',
     method: RequestMethod.GET,
     jwtSecure: true,
     code: HttpStatus.OK,

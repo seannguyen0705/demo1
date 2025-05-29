@@ -28,10 +28,7 @@ export class AdminController {
   }
 
   @InjectRoute(adminRoutes.updateMe)
-  public async updateMe(
-    @ReqUser() user: IJwtStrategy,
-    @Body() data: UpdateAdminDto,
-  ): Promise<ResponseAdminDto> {
+  public async updateMe(@ReqUser() user: IJwtStrategy, @Body() data: UpdateAdminDto): Promise<ResponseAdminDto> {
     const updatedAdmin = await this.adminService.updateByAdmin({
       admin: <Admin>user.element,
       data,
@@ -41,19 +38,14 @@ export class AdminController {
   }
 
   @InjectRoute(adminRoutes.getById)
-  public async getById(
-    @Param('id') id: string,
-  ): Promise<ResponseAdminDetailDto> {
+  public async getById(@Param('id') id: string): Promise<ResponseAdminDetailDto> {
     const gotAdmin = await this.adminService.getDetailById(id);
 
     return gotAdmin;
   }
 
   @InjectRoute(adminRoutes.updateById)
-  public async updateById(
-    @Param('id') id: string,
-    @Body() data: UpdateAdminDto,
-  ): Promise<ResponseAdminDto> {
+  public async updateById(@Param('id') id: string, @Body() data: UpdateAdminDto): Promise<ResponseAdminDto> {
     const updatedAdmin = await this.adminService.updateById({
       id,
       data,

@@ -17,25 +17,14 @@ export class GithubController {
   public async login() {}
 
   @InjectRoute(githubRoutes.callback)
-  public async callback(
-    @Req() req: RequestWithThirdPartyUser,
-    @Res() res: Response,
-  ) {
+  public async callback(@Req() req: RequestWithThirdPartyUser, @Res() res: Response) {
     try {
-      const { accessTokenCookie, refreshTokenCookie } =
-        await this.authService.validateThirdPartyUser(req.user);
+      const { accessTokenCookie, refreshTokenCookie } = await this.authService.validateThirdPartyUser(req.user);
 
-      res.setHeader('Set-Cookie', [
-        accessTokenCookie.cookie,
-        refreshTokenCookie.cookie,
-      ]);
+      res.setHeader('Set-Cookie', [accessTokenCookie.cookie, refreshTokenCookie.cookie]);
       res.redirect(this.configService.get('FRONTEND_URL'));
     } catch (error) {
-      res.redirect(
-        this.configService.get('FRONTEND_URL') +
-          '/sign-in' +
-          `?error=${error.message}`,
-      );
+      res.redirect(this.configService.get('FRONTEND_URL') + '/sign-in' + `?error=${error.message}`);
     }
   }
 }

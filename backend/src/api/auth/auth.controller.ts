@@ -33,9 +33,7 @@ export class AuthController {
   ) {}
 
   @InjectRoute(authRoutes.registerCandidate)
-  public async registerCandidate(
-    @Body() userInfo: RegisterCandidateDto,
-  ): Promise<ResponseCandidateDto> {
+  public async registerCandidate(@Body() userInfo: RegisterCandidateDto): Promise<ResponseCandidateDto> {
     const registeredUser = await this.authService.registerCandidate(userInfo);
 
     return registeredUser;
@@ -58,10 +56,7 @@ export class AuthController {
     await queryRunner.startTransaction();
 
     try {
-      const createdEmployer = await this.employerService.create(
-        data,
-        queryRunner,
-      );
+      const createdEmployer = await this.employerService.create(data, queryRunner);
 
       await this.companyService.create(
         {
@@ -88,16 +83,11 @@ export class AuthController {
       role: user.role,
       email: user.element?.email,
     };
-    const accessTokenCookie =
-      await this.authService.getCookieWithJwtAccessToken(payload);
+    const accessTokenCookie = await this.authService.getCookieWithJwtAccessToken(payload);
 
-    const refreshTokenCookie =
-      await this.authService.getCookieWithJwtRefreshToken(payload);
+    const refreshTokenCookie = await this.authService.getCookieWithJwtRefreshToken(payload);
 
-    req.res.setHeader('Set-Cookie', [
-      accessTokenCookie.cookie,
-      refreshTokenCookie.cookie,
-    ]);
+    req.res.setHeader('Set-Cookie', [accessTokenCookie.cookie, refreshTokenCookie.cookie]);
 
     await this.tokenService.create({
       refreshToken: refreshTokenCookie.token,
@@ -119,8 +109,7 @@ export class AuthController {
       email: user.element?.email,
     };
 
-    const accessTokenCookie =
-      await this.authService.getCookieWithJwtAccessToken(payload);
+    const accessTokenCookie = await this.authService.getCookieWithJwtAccessToken(payload);
 
     req.res.setHeader('Set-Cookie', [accessTokenCookie.cookie]);
 
@@ -142,10 +131,7 @@ export class AuthController {
 
   @InjectRoute(authRoutes.getMe)
   public async getMe(@ReqUser() user: IJwtStrategy) {
-    const userDetail = await this.authService.getUserDetailById(
-      user.element.id,
-      user.role,
-    );
+    const userDetail = await this.authService.getUserDetailById(user.element.id, user.role);
 
     return userDetail;
   }

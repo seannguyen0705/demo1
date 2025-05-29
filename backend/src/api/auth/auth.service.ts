@@ -11,17 +11,9 @@ import { TokenService } from '@/api/token/token.service';
 import { Admin } from '@/api/admin/entities';
 import type { Candidate } from '@/api/candidate/entities';
 
-import {
-  BannedUserException,
-  InactiveEmployerException,
-  WrongCredentialsException,
-} from './auth.exceptions';
+import { BannedUserException, InactiveEmployerException, WrongCredentialsException } from './auth.exceptions';
 
-import type {
-  ITokenPayload,
-  IValidateUserParams,
-  IValidateJwtUserParams,
-} from './auth.interface';
+import type { ITokenPayload, IValidateUserParams, IValidateJwtUserParams } from './auth.interface';
 import { UserRole, UserStatus } from '@/common/enums';
 import { RegisterCandidateDto } from './dto/registerCandidate.dto';
 import { ResponseCandidateDto } from '../candidate/dto';
@@ -33,10 +25,7 @@ export type TUser = Admin | Candidate | Employer;
 
 @Injectable()
 export class AuthService {
-  private services: Record<
-    UserRole,
-    CandidateService | AdminService | EmployerService
-  >;
+  private services: Record<UserRole, CandidateService | AdminService | EmployerService>;
 
   constructor(
     private jwtService: JwtService,
@@ -53,9 +42,7 @@ export class AuthService {
     };
   }
 
-  public async registerCandidate(
-    userInfo: RegisterCandidateDto,
-  ): Promise<ResponseCandidateDto> {
+  public async registerCandidate(userInfo: RegisterCandidateDto): Promise<ResponseCandidateDto> {
     const registeredCandidate = await this.candidateService.create(userInfo);
 
     return registeredCandidate;
@@ -91,16 +78,12 @@ export class AuthService {
     };
   }
 
-  public async validateUser({
-    email,
-    role,
-    password,
-  }: IValidateUserParams): Promise<TUser> {
+  public async validateUser({ email, role, password }: IValidateUserParams): Promise<TUser> {
     const userService = this.services[role];
 
     const user = await userService.findOneByEmail(email);
 
-    if (!(user && compareSync(password, user?.password))) {
+    if (!(user && compareSync(password, user?.password || ''))) {
       throw new WrongCredentialsException();
     }
     if (user.status === UserStatus.BANNED) {
@@ -151,10 +134,7 @@ export class AuthService {
     return this.handleRegisteredUser(newCandidate);
   }
 
-  public async validateJwtUser({
-    email,
-    role,
-  }: IValidateJwtUserParams): Promise<TUser> {
+  public async validateJwtUser({ email, role }: IValidateJwtUserParams): Promise<TUser> {
     const userService = this.services[role];
 
     const user = await userService.findOneByEmail(email);
@@ -173,10 +153,7 @@ export class AuthService {
   }
 
   public getCookieForLogOut() {
-    return [
-      'Authentication=; HttpOnly; Path=/; Max-Age=0',
-      'Refresh=; HttpOnly; Path=/; Max-Age=0',
-    ];
+    return ['Authentication=; HttpOnly; Path=/; Max-Age=0', 'Refresh=; HttpOnly; Path=/; Max-Age=0'];
   }
 
   public async getUserDetailById(id: string, role: UserRole) {

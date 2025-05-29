@@ -57,7 +57,7 @@ export default function LoginForm() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-4 container mx-auto"
+        className="container mx-auto space-y-4"
       >
         <FormField
           control={form.control}
@@ -67,6 +67,7 @@ export default function LoginForm() {
               <FormLabel>Email</FormLabel>
               <FormControl>
                 <Input
+                  className="selection:bg-green"
                   type="email"
                   placeholder="nguyenvan@gmail.com"
                   {...field}
@@ -86,6 +87,7 @@ export default function LoginForm() {
               <FormControl>
                 <div className="relative">
                   <Input
+                    className="selection:bg-green"
                     type={showPassword ? 'text' : 'password'}
                     placeholder=""
                     {...field}
@@ -94,13 +96,13 @@ export default function LoginForm() {
                     type="button"
                     variant="ghost"
                     size="sm"
-                    className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                    className="absolute top-0 right-0 h-full px-3 py-2 hover:bg-transparent"
                     onClick={() => setShowPassword(!showPassword)}
                   >
                     {showPassword ? (
-                      <EyeOff className="h-4 w-4 text-muted-foreground" />
+                      <EyeOff className="text-muted-foreground h-4 w-4" />
                     ) : (
-                      <Eye className="h-4 w-4 text-muted-foreground" />
+                      <Eye className="text-muted-foreground h-4 w-4" />
                     )}
                     <span className="sr-only">
                       {showPassword ? 'Hide password' : 'Show password'}
@@ -121,7 +123,7 @@ export default function LoginForm() {
           {isPending ? 'Đang đăng nhập' : 'Đăng nhập'}
         </Button>
         {role !== UserRole.ADMIN && (
-          <div className="   text-sm flex  justify-end items-center gap-x-1">
+          <div className="   flex items-center  justify-end gap-x-1 text-sm">
             <span className="text-muted-foreground">Chưa có tài khoản?</span>
             <Link
               href={role === UserRole.EMPLOYER ? '/recruitment' : '/sign-up'}

@@ -6,12 +6,8 @@ import { Employer } from './entities/employer.entity';
 import { TokenService } from '../token/token.service';
 import { CreateEmployerDto } from './dto/create-employer.dto';
 import { UserAlreadyException } from '../auth/auth.exceptions';
-import {
-  ResponseEmployerDetailDto,
-  ResponseEmployerDto,
-} from './dto/response-employer.dto';
+import { ResponseEmployerDetailDto, ResponseEmployerDto } from './dto/response-employer.dto';
 import { UserRole, UserStatus } from '@/common/enums';
-import { UpdateEmployerDto } from './dto/update-employer.dto';
 import { QueryRunner } from 'typeorm';
 import { UpdateStatusUserDto } from '@/common/dto/update-status-user.dto';
 import generateSecurePassword from '@/utils/helpers/generateSecurePassword';
@@ -27,10 +23,7 @@ export class EmployerService {
     private emailService: EmailService,
   ) {}
 
-  public async create(
-    data: CreateEmployerDto,
-    queryRunner: QueryRunner,
-  ): Promise<ResponseEmployerDto> {
+  public async create(data: CreateEmployerDto, queryRunner: QueryRunner): Promise<ResponseEmployerDto> {
     const { email, phoneNumber } = data;
 
     const employer = await this.findOneByEmailOrPhoneNumber({
@@ -51,6 +44,10 @@ export class EmployerService {
     return this.employerRepository.findOneBy({ email });
   }
 
+  public async findOneByPhoneNumber(phoneNumber: string): Promise<Employer> {
+    return this.employerRepository.findOneBy({ phoneNumber });
+  }
+
   public async findOneByEmailOrPhoneNumber({
     email,
     phoneNumber,
@@ -68,7 +65,10 @@ export class EmployerService {
   }
 
   public async getDetailById(id: string): Promise<ResponseEmployerDetailDto> {
-    const employer = await this.employerRepository.findOneBy({ id });
+    const employer = await this.employerRepository.findOne({
+      where: { id },
+      relations: ['company'],
+    });
 
     const sessions = await this.tokenService.getAllByUser({
       id,
@@ -79,31 +79,6 @@ export class EmployerService {
     return plainToInstance(ResponseEmployerDetailDto, gotEmployer);
   }
 
-  private async handleUpdateEmployer({
-    employer,
-    data,
-  }: {
-    employer: Employer;
-    data: UpdateEmployerDto;
-  }): Promise<Employer> {
-    const { phoneNumber } = data;
-
-    if (phoneNumber && phoneNumber !== employer?.phoneNumber) {
-      const existedEmployer = await this.findOneByEmailOrPhoneNumber({
-        phoneNumber,
-      });
-
-      if (existedEmployer) {
-        throw new UserAlreadyException();
-      }
-    }
-
-    return this.employerRepository.save({
-      ...employer,
-      ...data,
-    });
-  }
-
   public async findOneById(id: string): Promise<Employer> {
     const employer = await this.employerRepository.findOneBy({ id });
     if (!employer) {
@@ -112,10 +87,7 @@ export class EmployerService {
     return employer;
   }
 
-  public async updateEmployer(
-    id: string,
-    data: Partial<Employer>,
-  ): Promise<Employer> {
+  public async updateEmployer(id: string, data: Partial<Employer>): Promise<Employer> {
     const employer = await this.findOneById(id);
     return this.employerRepository.save({
       ...employer,
@@ -125,16 +97,9 @@ export class EmployerService {
 
   public async updateStatus(id: string, data: UpdateStatusUserDto) {
     const employer = await this.findOneById(id);
-    if (
-      employer.status === UserStatus.INACTIVE &&
-      data.status == UserStatus.ACTIVE
-    ) {
+    if (employer.status === UserStatus.INACTIVE && data.status == UserStatus.ACTIVE) {
       const password = generateSecurePassword();
-      await this.emailService.activeEmployer(
-        employer.email,
-        employer.fullName,
-        password,
-      );
+      await this.emailService.activeEmployer(employer.email, employer.fullName, password);
       const hashedPassword = await hash.generateWithBcrypt({
         source: password,
         salt: 10,

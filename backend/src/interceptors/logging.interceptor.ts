@@ -1,9 +1,4 @@
-import {
-  Injectable,
-  CallHandler,
-  NestInterceptor,
-  ExecutionContext,
-} from '@nestjs/common';
+import { Injectable, CallHandler, NestInterceptor, ExecutionContext } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
@@ -13,8 +8,6 @@ export class LoggingInterceptor implements NestInterceptor {
     console.log('Before reaching the handler...');
 
     const now = Date.now();
-    return next
-      .handle()
-      .pipe(tap(() => console.log(`Response Lag... ${Date.now() - now}ms`)));
+    return next.handle().pipe(tap(() => console.log(`Response Lag... ${Date.now() - now}ms`)));
   }
 }

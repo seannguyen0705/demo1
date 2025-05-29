@@ -1,13 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
-import {
-  ArrayMaxSize,
-  ArrayMinSize,
-  IsArray,
-  IsNotEmpty,
-  IsString,
-  IsUrl,
-} from 'class-validator';
+import { ArrayMaxSize, ArrayMinSize, IsArray, IsNotEmpty, IsString, IsUrl } from 'class-validator';
 
 export class CreateCompanyDto {
   @IsNotEmpty()
@@ -23,10 +16,7 @@ export class CreateCompanyDto {
   @ArrayMinSize(1)
   @ArrayMaxSize(3)
   @ApiProperty({
-    example: [
-      '123 Nguyễn Văn Cừ, Hồ Chí Minh',
-      '123 Nguyễn Văn Cừ, Hồ Chí Minh',
-    ],
+    example: ['123 Nguyễn Văn Cừ, Hồ Chí Minh', '123 Nguyễn Văn Cừ, Hồ Chí Minh'],
   })
   @Transform(({ value }) => {
     // value is string

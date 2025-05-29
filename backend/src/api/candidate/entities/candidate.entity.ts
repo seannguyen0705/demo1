@@ -5,14 +5,11 @@ import { AuthBy, UserRole, UserStatus } from '@/common/enums';
 
 import type { Token } from '@/api/token/entities';
 import { BaseUserEntity } from '@/common/entities/baseUser.entity';
-import {
-  ResponseCandidateDetailDto,
-  ResponseCandidateDto,
-} from '../dto/response-candidate.dto';
+import { ResponseCandidateDetailDto, ResponseCandidateDto } from '../dto/response-candidate.dto';
 
 @Entity({ name: 'candidates' })
 export class Candidate extends BaseUserEntity {
-  @Column({ type: 'enum', enum: AuthBy, default: AuthBy.LOCAL })
+  @Column({ type: 'enum', enum: AuthBy, default: AuthBy.LOCAL, name: 'auth_by' })
   authBy: AuthBy;
 
   @Column({ type: 'enum', enum: UserStatus, default: UserStatus.ACTIVE })
@@ -54,9 +51,7 @@ export class Candidate extends BaseUserEntity {
     };
   }
 
-  public toResponseHavingSessions(
-    sessions: Token[],
-  ): ResponseCandidateDetailDto {
+  public toResponseHavingSessions(sessions: Token[]): ResponseCandidateDetailDto {
     return {
       ...this,
       role: UserRole.CANDIDATE,

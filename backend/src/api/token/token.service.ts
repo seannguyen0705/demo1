@@ -26,13 +26,7 @@ export class TokenService {
     return createdToken;
   }
 
-  public async getAllByUser({
-    id,
-    role,
-  }: {
-    id: string;
-    role: UserRole;
-  }): Promise<Token[]> {
+  public async getAllByUser({ id, role }: { id: string; role: UserRole }): Promise<Token[]> {
     const sessions = await this.tokenRepository.findBy({
       userId: id,
       userRole: role,
@@ -47,9 +41,7 @@ export class TokenService {
     });
   }
 
-  public async deleteByRefreshToken(
-    refreshToken: string,
-  ): Promise<DeleteResult> {
+  public async deleteByRefreshToken(refreshToken: string): Promise<DeleteResult> {
     return this.tokenRepository.delete({
       refreshToken,
     });

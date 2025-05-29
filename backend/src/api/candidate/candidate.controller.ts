@@ -2,27 +2,21 @@ import { Body, Param, UploadedFile } from '@nestjs/common';
 
 import { IJwtStrategy } from '@/api/auth/strategies';
 import { InjectController, InjectRoute, ReqUser } from '@/decorators';
-import { FileValidatorPipe } from '@/pipes';
 
 import { CandidateService } from './candidate.service';
 
-import {
-  ResponseCandidateDto,
-  CreateCandidateDto,
-  UpdateCandidateDto,
-} from './dto';
+import { ResponseCandidateDto, CreateCandidateDto, UpdateCandidateDto } from './dto';
 import type { Candidate } from './entities';
 import candidateRoutes from './candidate.routes';
 import { hash } from '@/utils/helpers';
+import { ImageValidatorPipe } from '@/pipes';
 
 @InjectController({ name: candidateRoutes.index })
 export class CandidateController {
   constructor(private readonly candidateService: CandidateService) {}
 
   @InjectRoute(candidateRoutes.create)
-  public async create(
-    @Body() data: CreateCandidateDto,
-  ): Promise<ResponseCandidateDto> {
+  public async create(@Body() data: CreateCandidateDto): Promise<ResponseCandidateDto> {
     const createdCandidate = await this.candidateService.create(data);
 
     return createdCandidate;
@@ -37,22 +31,12 @@ export class CandidateController {
 
   @InjectRoute(candidateRoutes.updateAvatar)
   public async updateAvatar(
-    @UploadedFile(
-      new FileValidatorPipe({
-        fileTypeConfig: {
-          type: /^image\/(png|jpg|jpeg|bmp|webp)$/,
-        },
-        maxSizeConfig: {
-          size: 1 * 1024 * 1024,
-        },
-        fileIsRequired: false,
-      }),
-    )
+    @ReqUser() user: IJwtStrategy,
+    @UploadedFile(new ImageValidatorPipe())
     file: Express.Multer.File,
-  ): Promise<void> {
-    // TODO: Implement your logic
-    console.log('File name:', file.originalname);
-    return;
+  ) {
+    const updatedCandidate = await this.candidateService.updateAvatar(user.element.id, file);
+    return updatedCandidate;
   }
 
   @InjectRoute(candidateRoutes.updateMe)
@@ -73,20 +57,8 @@ export class CandidateController {
     return updatedCandidate;
   }
 
-  // @InjectRoute(candidateRoutes.getById)
-  // public async getById(
-  //   @Param('id') id: string,
-  // ): Promise<ResponseCandidateDetailDto> {
-  //   const gotCandidate = await this.candidateService.getDetailById(id);
-
-  //   return gotCandidate;
-  // }
-
   @InjectRoute(candidateRoutes.updateById)
-  public async updateById(
-    @Param('id') id: string,
-    @Body() data: UpdateCandidateDto,
-  ): Promise<ResponseCandidateDto> {
+  public async updateById(@Param('id') id: string, @Body() data: UpdateCandidateDto): Promise<ResponseCandidateDto> {
     const updatedCandidate = await this.candidateService.updateById({
       id,
       data,

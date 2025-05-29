@@ -2,7 +2,7 @@
 
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
-
+import Image from '@tiptap/extension-image';
 import TextAlign from '@tiptap/extension-text-align';
 import MenuBar from './Menu-bar';
 
@@ -29,12 +29,19 @@ export default function Editor({ onChange, value }: IProps) {
       TextAlign.configure({
         types: ['heading', 'paragraph'],
       }),
+      Image.configure({
+        allowBase64: true,
+        inline: true,
+        HTMLAttributes: {
+          class: 'inline-block w-[100%] sm:w-[30%] h-auto p-1 md:p-2',
+        },
+      }),
     ],
     content: value,
     editorProps: {
       attributes: {
         class:
-          'min-h-[156px] border rounded-md dark:bg-gray-800 dark:text-white py-2 px-3',
+          'min-h-[156px] md:min-h-[200px] border rounded-md dark:bg-gray-800 dark:text-white py-2 px-3',
       },
     },
     onUpdate: ({ editor }) => {
@@ -43,9 +50,12 @@ export default function Editor({ onChange, value }: IProps) {
   });
 
   return (
-    <div>
+    <div className="">
       <MenuBar editor={editor} />
-      <EditorContent editor={editor} />
+      <EditorContent
+        className="h-[160px] md:h-[200px] overflow-auto w-full"
+        editor={editor}
+      />
     </div>
   );
 }
