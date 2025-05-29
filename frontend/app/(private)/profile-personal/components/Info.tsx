@@ -1,10 +1,11 @@
 import { IUser } from '@/api/interface';
 import { Skeleton } from '@/components/ui/skeleton';
 import getUserAvatar from '@/utils/helpers/getUserAvatar';
-import { Calendar, Globe, Mail, MapPin, Phone, VenusAndMars } from 'lucide-react';
+import { Calendar, Globe, Loader2, Mail, MapPin, Phone, VenusAndMars } from 'lucide-react';
 import Image from 'next/image';
 import EditProfile from './EditProfile';
 import { UserRole } from '@/utils/enums';
+import useUpdateAvatar from '../hooks/useUpdateAvatar';
 
 function SkeletonInfo() {
   return (
@@ -34,6 +35,7 @@ interface IProps {
 }
 
 export default function Info({ user }: IProps) {
+  const { mutate: updateAvatar, isPending } = useUpdateAvatar({ role: user?.role });
   if (!user) {
     return <SkeletonInfo />;
   }
@@ -75,10 +77,17 @@ export default function Info({ user }: IProps) {
     fields.splice(4, 1);
   }
 
+  const onChangeFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      updateAvatar(file);
+    }
+  };
+
   return (
     <section className="relative rounded-[20px] bg-[#EBF5F4] dark:bg-gray-900">
       <div className="flex flex-col sm:flex-row items-center gap-2 p-4">
-        <label className="cursor-pointer">
+        <label className="cursor-pointer relative">
           <Image
             src={getUserAvatar(user)}
             height={96}
@@ -86,7 +95,12 @@ export default function Info({ user }: IProps) {
             className="rounded-full object-cover size-[96px]"
             alt="avatar"
           />
-          <input type="file" className="hidden" />
+          {isPending && (
+            <div className="absolute rounded-full inset-0 bg-black/50 flex items-center justify-center">
+              <Loader2 className="w-4 h-4 animate-spin" />
+            </div>
+          )}
+          <input onChange={onChangeFile} type="file" className="hidden" />
         </label>
         <div>
           <h6 className="text-lg font-bold md:text-2xl">{user?.fullName}</h6>

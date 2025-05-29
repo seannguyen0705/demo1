@@ -1,3 +1,5 @@
 'use client';
 
-export default function MyReview() {}
+export default function MyReview() {
+  return <div>MyReview</div>;
+}

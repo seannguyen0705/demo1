@@ -17,6 +17,7 @@ export class Job extends BaseEntity {
   @Column({
     type: 'enum',
     enum: JobType,
+    name: 'job_type',
   })
   jobType: JobType;
 
