@@ -11,7 +11,7 @@ export default async function CompanyReview({ company }: IProps) {
   return (
     <section className="bg-light-green mb-2 overflow-hidden rounded-lg p-6 dark:bg-gray-900">
       <NavCompany pathName={`/company/${company.name}/reviews`} companyName={company.name} />
-      {isAuth && <MyReview />}
+      {isAuth && <MyReview companyId={company.id} />}
     </section>
   );
 }

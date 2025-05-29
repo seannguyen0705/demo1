@@ -3,6 +3,7 @@ interface IReview {
   rating: number;
   comment: string;
   createdAt: Date;
+  companyId: string;
 }
 
 interface QueryReview {
@@ -22,4 +23,9 @@ interface CreateReview {
   comment: string;
 }
 
-export type { IReview, QueryReview, StatisticReviewCompany, CreateReview };
+interface UpdateReview {
+  rating: number;
+  comment: string;
+}
+
+export type { IReview, QueryReview, StatisticReviewCompany, CreateReview, UpdateReview };

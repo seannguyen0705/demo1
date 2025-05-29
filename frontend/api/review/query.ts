@@ -2,7 +2,7 @@ import queryFetch from '@/utils/helpers/queryFetch';
 import { QueryReview, StatisticReviewCompany } from './interface';
 
 export const getReviewByCompanyId = async (companyId: string) => {
-  const response = await queryFetch<QueryReview>(`company/reviews/${companyId}`, {
+  const response = await queryFetch<QueryReview>(`company/${companyId}/reviews`, {
     method: 'GET',
     next: {
       tags: [`company/${companyId}/reviews`],

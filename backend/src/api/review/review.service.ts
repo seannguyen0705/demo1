@@ -1,10 +1,10 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common';
 import { ReviewRepository } from './review.repository';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Review } from './entities/review.entity';
 import { QueryReviewDto } from './dto/query-review.dto';
-
+import { UpdateReviewDto } from './dto/update-review.dto';
 @Injectable()
 export class ReviewService {
   constructor(
@@ -50,7 +50,7 @@ export class ReviewService {
 
     const result = await queryBuilder.getRawOne();
     return {
-      avg: parseFloat(result.avg).toFixed(1),
+      avg: isNaN(parseFloat(result.avg)) ? 5.0 : parseFloat(result.avg).toFixed(1),
       count: result.count,
     };
   }
@@ -60,5 +60,16 @@ export class ReviewService {
       candidateId,
     });
     return review;
+  }
+
+  public async deleteReview(reviewId: string, candidateId: string) {
+    return this.reviewRepository.delete({ id: reviewId, candidateId });
+  }
+  public async updateReview(reviewId: string, candidateId: string, updateReviewDto: UpdateReviewDto) {
+    const review = await this.reviewRepository.findOneBy({ id: reviewId, candidateId });
+    if (!review) {
+      throw new NotFoundException('Review not found');
+    }
+    return this.reviewRepository.update({ id: reviewId }, updateReviewDto);
   }
 }

@@ -3,17 +3,21 @@
 import Editor from '@/components/Editor';
 import { useState } from 'react';
 import { Star } from 'lucide-react';
-import useCreateReview from '../hooks/useCreateReview';
+import { IReview } from '@/api/review/interface';
+import useUpdateReview from '../hooks/useUpdateReview';
+import { isErrorResponse } from '@/utils/helpers/isErrorResponse';
 
 interface IProps {
   companyId: string;
+  review: IReview;
+  setIsEdit: (isEdit: boolean) => void;
 }
 
-export default function CreateReview({ companyId }: IProps) {
-  const [comment, setComment] = useState('');
-  const [rating, setRating] = useState(0);
-  const [hoverRating, setHoverRating] = useState(0);
-  const { mutate: createReview, isPending } = useCreateReview({ companyId });
+export default function EditReview({ companyId, review, setIsEdit }: IProps) {
+  const [comment, setComment] = useState(review.comment);
+  const [rating, setRating] = useState(review.rating);
+  const [hoverRating, setHoverRating] = useState(review.rating);
+  const { mutate: updateReview, isPending } = useUpdateReview({ companyId, reviewId: review.id });
 
   const handleStarClick = (index: number) => {
     setRating(index + 1);
@@ -49,10 +53,27 @@ export default function CreateReview({ companyId }: IProps) {
         <Editor value={comment} onChange={setComment} />
       </div>
       <button
-        onClick={() => createReview({ comment, rating })}
+        onClick={() =>
+          updateReview(
+            { comment, rating },
+            {
+              onSuccess: (data: object) => {
+                if (!isErrorResponse(data)) {
+                  setIsEdit(false);
+                }
+              },
+            },
+          )
+        }
         className="px-4 py-2 bg-green text-white rounded-md hover:bg-opacity-50 transition-colors"
       >
         {isPending ? 'Đang gửi...' : 'Gửi đánh giá'}
+      </button>
+      <button
+        onClick={() => setIsEdit(false)}
+        className="px-4 ml-2 py-2 bg-red text-white bg-red-500 rounded-md hover:bg-opacity-50 transition-colors"
+      >
+        Hủy
       </button>
     </div>
   );

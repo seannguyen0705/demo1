@@ -3,7 +3,7 @@ import { getJobByCompanyId } from '@/api/job/query';
 import { getStatisticsReviewCompany } from '@/api/review/query';
 import HeaderCompany from '../../components/HeaderCompany';
 import CompanyReview from '../../components/CompanyReview';
-
+import ListReview from '../../components/ListReview';
 interface IProps {
   params: Promise<{ name: string }>;
 }
@@ -21,6 +21,7 @@ export default async function CompanyReviewsPage({ params }: IProps) {
       <main className="flex-1 p-2 md:p-0 ">
         <HeaderCompany company={company.data} numJobs={numJobs} statistics={statistics.data} />
         <CompanyReview company={company.data} />
+        <ListReview companyId={company.data.id} />
       </main>
       <aside className="w-[300px]">{/* JOB LIST */}</aside>
     </div>
