@@ -1,7 +1,11 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { deleteExperience } from '@/api/experience/action';
 import { toast } from 'sonner';
 import { isErrorResponse } from '@/utils/helpers/isErrorResponse';
+import axiosInstance from '@/config/axios-config';
+
+const deleteExperience = async (id: string) => {
+  return axiosInstance.delete(`experiences/${id}`);
+};
 
 export default function useDeleteExperience() {
   const queryClient = useQueryClient();

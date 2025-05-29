@@ -1,7 +1,12 @@
-import { deleteSkill } from '@/api/candidate-skill/action';
 import { isErrorResponse } from '@/utils/helpers/isErrorResponse';
 import { toast } from 'sonner';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import axiosInstance from '@/config/axios-config';
+
+const deleteSkill = async (id: string) => {
+  const response = await axiosInstance.delete(`/candidate/skills/${id}`);
+  return response;
+};
 
 export default function useDeleteCandidateSkill() {
   const queryClient = useQueryClient();

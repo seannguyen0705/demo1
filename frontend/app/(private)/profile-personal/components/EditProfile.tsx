@@ -90,7 +90,7 @@ export default function EditProfile({ user }: IProps) {
                   <FormItem>
                     <FormLabel>Họ và tên</FormLabel>
                     <FormControl>
-                      <Input {...field} />
+                      <Input {...field} className="selection:bg-green" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -104,7 +104,7 @@ export default function EditProfile({ user }: IProps) {
                   <FormItem>
                     <FormLabel>Chức danh</FormLabel>
                     <FormControl>
-                      <Input {...field} />
+                      <Input {...field} className="selection:bg-green" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -114,7 +114,7 @@ export default function EditProfile({ user }: IProps) {
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input disabled className="bg-gray-100" readOnly value={user?.email} />
+                  <Input disabled className="bg-gray-100 selection:bg-green" readOnly value={user?.email} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -126,7 +126,7 @@ export default function EditProfile({ user }: IProps) {
                   <FormItem>
                     <FormLabel>Số điện thoại</FormLabel>
                     <FormControl>
-                      <Input {...field} />
+                      <Input {...field} className="selection:bg-green" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -141,7 +141,7 @@ export default function EditProfile({ user }: IProps) {
                     <FormLabel>Giới tính</FormLabel>
                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
-                        <SelectTrigger className=" w-full">
+                        <SelectTrigger className=" w-full selection:bg-green">
                           <SelectValue placeholder="Chọn giới tính" />
                         </SelectTrigger>
                       </FormControl>
@@ -163,7 +163,7 @@ export default function EditProfile({ user }: IProps) {
                   <FormItem>
                     <FormLabel>Ngày sinh</FormLabel>
                     <FormControl className="">
-                      <Input className="" type="date" {...field} />
+                      <Input className="selection:bg-green" type="date" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -178,7 +178,7 @@ export default function EditProfile({ user }: IProps) {
                     <FormItem>
                       <FormLabel>Địa chỉ</FormLabel>
                       <FormControl>
-                        <Input {...field} />
+                        <Input {...field} className="selection:bg-green" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -193,7 +193,7 @@ export default function EditProfile({ user }: IProps) {
                   <FormItem>
                     <FormLabel>Website cá nhân</FormLabel>
                     <FormControl>
-                      <Input {...field} />
+                      <Input {...field} className="selection:bg-green" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

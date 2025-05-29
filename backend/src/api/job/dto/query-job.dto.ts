@@ -1,6 +1,7 @@
 import { QueryPaginationDto } from '@/common/dto/query-pagination.dto';
 import { JobType, SortJob } from '@/common/enums';
-import { IsEnum, IsOptional, IsString, Matches } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class QueryJobDto extends QueryPaginationDto {
   @IsOptional()
@@ -16,11 +17,14 @@ export class QueryJobDto extends QueryPaginationDto {
   jobType?: JobType;
 
   @IsOptional()
-  @IsString()
-  @Matches(/^(Thương lượng|\d+|\d+-\d+)$/, {
-    message: 'Salary must be "Thương lượng", a number, or a number-number range',
-  })
-  salary?: string;
+  @IsNumber()
+  @Type(() => Number)
+  minSalary?: number;
+
+  @IsOptional()
+  @IsNumber()
+  @Type(() => Number)
+  maxSalary?: number;
 
   @IsEnum(SortJob)
   @IsOptional()

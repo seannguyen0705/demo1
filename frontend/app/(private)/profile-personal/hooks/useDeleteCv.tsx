@@ -1,19 +1,23 @@
-import { deleteCv } from '@/api/cv/action';
-import { useMutation } from '@tanstack/react-query';
-import { isErrorResponse } from '@/utils/helpers/isErrorResponse';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
-import { useQueryClient } from '@tanstack/react-query';
+import axiosInstance from '@/config/axios-config';
+import { ErrorReponse } from '@/api/interface';
+import { AxiosError } from 'axios';
+
+const deleteCv = async (id: string) => {
+  return axiosInstance.delete(`candidate/cv/${id}`);
+};
+
 export default function useDeleteCv() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: deleteCv,
-    onSuccess: (data: object) => {
-      if (isErrorResponse(data)) {
-        toast.error(data.message);
-      } else {
-        queryClient.invalidateQueries({ queryKey: ['my-cv'] });
-        toast.success('Xóa CV thành công');
-      }
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['my-cv'] });
+      toast.success('Xóa CV thành công');
+    },
+    onError: (error: AxiosError<ErrorReponse>) => {
+      toast.error(error.response?.data.message || 'Lỗi xóa CV');
     },
   });
 }

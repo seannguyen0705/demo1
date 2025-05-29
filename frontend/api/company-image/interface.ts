@@ -1,9 +1,12 @@
+import { IFile } from '../file/interface';
+import { ICompany } from '../company/interface';
+
 interface ICompanyImage {
-  id: string;
+  fileId: string;
   companyId: string;
-  url: string;
-  key: string;
-  format: string;
+  file: IFile;
+  company: ICompany;
+  id: string;
 }
 
 export type { ICompanyImage };

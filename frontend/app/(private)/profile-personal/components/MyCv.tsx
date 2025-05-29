@@ -3,7 +3,6 @@ import CvItem from './CvItem';
 import CreateCv from './CreateCv';
 import useGetMyCv from '../hooks/useGetMyCv';
 import { Skeleton } from '@/components/ui/skeleton';
-import { UserRole } from '@/utils/enums';
 
 function SkeletonCvItem() {
   return (

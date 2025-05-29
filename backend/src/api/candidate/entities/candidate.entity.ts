@@ -9,7 +9,7 @@ import { ResponseCandidateDetailDto, ResponseCandidateDto } from '../dto/respons
 
 @Entity({ name: 'candidates' })
 export class Candidate extends BaseUserEntity {
-  @Column({ type: 'enum', enum: AuthBy, default: AuthBy.LOCAL })
+  @Column({ type: 'enum', enum: AuthBy, default: AuthBy.LOCAL, name: 'auth_by' })
   authBy: AuthBy;
 
   @Column({ type: 'enum', enum: UserStatus, default: UserStatus.ACTIVE })

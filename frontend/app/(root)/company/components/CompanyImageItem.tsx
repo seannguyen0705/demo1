@@ -24,9 +24,9 @@ export default function CompanyImageItem({ image }: IProps) {
   };
 
   return (
-    <li className="relative flex items-center" key={image.id}>
+    <li className="relative flex items-center" key={image.fileId}>
       <label className="cursor-pointer w-full h-auto">
-        <Image src={image.url} alt={image.id} width={100} height={100} className="w-full h-auto" />
+        <Image src={image.file.url} alt={image.fileId} width={100} height={100} className="w-full h-auto" />
         <input disabled={isPending} onChange={handleOnChange} type="file" className="hidden" />
       </label>
       <button disabled={isPending} onClick={() => deleteCompanyImage(image.id)}>

@@ -4,12 +4,12 @@ import { InjectController, InjectRoute, ReqUser } from '@/decorators';
 import companyRoutes from './company.routes';
 import UpdateCompanyDto from './dtos/update-company.dto';
 import { IJwtStrategy } from '../auth/strategies';
-import { FileValidatorPipe } from '@/pipes/file-validator.pipe';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
 import { CreateFileDto } from '../file/dto/create-file.dto';
 import { FileService } from '../file/file.service';
+import { ImageValidatorPipe } from '@/pipes';
 @InjectController({
   name: companyRoutes.index,
   isCore: true,
@@ -45,19 +45,7 @@ export class CompanyController {
 
   @InjectRoute(companyRoutes.uploadLogo)
   async uploadLogo(
-    @UploadedFile(
-      new FileValidatorPipe({
-        maxSizeConfig: {
-          size: 1024 * 1024 * 5,
-          errorMessage: 'File size must be less than 5MB',
-        },
-        fileTypeConfig: {
-          type: /image\/*/,
-          errorMessage: 'File type must be image',
-        },
-        fileIsRequired: true,
-      }),
-    )
+    @UploadedFile(new ImageValidatorPipe())
     file: Express.Multer.File,
     @ReqUser() user: IJwtStrategy,
   ) {
@@ -96,19 +84,7 @@ export class CompanyController {
 
   @InjectRoute(companyRoutes.uploadBackground)
   async uploadBackground(
-    @UploadedFile(
-      new FileValidatorPipe({
-        maxSizeConfig: {
-          size: 1024 * 1024 * 5,
-          errorMessage: 'File size must be less than 5MB',
-        },
-        fileTypeConfig: {
-          type: /image\/*/,
-          errorMessage: 'File type must be image',
-        },
-        fileIsRequired: true,
-      }),
-    )
+    @UploadedFile(new ImageValidatorPipe())
     file: Express.Multer.File,
     @ReqUser() user: IJwtStrategy,
   ) {

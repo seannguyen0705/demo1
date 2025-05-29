@@ -1,7 +1,7 @@
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
 
-import type { DeleteResult } from 'typeorm';
+import type { DataSource, DeleteResult } from 'typeorm';
 
 import { UserRole } from '@/common/enums';
 import { UserAlreadyException } from '@/api/auth/auth.exceptions';
@@ -13,14 +13,23 @@ import { CreateCandidateDto, UpdateCandidateDto, ResponseCandidateDto, ResponseC
 import { TokenService } from '../token/token.service';
 import { ThirdPartyUser } from '../auth/dto/thirPartyUser';
 import { plainToInstance } from 'class-transformer';
-
+import { CloudinaryService } from '../cloudinary/cloudinary.service';
+import { FileService } from '../file/file.service';
+import { CreateFileDto } from '../file/dto/create-file.dto';
+import { File } from '../file/entities/file.entity';
 @Injectable()
 export class CandidateService {
+  private readonly folder: string;
   constructor(
     @InjectRepository(Candidate)
     private candidateRepository: CandidateRepository,
     private tokenService: TokenService,
-  ) {}
+    @InjectDataSource() private readonly dataSource: DataSource,
+    private readonly cloudinaryService: CloudinaryService,
+    private readonly fileService: FileService,
+  ) {
+    this.folder = 'candidate/avatar';
+  }
 
   public async create(data: CreateCandidateDto): Promise<ResponseCandidateDto> {
     const { email } = data;
@@ -132,5 +141,45 @@ export class CandidateService {
     const newCandidate = this.candidateRepository.create(user);
     await this.candidateRepository.save(newCandidate);
     return newCandidate;
+  }
+
+  public async updateAvatar(id: string, file: Express.Multer.File) {
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+    let uploadedFile: { url: string; key: string };
+
+    try {
+      const candidate = await this.candidateRepository.findOneBy({ id });
+      if (!candidate) {
+        throw new NotFoundException('Candidate not found');
+      }
+      uploadedFile = await this.cloudinaryService.uploadFile(file, this.folder);
+      const data: CreateFileDto = {
+        name: file.originalname,
+        url: uploadedFile.url,
+        key: uploadedFile.key,
+        format: file.mimetype,
+      };
+      const newFile = await queryRunner.manager.save(File, data);
+      await queryRunner.manager.update(Candidate, candidate.id, { avatarId: newFile.id });
+      if (candidate.avatarId) {
+        const oldFile = await queryRunner.manager.findOneBy(File, { id: candidate.avatarId });
+        if (oldFile) {
+          await this.cloudinaryService.deleteFile(oldFile.key);
+          await queryRunner.manager.delete(File, oldFile.id);
+        }
+      }
+      await queryRunner.commitTransaction();
+      return newFile;
+    } catch (error) {
+      if (uploadedFile) {
+        await this.cloudinaryService.deleteFile(uploadedFile.key);
+      }
+      await queryRunner.rollbackTransaction();
+      throw error;
+    } finally {
+      await queryRunner.release();
+    }
   }
 }

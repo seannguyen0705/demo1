@@ -7,7 +7,6 @@ import { cookies } from 'next/headers';
 import { LoginDto, ResponseLoginDto, TokenCookie } from './interface';
 import { CreateCandidateDto } from '../candidate/interface';
 import { redirect } from 'next/navigation';
-import { getAuthCookie } from '@/utils/helpers/getAuthCookie';
 
 export const registerCandidate = async (data: CreateCandidateDto) => {
   const response = await actionFetch('candidate/register', {
@@ -70,18 +69,14 @@ export const refreshToken = async () => {
     redirect('/sign-in');
   }
   const refreshCookie = `${refresh?.name}=${refresh?.value}`;
-  const response = await fetch(
-    `${process.env.BACKEND_URL}/api/v1/refresh-token`,
-    {
-      method: 'POST',
-      headers: {
-        Cookie: refreshCookie,
-      },
+  const response = await fetch(`${process.env.BACKEND_URL}/api/v1/refresh-token`, {
+    method: 'POST',
+    headers: {
+      Cookie: refreshCookie,
     },
-  );
+  });
   if (response.ok) {
-    const data: { data: { accessTokenCookie: TokenCookie } } =
-      await response.json();
+    const data: { data: { accessTokenCookie: TokenCookie } } = await response.json();
     const { accessTokenCookie } = data.data;
     cookieStore.set('Authentication', accessTokenCookie.token, {
       httpOnly: true,

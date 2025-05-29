@@ -1,11 +1,10 @@
+import { IFile } from '../file/interface';
+
 interface ICv {
   id: string;
-  name: string;
-  url: string;
-  key: string;
-  format: string;
   candidateId: string;
   updatedAt: string;
+  file: IFile;
 }
 
 export type { ICv };

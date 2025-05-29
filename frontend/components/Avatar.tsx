@@ -16,12 +16,9 @@ export default function Avatar({ user }: IProps) {
   const avatar_url = getUserAvatar(user);
   return (
     <>
-      <button
-        onClick={() => setOpenNavSide(!openNavSide)}
-        className=" relative"
-      >
+      <button onClick={() => setOpenNavSide(!openNavSide)} className=" relative">
         <Image
-          className="  rounded-full border dark:border-gray-700 border-gray-300"
+          className="  rounded-full object-cover size-[32px] border dark:border-gray-700 border-gray-300"
           src={avatar_url}
           alt="avatar"
           width={32}
@@ -34,16 +31,9 @@ export default function Avatar({ user }: IProps) {
 
       {/* Overlay */}
       {openNavSide && (
-        <div
-          className="fixed lg:hidden inset-0 bg-black/20 bg-opacity-50 z-40"
-          onClick={() => setOpenNavSide(false)}
-        />
+        <div className="fixed lg:hidden inset-0 bg-black/20 bg-opacity-50 z-40" onClick={() => setOpenNavSide(false)} />
       )}
-      <UserNavSide
-        openNavSide={openNavSide}
-        user={user}
-        setOpenNavSide={setOpenNavSide}
-      />
+      <UserNavSide openNavSide={openNavSide} user={user} setOpenNavSide={setOpenNavSide} />
     </>
   );
 }

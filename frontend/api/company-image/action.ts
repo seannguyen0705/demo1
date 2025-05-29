@@ -1,5 +1,6 @@
 'use server';
 
+// dùng server action để revalidate tag
 import actionFetch from '@/utils/helpers/actionFetch';
 import { isErrorResponse } from '@/utils/helpers/isErrorResponse';
 import { revalidateTag } from 'next/cache';

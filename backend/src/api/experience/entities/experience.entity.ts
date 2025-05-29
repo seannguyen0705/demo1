@@ -1,19 +1,19 @@
 import { Candidate } from '@/api/candidate/entities/candidate.entity';
 import { Base as BaseEntity } from '@/common/entities';
-import { Column, Entity, ManyToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 
 @Entity('experiences')
 export class Experience extends BaseEntity {
-  @Column()
+  @Column({ name: 'work_title' })
   workTitle: string;
 
-  @Column()
+  @Column({ name: 'company_name' })
   companyName: string;
 
-  @Column()
+  @Column({ name: 'start_date' })
   startDate: string;
 
-  @Column()
+  @Column({ name: 'end_date' })
   endDate: string;
 
   @Column({ type: 'text', nullable: true })
@@ -23,5 +23,6 @@ export class Experience extends BaseEntity {
   candidateId: string;
 
   @ManyToOne(() => Candidate)
+  @JoinColumn({ name: 'candidate_id' })
   candidate: Candidate;
 }

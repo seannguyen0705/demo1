@@ -74,10 +74,20 @@ export default function Info({ user }: IProps) {
     // remove address
     fields.splice(4, 1);
   }
+
   return (
     <section className="relative rounded-[20px] bg-[#EBF5F4] dark:bg-gray-900">
       <div className="flex flex-col sm:flex-row items-center gap-2 p-4">
-        <Image src={getUserAvatar(user)} height={96} width={96} className="rounded-full" alt="avatar" />
+        <label className="cursor-pointer">
+          <Image
+            src={getUserAvatar(user)}
+            height={96}
+            width={96}
+            className="rounded-full object-cover size-[96px]"
+            alt="avatar"
+          />
+          <input type="file" className="hidden" />
+        </label>
         <div>
           <h6 className="text-lg font-bold md:text-2xl">{user?.fullName}</h6>
           <p className="text-sm text-gray-500 dark:text-gray-400">{user?.title}</p>

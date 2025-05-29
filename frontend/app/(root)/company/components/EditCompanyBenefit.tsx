@@ -52,7 +52,7 @@ export default function EditCompanyBenefit({ company, companyImages }: IProps) {
           <h5 className="sm:text-lg text-center sm:text-left my-5 font">Thêm hình ảnh (nếu có)</h5>
           <ul className="grid grid-cols-3 gap-4">
             {companyImages.map((image) => (
-              <CompanyImageItem key={image.id} image={image} />
+              <CompanyImageItem key={image.fileId} image={image} />
             ))}
             <li>
               <CreateCompanyImage companyId={company.id} />

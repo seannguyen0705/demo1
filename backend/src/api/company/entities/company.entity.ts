@@ -17,10 +17,10 @@ export class Company extends BaseEntity {
   @Column({ nullable: true })
   industry?: string;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, name: 'working_day' })
   workingDay?: string; // Thứ 2 - Thứ 7
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, name: 'working_time' })
   workingTime?: string; // 8:00 - 17:00
 
   @Column({ type: 'text', nullable: true, default: '' })
