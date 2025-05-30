@@ -20,7 +20,7 @@ export default function MyReview({ companyId }: IProps) {
   }
   return (
     <>
-      <h6 className="text-lg font-medium mb-3 mx-3">Đánh giá của bạn</h6>
+      <h6 className="text-lg font-medium mb-3">Đánh giá của bạn</h6>
       {myReview?.data.data ? (
         <div>
           <ReviewItem review={myReview.data.data} isOwner={true} />
