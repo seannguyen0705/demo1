@@ -34,6 +34,9 @@ export class ReviewService {
     if (companyId) {
       queryBuilder.where('review.companyId = :companyId', { companyId });
     }
+    if (query.orderBy) {
+      queryBuilder.orderBy(`review.${query.orderBy}`, query.order);
+    }
     const [reviews, total] = await queryBuilder.getManyAndCount();
     const numPage = Math.ceil(total / limit);
     if (page + 1 > numPage) {

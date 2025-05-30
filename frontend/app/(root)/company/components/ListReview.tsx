@@ -1,16 +1,20 @@
-import { getReviewByCompanyId } from '@/api/review/query';
+import { IReview } from '@/api/review/interface';
 import ReviewItem from './ReviewItem';
+import FilterReview from './FilterReview';
 
 interface IProps {
-  companyId: string;
+  reviews: IReview[];
 }
-export default async function ListReview({ companyId }: IProps) {
-  const reviews = await getReviewByCompanyId(companyId);
+export default async function ListReview({ reviews }: IProps) {
   return (
-    <section className="bg-light-green p-6 rounded-lg">
-      <h6 className="text-lg font-medium mb-3">Đánh giá của nhân viên</h6>
+    <section className="bg-light-green dark:bg-gray-900 p-4 lg:p-6 rounded-lg">
+      <div className="flex justify-between mb-3 mx-3 items-center">
+        <h6 className="text-lg font-medium">Đánh giá của nhân viên</h6>
+        <FilterReview />
+      </div>
+
       <ul className="space-y-4">
-        {reviews.data.reviews.map((review) => (
+        {reviews.map((review) => (
           <li key={review.id}>
             <ReviewItem review={review} />
           </li>

@@ -1,3 +1,5 @@
+import { IQueryPagination } from '../interface';
+import { Order, OrderByReview } from '@/utils/enums';
 interface IReview {
   id: string;
   rating: number;
@@ -28,4 +30,9 @@ interface UpdateReview {
   comment: string;
 }
 
-export type { IReview, QueryReview, StatisticReviewCompany, CreateReview, UpdateReview };
+interface IQueryReview extends IQueryPagination {
+  orderBy: OrderByReview;
+  order: Order;
+}
+
+export type { IReview, QueryReview, StatisticReviewCompany, CreateReview, UpdateReview, IQueryReview };
