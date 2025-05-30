@@ -1,11 +1,14 @@
-import { IReview } from '@/api/review/interface';
+import { QueryReview } from '@/api/review/interface';
 import ReviewItem from './ReviewItem';
 import FilterReview from './FilterReview';
+import Pagination from '@/components/Pagination';
 
 interface IProps {
-  reviews: IReview[];
+  reviews: { data: QueryReview };
+  urlSearchParams: URLSearchParams;
 }
-export default async function ListReview({ reviews }: IProps) {
+export default async function ListReview({ reviews, urlSearchParams }: IProps) {
+  const totalPages = Math.ceil(reviews.data.total / 10);
   return (
     <section className="bg-light-green dark:bg-gray-900 p-4 lg:p-6 rounded-lg">
       <div className="flex justify-between mb-3 mx-3 items-center">
@@ -13,13 +16,14 @@ export default async function ListReview({ reviews }: IProps) {
         <FilterReview />
       </div>
 
-      <ul className="space-y-4">
-        {reviews.map((review) => (
+      <ul className="space-y-4 mb-4">
+        {reviews.data.reviews.map((review) => (
           <li key={review.id}>
             <ReviewItem review={review} />
           </li>
         ))}
       </ul>
+      <Pagination totalPages={totalPages} currentPage={reviews.data.currentPage} urlSearchParams={urlSearchParams} />
     </section>
   );
 }

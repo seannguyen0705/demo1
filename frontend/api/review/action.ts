@@ -17,7 +17,7 @@ export const createReview = async (data: CreateReview, companyId: string) => {
     credentials: 'include',
   });
   if (!isErrorResponse(response)) {
-    revalidateTag(`company/${companyId}/reviews/`);
+    revalidateTag(`company/${companyId}/reviews`);
     revalidateTag(`company/${companyId}/reviews/statistics`);
   }
   return response;
@@ -29,7 +29,7 @@ export const deleteReview = async (reviewId: string, companyId: string) => {
     credentials: 'include',
   });
   if (!isErrorResponse(response)) {
-    revalidateTag(`company/${companyId}/reviews/`);
+    revalidateTag(`company/${companyId}/reviews`);
     revalidateTag(`company/${companyId}/reviews/statistics`);
   }
   return response;
@@ -45,7 +45,7 @@ export const updateReview = async (data: UpdateReview, reviewId: string, company
     },
   });
   if (!isErrorResponse(response)) {
-    revalidateTag(`company/${companyId}/reviews/`);
+    revalidateTag(`company/${companyId}/reviews`);
     revalidateTag(`company/${companyId}/reviews/statistics`);
   }
   return response;

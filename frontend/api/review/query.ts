@@ -2,6 +2,7 @@ import queryFetch from '@/utils/helpers/queryFetch';
 import { IQueryReview, QueryReview, StatisticReviewCompany } from './interface';
 import { OrderByReview } from '@/utils/enums';
 import { Order } from '@/utils/enums';
+import { TIME_CACHE } from '@/utils/constants';
 export const getReviewByCompanyId = async (companyId: string, query: IQueryReview) => {
   const { orderBy = OrderByReview.CREATED_AT, order = Order.DESC, page = 1, limit = 10 } = query;
   const response = await queryFetch<QueryReview>(
@@ -10,6 +11,7 @@ export const getReviewByCompanyId = async (companyId: string, query: IQueryRevie
       method: 'GET',
       next: {
         tags: [`company/${companyId}/reviews`],
+        revalidate: TIME_CACHE,
       },
     },
   );
@@ -21,6 +23,7 @@ export const getStatisticsReviewCompany = async (companyId: string) => {
     method: 'GET',
     next: {
       tags: [`company/${companyId}/reviews/statistics`],
+      revalidate: TIME_CACHE,
     },
   });
   return response;

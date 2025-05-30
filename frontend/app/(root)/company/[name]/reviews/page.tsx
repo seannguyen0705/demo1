@@ -11,7 +11,8 @@ interface IProps {
 }
 export default async function CompanyReviewsPage({ params, searchParams }: IProps) {
   const { name } = await params;
-  const { orderBy, order, page } = await searchParams;
+  const { orderBy = OrderByReview.CREATED_AT, order = Order.DESC, page = 1 } = await searchParams;
+  const urlSearchParams = new URLSearchParams({ orderBy, order, page: page.toString() });
   const company = await findCompanyByName(name);
   const [jobs, statistics, reviews] = await Promise.all([
     getJobByCompanyId(company.data.id),
@@ -25,7 +26,7 @@ export default async function CompanyReviewsPage({ params, searchParams }: IProp
       <main className="flex-1 p-2 md:p-0 ">
         <HeaderCompany company={company.data} numJobs={numJobs} statistics={statistics.data} />
         <CompanyReview company={company.data} />
-        <ListReview reviews={reviews.data.reviews} />
+        <ListReview reviews={reviews} urlSearchParams={urlSearchParams} />
       </main>
       <aside className="w-[300px]">{/* JOB LIST */}</aside>
     </div>

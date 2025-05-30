@@ -14,10 +14,10 @@ export class Review extends BaseEntity {
   @Column()
   comment: string;
 
-  @Column({ name: 'candidate_id' })
+  @Column({ name: 'candidate_id', nullable: true })
   candidateId: string;
 
-  @ManyToOne(() => Candidate)
+  @ManyToOne(() => Candidate, { onDelete: 'SET NULL' })
   @JoinColumn({ name: 'candidate_id' })
   candidate: Candidate;
 
