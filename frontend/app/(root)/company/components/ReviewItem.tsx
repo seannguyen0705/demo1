@@ -3,11 +3,12 @@ import { IReview } from '@/api/review/interface';
 import { Star } from 'lucide-react';
 import StarRating from './StarRating';
 import ActionReview from './ActionReview';
-import { format } from 'date-fns';
+import { formatDistanceToNow } from 'date-fns';
+import { vi } from 'date-fns/locale';
 import { useState } from 'react';
 import EditReview from './EditReview';
 interface IProps {
-  review: IReview | undefined;
+  review: IReview;
   isOwner?: boolean;
 }
 export default function ReviewItem({ review, isOwner = false }: IProps) {
@@ -24,7 +25,9 @@ export default function ReviewItem({ review, isOwner = false }: IProps) {
       <div className="flex items-center justify-between">
         <div className="inline-flex items-center gap-2">
           <StarRating rating={review.rating} icon={<Star size={16} className="fill-yellow-500 text-yellow-500" />} />
-          <span className="text-sm font-light">{format(new Date(review.createdAt), 'dd/MM/yyyy')}</span>
+          <span className="text-sm font-light">
+            {formatDistanceToNow(new Date(review.createdAt), { addSuffix: true, locale: vi })}
+          </span>
         </div>
         {isOwner && <ActionReview review={review} setIsEdit={setIsEdit} />}
       </div>
