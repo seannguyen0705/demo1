@@ -3,7 +3,7 @@ import { JobService } from './job.service';
 import { InjectController, InjectRoute } from '@/decorators';
 import jobRoutes from './job.routes';
 
-@InjectController({ name: jobRoutes.index })
+@InjectController({ name: jobRoutes.index, isCore: true })
 export class JobController {
   constructor(private readonly jobService: JobService) {}
 

@@ -37,7 +37,7 @@ const PartialStar = ({ icon, remaining }: PartialStarProps) => {
     <div className="relative">
       {icon}
       <div
-        className="absolute top-0 right-0 h-full opacity-50 bg-light-green"
+        className="absolute top-0 right-0 h-full opacity-50 bg-light-green dark:bg-gray-900"
         style={{
           width: `${100 - percentageFilled}%`,
           clipPath: 'inset(0 0 0 0)',

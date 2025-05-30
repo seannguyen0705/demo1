@@ -58,13 +58,14 @@ enum SortJob {
   SALARY_DESC = 'salary_desc',
 }
 
-export {
-  Gender,
-  UserRole,
-  AuthBy,
-  UserStatus,
-  SkillYear,
-  JobType,
-  JobStatus,
-  SortJob,
-};
+enum OrderByReview {
+  CREATED_AT = 'createdAt',
+  RATING = 'rating',
+}
+
+enum Order {
+  ASC = 'ASC',
+  DESC = 'DESC',
+}
+
+export { Gender, UserRole, AuthBy, UserStatus, SkillYear, JobType, JobStatus, SortJob, OrderByReview, Order };

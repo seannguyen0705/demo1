@@ -3,12 +3,17 @@
 import Editor from '@/components/Editor';
 import { useState } from 'react';
 import { Star } from 'lucide-react';
-import useCreateReview from '../hooks/useCreateReview';
+import { IReview } from '@/api/review/interface';
+import useUpdateReview from '../hooks/useUpdateReview';
 import { z } from 'zod';
-import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { isErrorResponse } from '@/utils/helpers/isErrorResponse';
+
 interface IProps {
   companyId: string;
+  review: IReview;
+  setIsEdit: (isEdit: boolean) => void;
 }
 
 const formSchema = z.object({
@@ -16,21 +21,23 @@ const formSchema = z.object({
   rating: z.number().min(1, { message: 'Đánh giá không được để trống' }),
 });
 
-export default function CreateReview({ companyId }: IProps) {
-  const [hoverRating, setHoverRating] = useState(0);
-  const { mutate: createReview, isPending } = useCreateReview({ companyId });
+export default function EditReview({ companyId, review, setIsEdit }: IProps) {
+  const [hoverRating, setHoverRating] = useState(review.rating);
+  const { mutate: updateReview, isPending } = useUpdateReview({ companyId, reviewId: review.id });
   const {
     handleSubmit,
     formState: { errors },
     setValue,
     getValues,
+    setError,
   } = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      comment: '',
-      rating: 0,
+      comment: review.comment,
+      rating: +review.rating,
     },
   });
+
   const handleStarClick = (index: number) => {
     setValue('rating', index + 1);
   };
@@ -38,8 +45,19 @@ export default function CreateReview({ companyId }: IProps) {
   const handleStarHover = (index: number) => {
     setHoverRating(index + 1);
   };
+
   const onSubmit = (data: z.infer<typeof formSchema>) => {
-    createReview(data);
+    if (data.comment === '<p></p>') {
+      setError('comment', { message: 'Nhận xét không được để trống', type: 'required' });
+      return;
+    }
+    updateReview(data, {
+      onSuccess: (data: object) => {
+        if (!isErrorResponse(data)) {
+          setIsEdit(false);
+        }
+      },
+    });
   };
 
   return (
@@ -64,6 +82,7 @@ export default function CreateReview({ companyId }: IProps) {
         </div>
         {errors.rating && <p className="text-red-500 text-sm">{errors.rating.message}</p>}
       </div>
+
       <div>
         <span className="text-sm font-medium block mb-2">Nhận xét của bạn:</span>
         <Editor value={getValues('comment')} onChange={(value) => setValue('comment', value)} />
@@ -74,6 +93,12 @@ export default function CreateReview({ companyId }: IProps) {
         className="px-4 py-2 bg-green text-white rounded-md hover:bg-opacity-50 transition-colors"
       >
         {isPending ? 'Đang gửi...' : 'Gửi đánh giá'}
+      </button>
+      <button
+        onClick={() => setIsEdit(false)}
+        className="px-4 ml-2 py-2 bg-red text-white bg-red-500 rounded-md hover:bg-opacity-50 transition-colors"
+      >
+        Hủy
       </button>
     </div>
   );

@@ -1,3 +1,5 @@
+import { IQueryPagination } from '../interface';
+
 interface ISkill {
   id: string;
   name: string;
@@ -10,4 +12,8 @@ interface ISkillResponse {
   total: number;
 }
 
-export type { ISkill, ISkillResponse };
+interface IQuerySkill extends IQueryPagination {
+  keyword: string;
+}
+
+export type { ISkill, ISkillResponse, IQuerySkill };

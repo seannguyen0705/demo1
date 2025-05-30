@@ -40,8 +40,7 @@ export default function Editor({ onChange, value }: IProps) {
     content: value,
     editorProps: {
       attributes: {
-        class:
-          'min-h-[156px] md:min-h-[200px] border rounded-md dark:bg-gray-800 dark:text-white py-2 px-3',
+        class: 'min-h-[156px] md:min-h-[200px] border rounded-md dark:bg-gray-800 dark:text-white py-2 px-3',
       },
     },
     onUpdate: ({ editor }) => {
@@ -53,7 +52,7 @@ export default function Editor({ onChange, value }: IProps) {
     <div className="">
       <MenuBar editor={editor} />
       <EditorContent
-        className="h-[160px] md:h-[200px] overflow-auto w-full"
+        className="h-[160px] bg-gray-100 dark:bg-gray-800 md:h-[200px] overflow-auto w-full"
         editor={editor}
       />
     </div>

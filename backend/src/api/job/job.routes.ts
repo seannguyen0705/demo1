@@ -3,9 +3,9 @@ import { RequestMethod } from '@nestjs/common';
 import { HttpStatus } from '@nestjs/common';
 
 export default {
-  index: 'jobs',
+  index: 'company/jobs',
   findByCompanyId: <IRouteParams>{
-    path: '/company/:companyId',
+    path: '/company/:companyId/jobs',
     method: RequestMethod.GET,
     code: HttpStatus.OK,
     jwtSecure: false,

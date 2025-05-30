@@ -1,7 +1,7 @@
 import { EmployerService } from './employer.service';
 import { InjectController, InjectRoute, ReqUser } from '@/decorators';
 import employerRoutes from './employer.routes';
-import { Body, Param } from '@nestjs/common';
+import { Body, Param, UploadedFile } from '@nestjs/common';
 import { UpdateStatusUserDto } from '@/common/dto/update-status-user.dto';
 import { UpdateEmployerDto } from './dto/update-employer.dto';
 import { IJwtStrategy } from '../auth/strategies/jwt.strategy';
@@ -36,5 +36,10 @@ export class EmployerController {
     const updatedEmployer = await this.employerService.updateEmployer(user.element.id, data);
 
     return plainToInstance(Employer, updatedEmployer);
+  }
+
+  @InjectRoute(employerRoutes.updateAvatar)
+  public async updateAvatar(@ReqUser() user: IJwtStrategy, @UploadedFile() file: Express.Multer.File) {
+    return this.employerService.updateAvatar(user.element.id, file);
   }
 }

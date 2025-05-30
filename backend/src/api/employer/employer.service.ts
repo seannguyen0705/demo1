@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
+import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
 
 import { EmployerRepository } from './employer.repository';
 import { Employer } from './entities/employer.entity';
@@ -8,20 +8,30 @@ import { CreateEmployerDto } from './dto/create-employer.dto';
 import { UserAlreadyException } from '../auth/auth.exceptions';
 import { ResponseEmployerDetailDto, ResponseEmployerDto } from './dto/response-employer.dto';
 import { UserRole, UserStatus } from '@/common/enums';
-import { QueryRunner } from 'typeorm';
+import { DataSource, QueryRunner } from 'typeorm';
 import { UpdateStatusUserDto } from '@/common/dto/update-status-user.dto';
 import generateSecurePassword from '@/utils/helpers/generateSecurePassword';
 import { EmailService } from '../email/email.service';
 import { plainToInstance } from 'class-transformer';
 import { hash } from '@/utils/helpers';
+import { FileService } from '../file/file.service';
+import { CloudinaryService } from '../cloudinary/cloudinary.service';
+import { CreateFileDto } from '../file/dto/create-file.dto';
+import { File } from '../file/entities/file.entity';
 @Injectable()
 export class EmployerService {
+  private readonly folder: string;
   constructor(
     @InjectRepository(Employer)
     private employerRepository: EmployerRepository,
     private tokenService: TokenService,
     private emailService: EmailService,
-  ) {}
+    private readonly fileService: FileService,
+    private readonly cloudinaryService: CloudinaryService,
+    @InjectDataSource() private readonly dataSource: DataSource,
+  ) {
+    this.folder = 'employer/avatar';
+  }
 
   public async create(data: CreateEmployerDto, queryRunner: QueryRunner): Promise<ResponseEmployerDto> {
     const { email, phoneNumber } = data;
@@ -112,5 +122,45 @@ export class EmployerService {
     }
     const updatedEmployer = await this.updateEmployer(id, data);
     return plainToInstance(ResponseEmployerDto, updatedEmployer);
+  }
+
+  public async updateAvatar(id: string, file: Express.Multer.File) {
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+    let uploadedFile: { url: string; key: string };
+
+    try {
+      const employer = await this.employerRepository.findOneBy({ id });
+      if (!employer) {
+        throw new NotFoundException('Employer not found');
+      }
+      uploadedFile = await this.cloudinaryService.uploadFile(file, this.folder);
+      const data: CreateFileDto = {
+        name: file.originalname,
+        url: uploadedFile.url,
+        key: uploadedFile.key,
+        format: file.mimetype,
+      };
+      const newFile = await queryRunner.manager.save(File, data);
+      await queryRunner.manager.update(Employer, employer.id, { avatarId: newFile.id });
+      if (employer.avatarId) {
+        const oldFile = await queryRunner.manager.findOneBy(File, { id: employer.avatarId });
+        if (oldFile) {
+          await this.cloudinaryService.deleteFile(oldFile.key);
+          await queryRunner.manager.delete(File, oldFile.id);
+        }
+      }
+      await queryRunner.commitTransaction();
+      return newFile;
+    } catch (error) {
+      if (uploadedFile) {
+        await this.cloudinaryService.deleteFile(uploadedFile.key);
+      }
+      await queryRunner.rollbackTransaction();
+      throw error;
+    } finally {
+      await queryRunner.release();
+    }
   }
 }

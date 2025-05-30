@@ -6,7 +6,7 @@ import { HttpStatus } from '@nestjs/common';
 export default {
   index: 'company/reviews',
   create: <IRouteParams>{
-    path: 'company/reviews',
+    path: 'company/:companyId/review/me',
     method: RequestMethod.POST,
     code: HttpStatus.CREATED,
     jwtSecure: true,
@@ -25,8 +25,22 @@ export default {
     jwtSecure: false,
   },
   getMyReview: <IRouteParams>{
-    path: 'company/:companyId/reviews/my-review',
+    path: 'company/:companyId/reviews/me',
     method: RequestMethod.GET,
+    code: HttpStatus.OK,
+    jwtSecure: true,
+    roles: [UserRole.CANDIDATE],
+  },
+  deleteReview: <IRouteParams>{
+    path: 'candidate/review/:reviewId',
+    method: RequestMethod.DELETE,
+    code: HttpStatus.OK,
+    jwtSecure: true,
+    roles: [UserRole.CANDIDATE],
+  },
+  updateReview: <IRouteParams>{
+    path: 'candidate/review/:reviewId',
+    method: RequestMethod.PUT,
     code: HttpStatus.OK,
     jwtSecure: true,
     roles: [UserRole.CANDIDATE],

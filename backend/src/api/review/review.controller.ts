@@ -5,7 +5,7 @@ import reviewRoutes from './review.routes';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { IJwtStrategy } from '../auth/strategies';
 import { QueryReviewDto } from './dto/query-review.dto';
-
+import { UpdateReviewDto } from './dto/update-review.dto';
 @InjectController({
   name: reviewRoutes.index,
   isCore: true,
@@ -35,5 +35,15 @@ export class ReviewController {
   @InjectRoute(reviewRoutes.getMyReview)
   getMyReview(@Param('companyId') companyId: string, @ReqUser() user: IJwtStrategy) {
     return this.reviewService.getMyReview(companyId, user.element.id);
+  }
+
+  @InjectRoute(reviewRoutes.deleteReview)
+  deleteReview(@Param('reviewId') reviewId: string, @ReqUser() user: IJwtStrategy) {
+    return this.reviewService.deleteReview(reviewId, user.element.id);
+  }
+
+  @InjectRoute(reviewRoutes.updateReview)
+  updateReview(@Param('reviewId') reviewId: string, @Body() data: UpdateReviewDto, @ReqUser() user: IJwtStrategy) {
+    return this.reviewService.updateReview(reviewId, user.element.id, data);
   }
 }
