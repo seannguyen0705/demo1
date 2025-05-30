@@ -46,7 +46,10 @@ export default function Pagination({ totalPages, currentPage, urlSearchParams }:
       {totalPages !== 1 && <NavItem currentPage={currentPage} pageNum={totalPages} urlSearchParams={urlSearchParams} />}
 
       {currentPage < totalPages && (
-        <Link className="text-[#4D4D4D] hover:text-primary" href={`?${urlSearchParams.toString()}&page=${nextPage}`}>
+        <Link
+          className="text-[#4D4D4D] hover:text-primary"
+          href={`?${genQuerySearch('page', nextPage.toString(), urlSearchParams)}`}
+        >
           <FaChevronRight />
         </Link>
       )}

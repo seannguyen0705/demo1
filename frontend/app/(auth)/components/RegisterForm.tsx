@@ -7,14 +7,7 @@ import { z } from 'zod';
 import { Eye, EyeOff } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import useRegisterCandidate from '../hooks/useRegisterCandidate';
 import Link from 'next/link';
@@ -80,7 +73,7 @@ export default function RegisterForm() {
             <FormItem>
               <FormLabel>Họ và tên</FormLabel>
               <FormControl>
-                <Input placeholder="Nguyen Van A" {...field} />
+                <Input placeholder="Nguyen Van A" {...field} className="selection:bg-green" />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -94,11 +87,7 @@ export default function RegisterForm() {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input
-                  type="email"
-                  placeholder="nguyenvan@gmail.com"
-                  {...field}
-                />
+                <Input className="selection:bg-green" type="email" placeholder="nguyenvan@gmail.com" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -114,6 +103,7 @@ export default function RegisterForm() {
               <FormControl>
                 <div className="relative">
                   <Input
+                    className="selection:bg-green"
                     type={showPassword ? 'text' : 'password'}
                     placeholder=""
                     {...field}
@@ -130,9 +120,7 @@ export default function RegisterForm() {
                     ) : (
                       <Eye className="h-4 w-4 text-muted-foreground" />
                     )}
-                    <span className="sr-only">
-                      {showPassword ? 'Hide password' : 'Show password'}
-                    </span>
+                    <span className="sr-only">{showPassword ? 'Hide password' : 'Show password'}</span>
                   </Button>
                 </div>
               </FormControl>
@@ -150,6 +138,7 @@ export default function RegisterForm() {
               <FormControl>
                 <div className="relative">
                   <Input
+                    className="selection:bg-green"
                     type={showConfirmPassword ? 'text' : 'password'}
                     placeholder=""
                     {...field}
@@ -166,9 +155,7 @@ export default function RegisterForm() {
                     ) : (
                       <Eye className="h-4 w-4 text-muted-foreground" />
                     )}
-                    <span className="sr-only">
-                      {showConfirmPassword ? 'Hide password' : 'Show password'}
-                    </span>
+                    <span className="sr-only">{showConfirmPassword ? 'Hide password' : 'Show password'}</span>
                   </Button>
                 </div>
               </FormControl>
@@ -177,11 +164,7 @@ export default function RegisterForm() {
           )}
         />
 
-        <Button
-          type="submit"
-          className="w-full bg-[#309689] hover:bg-[#309689]/80"
-          disabled={isPending}
-        >
+        <Button type="submit" className="w-full bg-[#309689] hover:bg-[#309689]/80" disabled={isPending}>
           {isPending ? 'Đang tạo tài khoản' : 'Đăng ký'}
         </Button>
         <div className="text-sm flex  justify-end items-center gap-x-1">
