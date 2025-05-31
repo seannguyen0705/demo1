@@ -68,4 +68,29 @@ enum Order {
   DESC = 'DESC',
 }
 
-export { Gender, UserRole, AuthBy, UserStatus, SkillYear, JobType, JobStatus, SortJob, OrderByReview, Order };
+enum SalaryType {
+  NEGOTIATION = 'Thương lượng',
+  UPTO = 'Lên đến',
+  RANGE = 'Khoảng',
+  ATLEAST = 'Tối thiểu',
+}
+
+enum SalaryUnit {
+  VND = 'VND',
+  USD = 'USD',
+}
+
+export {
+  Gender,
+  UserRole,
+  AuthBy,
+  UserStatus,
+  SkillYear,
+  JobType,
+  JobStatus,
+  SortJob,
+  OrderByReview,
+  Order,
+  SalaryType,
+  SalaryUnit,
+};

@@ -30,7 +30,7 @@ export class SkillService {
     nextPage: number | null;
     total: number;
   }> {
-    const { page, limit, keyword } = query;
+    const { page, limit, keyword, excludeSkillIds } = query;
     const queryBuilder = this.skillRepository
       .createQueryBuilder('skill')
       .select(['skill.id', 'skill.name'])
@@ -43,6 +43,13 @@ export class SkillService {
         keyword: `%${keyword}%`,
       });
     }
+
+    if (excludeSkillIds.length && excludeSkillIds[0]) {
+      queryBuilder.andWhere('skill.id NOT IN (:...excludeSkillIds)', {
+        excludeSkillIds,
+      });
+    }
+
     if (candidateId) {
       // not get skill that candidate already have
       const candidateSkills = await this.candidateSkillService.findAllByCandidateId(candidateId);

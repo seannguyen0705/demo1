@@ -36,7 +36,7 @@ const getNavMenus = (user: IUser | undefined): NavItem[] => {
       },
       {
         name: 'Tạo bài tuyển dụng',
-        href: '/job-post/create',
+        href: '/create-job',
         icon: <PencilLine />,
       },
       {

@@ -153,26 +153,13 @@ export default function BusinessForm() {
                   name="address"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className=" flex items-center justify-between">
-                        Địa chỉ công ty
-                        {field.value.length < 3 && (
-                          <Button
-                            type="button"
-                            variant="outline"
-                            className="bg-green size-[36px] text-white hover:bg-[#309689]/80 hover:text-white"
-                            onClick={() => {
-                              field.onChange([...field.value, '']);
-                            }}
-                          >
-                            <Plus />
-                          </Button>
-                        )}
-                      </FormLabel>
+                      <FormLabel className=" flex items-center justify-between">Địa chỉ công ty</FormLabel>
                       <div className="space-y-2">
                         {field.value.map((_, index) => (
                           <div key={index} className="flex gap-2">
                             <FormControl>
                               <Input
+                                className="selection:bg-green"
                                 placeholder={`Nhập địa chỉ công ty ${index + 1}`}
                                 value={field.value[index]}
                                 onChange={(e) => {
@@ -182,7 +169,7 @@ export default function BusinessForm() {
                                 }}
                               />
                             </FormControl>
-                            {index > 0 && (
+                            {field.value.length > 1 && (
                               <Button
                                 type="button"
                                 variant="destructive"
@@ -197,6 +184,18 @@ export default function BusinessForm() {
                             )}
                           </div>
                         ))}
+                        {field.value.length < 3 && (
+                          <Button
+                            type="button"
+                            variant="outline"
+                            className="w-full border-dashed border-green"
+                            onClick={() => {
+                              field.onChange([...field.value, '']);
+                            }}
+                          >
+                            <Plus /> Thêm địa chỉ
+                          </Button>
+                        )}
                       </div>
                       <FormMessage />
                     </FormItem>
@@ -238,7 +237,7 @@ export default function BusinessForm() {
                               if (fileId) {
                                 deleteFile(fileId);
                               }
-                              uploadFile({ file, folder: 'company/proof' });
+                              uploadFile({ file, folder: 'proof' });
                               form.setValue('proofId', fileId);
                             }}
                             {...field}

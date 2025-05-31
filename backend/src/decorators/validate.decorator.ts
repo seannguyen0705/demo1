@@ -1,7 +1,8 @@
-import { Matches } from 'class-validator';
+import { Matches, registerDecorator, ValidationOptions } from 'class-validator';
 import { applyDecorators } from '@nestjs/common';
 
 import { Regex } from '@/utils/constants';
+import { SalaryValidatorPipe } from '@/pipes/salary-validator.pipe';
 
 export function IsOnlyDate() {
   return applyDecorators(
@@ -25,4 +26,16 @@ export function IsValidUserRole() {
       message: `$property must match ${Regex.USER_ROLE}.`,
     }),
   );
+}
+
+export function IsSalaryValid(validationOptions?: ValidationOptions) {
+  return function (object: object, propertyName: string) {
+    registerDecorator({
+      name: 'isSalaryValid',
+      target: object.constructor,
+      propertyName: propertyName,
+      options: validationOptions,
+      validator: SalaryValidatorPipe,
+    });
+  };
 }

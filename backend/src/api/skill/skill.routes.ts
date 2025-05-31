@@ -30,7 +30,6 @@ export default {
     method: RequestMethod.GET,
     code: HttpStatus.OK,
     jwtSecure: true,
-    roles: [UserRole.ADMIN, UserRole.CANDIDATE],
   },
   mySkill: <IRouteParams>{
     path: '/my-skill',

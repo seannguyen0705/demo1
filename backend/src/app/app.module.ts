@@ -89,6 +89,7 @@ const EnvSchema = {
     JobModule,
     JobSkillModule,
     CompanyImageModule,
+    JobModule,
   ],
   controllers: [AppController],
   providers: [],
