@@ -1,7 +1,8 @@
-import { Check, Column, Entity, JoinColumn, ManyToOne, Unique } from 'typeorm';
+import { Check, Column, Entity, JoinColumn, ManyToOne, OneToMany, Unique } from 'typeorm';
 import { Base as BaseEntity } from '@/common/entities';
 import { JobType, JobStatus, SalaryType, SalaryUnit } from '@/common/enums';
 import { Company } from '@/api/company/entities/company.entity';
+import { JobAddress } from '@/api/job-address/entities/job-address.entity';
 
 // allow save draft job, so many attribute is nullable
 @Entity('jobs')
@@ -32,9 +33,6 @@ export class Job extends BaseEntity {
     nullable: true,
   })
   salaryUnit: SalaryUnit;
-
-  @Column({ type: 'varchar', array: true, default: [] })
-  address: string[];
 
   @Column({
     type: 'enum',
@@ -78,4 +76,7 @@ export class Job extends BaseEntity {
   @ManyToOne(() => Company)
   @JoinColumn({ name: 'company_id' })
   company: Company;
+
+  @OneToMany(() => JobAddress, (jobAddress) => jobAddress.job)
+  jobAddresses: JobAddress[];
 }

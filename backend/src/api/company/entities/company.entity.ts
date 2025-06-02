@@ -1,7 +1,8 @@
-import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, OneToMany, OneToOne } from 'typeorm';
 import { Base as BaseEntity } from '@/common/entities';
 import { File } from '@/api/file/entities/file.entity';
 import { Employer } from '@/api/employer/entities/employer.entity';
+import { CompanyAddress } from '@/api/company-address/entities/company-address.entity';
 
 @Entity('companies')
 export class Company extends BaseEntity {
@@ -29,8 +30,8 @@ export class Company extends BaseEntity {
   @Column({ type: 'text', nullable: true, default: '' })
   benefits?: string;
 
-  @Column({ type: 'varchar', array: true, nullable: true })
-  address: string[];
+  @OneToMany(() => CompanyAddress, (companyAddress) => companyAddress.company)
+  companyAddresses: CompanyAddress[];
 
   @Column()
   website: string;
@@ -62,10 +63,7 @@ export class Company extends BaseEntity {
   @Column({ name: 'employer_id' })
   employerId: string;
 
-  @OneToOne(() => Employer, (employer) => employer.company, {
-    onDelete: 'CASCADE',
-    onUpdate: 'CASCADE',
-  })
+  @OneToOne(() => Employer, (employer) => employer.company)
   @JoinColumn({ name: 'employer_id' })
   employer: Employer;
 }

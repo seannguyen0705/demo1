@@ -17,7 +17,6 @@ import { CloudinaryService } from '../cloudinary/cloudinary.service';
 import { CreateBusinessDto } from './dto/create-business.dto';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
-import { UserAlreadyException } from './auth.exceptions';
 import { RequestWithUser } from '@/common/interfaces';
 import { IJwtStrategy } from './strategies/jwt.strategy';
 
@@ -41,39 +40,7 @@ export class AuthController {
 
   @InjectRoute(authRoutes.registerBusiness)
   public async registerBusiness(@Body() data: CreateBusinessDto) {
-    const { email, phoneNumber } = data;
-    const employer = await this.employerService.findOneByEmailOrPhoneNumber({
-      email,
-      phoneNumber,
-    });
-
-    if (employer) {
-      throw new UserAlreadyException();
-    }
-
-    const queryRunner = this.dataSource.createQueryRunner();
-    await queryRunner.connect();
-    await queryRunner.startTransaction();
-
-    try {
-      const createdEmployer = await this.employerService.create(data, queryRunner);
-
-      await this.companyService.create(
-        {
-          ...data,
-
-          employerId: createdEmployer.id,
-        },
-        queryRunner,
-      );
-
-      await queryRunner.commitTransaction();
-    } catch (error) {
-      await queryRunner.rollbackTransaction();
-      throw error;
-    } finally {
-      await queryRunner.release();
-    }
+    return this.employerService.create(data);
   }
 
   @InjectRoute(authRoutes.login)

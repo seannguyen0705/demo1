@@ -28,9 +28,10 @@ const formSchema = z
     salaryUnit: z.string().min(1, {
       message: 'Đơn vị lương không được để trống',
     }),
-    address: z.array(
-      z.string().min(1, {
-        message: 'Địa chỉ không được để trống',
+    addresses: z.array(
+      z.object({
+        detail: z.string().min(1, 'Địa chỉ công ty phải có ít nhất 1 ký tự'),
+        provinceId: z.string().min(1, 'Tỉnh/thành phố không được để trống'),
       }),
     ),
     jobType: z.string().min(1, {
@@ -129,7 +130,12 @@ export default function CreateJob() {
       salaryMin: '',
       salaryMax: '',
       salaryUnit: '',
-      address: [''],
+      addresses: [
+        {
+          detail: '',
+          provinceId: '',
+        },
+      ],
       jobType: '',
       jobExpertise: '',
       jobDomain: '',
@@ -156,9 +162,13 @@ export default function CreateJob() {
   };
 
   const handleCreateDraftJob = () => {
+    const data = removeFalsyValues(form.getValues());
+    if (data.addresses) {
+      data.addresses = data.addresses.filter((address) => address.detail && address.provinceId);
+    }
     if (user?.company?.id) {
       createDraftJob({
-        ...removeFalsyValues(form.getValues()),
+        ...data,
         companyId: user.company.id,
       });
     }
@@ -180,13 +190,13 @@ export default function CreateJob() {
           <CreateJobRequirement form={form} />
           <CreateJobBenefit form={form} />
           <div className="flex justify-center mb-4 gap-2">
-            <Button type="submit" className="bg-green hover:bg-green/80" disabled={isPendingPublish}>
+            <Button type="submit" className="bg-green hover:bg-green/80 dark:text-white" disabled={isPendingPublish}>
               {isPendingPublish ? 'Đang đăng tin...' : 'Đăng tin tuyển dụng'}
             </Button>
             <Button
               variant="outline"
               onClick={handleCreateDraftJob}
-              className="border-green"
+              className="border-green dark:border-green"
               type="button"
               disabled={isPendingDraft}
             >

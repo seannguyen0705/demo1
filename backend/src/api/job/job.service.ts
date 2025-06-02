@@ -10,6 +10,9 @@ import { DataSource } from 'typeorm';
 import { JobSkill } from '../job-skill/entities/job-skill.entity';
 import { CreatePublishedJobDto } from './dto/create-published-job.dto';
 import { JobAlreadyExistsException } from './job.exception';
+import { CreateJobAddressDto } from '../job-address/dto/create-job-address.dto';
+import { Address } from '../address/entities/address.entity';
+import { JobAddress } from '../job-address/entities/job-address.entity';
 @Injectable()
 export class JobService {
   constructor(
@@ -35,11 +38,27 @@ export class JobService {
     await queryRunner.startTransaction();
     try {
       const company = await this.companyService.findOneByEmployerId(employerId);
+      const existingJob = await this.findOneByTitleAndCompanyId(data.title, company.id);
+      if (existingJob) {
+        throw new JobAlreadyExistsException();
+      }
       const newJob = await queryRunner.manager.save(Job, { ...data, companyId: company.id, status: JobStatus.DRAFT });
       if (data.skillIds) {
         await Promise.all(
           data.skillIds.map((skillId) => queryRunner.manager.save(JobSkill, { jobId: newJob.id, skillId })),
         );
+      }
+      if (data.addresses) {
+        const createJobAddresses: CreateJobAddressDto[] = await Promise.all(
+          data.addresses.map(async (address) => {
+            const createdAddress = await queryRunner.manager.save(Address, address);
+            return {
+              addressId: createdAddress.id,
+              jobId: newJob.id,
+            };
+          }),
+        );
+        await queryRunner.manager.insert(JobAddress, createJobAddresses);
       }
       await queryRunner.commitTransaction();
       return newJob;
@@ -72,11 +91,23 @@ export class JobService {
         companyId: company.id,
         status: JobStatus.PUBLISHED,
       });
-      if (data.skillIds) {
-        await Promise.all(
-          data.skillIds.map((skillId) => queryRunner.manager.save(JobSkill, { jobId: newJob.id, skillId })),
-        );
-      }
+
+      await Promise.all(
+        data.skillIds.map((skillId) => queryRunner.manager.save(JobSkill, { jobId: newJob.id, skillId })),
+      );
+
+      // create address
+      const createJobAddresses: CreateJobAddressDto[] = await Promise.all(
+        data.addresses.map(async (address) => {
+          const createdAddress = await queryRunner.manager.save(Address, address);
+          return {
+            addressId: createdAddress.id,
+            jobId: newJob.id,
+          };
+        }),
+      );
+      // create job addresses
+      await queryRunner.manager.insert(JobAddress, createJobAddresses);
       await queryRunner.commitTransaction();
       return newJob;
     } catch (error) {

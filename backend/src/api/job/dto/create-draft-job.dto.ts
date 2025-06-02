@@ -1,8 +1,18 @@
-import { ArrayMaxSize, IsArray, IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
-import { Transform } from 'class-transformer';
+import {
+  ArrayMaxSize,
+  IsArray,
+  IsEnum,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+  ValidateNested,
+} from 'class-validator';
+import { Transform, Type } from 'class-transformer';
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { JobStatus, JobType, SalaryType } from '@/common/enums';
 import { IsSalaryValid } from '@/decorators';
+import { CreateAddressDto } from '@/api/address/dto/create-address.dto';
 
 export class CreateDraftJobDto {
   @IsString()
@@ -34,20 +44,11 @@ export class CreateDraftJobDto {
   salaryMax: number;
 
   @IsArray()
-  @IsOptional()
-  @IsString({ each: true })
+  @IsNotEmpty()
   @ArrayMaxSize(3)
-  @ApiPropertyOptional({
-    example: ['123 Nguyễn Văn Cừ, Hồ Chí Minh', '123 Nguyễn Văn Cừ, Hồ Chí Minh'],
-  })
-  @Transform(({ value }) => {
-    if (typeof value === 'string') {
-      return [value];
-    }
-
-    return value;
-  })
-  address: string[];
+  @ValidateNested({ each: true })
+  @Type(() => CreateAddressDto)
+  addresses: CreateAddressDto[];
 
   @IsEnum(JobType)
   @IsOptional()

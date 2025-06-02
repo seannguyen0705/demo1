@@ -10,6 +10,7 @@ import { useState } from 'react';
 import SelectJobType from './SelectJobType';
 import SelectSalaryUnit from './SelectSalaryUnit';
 import AddSkill from './AddSkill';
+import SelectProvince from '@/components/SelectProvince';
 interface IProps {
   form: UseFormReturn<CreateJobFormSchema>;
 }
@@ -37,38 +38,50 @@ export default function CreateJobInfo({ form }: IProps) {
 
       <FormField
         control={form.control}
-        name="address"
+        name="addresses"
         render={({ field }) => (
           <FormItem className="sm:col-span-2">
             <FormLabel className=" flex items-center justify-between">Địa chỉ làm việc</FormLabel>
             <div className="space-y-2">
               {field.value.map((_, index) => (
-                <div key={index} className="flex gap-2">
+                <div key={index} className="">
                   <FormControl>
-                    <Input
-                      className="selection:bg-green"
-                      placeholder="Ex: 123 Đường ABC, Quận 1, TP.HCM"
-                      value={field.value[index]}
-                      onChange={(e) => {
-                        const newValue = [...field.value];
-                        newValue[index] = e.target.value;
-                        field.onChange(newValue);
-                      }}
-                    />
+                    <div className="grid sm:grid-cols-2 gap-2">
+                      <SelectProvince
+                        provinceId={field.value[index].provinceId}
+                        onChange={(provinceId) => {
+                          const newValue = [...field.value];
+                          newValue[index].provinceId = provinceId;
+                          field.onChange(newValue);
+                        }}
+                      />
+                      <div className="flex items-center gap-2">
+                        <Input
+                          className="flex-1 w-full"
+                          placeholder="Địa chỉ cụ thể tại tỉnh/thành"
+                          value={field.value[index].detail}
+                          onChange={(e) => {
+                            const newValue = [...field.value];
+                            newValue[index].detail = e.target.value;
+                            field.onChange(newValue);
+                          }}
+                        />
+                        {field.value.length > 1 && (
+                          <Button
+                            type="button"
+                            variant="destructive"
+                            size="icon"
+                            onClick={() => {
+                              const newValue = field.value.filter((_, i) => i !== index);
+                              field.onChange(newValue);
+                            }}
+                          >
+                            <Minus />
+                          </Button>
+                        )}
+                      </div>
+                    </div>
                   </FormControl>
-                  {field.value.length > 1 && (
-                    <Button
-                      type="button"
-                      variant="destructive"
-                      size="icon"
-                      onClick={() => {
-                        const newValue = field.value.filter((_, i) => i !== index);
-                        field.onChange(newValue);
-                      }}
-                    >
-                      <Minus />
-                    </Button>
-                  )}
                 </div>
               ))}
               {field.value.length < 3 && (
@@ -77,7 +90,7 @@ export default function CreateJobInfo({ form }: IProps) {
                   variant="outline"
                   className="w-full border-dashed border-green"
                   onClick={() => {
-                    field.onChange([...field.value, '']);
+                    field.onChange([...field.value, { provinceId: '', detail: '' }]);
                   }}
                 >
                   <Plus /> Thêm địa chỉ

@@ -4,20 +4,23 @@ import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
 import { EmployerRepository } from './employer.repository';
 import { Employer } from './entities/employer.entity';
 import { TokenService } from '../token/token.service';
-import { CreateEmployerDto } from './dto/create-employer.dto';
 import { UserAlreadyException } from '../auth/auth.exceptions';
 import { ResponseEmployerDetailDto, ResponseEmployerDto } from './dto/response-employer.dto';
 import { UserRole, UserStatus } from '@/common/enums';
-import { DataSource, QueryRunner } from 'typeorm';
+import { DataSource } from 'typeorm';
 import { UpdateStatusUserDto } from '@/common/dto/update-status-user.dto';
 import generateSecurePassword from '@/utils/helpers/generateSecurePassword';
 import { EmailService } from '../email/email.service';
 import { plainToInstance } from 'class-transformer';
 import { hash } from '@/utils/helpers';
-import { FileService } from '../file/file.service';
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
 import { CreateFileDto } from '../file/dto/create-file.dto';
 import { File } from '../file/entities/file.entity';
+import { CreateBusinessDto } from '../auth/dto/create-business.dto';
+import { CreateCompanyAddressDto } from '../company-address/dto/create-company-address.dto';
+import { Company } from '../company/entities/company.entity';
+import { Address } from '../address/entities/address.entity';
+import { CompanyAddress } from '../company-address/entities/company-address.entity';
 @Injectable()
 export class EmployerService {
   private readonly folder: string;
@@ -26,16 +29,14 @@ export class EmployerService {
     private employerRepository: EmployerRepository,
     private tokenService: TokenService,
     private emailService: EmailService,
-    private readonly fileService: FileService,
     private readonly cloudinaryService: CloudinaryService,
     @InjectDataSource() private readonly dataSource: DataSource,
   ) {
     this.folder = 'employer/avatar';
   }
 
-  public async create(data: CreateEmployerDto, queryRunner: QueryRunner): Promise<ResponseEmployerDto> {
-    const { email, phoneNumber } = data;
-
+  public async create(data: CreateBusinessDto) {
+    const { email, phoneNumber, addresses } = data;
     const employer = await this.findOneByEmailOrPhoneNumber({
       email,
       phoneNumber,
@@ -44,10 +45,38 @@ export class EmployerService {
     if (employer) {
       throw new UserAlreadyException();
     }
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
 
-    const createdEmployer = queryRunner.manager.create(Employer, data);
-    await queryRunner.manager.save(Employer, createdEmployer);
-    return createdEmployer.toResponse();
+    try {
+      // create employers
+      const createdEmployer = await queryRunner.manager.save(Employer, data);
+      // create company
+      const createdCompany = await queryRunner.manager.save(Company, {
+        ...data,
+        employerId: createdEmployer.id,
+      });
+      // create address
+      const createCompanyAddresses: CreateCompanyAddressDto[] = await Promise.all(
+        addresses.map(async (address) => {
+          const createdAddress = await queryRunner.manager.save(Address, address);
+          return {
+            addressId: createdAddress.id,
+            companyId: createdCompany.id,
+          };
+        }),
+      );
+      // create company addresses
+      await queryRunner.manager.insert(CompanyAddress, createCompanyAddresses);
+      await queryRunner.commitTransaction();
+      return { message: 'Đăng kí tài khoản doanh nghiệp thành công ' };
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+      throw error;
+    } finally {
+      await queryRunner.release();
+    }
   }
 
   public async findOneByEmail(email: string): Promise<Employer> {

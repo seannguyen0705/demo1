@@ -28,7 +28,10 @@ import { ReviewModule } from '@/api/review/review.module';
 import { JobModule } from '@/api/job/job.module';
 import { JobSkillModule } from '@/api/job-skill/job-skill.module';
 import { CompanyImageModule } from '@/api/company-image/company-image.module';
-
+import { AddressModule } from '@/api/address/address.module';
+import { ProvinceModule } from '@/api/province/province.module';
+import { CompanyAddressModule } from '@/api/company-address/company-address.module';
+import { JobAddressModule } from '@/api/job-address/job-address.module';
 const EnvSchema = {
   PORT: Joi.number(),
   NODE_ENV: Joi.string(),
@@ -90,6 +93,10 @@ const EnvSchema = {
     JobSkillModule,
     CompanyImageModule,
     JobModule,
+    AddressModule,
+    ProvinceModule,
+    CompanyAddressModule,
+    JobAddressModule,
   ],
   controllers: [AppController],
   providers: [],

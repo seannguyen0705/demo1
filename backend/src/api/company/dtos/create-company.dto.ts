@@ -1,6 +1,7 @@
+import { CreateAddressDto } from '@/api/address/dto/create-address.dto';
 import { ApiProperty } from '@nestjs/swagger';
-import { Transform } from 'class-transformer';
-import { ArrayMaxSize, ArrayMinSize, IsArray, IsNotEmpty, IsString, IsUrl } from 'class-validator';
+import { Type } from 'class-transformer';
+import { ArrayMaxSize, ArrayMinSize, IsArray, IsNotEmpty, IsString, IsUrl, ValidateNested } from 'class-validator';
 
 export class CreateCompanyDto {
   @IsNotEmpty()
@@ -12,20 +13,19 @@ export class CreateCompanyDto {
 
   @IsNotEmpty()
   @IsArray()
-  @IsString({ each: true })
+  @ValidateNested({ each: true })
   @ArrayMinSize(1)
   @ArrayMaxSize(3)
+  @Type(() => CreateAddressDto)
   @ApiProperty({
-    example: ['123 Nguyễn Văn Cừ, Hồ Chí Minh', '123 Nguyễn Văn Cừ, Hồ Chí Minh'],
+    example: [
+      {
+        detail: '123 Nguyễn Văn Cừ, Hồ Chí Minh',
+        provinceId: '123',
+      },
+    ],
   })
-  @Transform(({ value }) => {
-    // value is string
-    if (typeof value === 'string') {
-      return [value];
-    }
-    return value;
-  })
-  address: string[];
+  addresses: CreateAddressDto[];
 
   @IsNotEmpty()
   @IsUrl(undefined, { message: 'Website không hợp lệ' })
@@ -36,6 +36,9 @@ export class CreateCompanyDto {
 
   @IsNotEmpty()
   @IsString()
+  @ApiProperty({
+    example: '6984df62-23ab-465d-9768-5c7b86bb97cb',
+  })
   proofId: string;
 
   employerId: string;

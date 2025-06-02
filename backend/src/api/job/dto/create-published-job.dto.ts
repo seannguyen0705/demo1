@@ -9,11 +9,12 @@ import {
   IsOptional,
   IsString,
   IsUUID,
-  MinLength,
+  ValidateNested,
 } from 'class-validator';
 import { JobType, JobStatus, SalaryType, SalaryUnit } from '@/common/enums';
 import { Transform, Type } from 'class-transformer';
 import { IsSalaryValid } from '@/decorators';
+import { CreateAddressDto } from '@/api/address/dto/create-address.dto';
 
 export class CreatePublishedJobDto {
   @IsString()
@@ -55,20 +56,11 @@ export class CreatePublishedJobDto {
 
   @IsArray()
   @IsNotEmpty()
-  @IsString({ each: true })
-  @MinLength(1, { each: true })
   @ArrayMinSize(1)
   @ArrayMaxSize(3)
-  @ApiProperty({
-    example: ['123 Nguyễn Văn Cừ, Hồ Chí Minh', '123 Nguyễn Văn Cừ, Hồ Chí Minh'],
-  })
-  @Transform(({ value }) => {
-    if (typeof value === 'string') {
-      return [value];
-    }
-    return value;
-  })
-  address: string[];
+  @ValidateNested({ each: true })
+  @Type(() => CreateAddressDto)
+  addresses: CreateAddressDto[];
 
   @IsEnum(JobType)
   @IsNotEmpty()
