@@ -1,19 +1,22 @@
-import { JobType, JobStatus, SalaryType, SalaryUnit } from '@/utils/enums';
+import { JobType, JobStatus, SalaryType, JobLevel } from '@/utils/enums';
 import { ICompany } from '@/api/company/interface';
 import { IJobAddress } from '@/api/job-address/interface';
+import { IJobSkill } from '@/api/job-skill/interface';
 interface IJob {
   id: string;
   title: string;
   description: string;
   jobAddresses: IJobAddress[];
+  jobSkills: IJobSkill[];
   jobType: JobType;
   status: JobStatus;
   salaryType: SalaryType;
   salaryMin: number;
+  jobLevel: JobLevel;
   salaryMax: number;
-  salaryUnit: SalaryUnit;
   companyId: string;
   company: ICompany;
+  createdAt: Date;
 }
 
 interface ICreatePublishedJob {
@@ -21,7 +24,7 @@ interface ICreatePublishedJob {
   salaryType: string;
   salaryMin?: string;
   salaryMax?: string;
-  salaryUnit: string;
+  jobLevel: string;
   addresses: {
     detail: string;
     provinceId: string;
@@ -41,11 +44,11 @@ interface ICreateDraftJob {
   salaryType?: string;
   salaryMin?: string;
   salaryMax?: string;
-  salaryUnit?: string;
   addresses?: {
     detail: string;
     provinceId: string;
   }[];
+  jobLevel?: string;
   jobType?: string;
   jobExpertise?: string;
   jobDomain?: string;

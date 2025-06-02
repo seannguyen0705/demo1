@@ -11,7 +11,7 @@ import {
   IsUUID,
   ValidateNested,
 } from 'class-validator';
-import { JobType, JobStatus, SalaryType, SalaryUnit } from '@/common/enums';
+import { JobType, JobStatus, SalaryType, JobLevel } from '@/common/enums';
 import { Transform, Type } from 'class-transformer';
 import { IsSalaryValid } from '@/decorators';
 import { CreateAddressDto } from '@/api/address/dto/create-address.dto';
@@ -47,13 +47,6 @@ export class CreatePublishedJobDto {
   @Type(() => Number)
   salaryMax: number;
 
-  @IsEnum(SalaryUnit)
-  @IsNotEmpty()
-  @ApiProperty({
-    example: SalaryUnit.VND,
-  })
-  salaryUnit: SalaryUnit;
-
   @IsArray()
   @IsNotEmpty()
   @ArrayMinSize(1)
@@ -68,6 +61,13 @@ export class CreatePublishedJobDto {
     example: JobType.HYBRID,
   })
   jobType: JobType;
+
+  @IsEnum(JobLevel)
+  @IsNotEmpty()
+  @ApiProperty({
+    example: JobLevel.JUNIOR,
+  })
+  jobLevel: JobLevel;
 
   @IsString()
   @IsNotEmpty()
@@ -108,7 +108,7 @@ export class CreatePublishedJobDto {
   @IsNotEmpty()
   @IsUUID('4', { each: true })
   @ArrayMinSize(1)
-  @ArrayMaxSize(3)
+  @ArrayMaxSize(10)
   @ApiProperty({
     example: [
       '123e4567-e89b-12d3-a456-426614174000',

@@ -62,4 +62,8 @@ export class CompanyService {
     }
     return company;
   }
+
+  public async countAllCompanies() {
+    return this.companyRepository.count();
+  }
 }

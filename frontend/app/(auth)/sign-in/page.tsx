@@ -11,15 +11,13 @@ interface IProps {
 export default async function SignInPage({ searchParams }: IProps) {
   const { error } = await searchParams;
   return (
-    <main className=" flex  w-full items-center justify-center">
+    <main className=" flex  w-full items-center justify-center pt-8">
       <div className="grid w-full max-w-6xl grid-cols-1 gap-8 lg:grid-cols-2">
         {/* Left Column - Registration Form */}
         <div className="space-y-6 px-4">
           <div className="space-y-2">
             <h1 className="text-3xl font-bold">Chào mừng bạn quay trở lại</h1>
-            <p className="text-muted-foreground">
-              Tìm việc làm phù hợp với bạn
-            </p>
+            <p className="text-muted-foreground">Tìm việc làm phù hợp với bạn</p>
           </div>
           <Exception error={error} />
           <LoginForm />

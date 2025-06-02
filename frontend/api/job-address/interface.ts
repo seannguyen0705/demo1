@@ -1,11 +1,11 @@
 import { IProvince } from '@/api/province/interface';
+import { IAddress } from '../address/interface';
 
 interface IJobAddress {
   id: string;
   jobId: string;
-  address: string;
-  provinceId: string;
-  province: IProvince;
+  addressId: string;
+  address: IAddress;
 }
 
 export type { IJobAddress };

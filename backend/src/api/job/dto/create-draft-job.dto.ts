@@ -10,7 +10,7 @@ import {
 } from 'class-validator';
 import { Transform, Type } from 'class-transformer';
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { JobStatus, JobType, SalaryType } from '@/common/enums';
+import { JobLevel, JobStatus, JobType, SalaryType } from '@/common/enums';
 import { IsSalaryValid } from '@/decorators';
 import { CreateAddressDto } from '@/api/address/dto/create-address.dto';
 
@@ -35,6 +35,13 @@ export class CreateDraftJobDto {
     example: 1000000,
   })
   salaryMin: number;
+
+  @IsEnum(JobLevel)
+  @IsOptional()
+  @ApiPropertyOptional({
+    example: JobLevel.JUNIOR,
+  })
+  jobLevel: JobLevel;
 
   @IsNumber()
   @IsOptional()
@@ -95,7 +102,7 @@ export class CreateDraftJobDto {
   @IsArray()
   @IsOptional()
   @IsString({ each: true })
-  @ArrayMaxSize(3)
+  @ArrayMaxSize(10)
   @ApiPropertyOptional({
     example: ['uuid1', 'uuid2', 'uuid3'],
   })

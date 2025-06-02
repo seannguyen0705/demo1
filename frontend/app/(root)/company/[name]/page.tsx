@@ -5,7 +5,7 @@ import { getStatisticsReviewCompany } from '@/api/review/query';
 import CompanyInfo from '../components/CompanyInfo';
 import CompanyIntro from '../components/CompanyIntro';
 import CompanyBenefit from '../components/CompanyBenefit';
-
+import JobList from '../components/JobList';
 interface IProps {
   params: Promise<{ name: string }>;
 }
@@ -19,14 +19,17 @@ export default async function CompanyPage({ params }: IProps) {
   const numJobs = jobs.data.length;
 
   return (
-    <div className="container mx-auto flex flex-col md:flex-row lg:p-2 ">
+    <div className="container mx-auto gap-3 flex flex-col lg:flex-row lg:p-2 ">
       <main className="flex-1 p-2 md:p-0 ">
         <HeaderCompany company={company.data} numJobs={numJobs} statistics={statistics.data} />
         <CompanyInfo company={company.data} />
         <CompanyIntro company={company.data} />
         <CompanyBenefit company={company.data} />
       </main>
-      <aside className="w-[300px]">{/* JOB LIST */}</aside>
+      <aside className="lg:w-[300px] mx-2 lg:mx-0">
+        <h2 className="text-lg mb-2 font-bold"> {numJobs} Việc làm đang tuyển dụng</h2>
+        <JobList jobs={jobs.data} />
+      </aside>
     </div>
   );
 }

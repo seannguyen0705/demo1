@@ -75,9 +75,12 @@ enum SalaryType {
   ATLEAST = 'Tối thiểu',
 }
 
-enum SalaryUnit {
-  VND = 'VND',
-  USD = 'USD',
+enum JobLevel {
+  INTERN = 'Intern',
+  FRESHER = 'Fresher',
+  JUNIOR = 'Junior',
+  SENIOR = 'Senior',
+  MANAGER = 'Manager',
 }
 
 export {
@@ -92,5 +95,5 @@ export {
   OrderByReview,
   Order,
   SalaryType,
-  SalaryUnit,
+  JobLevel,
 };

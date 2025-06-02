@@ -1,9 +1,9 @@
 import { Check, Column, Entity, JoinColumn, ManyToOne, OneToMany, Unique } from 'typeorm';
 import { Base as BaseEntity } from '@/common/entities';
-import { JobType, JobStatus, SalaryType, SalaryUnit } from '@/common/enums';
+import { JobType, JobStatus, SalaryType, JobLevel } from '@/common/enums';
 import { Company } from '@/api/company/entities/company.entity';
 import { JobAddress } from '@/api/job-address/entities/job-address.entity';
-
+import { JobSkill } from '@/api/job-skill/entities/job-skill.entity';
 // allow save draft job, so many attribute is nullable
 @Entity('jobs')
 @Unique(['companyId', 'title'])
@@ -28,14 +28,6 @@ export class Job extends BaseEntity {
 
   @Column({
     type: 'enum',
-    enum: SalaryUnit,
-    name: 'salary_unit',
-    nullable: true,
-  })
-  salaryUnit: SalaryUnit;
-
-  @Column({
-    type: 'enum',
     enum: JobType,
     name: 'job_type',
     nullable: true,
@@ -53,6 +45,14 @@ export class Job extends BaseEntity {
     nullable: true,
   })
   jobDomain: string;
+
+  @Column({
+    type: 'enum',
+    enum: JobLevel,
+    name: 'job_level',
+    nullable: true,
+  })
+  jobLevel: JobLevel;
 
   @Column({ nullable: true })
   description: string;
@@ -79,4 +79,7 @@ export class Job extends BaseEntity {
 
   @OneToMany(() => JobAddress, (jobAddress) => jobAddress.job)
   jobAddresses: JobAddress[];
+
+  @OneToMany(() => JobSkill, (jobSkill) => jobSkill.job)
+  jobSkills: JobSkill[];
 }

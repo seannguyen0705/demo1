@@ -25,15 +25,15 @@ const formSchema = z
     }),
     salaryMin: z.string().optional(),
     salaryMax: z.string().optional(),
-    salaryUnit: z.string().min(1, {
-      message: 'Đơn vị lương không được để trống',
-    }),
     addresses: z.array(
       z.object({
         detail: z.string().min(1, 'Địa chỉ công ty phải có ít nhất 1 ký tự'),
         provinceId: z.string().min(1, 'Tỉnh/thành phố không được để trống'),
       }),
     ),
+    jobLevel: z.string().min(1, {
+      message: 'Cấp bậc công việc không được để trống',
+    }),
     jobType: z.string().min(1, {
       message: 'Loại công việc không được để trống',
     }),
@@ -129,13 +129,13 @@ export default function CreateJob() {
       salaryType: '',
       salaryMin: '',
       salaryMax: '',
-      salaryUnit: '',
       addresses: [
         {
           detail: '',
           provinceId: '',
         },
       ],
+      jobLevel: '',
       jobType: '',
       jobExpertise: '',
       jobDomain: '',

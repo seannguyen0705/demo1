@@ -8,9 +8,9 @@ import { SalaryType } from '@/utils/enums';
 import RadioSalaryType from './RadioSalaryType';
 import { useState } from 'react';
 import SelectJobType from './SelectJobType';
-import SelectSalaryUnit from './SelectSalaryUnit';
 import AddSkill from './AddSkill';
 import SelectProvince from '@/components/SelectProvince';
+import SelectJobLevel from './SelectJobLevel';
 interface IProps {
   form: UseFormReturn<CreateJobFormSchema>;
 }
@@ -154,12 +154,12 @@ export default function CreateJobInfo({ form }: IProps) {
 
       <FormField
         control={form.control}
-        name="salaryUnit"
+        name="jobType"
         render={({ field }) => (
           <FormItem className="">
-            <FormLabel>Đơn vị lương</FormLabel>
+            <FormLabel>Loại công việc</FormLabel>
             <FormControl>
-              <SelectSalaryUnit
+              <SelectJobType
                 value={field.value}
                 onChange={(value) => {
                   field.onChange(value);
@@ -173,12 +173,12 @@ export default function CreateJobInfo({ form }: IProps) {
 
       <FormField
         control={form.control}
-        name="jobType"
+        name="jobLevel"
         render={({ field }) => (
           <FormItem className="">
-            <FormLabel>Loại công việc</FormLabel>
+            <FormLabel>Cấp bậc công việc</FormLabel>
             <FormControl>
-              <SelectJobType
+              <SelectJobLevel
                 value={field.value}
                 onChange={(value) => {
                   field.onChange(value);

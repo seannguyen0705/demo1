@@ -10,7 +10,7 @@ export default function UserInfo() {
     return (
       <div className="group relative flex cursor-pointer items-center gap-2">
         <Skeleton className="h-10 w-10 rounded-full" />
-        <Skeleton className="h-4 w-20 rounded-full" />
+        <Skeleton className="h-4 hidden sm:block w-20 rounded-full" />
       </div>
     );
 

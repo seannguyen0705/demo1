@@ -32,6 +32,7 @@ import { AddressModule } from '@/api/address/address.module';
 import { ProvinceModule } from '@/api/province/province.module';
 import { CompanyAddressModule } from '@/api/company-address/company-address.module';
 import { JobAddressModule } from '@/api/job-address/job-address.module';
+import { StaticsticsModule } from '@/api/staticstics/staticstics.module';
 const EnvSchema = {
   PORT: Joi.number(),
   NODE_ENV: Joi.string(),
@@ -97,6 +98,7 @@ const EnvSchema = {
     ProvinceModule,
     CompanyAddressModule,
     JobAddressModule,
+    StaticsticsModule,
   ],
   controllers: [AppController],
   providers: [],

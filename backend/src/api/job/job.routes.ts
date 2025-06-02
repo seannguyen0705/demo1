@@ -25,4 +25,10 @@ export default {
     jwtSecure: true,
     roles: [UserRole.EMPLOYER],
   },
+  findJobs: <IRouteParams>{
+    path: '/jobs',
+    method: RequestMethod.GET,
+    code: HttpStatus.OK,
+    jwtSecure: false,
+  },
 };
