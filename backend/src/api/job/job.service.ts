@@ -65,9 +65,11 @@ export class JobService {
     await queryRunner.startTransaction();
     try {
       const company = await this.companyService.findOneByEmployerId(employerId);
-      const existingJob = await this.findOneByTitleAndCompanyId(data.title, company.id);
-      if (existingJob) {
-        throw new JobAlreadyExistsException();
+      if (data.title) {
+        const existingJob = await this.findOneByTitleAndCompanyId(data.title, company.id);
+        if (existingJob) {
+          throw new JobAlreadyExistsException();
+        }
       }
       const newJob = await queryRunner.manager.save(Job, { ...data, companyId: company.id, status: JobStatus.DRAFT });
       if (data.skillIds) {
