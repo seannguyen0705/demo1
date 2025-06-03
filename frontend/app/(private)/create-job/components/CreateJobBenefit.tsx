@@ -1,15 +1,13 @@
 'use client';
 
-import { UseFormReturn } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 import { CreateJobFormSchema } from '../page';
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import Editor from '@/components/Editor';
 
-interface IProps {
-  form: UseFormReturn<CreateJobFormSchema>;
-}
+export default function CreateJobBenefit() {
+  const form = useFormContext<CreateJobFormSchema>();
 
-export default function CreateJobBenefit({ form }: IProps) {
   return (
     <div>
       <FormField
