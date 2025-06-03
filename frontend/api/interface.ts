@@ -35,8 +35,8 @@ interface IUser {
 }
 
 interface IQueryPagination {
-  page?: number;
-  limit?: number;
+  page?: string;
+  limit?: string;
 }
 
 export type { CreateUserDto, ErrorReponse, IUser, IQueryPagination };

@@ -1,7 +1,8 @@
-import { JobType, JobStatus, SalaryType, JobLevel } from '@/utils/enums';
+import { JobType, JobStatus, SalaryType, JobLevel, SortJob } from '@/utils/enums';
 import { ICompany } from '@/api/company/interface';
 import { IJobAddress } from '@/api/job-address/interface';
 import { IJobSkill } from '@/api/job-skill/interface';
+import { IQueryPagination } from '../interface';
 interface IJob {
   id: string;
   title: string;
@@ -59,4 +60,23 @@ interface ICreateDraftJob {
   companyId?: string;
 }
 
-export type { IJob, ICreatePublishedJob, ICreateDraftJob };
+interface IQueryJob extends IQueryPagination {
+  keyword?: string;
+  provinceName?: string;
+  jobType: string | null;
+  minSalary: string | null;
+  maxSalary: string | null;
+  sort: string | null;
+  jobLevel: string | null;
+  status: string | null;
+  job_selected: string | null;
+}
+
+interface QueryJob {
+  jobs: IJob[];
+  currentPage: number;
+  nextPage: number | null;
+  total: number;
+}
+
+export type { IJob, ICreatePublishedJob, ICreateDraftJob, IQueryJob, QueryJob };

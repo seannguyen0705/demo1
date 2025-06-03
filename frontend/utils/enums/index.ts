@@ -46,16 +46,16 @@ enum JobType {
 }
 
 enum JobStatus {
-  PUBLISHED = 'published',
-  DRAFT = 'draft',
-  HIDDEN = 'hidden',
+  PUBLISHED = 'Đã đăng',
+  DRAFT = 'Bản nháp',
+  HIDDEN = 'Ẩn',
 }
 
 enum SortJob {
-  NEWEST = 'newest',
-  OLDEST = 'oldest',
-  SALARY_ASC = 'salary_asc',
-  SALARY_DESC = 'salary_desc',
+  NEWEST = 'Mới nhất',
+  OLDEST = 'Cũ nhất',
+  SALARY_ASC = 'Lương tăng dần',
+  SALARY_DESC = 'Lương giảm dần',
 }
 
 enum OrderByReview {

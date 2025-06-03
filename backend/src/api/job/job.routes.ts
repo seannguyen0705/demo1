@@ -31,4 +31,17 @@ export default {
     code: HttpStatus.OK,
     jwtSecure: false,
   },
+  employerFindJobs: <IRouteParams>{
+    path: '/employer/jobs',
+    method: RequestMethod.GET,
+    code: HttpStatus.OK,
+    jwtSecure: true,
+    roles: [UserRole.EMPLOYER],
+  },
+  findOneById: <IRouteParams>{
+    path: '/jobs/:id',
+    method: RequestMethod.GET,
+    code: HttpStatus.OK,
+    jwtSecure: false,
+  },
 };

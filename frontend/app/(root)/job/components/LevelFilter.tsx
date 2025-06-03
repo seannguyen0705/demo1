@@ -1,27 +1,45 @@
+'use client';
+
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, X } from 'lucide-react';
 import Link from 'next/link';
 import { JobLevel } from '@/utils/enums';
-
+import CheckBox from '@/components/Checkbox';
+import useQueryParams from '@/app/hooks/useQueryParams';
+import { useSearchParams } from 'next/navigation';
 const levels = [JobLevel.INTERN, JobLevel.FRESHER, JobLevel.JUNIOR, JobLevel.SENIOR, JobLevel.MANAGER];
 
 export function LevelFilter() {
+  const jobLevel = useSearchParams().get('jobLevel');
+  const { createQueryString, handleClear } = useQueryParams();
+
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <div className="flex cursor-pointer items-center gap-2 border hover:border-green rounded-full px-2 py-1 bg-light-green">
-          Cấp bậc <ChevronDown className="size-4" />
+        <div
+          className={`flex cursor-pointer items-center gap-2 border dark:hover:border-white hover:border-green rounded-full px-2 py-1 dark:bg-gray-800 bg-light-green ${jobLevel && 'border-green text-green dark:text-white dark:border-white'}`}
+        >
+          {jobLevel ? jobLevel : 'Cấp bậc'}{' '}
+          {jobLevel ? (
+            <Link href={`?${handleClear('jobLevel')}`}>
+              <X />
+            </Link>
+          ) : (
+            <ChevronDown className="size-4" />
+          )}
         </div>
       </PopoverTrigger>
-      <PopoverContent className="w-full">
-        <div className="grid grid-cols-2 gap-2">
+      <PopoverContent className="w-full p-0">
+        <div className="">
           {levels.map((level) => (
             <Link
+              replace={true}
               key={level}
-              href={`/job?level=${level.toLowerCase()}`}
-              className="border text-center hover:border-green rounded-full px-2 py-1 bg-light-green"
+              href={`?${createQueryString('jobLevel', level)}`}
+              className="flex items-center gap-2 px-2 py-1 hover:bg-light-green dark:hover:bg-gray-800"
             >
-              {level}
+              <CheckBox checked={jobLevel === level} />
+              <span>{level}</span>
             </Link>
           ))}
         </div>

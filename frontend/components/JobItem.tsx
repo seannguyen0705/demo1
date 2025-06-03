@@ -1,5 +1,5 @@
 import { IJob } from '@/api/job/interface';
-import { SalaryType } from '@/utils/enums';
+import getStringSalary from '@/utils/helpers/getStringSalary';
 import { formatDistanceToNow } from 'date-fns';
 import { vi } from 'date-fns/locale';
 import { ChevronsUp, CircleDollarSign, MapPin } from 'lucide-react';
@@ -12,6 +12,9 @@ interface IProps {
 }
 
 export default function JobItem({ job }: IProps) {
+  const provinceNames = job.jobAddresses.map((jobAddress) => jobAddress.address.province.name);
+  const setProvinceNames = new Set(provinceNames);
+  const provinceNameUnique = Array.from(setProvinceNames).join(', ');
   return (
     <article className="border rounded-lg p-3 w-full">
       <p className="text-sm font-light text-gray-500">
@@ -43,9 +46,7 @@ export default function JobItem({ job }: IProps) {
 
         <div className="flex gap-1 items-center">
           <MapPin className="text-gray-500" />
-          <span className="text-sm">
-            {job.jobAddresses.map((jobAddress) => jobAddress.address.province.name).join(', ')}
-          </span>
+          <span className="text-sm">{provinceNameUnique}</span>
         </div>
 
         <div className="flex gap-2 items-center">
@@ -66,20 +67,4 @@ export default function JobItem({ job }: IProps) {
       </div>
     </article>
   );
-}
-
-function getStringSalary(salaryType: string, salaryMin: number, salaryMax: number) {
-  if (salaryType === SalaryType.NEGOTIATION) {
-    return 'Thương lượng';
-  }
-  if (salaryType === SalaryType.RANGE) {
-    return `${salaryMin} - ${salaryMax} USD`;
-  }
-  if (salaryType === SalaryType.ATLEAST) {
-    return `Ít nhất ${salaryMin} USD`;
-  }
-  if (salaryType === SalaryType.UPTO) {
-    return `Lên đến ${salaryMax} USD`;
-  }
-  return '';
 }

@@ -10,3 +10,10 @@ export const getJobByCompanyId = async (companyId: string) => {
   });
   return response;
 };
+
+export const getJobById = async (id: string) => {
+  const response = queryFetch<IJob>(`jobs/${id}`, {
+    method: 'GET',
+  });
+  return response;
+};
