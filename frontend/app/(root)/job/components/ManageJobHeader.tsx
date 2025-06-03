@@ -1,19 +1,32 @@
 import Image from 'next/image';
 
 import { IJob } from '@/api/job/interface';
-import { ChartColumn, CircleDollarSign, EyeOff, Trash, Pencil, UsersRound, Eye, Heart } from 'lucide-react';
+import { ChartColumn, CircleDollarSign, EyeOff, Trash, Pencil, UsersRound, Eye } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import getStringSalary from '@/utils/helpers/getStringSalary';
+import { JobStatus } from '@/utils/enums';
 import Link from 'next/link';
 
 interface IProps {
   job: IJob;
 }
 
-export default function JobHeader({ job }: IProps) {
+export default function ManageJobHeader({ job }: IProps) {
   return (
     <section className="border-b-2 pb-4 relative">
-      <div className="flex items-center gap-4 mb-3">
+      <span
+        className={`absolute top-2 -right-2 z-20 px-2 py-1 text-xs font-bold rounded ${
+          job.status === JobStatus.PUBLISHED
+            ? 'bg-green-100 text-green-700 border border-green-400'
+            : job.status === JobStatus.DRAFT
+              ? 'bg-yellow-100 text-yellow-700 border border-yellow-400'
+              : 'bg-gray-300 text-gray-700 border border-gray-400'
+        }`}
+      >
+        {job.status}
+      </span>
+
+      <div className="flex items-center gap-4">
         <Link href={`/company/${job.company.name}`}>
           <Image
             className="border-2 border-gray-300 rounded-md"
@@ -37,9 +50,27 @@ export default function JobHeader({ job }: IProps) {
         </div>
       </div>
       <div className="flex justify-center items-center gap-2">
-        <Button className="flex-1 bg-green text-white hover:bg-green/80">Ứng tuyển</Button>
-        <Button variant={'outline'}>
-          <Heart />
+        <Button>
+          <ChartColumn /> Thông kê
+        </Button>
+        <Button>
+          <UsersRound /> Ứng viên
+        </Button>
+        <Button>
+          <Pencil /> Sửa
+        </Button>
+        {job.status === JobStatus.PUBLISHED && (
+          <Button>
+            <EyeOff /> Ẩn
+          </Button>
+        )}
+        {job.status === JobStatus.HIDDEN && (
+          <Button>
+            <Eye /> Hiện
+          </Button>
+        )}
+        <Button variant={'destructive'}>
+          <Trash /> Xóa
         </Button>
       </div>
     </section>

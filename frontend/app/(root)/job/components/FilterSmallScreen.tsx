@@ -12,7 +12,7 @@ import {
 import LevelFilterSmall from './LevelFilterSmall';
 import { Funnel } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import JobTypeFilterSmall from './JobTypeFIlterSmall';
 import { Input } from '@/components/ui/input';
 import ProvinceFilterSmall from './ProvinceFilterSmall';
@@ -32,7 +32,18 @@ export default function FilterSmallScreen({ isAuth }: IProps) {
     queryParams.set('provinceName', provinceName);
     queryParams.set('status', status);
     setOpen(false);
-    router.push(`/job?${queryParams.toString()}`);
+    router.replace(`/job?${queryParams.toString()}`);
+  };
+
+  const handleClear = () => {
+    setJobLevel('');
+    setJobType('');
+    setMinSalary('');
+    setMaxSalary('');
+    setProvinceName('');
+    setStatus('');
+    setOpen(false);
+    router.replace('job');
   };
   const [open, setOpen] = useState(false);
   const [jobLevel, setJobLevel] = useState(searchParams.get('jobLevel') || '');
@@ -41,7 +52,6 @@ export default function FilterSmallScreen({ isAuth }: IProps) {
   const [maxSalary, setMaxSalary] = useState(searchParams.get('maxSalary') || '');
   const [provinceName, setProvinceName] = useState(searchParams.get('provinceName') || '');
   const [status, setStatus] = useState(searchParams.get('status') || '');
-
   const countFilter = () => {
     let count = 0;
     if (jobLevel) count++;
@@ -92,9 +102,11 @@ export default function FilterSmallScreen({ isAuth }: IProps) {
         </div>
         <DialogFooter>
           <DialogClose asChild>
-            <Button variant="outline">Hủy</Button>
+            <Button onClick={handleClear} variant="destructive">
+              Xóa tất cả
+            </Button>
           </DialogClose>
-          <Button onClick={handleApply} type="submit">
+          <Button className="bg-green hover:bg-green/80 " onClick={handleApply} type="submit">
             Áp dụng
           </Button>
         </DialogFooter>

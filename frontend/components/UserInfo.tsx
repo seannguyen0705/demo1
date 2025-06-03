@@ -4,9 +4,9 @@ import NavUser from './NavUser';
 import Avatar from './Avatar';
 import { Skeleton } from './ui/skeleton';
 export default function UserInfo() {
-  const { user, isLoading } = useGetMe();
+  const { user } = useGetMe();
 
-  if (isLoading || !user)
+  if (!user)
     return (
       <div className="group relative flex cursor-pointer items-center gap-2">
         <Skeleton className="h-10 w-10 rounded-full" />

@@ -89,6 +89,7 @@ export default function EditSkill({ candidateSkills }: IProps) {
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <div>
               <SelectSkill
+                excludeSkillIds={[]}
                 skill={getValues('skill')}
                 onChange={(value) => {
                   setValue('skill.value', value.value);

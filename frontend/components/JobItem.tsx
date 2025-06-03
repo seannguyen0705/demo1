@@ -1,6 +1,5 @@
 'use client';
 import { IJob } from '@/api/job/interface';
-import useQueryParams from '@/app/hooks/useQueryParams';
 import getStringSalary from '@/utils/helpers/getStringSalary';
 import { formatDistanceToNow } from 'date-fns';
 import { vi } from 'date-fns/locale';
@@ -9,7 +8,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { BsPersonWorkspace } from 'react-icons/bs';
 import { JobStatus } from '@/utils/enums';
-
+import useQueryParams from '@/app/hooks/useQueryParams';
 interface IProps {
   job: IJob;
   navtoDetail: boolean;
@@ -41,12 +40,7 @@ export default function JobItem({ job, navtoDetail, showStatus }: IProps) {
         {formatDistanceToNow(new Date(job.createdAt), { addSuffix: true, locale: vi })}
       </p>
       <div>
-        <Link
-          scroll={false}
-          replace={true}
-          href={href}
-          className="text-lg inline relative z-10 font-bold hover:text-green"
-        >
+        <Link href={href} className="text-lg inline relative z-10 font-bold hover:text-green">
           {job.title}
         </Link>
       </div>
@@ -77,15 +71,13 @@ export default function JobItem({ job, navtoDetail, showStatus }: IProps) {
           <span className="text-sm">{job.jobType}</span>
         </Link>
 
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col">
           {Array.from(setProvinceNames).map((provinceName) => (
-            <Link
-              href={`/job?provinceName=${provinceName}`}
-              key={provinceName}
-              className="inline-flex gap-1 relative z-10  items-center hover:text-green"
-            >
-              <MapPin className="text-gray-500" />
-              <span className="text-sm">{provinceName}</span>
+            <Link href={`/job?provinceName=${provinceName}`} key={provinceName} className="">
+              <div className="inline-flex gap-1 relative z-10  items-center hover:text-green">
+                <MapPin className="text-gray-500" />
+                <span className="text-sm">{provinceName}</span>
+              </div>
             </Link>
           ))}
         </div>

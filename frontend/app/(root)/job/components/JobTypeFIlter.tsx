@@ -6,13 +6,13 @@ import { JobType } from '@/utils/enums';
 
 import CheckBox from '@/components/Checkbox';
 import { useSearchParams } from 'next/navigation';
-import useQueryParams from '@/app/hooks/useQueryParams';
+import useQueryJob from '../hooks/useQueryJob';
 
 const jobTypes = [JobType.OFFICE, JobType.HYBRID, JobType.REMOTE, JobType.FREELANCE];
 
 export function JobTypeFilter() {
   const jobType = useSearchParams().get('jobType');
-  const { createQueryString, handleClear } = useQueryParams();
+  const { createQueryString, handleClear } = useQueryJob();
   return (
     <Popover>
       <PopoverTrigger asChild>

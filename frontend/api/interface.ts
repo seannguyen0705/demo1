@@ -39,4 +39,6 @@ interface IQueryPagination {
   limit?: string;
 }
 
-export type { CreateUserDto, ErrorReponse, IUser, IQueryPagination };
+type SearchParams = { [key: string]: string | string[] | undefined };
+
+export type { CreateUserDto, ErrorReponse, IUser, IQueryPagination, SearchParams };

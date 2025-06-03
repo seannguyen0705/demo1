@@ -19,8 +19,8 @@ export default function SelectSkill({ onChange, skill, excludeSkillIds = [] }: I
   const [keyword, setKeyword] = React.useState('');
 
   const { data } = useGetSkill({
-    page: 1,
-    limit: 5,
+    page: '1',
+    limit: '5',
     keyword,
     excludeSkillIds,
   });

@@ -5,13 +5,13 @@ import { ChevronDown, X } from 'lucide-react';
 import Link from 'next/link';
 import { JobLevel } from '@/utils/enums';
 import CheckBox from '@/components/Checkbox';
-import useQueryParams from '@/app/hooks/useQueryParams';
+import useQueryJob from '../hooks/useQueryJob';
 import { useSearchParams } from 'next/navigation';
 const levels = [JobLevel.INTERN, JobLevel.FRESHER, JobLevel.JUNIOR, JobLevel.SENIOR, JobLevel.MANAGER];
 
 export function LevelFilter() {
   const jobLevel = useSearchParams().get('jobLevel');
-  const { createQueryString, handleClear } = useQueryParams();
+  const { createQueryString, handleClear } = useQueryJob();
 
   return (
     <Popover>

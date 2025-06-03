@@ -6,12 +6,12 @@ import { JobStatus, UserRole } from '@/utils/enums';
 import Link from 'next/link';
 import CheckBox from '@/components/Checkbox';
 import { useSearchParams } from 'next/navigation';
-import useQuery from '@/app/hooks/useQueryParams';
+import useQueryJob from '../hooks/useQueryJob';
 
 export default function StatusFilter() {
   const { user } = useGetMe();
   const searchParams = useSearchParams();
-  const { createQueryString } = useQuery();
+  const { createQueryString } = useQueryJob();
   const status = searchParams.get('status');
   if (user?.role === UserRole.EMPLOYER) {
     return (

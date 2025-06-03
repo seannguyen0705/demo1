@@ -4,14 +4,14 @@ import { Button } from '@/components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { ChevronDown, X } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import useQuery from '@/app/hooks/useQueryParams';
+import useQueryJob from '../hooks/useQueryJob';
 
 export function SalaryFilter() {
   const searchParams = useSearchParams();
 
   let minSalary = searchParams.get('minSalary');
   let maxSalary = searchParams.get('maxSalary');
-  const { createQueryString } = useQuery();
+  const { createQueryString } = useQueryJob();
   const router = useRouter();
   const salaryString = getSalary(minSalary, maxSalary);
 

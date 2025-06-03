@@ -46,7 +46,7 @@ export default function JobInfo({ job }: IProps) {
                 key={jobSkill.id}
                 className="dark:bg-gray-800 bg-[#309689] rounded-2xl border text-white border-gray-200 px-2 py-1 text-sm"
               >
-                <Link href={'#'}>{jobSkill.skill.name}</Link>
+                <Link href={`?keyword=${jobSkill.skill.name}`}>{jobSkill.skill.name}</Link>
               </li>
             ))}
           </ul>

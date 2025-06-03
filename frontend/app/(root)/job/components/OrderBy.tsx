@@ -3,12 +3,12 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { ListFilter } from 'lucide-react';
 import Link from 'next/link';
 import { SortJob } from '@/utils/enums';
-import useQueryParams from '@/app/hooks/useQueryParams';
+import useQueryJob from '../hooks/useQueryJob';
 import { useSearchParams } from 'next/navigation';
 
 export default function OrderBy() {
   const searchParams = useSearchParams();
-  const { createQueryString } = useQueryParams();
+  const { createQueryString } = useQueryJob();
   const sort = searchParams.get('sort') || 'Mới nhất';
   return (
     <Popover>

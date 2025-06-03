@@ -5,9 +5,8 @@ import Pagination from '@/components/Pagination';
 
 interface IProps {
   reviews: { data: QueryReview };
-  urlSearchParams: URLSearchParams;
 }
-export default async function ListReview({ reviews, urlSearchParams }: IProps) {
+export default async function ListReview({ reviews }: IProps) {
   const totalPages = Math.ceil(reviews.data.total / 10);
   return (
     <section className="bg-light-green dark:bg-gray-900 p-4 lg:p-6 rounded-lg">
@@ -23,7 +22,7 @@ export default async function ListReview({ reviews, urlSearchParams }: IProps) {
           </li>
         ))}
       </ul>
-      <Pagination totalPages={totalPages} currentPage={reviews.data.currentPage} urlSearchParams={urlSearchParams} />
+      <Pagination totalPages={totalPages} currentPage={reviews.data.currentPage} />
     </section>
   );
 }

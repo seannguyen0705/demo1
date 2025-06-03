@@ -10,11 +10,11 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import CheckBox from '@/components/Checkbox';
 import Link from 'next/link';
-import useQuery from '@/app/hooks/useQueryParams';
 import { useSearchParams } from 'next/navigation';
+import useQueryJob from '../hooks/useQueryJob';
 export default function ProvinceFilter() {
   const provinceName = useSearchParams().get('provinceName');
-  const { createQueryString } = useQuery();
+  const { createQueryString } = useQueryJob();
   const { data: provinces, isLoading } = useGetProvince();
   const [open, setOpen] = useState(false);
   const router = useRouter();
