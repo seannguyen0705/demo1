@@ -27,15 +27,10 @@ export default async function AppLayout({
   return (
     <html lang="vi">
       <body className={` ${lexend.variable} antialiased`}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <ReactQueryProvider>
             <NavHeader />
-            <div className="pt-[100px]">{children}</div>
+            <div className="pt-[76px]">{children}</div>
             <Toaster />
           </ReactQueryProvider>
         </ThemeProvider>

@@ -104,7 +104,7 @@ export default function Info({ user }: IProps) {
         </label>
         <div>
           <h6 className="text-lg font-bold md:text-2xl">{user?.fullName}</h6>
-          <p className="text-sm text-gray-500 dark:text-gray-400">{user?.title}</p>
+          <p className="text-sm text-gray-500 dark:text-gray-400 text-center sm:text-left">{user?.title}</p>
         </div>
       </div>
 

@@ -13,6 +13,7 @@ import useUploadFile from '@/app/hooks/useUploadFile';
 import useDeleteFile from '@/app/hooks/useDeleteFile';
 import { useEffect } from 'react';
 import Link from 'next/link';
+import SelectProvince from '@/components/SelectProvince';
 
 const formSchema = z.object({
   // Personal Information
@@ -23,12 +24,13 @@ const formSchema = z.object({
 
   // Company Information
   name: z.string().min(2, 'Tên công ty phải có ít nhất 2 ký tự'),
-  address: z
-    .array(z.string().min(1, 'Địa chỉ công ty phải có ít nhất 1 ký tự'))
-    .min(1, 'Phải nhập ít nhất 1 địa chỉ')
-    .max(3, 'Chỉ được nhập tối đa 3 địa chỉ'),
+  addresses: z.array(
+    z.object({
+      detail: z.string().min(1, 'Địa chỉ công ty phải có ít nhất 1 ký tự'),
+      provinceId: z.string().min(1, 'Tỉnh/thành phố không được để trống'),
+    }),
+  ),
   website: z.string().url('Địa chỉ website không hợp lệ'),
-
   proofId: z.string().min(1, 'Vui lòng tải lên tài liệu minh chứng'),
 });
 export type BusinessFormSchema = z.infer<typeof formSchema>;
@@ -42,7 +44,7 @@ export default function BusinessForm() {
       email: '',
       phoneNumber: '',
       name: '',
-      address: [''],
+      addresses: [{ detail: '', provinceId: '' }],
       website: '',
       proofId: '',
     },
@@ -150,53 +152,64 @@ export default function BusinessForm() {
                 />
                 <FormField
                   control={form.control}
-                  name="address"
+                  name="addresses"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className=" flex items-center justify-between">
-                        Địa chỉ công ty
+                      <FormLabel className=" flex items-center justify-between">Địa chỉ công ty</FormLabel>
+                      <div className="space-y-2">
+                        {field.value.map((_, index) => (
+                          <div key={index} className="">
+                            <FormControl>
+                              <div className="grid sm:grid-cols-2 gap-2">
+                                <SelectProvince
+                                  provinceId={field.value[index].provinceId}
+                                  onChange={(provinceId) => {
+                                    const newValue = [...field.value];
+                                    newValue[index].provinceId = provinceId;
+                                    field.onChange(newValue);
+                                  }}
+                                />
+                                <div className="flex items-center gap-2">
+                                  <Input
+                                    className="flex-1 w-full"
+                                    placeholder="Địa chỉ cụ thể tại tỉnh/thành"
+                                    value={field.value[index].detail}
+                                    onChange={(e) => {
+                                      const newValue = [...field.value];
+                                      newValue[index].detail = e.target.value;
+                                      field.onChange(newValue);
+                                    }}
+                                  />
+                                  {field.value.length > 1 && (
+                                    <Button
+                                      type="button"
+                                      variant="destructive"
+                                      size="icon"
+                                      onClick={() => {
+                                        const newValue = field.value.filter((_, i) => i !== index);
+                                        field.onChange(newValue);
+                                      }}
+                                    >
+                                      <Minus />
+                                    </Button>
+                                  )}
+                                </div>
+                              </div>
+                            </FormControl>
+                          </div>
+                        ))}
                         {field.value.length < 3 && (
                           <Button
                             type="button"
                             variant="outline"
-                            className="bg-green size-[36px] text-white hover:bg-[#309689]/80 hover:text-white"
+                            className="w-full border-dashed border-green"
                             onClick={() => {
-                              field.onChange([...field.value, '']);
+                              field.onChange([...field.value, { provinceId: '', detail: '' }]);
                             }}
                           >
-                            <Plus />
+                            <Plus /> Thêm địa chỉ
                           </Button>
                         )}
-                      </FormLabel>
-                      <div className="space-y-2">
-                        {field.value.map((_, index) => (
-                          <div key={index} className="flex gap-2">
-                            <FormControl>
-                              <Input
-                                placeholder={`Nhập địa chỉ công ty ${index + 1}`}
-                                value={field.value[index]}
-                                onChange={(e) => {
-                                  const newValue = [...field.value];
-                                  newValue[index] = e.target.value;
-                                  field.onChange(newValue);
-                                }}
-                              />
-                            </FormControl>
-                            {index > 0 && (
-                              <Button
-                                type="button"
-                                variant="destructive"
-                                size="icon"
-                                onClick={() => {
-                                  const newValue = field.value.filter((_, i) => i !== index);
-                                  field.onChange(newValue);
-                                }}
-                              >
-                                <Minus />
-                              </Button>
-                            )}
-                          </div>
-                        ))}
                       </div>
                       <FormMessage />
                     </FormItem>
@@ -238,7 +251,7 @@ export default function BusinessForm() {
                               if (fileId) {
                                 deleteFile(fileId);
                               }
-                              uploadFile({ file, folder: 'company/proof' });
+                              uploadFile({ file, folder: 'proof' });
                               form.setValue('proofId', fileId);
                             }}
                             {...field}

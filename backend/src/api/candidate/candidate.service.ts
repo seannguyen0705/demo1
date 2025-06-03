@@ -3,7 +3,7 @@ import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
 
 import type { DataSource, DeleteResult } from 'typeorm';
 
-import { UserRole } from '@/common/enums';
+import { UserRole, UserStatus } from '@/common/enums';
 import { UserAlreadyException } from '@/api/auth/auth.exceptions';
 
 import { Candidate } from './entities/candidate.entity';
@@ -181,5 +181,13 @@ export class CandidateService {
     } finally {
       await queryRunner.release();
     }
+  }
+
+  public async countAllCandidates() {
+    return this.candidateRepository.count({
+      where: {
+        status: UserStatus.ACTIVE,
+      },
+    });
   }
 }

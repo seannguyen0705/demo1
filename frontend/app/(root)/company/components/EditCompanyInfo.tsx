@@ -42,12 +42,12 @@ export default function EditCompanyInfo({ company }: IProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      type: company.type,
-      industry: company.industry,
-      size: company.size,
-      country: company.country,
-      workingDay: company.workingDay,
-      workingTime: company.workingTime,
+      type: company.type || '',
+      industry: company.industry || '',
+      size: company.size || '',
+      country: company.country || '',
+      workingDay: company.workingDay || '',
+      workingTime: company.workingTime || '',
     },
   });
 

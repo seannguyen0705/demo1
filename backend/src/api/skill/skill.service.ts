@@ -6,6 +6,7 @@ import { CreateSkillDto } from './dto/create-skill.dto';
 import { UpdateSkillDto } from './dto/update-skill.dto';
 import { QuerySkillDto } from './dto/query-skill.dto';
 import { CandidateSkillService } from '../candidate-skill/candidate-skill.service';
+import { ILike } from 'typeorm';
 @Injectable()
 export class SkillService {
   constructor(
@@ -30,7 +31,7 @@ export class SkillService {
     nextPage: number | null;
     total: number;
   }> {
-    const { page, limit, keyword } = query;
+    const { page, limit, keyword, excludeSkillIds } = query;
     const queryBuilder = this.skillRepository
       .createQueryBuilder('skill')
       .select(['skill.id', 'skill.name'])
@@ -43,6 +44,13 @@ export class SkillService {
         keyword: `%${keyword}%`,
       });
     }
+
+    if (excludeSkillIds.length && excludeSkillIds[0]) {
+      queryBuilder.andWhere('skill.id NOT IN (:...excludeSkillIds)', {
+        excludeSkillIds,
+      });
+    }
+
     if (candidateId) {
       // not get skill that candidate already have
       const candidateSkills = await this.candidateSkillService.findAllByCandidateId(candidateId);
@@ -97,5 +105,11 @@ export class SkillService {
     }
 
     await this.skillRepository.delete(id);
+  }
+
+  public async findOneByName(name: string): Promise<Skill> {
+    return this.skillRepository.findOne({
+      where: { name: ILike(name) },
+    });
   }
 }

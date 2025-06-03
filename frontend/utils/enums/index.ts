@@ -68,4 +68,32 @@ enum Order {
   DESC = 'DESC',
 }
 
-export { Gender, UserRole, AuthBy, UserStatus, SkillYear, JobType, JobStatus, SortJob, OrderByReview, Order };
+enum SalaryType {
+  NEGOTIATION = 'Thương lượng',
+  UPTO = 'Lên đến',
+  RANGE = 'Khoảng',
+  ATLEAST = 'Tối thiểu',
+}
+
+enum JobLevel {
+  INTERN = 'Intern',
+  FRESHER = 'Fresher',
+  JUNIOR = 'Junior',
+  SENIOR = 'Senior',
+  MANAGER = 'Manager',
+}
+
+export {
+  Gender,
+  UserRole,
+  AuthBy,
+  UserStatus,
+  SkillYear,
+  JobType,
+  JobStatus,
+  SortJob,
+  OrderByReview,
+  Order,
+  SalaryType,
+  JobLevel,
+};

@@ -6,11 +6,11 @@ import { IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
 export class QueryJobDto extends QueryPaginationDto {
   @IsOptional()
   @IsString()
-  keywork?: string;
+  keyword?: string; // title, description, requirement, benefit, skill
 
   @IsOptional()
   @IsString()
-  address?: string;
+  provinceName?: string;
 
   @IsEnum(JobType)
   @IsOptional()
@@ -30,3 +30,9 @@ export class QueryJobDto extends QueryPaginationDto {
   @IsOptional()
   sort?: SortJob;
 }
+
+/*
+- keywork sẽ tìm kiếm theo title, description, requirement, benefit, skill, tên công ty
+- nếu keywork là tên công ti th ì chỉ tểả về job của công ty đó
+- nếu keywork là tên kỹ năng thì tìm kiếm job có kỹ năng đó
+*/

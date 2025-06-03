@@ -1,3 +1,4 @@
+import { ICompanyAddress } from '../company-address/interface';
 import { IFile } from '../file/interface';
 
 interface ICompany {
@@ -5,7 +6,6 @@ interface ICompany {
   name: string;
   overview: string;
   benefits: string;
-  address: string[];
   website: string;
   logo: IFile;
   proof: IFile;
@@ -18,6 +18,7 @@ interface ICompany {
   workingTime: string;
   country: string;
   employerId: string;
+  companyAddresses: ICompanyAddress[];
 }
 
 interface IUpdateCompany {

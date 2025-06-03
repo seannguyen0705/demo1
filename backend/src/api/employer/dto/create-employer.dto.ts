@@ -9,7 +9,7 @@ export class CreateEmployerDto extends CreateUserDto {
   @ApiProperty({
     example: 'HR',
   })
-  workTitle: string;
+  title: string;
 
   @IsPhoneNumber('VN')
   @IsNotEmpty()

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 const privatePaths = ['/profile-personal'];
-const authPaths = ['/sign-in', '/sign-up', '/recruitment/sign-in', '/recruitment', '/admin/sign-in'];
+const authPaths = ['/sign-in', '/sign-up', '/recruitment/sign-in', '/recruitment', '/admin/sign-in', 'create-job'];
 
 export async function middleware(request: NextRequest) {
   const isAuth = request.cookies.has('Refresh') || request.cookies.has('Authentication');

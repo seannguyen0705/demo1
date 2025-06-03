@@ -22,7 +22,18 @@ export class CompanyService {
   }
 
   public async findOneByName(name: string) {
-    return this.companyRepository.findOne({ where: { name }, relations: ['logo', 'background'] });
+    return this.companyRepository.findOne({
+      where: { name },
+      relations: {
+        logo: true,
+        background: true,
+        companyAddresses: {
+          address: {
+            province: true,
+          },
+        },
+      },
+    });
   }
 
   public async findOneById(id: string) {
@@ -50,5 +61,9 @@ export class CompanyService {
       throw new NotFoundException('Không tìm thấy công ty');
     }
     return company;
+  }
+
+  public async countAllCompanies() {
+    return this.companyRepository.count();
   }
 }

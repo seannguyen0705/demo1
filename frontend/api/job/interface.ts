@@ -1,15 +1,62 @@
-import { JobType, JobStatus } from '@/utils/enums';
+import { JobType, JobStatus, SalaryType, JobLevel } from '@/utils/enums';
 import { ICompany } from '@/api/company/interface';
+import { IJobAddress } from '@/api/job-address/interface';
+import { IJobSkill } from '@/api/job-skill/interface';
 interface IJob {
   id: string;
   title: string;
   description: string;
-  address: string;
+  jobAddresses: IJobAddress[];
+  jobSkills: IJobSkill[];
   jobType: JobType;
   status: JobStatus;
-  salary: string;
+  salaryType: SalaryType;
+  salaryMin: number;
+  jobLevel: JobLevel;
+  salaryMax: number;
   companyId: string;
   company: ICompany;
+  createdAt: Date;
 }
 
-export type { IJob };
+interface ICreatePublishedJob {
+  title: string;
+  salaryType: string;
+  salaryMin?: string;
+  salaryMax?: string;
+  jobLevel: string;
+  addresses: {
+    detail: string;
+    provinceId: string;
+  }[];
+  jobType: string;
+  jobExpertise: string;
+  jobDomain: string;
+  description: string;
+  requirement: string;
+  benefit: string;
+  skillIds: string[];
+  companyId: string;
+}
+
+interface ICreateDraftJob {
+  title?: string;
+  salaryType?: string;
+  salaryMin?: string;
+  salaryMax?: string;
+  addresses?: {
+    detail: string;
+    provinceId: string;
+  }[];
+  jobLevel?: string;
+  jobType?: string;
+  jobExpertise?: string;
+  jobDomain?: string;
+  description?: string;
+  requirement?: string;
+  benefit?: string;
+  skillIds?: string[];
+  companyId?: string;
+}
+
+export type { IJob, ICreatePublishedJob, ICreateDraftJob };

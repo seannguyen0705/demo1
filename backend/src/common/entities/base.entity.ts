@@ -6,7 +6,7 @@ export abstract class Base {
 
   @CreateDateColumn({
     name: 'created_at',
-    type: 'timestamp',
+    type: 'timestamptz',
     nullable: false,
     default: () => 'CURRENT_TIMESTAMP(6)',
   })
@@ -14,7 +14,7 @@ export abstract class Base {
 
   @UpdateDateColumn({
     name: 'updated_at',
-    type: 'timestamp',
+    type: 'timestamptz',
     nullable: false,
     default: () => 'CURRENT_TIMESTAMP(6)',
     onUpdate: 'CURRENT_TIMESTAMP(6)',

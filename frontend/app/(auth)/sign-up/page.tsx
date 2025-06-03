@@ -4,17 +4,13 @@ import Benefits from '../components/Benefits';
 
 export default async function SignUpPage() {
   return (
-    <main className=" flex  w-full items-center justify-center mb-[50px]">
+    <main className="flex w-full items-center justify-center mb-[50px] pt-8">
       <div className="grid w-full max-w-6xl grid-cols-1 gap-8 lg:grid-cols-2">
         {/* Left Column - Registration Form */}
         <div className="space-y-6 px-4 ">
           <div className="space-y-2">
-            <h1 className="text-3xl font-bold">
-              Chào mừng bạn đến với Job Portal
-            </h1>
-            <p className="text-muted-foreground">
-              Tạo tài khoản để bắt đầu hành trình tìm việc làm của bạn
-            </p>
+            <h1 className="text-3xl font-bold">Chào mừng bạn đến với Job Portal</h1>
+            <p className="text-muted-foreground">Tạo tài khoản để bắt đầu hành trình tìm việc làm của bạn</p>
           </div>
           <RegisterForm />
           <div className="flex items-center gap-x-2 justify-center">
