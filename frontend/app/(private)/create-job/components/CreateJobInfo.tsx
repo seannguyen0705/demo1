@@ -1,4 +1,4 @@
-import { UseFormReturn } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 import { CreateJobFormSchema } from '../page';
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
@@ -11,11 +11,9 @@ import SelectJobType from './SelectJobType';
 import AddSkill from './AddSkill';
 import SelectProvince from '@/components/SelectProvince';
 import SelectJobLevel from './SelectJobLevel';
-interface IProps {
-  form: UseFormReturn<CreateJobFormSchema>;
-}
 
-export default function CreateJobInfo({ form }: IProps) {
+export default function CreateJobInfo() {
+  const form = useFormContext<CreateJobFormSchema>();
   const [salaryType, setSalaryType] = useState('');
   const disabledSalaryMin = salaryType === SalaryType.NEGOTIATION || salaryType === SalaryType.UPTO;
   const disabledSalaryMax = salaryType === SalaryType.NEGOTIATION || salaryType === SalaryType.ATLEAST;

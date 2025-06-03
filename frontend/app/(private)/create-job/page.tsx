@@ -5,6 +5,7 @@ import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Form } from '@/components/ui/form';
+import { FormProvider } from 'react-hook-form';
 import CreateJobInfo from './components/CreateJobInfo';
 import { Rocket } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -185,24 +186,26 @@ export default function CreateJob() {
       </div>
       <Form {...form}>
         <form className="max-w-4xl mx-auto space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
-          <CreateJobInfo form={form} />
-          <CreateJobDescription form={form} />
-          <CreateJobRequirement form={form} />
-          <CreateJobBenefit form={form} />
-          <div className="flex justify-center mb-4 gap-2">
-            <Button type="submit" className="bg-green hover:bg-green/80 dark:text-white" disabled={isPendingPublish}>
-              {isPendingPublish ? 'Đang đăng tin...' : 'Đăng tin tuyển dụng'}
-            </Button>
-            <Button
-              variant="outline"
-              onClick={handleCreateDraftJob}
-              className="border-green dark:border-green"
-              type="button"
-              disabled={isPendingDraft}
-            >
-              {isPendingDraft ? 'Đang lưu bản nháp...' : 'Lưu bản nháp'}
-            </Button>
-          </div>
+          <FormProvider {...form}>
+            <CreateJobInfo />
+            <CreateJobDescription />
+            <CreateJobRequirement />
+            <CreateJobBenefit />
+            <div className="flex justify-center mb-4 gap-2">
+              <Button type="submit" className="bg-green hover:bg-green/80 dark:text-white" disabled={isPendingPublish}>
+                {isPendingPublish ? 'Đang đăng tin...' : 'Đăng tin tuyển dụng'}
+              </Button>
+              <Button
+                variant="outline"
+                onClick={handleCreateDraftJob}
+                className="border-green dark:border-green"
+                type="button"
+                disabled={isPendingDraft}
+              >
+                {isPendingDraft ? 'Đang lưu bản nháp...' : 'Lưu bản nháp'}
+              </Button>
+            </div>
+          </FormProvider>
         </form>
       </Form>
     </main>

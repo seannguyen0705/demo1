@@ -71,8 +71,9 @@ export class JobService {
       }
       const newJob = await queryRunner.manager.save(Job, { ...data, companyId: company.id, status: JobStatus.DRAFT });
       if (data.skillIds) {
-        await Promise.all(
-          data.skillIds.map((skillId) => queryRunner.manager.save(JobSkill, { jobId: newJob.id, skillId })),
+        await queryRunner.manager.insert(
+          JobSkill,
+          data.skillIds.map((skillId) => ({ jobId: newJob.id, skillId })),
         );
       }
       if (data.addresses) {
@@ -119,8 +120,9 @@ export class JobService {
         status: JobStatus.PUBLISHED,
       });
 
-      await Promise.all(
-        data.skillIds.map((skillId) => queryRunner.manager.save(JobSkill, { jobId: newJob.id, skillId })),
+      await queryRunner.manager.insert(
+        JobSkill,
+        data.skillIds.map((skillId) => ({ jobId: newJob.id, skillId })),
       );
 
       // create address

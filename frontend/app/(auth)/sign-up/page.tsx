@@ -4,7 +4,7 @@ import Benefits from '../components/Benefits';
 
 export default async function SignUpPage() {
   return (
-    <main className=" flex  w-full items-center justify-center mb-[50px] pt-8">
+    <main className="flex w-full items-center justify-center mb-[50px] pt-8">
       <div className="grid w-full max-w-6xl grid-cols-1 gap-8 lg:grid-cols-2">
         {/* Left Column - Registration Form */}
         <div className="space-y-6 px-4 ">
