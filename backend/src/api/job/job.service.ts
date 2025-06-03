@@ -53,6 +53,7 @@ export class JobService {
         'jobSkills.id',
         'skill.id',
         'skill.name',
+        'job.status',
       ])
       .andWhere('job.status =:status', { status: JobStatus.PUBLISHED });
     queryBuilder.andWhere('job.companyId =:companyId', { companyId }).orderBy('job.createdAt', 'DESC');
@@ -185,7 +186,7 @@ export class JobService {
   private async searchJobBySalary(queryBuilder: SelectQueryBuilder<Job>, minSalary?: number, maxSalary?: number) {
     if (minSalary && maxSalary) {
       queryBuilder.andWhere(
-        '(job.salaryMin >=:minSalary AND job.salaryMin <=:maxSalary) OR (job.salaryMax >=:minSalary AND job.salaryMax <=:maxSalary)',
+        '((job.salaryMin >=:minSalary AND job.salaryMin <=:maxSalary) OR (job.salaryMax >=:minSalary AND job.salaryMax <=:maxSalary))',
         { minSalary, maxSalary },
       );
     } else if (minSalary) {
@@ -351,8 +352,11 @@ export class JobService {
         'province.name',
         'job.jobType',
         'job.createdAt',
+        'address.detail',
         'job.salaryType',
         'job.salaryMin',
+        'job.jobExpertise',
+        'job.jobDomain',
         'job.salaryMax',
         'job.jobLevel',
         'job.status',

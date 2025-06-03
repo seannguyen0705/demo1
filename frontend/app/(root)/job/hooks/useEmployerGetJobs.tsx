@@ -1,21 +1,16 @@
-import { IQueryJob, QueryJob } from '@/api/job/interface';
+import { QueryJob } from '@/api/job/interface';
 import axiosInstance from '@/config/axios-config';
 import { useQuery } from '@tanstack/react-query';
 
-const getEmployerJobs = async (queryJob: IQueryJob) => {
-  const response = await axiosInstance.get<{ data: QueryJob }>('/employer/jobs', {
-    params: queryJob,
-    paramsSerializer: {
-      indexes: null,
-    },
-  });
+const getEmployerJobs = async (queryString: string) => {
+  const response = await axiosInstance.get<{ data: QueryJob }>(`/employer/jobs?${queryString}`);
   return response.data;
 };
 
-export default function useEmployerGetJobs(queryJob: IQueryJob) {
+export default function useEmployerGetJobs(queryString: string) {
   const { data, isLoading } = useQuery({
-    queryKey: ['jobs', queryJob],
-    queryFn: () => getEmployerJobs(queryJob),
+    queryKey: ['jobs', queryString],
+    queryFn: () => getEmployerJobs(queryString),
   });
   return { data, isLoading };
 }

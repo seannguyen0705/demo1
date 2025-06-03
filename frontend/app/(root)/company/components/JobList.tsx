@@ -9,7 +9,7 @@ export default function JobList({ jobs }: IProps) {
     <ul className="space-y-2 h-auto lg:max-h-screen overflow-auto scrollbar-hide">
       {jobs.map((job) => (
         <li key={job.id}>
-          <JobItem job={job} />
+          <JobItem job={job} navtoDetail={true} showStatus={false} />
         </li>
       ))}
     </ul>

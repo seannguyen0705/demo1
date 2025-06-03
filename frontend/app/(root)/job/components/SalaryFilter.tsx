@@ -4,7 +4,6 @@ import { Button } from '@/components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { ChevronDown, X } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import Link from 'next/link';
 import useQuery from '@/app/hooks/useQueryParams';
 
 export function SalaryFilter() {
@@ -54,7 +53,7 @@ export function SalaryFilter() {
     <Popover>
       <PopoverTrigger asChild>
         <div
-          className={`flex cursor-pointer items-center gap-2 border hover:border-green rounded-full px-2 py-1 bg-light-green ${salaryString && 'border-green text-green'}`}
+          className={`flex cursor-pointer dark:bg-gray-800 items-center gap-2 border dark:hover:border-white hover:border-green rounded-full px-2 py-1 bg-light-green ${salaryString && 'border-green dark:border-white dark:text-white text-green'}`}
         >
           {salaryString || 'Mức lương'}{' '}
           {salaryString ? (

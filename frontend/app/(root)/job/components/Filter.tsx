@@ -9,7 +9,7 @@ export default async function Filter() {
   const cookieStore = await cookies();
   const isAuth = cookieStore.has('Refresh') || cookieStore.has('Authentication');
   return (
-    <div className="flex items-center gap-2">
+    <div className="hidden lg:flex items-center gap-2">
       <LevelFilter />
       <JobTypeFilter />
       <SalaryFilter />

@@ -1,23 +1,22 @@
-import { IQueryJob } from '@/api/job/interface';
+'use client';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { ListFilter } from 'lucide-react';
 import Link from 'next/link';
 import { SortJob } from '@/utils/enums';
-import { createQueryString } from '@/utils/helpers/createQueryString';
+import useQueryParams from '@/app/hooks/useQueryParams';
+import { useSearchParams } from 'next/navigation';
 
-interface IProps {
-  queryJob: IQueryJob;
-}
-
-export default function OrderBy({ queryJob }: IProps) {
-  const { sort = 'Mới nhất' } = queryJob;
+export default function OrderBy() {
+  const searchParams = useSearchParams();
+  const { createQueryString } = useQueryParams();
+  const sort = searchParams.get('sort') || 'Mới nhất';
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <div className="flex items-center gap-2">
+        <button className="flex items-center gap-2">
           {sort}
           <ListFilter />
-        </div>
+        </button>
       </PopoverTrigger>
       <PopoverContent className="w-full p-0">
         <div className="">
@@ -25,7 +24,7 @@ export default function OrderBy({ queryJob }: IProps) {
             <Link
               replace={true}
               key={sort}
-              href={`?${createQueryString('sort', sort, queryJob as Record<string, string>)}`}
+              href={`?${createQueryString('sort', sort)}`}
               className="flex items-center gap-2 px-2 py-1 hover:bg-light-green dark:hover:bg-gray-800"
             >
               <span>{sort}</span>

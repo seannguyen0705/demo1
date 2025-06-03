@@ -14,7 +14,11 @@ interface IJob {
   salaryType: SalaryType;
   salaryMin: number;
   jobLevel: JobLevel;
+  requirement: string;
+  jobExpertise: string;
+  jobDomain: string;
   salaryMax: number;
+  benefit: string;
   companyId: string;
   company: ICompany;
   createdAt: Date;

@@ -34,7 +34,7 @@ export class QueryJobDto extends QueryPaginationDto {
 
   @IsEnum(SortJob)
   @IsOptional()
-  sort?: SortJob;
+  sort?: SortJob = SortJob.NEWEST;
 
   @IsOptional()
   @IsEnum(JobLevel)

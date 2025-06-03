@@ -26,7 +26,7 @@ export default function ProvinceFilter() {
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className={` cursor-pointer border dark:hover:border-white hover:border-green rounded-full px-2 py-1 dark:bg-gray-800 bg-light-green ${provinceName && 'border-green text-green hover:text-green dark:text-white dark:border-white'}`}
+          className={` cursor-pointer dark:hover:bg-gray-800 border dark:hover:border-white hover:border-green rounded-full px-2 py-1 dark:bg-gray-800 bg-light-green ${provinceName && 'border-green text-green hover:text-green dark:text-white dark:border-white'}`}
         >
           {provinceName ? provinceName : 'Tỉnh/Thành phố'}
           {provinceName ? (

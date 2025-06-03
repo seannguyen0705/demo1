@@ -55,7 +55,7 @@ export default function CreateJobInfo() {
                       />
                       <div className="flex items-center gap-2">
                         <Input
-                          className="flex-1 w-full"
+                          className="flex-1 w-full selection:bg-green"
                           placeholder="Địa chỉ cụ thể tại tỉnh/thành"
                           value={field.value[index].detail}
                           onChange={(e) => {

@@ -1,6 +1,9 @@
 import { SalaryType } from '../enums';
 
-export default function getStringSalary(salaryType: string, salaryMin: number, salaryMax: number) {
+export default function getStringSalary(salaryType?: string, salaryMin?: number, salaryMax?: number) {
+  if (!salaryType) {
+    return '';
+  }
   if (salaryType === SalaryType.NEGOTIATION) {
     return 'Thương lượng';
   }
