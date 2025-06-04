@@ -85,7 +85,7 @@ export default function ManageJobItem({ job }: IProps) {
         </ul>
       </div>
 
-      <div className="flex justify-center mt-2 items-center gap-2">
+      <div className="flex justify-end mt-2 items-center gap-2">
         <Button variant={'outline'}>
           <ChartColumn /> Thông kê
         </Button>
@@ -102,7 +102,7 @@ export default function ManageJobItem({ job }: IProps) {
             <Eye /> Hiện
           </Button>
         )}
-        <Button variant={'destructive'}>
+        <Button variant={'outline'} className="text-red-500 hover:text-red-600">
           <Trash /> Xóa
         </Button>
       </div>
