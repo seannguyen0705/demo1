@@ -5,7 +5,7 @@ import { Base as BaseEntity } from '@/common/entities';
 
 @Entity('cvs')
 export class Cv extends BaseEntity {
-  @Column({ name: 'candidte_id' })
+  @Column({ name: 'candidate_id' })
   candidateId: string;
 
   @ManyToOne(() => Candidate)

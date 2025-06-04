@@ -3,6 +3,8 @@ import { ICompany } from '@/api/company/interface';
 import { IJobAddress } from '@/api/job-address/interface';
 import { IJobSkill } from '@/api/job-skill/interface';
 import { IQueryPagination } from '../interface';
+import { IApplyJob } from '../apply-job/interface';
+
 interface IJob {
   id: string;
   title: string;
@@ -22,6 +24,7 @@ interface IJob {
   companyId: string;
   company: ICompany;
   createdAt: Date;
+  applyJobs: IApplyJob[];
 }
 
 interface ICreatePublishedJob {

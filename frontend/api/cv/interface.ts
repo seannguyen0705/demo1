@@ -5,6 +5,7 @@ interface ICv {
   candidateId: string;
   updatedAt: string;
   file: IFile;
+  createdAt: string;
 }
 
 export type { ICv };

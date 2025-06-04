@@ -1,16 +1,19 @@
 import Image from 'next/image';
 
 import { IJob } from '@/api/job/interface';
-import { ChartColumn, CircleDollarSign, EyeOff, Trash, Pencil, UsersRound, Eye, Heart } from 'lucide-react';
+import { CircleCheckBig, CircleDollarSign, Heart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import getStringSalary from '@/utils/helpers/getStringSalary';
 import Link from 'next/link';
+import Application from './Application';
+import { format } from 'date-fns';
 
 interface IProps {
   job: IJob;
+  isAuth: boolean;
 }
 
-export default function JobHeader({ job }: IProps) {
+export default function JobHeader({ job, isAuth }: IProps) {
   return (
     <section className="border-b-2 pb-4 relative">
       <div className="flex items-center gap-4 mb-3">
@@ -37,7 +40,22 @@ export default function JobHeader({ job }: IProps) {
         </div>
       </div>
       <div className="flex justify-center items-center gap-2">
-        <Button className="flex-1 bg-green text-white hover:bg-green/80">Ứng tuyển</Button>
+        <div className="flex-1">
+          {isAuth ? (
+            job?.applyJobs?.length > 0 ? (
+              <p className="flex items-center gap-2 text-green">
+                <CircleCheckBig />
+                Đã ứng tuyển {format(job.applyJobs[0].createdAt, 'dd/MM/yyyy')}
+              </p>
+            ) : (
+              <Application job={job} />
+            )
+          ) : (
+            <Link href={'/sign-in'} className="w-full">
+              <Button className="w-full bg-green text-white hover:bg-green/80 hover:text-white">Ứng tuyển</Button>
+            </Link>
+          )}
+        </div>
         <Button variant={'outline'}>
           <Heart />
         </Button>

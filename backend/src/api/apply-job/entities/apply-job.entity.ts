@@ -1,19 +1,46 @@
-import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, Unique } from 'typeorm';
 import { Base as BaseEntity } from '@/common/entities';
-import { Cv } from '@/api/cv/entities/cv.entity';
+import { Job } from '@/api/job/entities/job.entity';
+import { ApplyJobStatus } from '@/common/enums';
+import { Candidate } from '@/api/candidate/entities';
+import { File } from '@/api/file/entities/file.entity';
 
 @Entity('apply_jobs')
+@Unique(['jobId', 'candidateId'])
 export class ApplyJob extends BaseEntity {
   @Column({ name: 'job_id' })
   jobId: string;
 
-  @Column({ name: 'cv_id' })
-  cvId: string;
+  @ManyToOne(() => Job)
+  @JoinColumn({ name: 'job_id' })
+  job: Job;
 
-  @ManyToOne(() => Cv)
-  @JoinColumn({ name: 'cv_id' })
-  cv: Cv;
+  @Column({ name: 'candidate_id' })
+  candidateId: string;
 
-  @Column({ nullable: true })
+  @ManyToOne(() => Candidate)
+  @JoinColumn({ name: 'candidate_id' })
+  candidate: Candidate;
+
+  @Column({ name: 'file_id' })
+  fileId: string;
+
+  @ManyToOne(() => File)
+  @JoinColumn({ name: 'file_id' })
+  file: File;
+
+  @Column({ name: 'full_name' })
+  fullName: string;
+
+  @Column({ name: 'phone_number' })
+  phoneNumber: string;
+
+  @Column({ name: 'expected_address' })
+  expectedAddress: string;
+
+  @Column({ name: 'message' })
   message: string;
+
+  @Column({ name: 'status', default: ApplyJobStatus.NEW })
+  status: ApplyJobStatus;
 }

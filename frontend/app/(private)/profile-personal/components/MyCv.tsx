@@ -36,7 +36,6 @@ export default function MyCv() {
   if (isLoading) {
     return <SkeletonMyCv />;
   }
-
   return (
     <div className="container mx-auto mb-[30px] px-4 lg:w-62 lg:px-0">
       <div>

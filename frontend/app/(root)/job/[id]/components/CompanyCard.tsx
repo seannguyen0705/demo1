@@ -22,32 +22,32 @@ export default function CompanyCard({ company }: IProps) {
       <h3 className="font-light">{company.name}</h3>
 
       <div className="flex justify-between ">
-        <span className="text-gray-700">Mô hình công ty</span>
+        <span className="text-gray-700 dark:text-gray-200">Mô hình công ty</span>
         <span>{company.type}</span>
       </div>
 
       <div className="flex justify-between ">
-        <span className="text-gray-700">Lĩnh vực công ty</span>
+        <span className="text-gray-700 dark:text-gray-200">Lĩnh vực công ty</span>
         <span>{company.industry}</span>
       </div>
 
       <div className="flex justify-between ">
-        <span className="text-gray-700">Quy mô công ty</span>
+        <span className="text-gray-700 dark:text-gray-200">Quy mô công ty</span>
         <span>{company.size} nhân viên</span>
       </div>
 
       <div className="flex justify-between ">
-        <span className="text-gray-700">Quốc gia</span>
+        <span className="text-gray-700 dark:text-gray-200">Quốc gia</span>
         <span>{company.country}</span>
       </div>
 
       <div className="flex justify-between ">
-        <span className="text-gray-700">Ngày làm việc</span>
+        <span className="text-gray-700 dark:text-gray-200">Ngày làm việc</span>
         <span>{company.workingDay}</span>
       </div>
 
       <div className="flex justify-between ">
-        <span className="text-gray-700">Giờ làm việc</span>
+        <span className="text-gray-700 dark:text-gray-200">Giờ làm việc</span>
         <span>{company.workingTime}</span>
       </div>
     </article>
