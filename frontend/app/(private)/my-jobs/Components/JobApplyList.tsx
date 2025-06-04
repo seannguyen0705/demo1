@@ -7,7 +7,7 @@ interface IProps {
 
 export default function JobApplyList({ jobs }: IProps) {
   return (
-    <div>
+    <div className="flex flex-col gap-4">
       {jobs.map((job) => (
         <JobApplyItem key={job.id} job={job} />
       ))}

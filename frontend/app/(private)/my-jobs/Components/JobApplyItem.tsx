@@ -12,13 +12,19 @@ export default function JobApplyItem({ job }: IProps) {
   const provinceNames = job.jobAddresses.map((jobAddress) => jobAddress.address.province.name);
   const setProvinceNames = new Set(provinceNames);
   return (
-    <article className="p-4 flex justify-between border-b border-dashed hover:bg-gray-100">
+    <article className="lg:p-4 flex flex-col sm:flex-row justify-between border-b border-dashed hover:bg-gray-100">
       <div className="flex gap-4 items-center">
-        <Image src={job.company.logo.url} alt={job.company.name} width={100} height={100} />
+        <Image
+          className="sm:size-[100px] size-[80px]"
+          src={job.company.logo.url}
+          alt={job.company.name}
+          width={100}
+          height={100}
+        />
         <div>
-          <h3>{job.company.name}</h3>
-          <p>{job.title}</p>
-          <p>{Array.from(setProvinceNames).join(', ')}</p>
+          <h3 className="text-base sm:text-lg font-bold">{job.title}</h3>
+          <p className="text-sm">{job.company.name}</p>
+          <p className="text-sm">{Array.from(setProvinceNames).join(', ')}</p>
 
           <div className="flex items-center gap-2 text-green mb-2">
             <CircleDollarSign className="" />
@@ -27,7 +33,7 @@ export default function JobApplyItem({ job }: IProps) {
         </div>
       </div>
 
-      <div>Ứng tuyển vào {format(job.applyJobs[0].createdAt, 'dd/MM/yyyy')}</div>
+      <p className="text-sm text-right">Ứng tuyển vào {format(job.applyJobs[0].createdAt, 'dd/MM/yyyy')}</p>
     </article>
   );
 }
