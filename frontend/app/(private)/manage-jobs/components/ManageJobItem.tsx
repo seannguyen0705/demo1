@@ -85,7 +85,7 @@ export default function ManageJobItem({ job }: IProps) {
         </ul>
       </div>
 
-      <div className="flex justify-center items-center gap-2">
+      <div className="flex justify-center mt-2 items-center gap-2">
         <Button>
           <ChartColumn /> Thông kê
         </Button>
