@@ -1,6 +1,6 @@
 import { logout } from '@/api/auth/action';
 import { IUser } from '@/api/interface';
-import getNavMenus from '@/utils/helpers/getNavMenus';
+import getNavHeader from '@/utils/helpers/getNavHeader';
 
 import { LogOut } from 'lucide-react';
 import Link from 'next/link';
@@ -9,7 +9,7 @@ interface IProps {
   user: IUser;
 }
 export default function NavUser({ user }: IProps) {
-  const navs = getNavMenus(user);
+  const navs = getNavHeader(user);
   return (
     <ul className=" dark:bg-gray-800 dark:text-white  ">
       {navs.map((nav) => (

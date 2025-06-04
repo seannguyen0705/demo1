@@ -1,12 +1,20 @@
 import { JobTypeFilter } from './JobTypeFIlter';
 import { LevelFilter } from './LevelFilter';
 import { SalaryFilter } from './SalaryFilter';
-export default function Filter() {
+import ProvinceFilter from './ProvinceFilter';
+import { cookies } from 'next/headers';
+import StatusFilter from './StatusFilter';
+
+export default async function Filter() {
+  const cookieStore = await cookies();
+  const isAuth = cookieStore.has('Refresh') || cookieStore.has('Authentication');
   return (
-    <div className="flex items-center gap-2 max-w-[1000px] mx-auto">
+    <div className="hidden lg:flex items-center gap-2">
       <LevelFilter />
       <JobTypeFilter />
       <SalaryFilter />
+      <ProvinceFilter />
+      {isAuth && <StatusFilter />}
     </div>
   );
 }

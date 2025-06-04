@@ -9,14 +9,18 @@ import RadioSalaryType from './RadioSalaryType';
 import { useState } from 'react';
 import SelectJobType from './SelectJobType';
 import AddSkill from './AddSkill';
-import SelectProvince from '@/components/SelectProvince';
 import SelectJobLevel from './SelectJobLevel';
+import useGetCompanyAddresses from '../hooks/useGetCompanyAddresses';
+import CheckBox from '@/components/Checkbox';
 
 export default function CreateJobInfo() {
   const form = useFormContext<CreateJobFormSchema>();
   const [salaryType, setSalaryType] = useState('');
   const disabledSalaryMin = salaryType === SalaryType.NEGOTIATION || salaryType === SalaryType.UPTO;
   const disabledSalaryMax = salaryType === SalaryType.NEGOTIATION || salaryType === SalaryType.ATLEAST;
+
+  const { data: companyAddresses } = useGetCompanyAddresses();
+  if (!companyAddresses) return null;
 
   return (
     <div className="grid sm:grid-cols-2 gap-4">
@@ -36,64 +40,31 @@ export default function CreateJobInfo() {
 
       <FormField
         control={form.control}
-        name="addresses"
+        name="addressIds"
         render={({ field }) => (
           <FormItem className="sm:col-span-2">
-            <FormLabel className=" flex items-center justify-between">Địa chỉ làm việc</FormLabel>
-            <div className="space-y-2">
-              {field.value.map((_, index) => (
-                <div key={index} className="">
-                  <FormControl>
-                    <div className="grid sm:grid-cols-2 gap-2">
-                      <SelectProvince
-                        provinceId={field.value[index].provinceId}
-                        onChange={(provinceId) => {
-                          const newValue = [...field.value];
-                          newValue[index].provinceId = provinceId;
-                          field.onChange(newValue);
-                        }}
-                      />
-                      <div className="flex items-center gap-2">
-                        <Input
-                          className="flex-1 w-full"
-                          placeholder="Địa chỉ cụ thể tại tỉnh/thành"
-                          value={field.value[index].detail}
-                          onChange={(e) => {
-                            const newValue = [...field.value];
-                            newValue[index].detail = e.target.value;
-                            field.onChange(newValue);
-                          }}
-                        />
-                        {field.value.length > 1 && (
-                          <Button
-                            type="button"
-                            variant="destructive"
-                            size="icon"
-                            onClick={() => {
-                              const newValue = field.value.filter((_, i) => i !== index);
-                              field.onChange(newValue);
-                            }}
-                          >
-                            <Minus />
-                          </Button>
-                        )}
-                      </div>
-                    </div>
-                  </FormControl>
+            <FormLabel className="text-base font-medium mb-3">Địa chỉ làm việc</FormLabel>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {companyAddresses.data.map((companyAddress) => (
+                <div
+                  onClick={() => {
+                    if (field.value.includes(companyAddress.address.id)) {
+                      field.onChange(field.value.filter((id) => id !== companyAddress.address.id));
+                    } else {
+                      field.onChange([...field.value, companyAddress.address.id]);
+                    }
+                  }}
+                  key={companyAddress.id}
+                  className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-all duration-200 hover:bg-gray-50 ${
+                    field.value.includes(companyAddress.address.id) ? 'border-green-500 bg-green-50' : 'border-gray-200'
+                  }`}
+                >
+                  <CheckBox checked={field.value.includes(companyAddress.address.id)} />
+                  <p className="text-sm">
+                    {companyAddress.address.detail}, {companyAddress.address.province.name}
+                  </p>
                 </div>
               ))}
-              {field.value.length < 3 && (
-                <Button
-                  type="button"
-                  variant="outline"
-                  className="w-full border-dashed border-green"
-                  onClick={() => {
-                    field.onChange([...field.value, { provinceId: '', detail: '' }]);
-                  }}
-                >
-                  <Plus /> Thêm địa chỉ
-                </Button>
-              )}
             </div>
             <FormMessage />
           </FormItem>

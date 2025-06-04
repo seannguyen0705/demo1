@@ -6,6 +6,7 @@ interface IJobSkill {
   skill: ISkill;
   jobId: string;
   skillId: string;
+  id: string;
 }
 
 export type { IJobSkill };

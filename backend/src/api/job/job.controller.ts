@@ -6,6 +6,7 @@ import { CreateDraftJobDto } from './dto/create-draft-job.dto';
 import { IJwtStrategy } from '../auth/strategies';
 import { CreatePublishedJobDto } from './dto/create-published-job.dto';
 import { QueryJobDto } from './dto/query-job.dto';
+import { EmployerQueryJobDto } from './dto/employer-query-job.dto';
 @InjectController({ name: jobRoutes.index, isCore: true })
 export class JobController {
   constructor(private readonly jobService: JobService) {}
@@ -28,5 +29,15 @@ export class JobController {
   @InjectRoute(jobRoutes.findJobs)
   async findJobs(@Query() query: QueryJobDto) {
     return this.jobService.findJobs(query);
+  }
+
+  @InjectRoute(jobRoutes.employerFindJobs)
+  async employerFindJobs(@Query() query: EmployerQueryJobDto, @ReqUser() user: IJwtStrategy) {
+    return this.jobService.employerFindJobs(user.element.id, query);
+  }
+
+  @InjectRoute(jobRoutes.findOneById)
+  async findOneById(@Param('id') id: string) {
+    return this.jobService.findOneById(id);
   }
 }

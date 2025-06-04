@@ -26,12 +26,9 @@ const formSchema = z
     }),
     salaryMin: z.string().optional(),
     salaryMax: z.string().optional(),
-    addresses: z.array(
-      z.object({
-        detail: z.string().min(1, 'Địa chỉ công ty phải có ít nhất 1 ký tự'),
-        provinceId: z.string().min(1, 'Tỉnh/thành phố không được để trống'),
-      }),
-    ),
+    addressIds: z.array(z.string()).min(1, {
+      message: 'Địa chỉ công ty không được để trống',
+    }),
     jobLevel: z.string().min(1, {
       message: 'Cấp bậc công việc không được để trống',
     }),
@@ -130,12 +127,7 @@ export default function CreateJob() {
       salaryType: '',
       salaryMin: '',
       salaryMax: '',
-      addresses: [
-        {
-          detail: '',
-          provinceId: '',
-        },
-      ],
+      addressIds: [],
       jobLevel: '',
       jobType: '',
       jobExpertise: '',
@@ -164,9 +156,6 @@ export default function CreateJob() {
 
   const handleCreateDraftJob = () => {
     const data = removeFalsyValues(form.getValues());
-    if (data.addresses) {
-      data.addresses = data.addresses.filter((address) => address.detail && address.provinceId);
-    }
     if (user?.company?.id) {
       createDraftJob({
         ...data,

@@ -7,7 +7,7 @@ import MenuSide from './MenuSide';
 import Link from 'next/link';
 import { cookies } from 'next/headers';
 import UserInfo from './UserInfo';
-
+import AuthCenterNav from './AuthCenterNav';
 export default async function NavHeader() {
   const cookieStore = await cookies();
   const isAuth = cookieStore.has('Refresh') || cookieStore.has('Authentication');
@@ -21,9 +21,7 @@ export default async function NavHeader() {
           <span className=" text-xl font-semibold ">Job Portal</span>
         </Link>
 
-        <Suspense>
-          <CenterNav isAuth={isAuth} />
-        </Suspense>
+        {isAuth ? <AuthCenterNav /> : <CenterNav />}
 
         <div className=" flex items-center gap-x-[10px] md:gap-x-[10px]">
           {isAuth ? (

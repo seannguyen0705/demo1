@@ -27,7 +27,7 @@ const getNavMenus = (user: IUser | undefined): NavItem[] => {
         href: '/employer-dashboard',
         icon: <LayoutDashboard />,
       },
-      { name: 'Việc làm', href: '/employer-jobs', icon: <Briefcase /> },
+      { name: 'Việc làm', href: '/manage-jobs', icon: <Briefcase /> },
       { name: 'Hồ sơ cá nhân', href: '/profile-personal', icon: <UserRound /> },
       {
         name: 'Công ty',

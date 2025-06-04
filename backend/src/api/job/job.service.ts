@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { JobRepository } from './job.repository';
 import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
 import { Job } from './entities/job.entity';
-import { JobStatus, JobType, SortJob } from '@/common/enums';
+import { JobLevel, JobStatus, JobType, SortJob } from '@/common/enums';
 
 import { CompanyService } from '../company/company.service';
 import { CreateDraftJobDto } from './dto/create-draft-job.dto';
@@ -10,11 +10,10 @@ import { DataSource, SelectQueryBuilder } from 'typeorm';
 import { JobSkill } from '../job-skill/entities/job-skill.entity';
 import { CreatePublishedJobDto } from './dto/create-published-job.dto';
 import { JobAlreadyExistsException } from './job.exception';
-import { CreateJobAddressDto } from '../job-address/dto/create-job-address.dto';
-import { Address } from '../address/entities/address.entity';
 import { JobAddress } from '../job-address/entities/job-address.entity';
 import { QueryJobDto } from './dto/query-job.dto';
 import { SkillService } from '../skill/skill.service';
+import { EmployerQueryJobDto } from './dto/employer-query-job.dto';
 @Injectable()
 export class JobService {
   constructor(
@@ -52,6 +51,7 @@ export class JobService {
         'jobSkills.id',
         'skill.id',
         'skill.name',
+        'job.status',
       ])
       .andWhere('job.status =:status', { status: JobStatus.PUBLISHED });
     queryBuilder.andWhere('job.companyId =:companyId', { companyId }).orderBy('job.createdAt', 'DESC');
@@ -64,9 +64,11 @@ export class JobService {
     await queryRunner.startTransaction();
     try {
       const company = await this.companyService.findOneByEmployerId(employerId);
-      const existingJob = await this.findOneByTitleAndCompanyId(data.title, company.id);
-      if (existingJob) {
-        throw new JobAlreadyExistsException();
+      if (data.title) {
+        const existingJob = await this.findOneByTitleAndCompanyId(data.title, company.id);
+        if (existingJob) {
+          throw new JobAlreadyExistsException();
+        }
       }
       const newJob = await queryRunner.manager.save(Job, { ...data, companyId: company.id, status: JobStatus.DRAFT });
       if (data.skillIds) {
@@ -75,16 +77,11 @@ export class JobService {
           data.skillIds.map((skillId) => ({ jobId: newJob.id, skillId })),
         );
       }
-      if (data.addresses) {
-        const createJobAddresses: CreateJobAddressDto[] = await Promise.all(
-          data.addresses.map(async (address) => {
-            const createdAddress = await queryRunner.manager.save(Address, address);
-            return {
-              addressId: createdAddress.id,
-              jobId: newJob.id,
-            };
-          }),
-        );
+      if (data.addressIds) {
+        const createJobAddresses = data.addressIds.map((addressId) => ({
+          addressId,
+          jobId: newJob.id,
+        }));
         await queryRunner.manager.insert(JobAddress, createJobAddresses);
       }
       await queryRunner.commitTransaction();
@@ -124,17 +121,10 @@ export class JobService {
         data.skillIds.map((skillId) => ({ jobId: newJob.id, skillId })),
       );
 
-      // create address
-      const createJobAddresses: CreateJobAddressDto[] = await Promise.all(
-        data.addresses.map(async (address) => {
-          const createdAddress = await queryRunner.manager.save(Address, address);
-          return {
-            addressId: createdAddress.id,
-            jobId: newJob.id,
-          };
-        }),
-      );
-      // create job addresses
+      const createJobAddresses = data.addressIds.map((addressId) => ({
+        addressId,
+        jobId: newJob.id,
+      }));
       await queryRunner.manager.insert(JobAddress, createJobAddresses);
       await queryRunner.commitTransaction();
       return newJob;
@@ -182,13 +172,25 @@ export class JobService {
   private async searchJobBySalary(queryBuilder: SelectQueryBuilder<Job>, minSalary?: number, maxSalary?: number) {
     if (minSalary && maxSalary) {
       queryBuilder.andWhere(
-        '(job.salaryMin >=:minSalary AND job.salaryMin <=:maxSalary) OR (job.salaryMax >=:minSalary AND job.salaryMax <=:maxSalary)',
+        '((job.salaryMin >=:minSalary AND job.salaryMin <=:maxSalary) OR (job.salaryMax >=:minSalary AND job.salaryMax <=:maxSalary))',
         { minSalary, maxSalary },
       );
     } else if (minSalary) {
       queryBuilder.andWhere('(job.salaryMin IS NULL OR job.salaryMin >=:minSalary)', { minSalary });
     } else if (maxSalary) {
       queryBuilder.andWhere('(job.salaryMax IS NULL OR job.salaryMax <=:maxSalary)', { maxSalary });
+    }
+  }
+
+  private async searchJobByJobLevel(queryBuilder: SelectQueryBuilder<Job>, jobLevel?: JobLevel) {
+    if (jobLevel) {
+      queryBuilder.andWhere('job.jobLevel =:jobLevel', { jobLevel });
+    }
+  }
+
+  private async searchJobByStatus(queryBuilder: SelectQueryBuilder<Job>, status?: JobStatus) {
+    if (status) {
+      queryBuilder.andWhere('job.status =:status', { status });
     }
   }
 
@@ -212,7 +214,7 @@ export class JobService {
   }
 
   async findJobs(query: QueryJobDto) {
-    const { keyword, provinceName, jobType, minSalary, maxSalary, sort, page, limit } = query;
+    const { keyword, provinceName, jobType, minSalary, maxSalary, sort, page, limit, jobLevel } = query;
 
     const queryBuilder = this.jobRepository
       .createQueryBuilder('job')
@@ -245,17 +247,115 @@ export class JobService {
       ])
       .andWhere('job.status =:status', { status: JobStatus.PUBLISHED });
 
-    await this.searchJobByKeyword(queryBuilder, keyword);
-    await this.searchJobByProvinceName(queryBuilder, provinceName);
-    await this.searchJobByJobType(queryBuilder, jobType);
-    await this.searchJobBySalary(queryBuilder, minSalary, maxSalary);
-    await this.orderJob(queryBuilder, sort);
+    await Promise.all([
+      this.searchJobByKeyword(queryBuilder, keyword),
+      this.searchJobByProvinceName(queryBuilder, provinceName),
+      this.searchJobByJobType(queryBuilder, jobType),
+      this.searchJobBySalary(queryBuilder, minSalary, maxSalary),
+      this.searchJobByJobLevel(queryBuilder, jobLevel),
+      this.orderJob(queryBuilder, sort),
+    ]);
     const [jobs, total] = await queryBuilder.getManyAndCount();
     const numPage = Math.ceil(total / limit);
     if (page + 1 > numPage) {
       return { jobs, currentPage: page, nextPage: null, total };
     }
     return { jobs, currentPage: page, nextPage: page + 1, total };
+  }
+
+  public async employerFindJobs(employerId: string, query: EmployerQueryJobDto) {
+    const { keyword, provinceName, jobType, minSalary, maxSalary, sort, page, limit, jobLevel, status } = query;
+    const company = await this.companyService.findOneByEmployerId(employerId);
+
+    const queryBuilder = this.jobRepository
+      .createQueryBuilder('job')
+      .innerJoin('job.company', 'company')
+      .leftJoin('company.logo', 'logo')
+      .leftJoin('job.jobAddresses', 'jobAddresses')
+      .leftJoin('jobAddresses.address', 'address')
+      .leftJoin('address.province', 'province')
+      .leftJoin('job.jobSkills', 'jobSkills')
+      .leftJoin('jobSkills.skill', 'skill')
+      .skip(limit * (page - 1))
+      .take(limit)
+
+      .select([
+        'job.id',
+        'job.title',
+        'job.jobExpertise',
+        'job.createdAt',
+        'job.salaryType',
+        'company.name',
+        'job.salaryMin',
+        'job.salaryMax',
+        'job.jobType',
+        'job.status',
+        'job.jobLevel',
+        'logo.url',
+        'jobAddresses.id',
+        'address.id',
+        'address.detail',
+        'province.name',
+        'jobSkills.id',
+        'skill.id',
+        'skill.name',
+      ])
+      .andWhere('job.companyId =:companyId', { companyId: company.id });
+
+    await Promise.all([
+      this.searchJobByKeyword(queryBuilder, keyword),
+      this.searchJobByProvinceName(queryBuilder, provinceName),
+      this.searchJobByJobType(queryBuilder, jobType),
+      this.searchJobBySalary(queryBuilder, minSalary, maxSalary),
+      this.searchJobByJobLevel(queryBuilder, jobLevel),
+      this.searchJobByStatus(queryBuilder, status),
+      this.orderJob(queryBuilder, sort),
+    ]);
+    const [jobs, total] = await queryBuilder.getManyAndCount();
+    const numPage = Math.ceil(total / limit);
+    if (page + 1 > numPage) {
+      return { jobs, currentPage: page, nextPage: null, total };
+    }
+    return { jobs, currentPage: page, nextPage: page + 1, total };
+  }
+
+  public async findOneById(id: string) {
+    const queryBuilder = this.jobRepository
+      .createQueryBuilder('job')
+      .innerJoin('job.company', 'company')
+      .leftJoin('company.logo', 'logo')
+      .leftJoin('job.jobAddresses', 'jobAddresses')
+      .leftJoin('jobAddresses.address', 'address')
+      .leftJoin('address.province', 'province')
+      .leftJoin('job.jobSkills', 'jobSkills')
+      .leftJoin('jobSkills.skill', 'skill')
+      .select([
+        'job.id',
+        'job.title',
+        'company.name',
+        'logo.url',
+        'job.description',
+        'jobSkills.id',
+        'skill.name',
+        'job.requirement',
+        'job.benefit',
+        'jobAddresses.id',
+        'address.id',
+        'province.name',
+        'job.jobType',
+        'job.createdAt',
+        'address.detail',
+        'job.salaryType',
+        'job.salaryMin',
+        'job.jobExpertise',
+        'job.jobDomain',
+        'job.salaryMax',
+        'job.jobLevel',
+        'job.status',
+      ])
+      .andWhere('job.id =:id', { id });
+
+    return queryBuilder.getOne();
   }
 
   public async countAllJobs() {

@@ -58,20 +58,12 @@ export default function MenuSide({ isAuth }: IProps) {
   return (
     <div className="block lg:hidden">
       {/* Burger Button */}
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
-      >
+      <button onClick={() => setIsOpen(!isOpen)} className="p-2 rounded-lg hover:bg-gray-100 transition-colors">
         {isOpen ? <X /> : <AlignJustify className="w-6 h-6" />}
       </button>
 
       {/* Overlay */}
-      {isOpen && (
-        <div
-          className="fixed inset-0 bg-black/20 bg-opacity-50 z-40"
-          onClick={() => setIsOpen(false)}
-        />
-      )}
+      {isOpen && <div className="fixed inset-0 bg-black/20 bg-opacity-50 z-40" onClick={() => setIsOpen(false)} />}
 
       {/* Sliding Menu */}
       <div
@@ -79,28 +71,18 @@ export default function MenuSide({ isAuth }: IProps) {
           isOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
-        <div
-          onClick={() => setIsOpen(false)}
-          className="h-full flex flex-col py-6"
-        >
-          <Link
-            href={'/'}
-            className="px-4 flex items-center flex-row gap-x-[10px]"
-          >
+        <div onClick={() => setIsOpen(false)} className="h-full flex flex-col py-6">
+          <Link href={'/'} className="px-4 flex items-center flex-row gap-x-[10px]">
             <BriefcaseBusiness className="dark:text-white text-black" />
             <span className="text-xl font-semibold ">Job Portal</span>
           </Link>
           <nav className="mt-6  flex-1 flex flex-col justify-between">
             <ul className="text-lg  ">
               {navs.map((nav) => (
-                <li
-                  className="px-4 py-2 dark:active:bg-gray-800 active:bg-gray-100"
-                  key={nav.name}
-                >
+                <li className="px-4 py-2 dark:active:bg-gray-800 active:bg-gray-100" key={nav.name}>
                   <Link
                     className={`  ${
-                      currentPath === nav.href &&
-                      'dark:text-white text-black  font-semibold'
+                      currentPath === nav.href && 'dark:text-white text-black  font-semibold'
                     } hover:dark:text-white hover:text-black`}
                     href={nav.href}
                   >
@@ -111,10 +93,7 @@ export default function MenuSide({ isAuth }: IProps) {
             </ul>
             {!isAuth && (
               <div className="flex flex-row justify-center  items-center gap-x-[10px]">
-                <Link
-                  href={'/sign-in'}
-                  className="px-4 py-2 dark:active:bg-gray-800 active:bg-gray-100"
-                >
+                <Link href={'/sign-in'} className="px-4 py-2 dark:active:bg-gray-800 active:bg-gray-100">
                   Đăng nhập
                 </Link>
 

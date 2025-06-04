@@ -1,16 +1,18 @@
+'use client';
+
 import Link from 'next/link';
 import React from 'react';
 import { FaChevronLeft } from 'react-icons/fa';
 import { FaChevronRight } from 'react-icons/fa';
-import genQuerySearch from '@/utils/helpers/genQuerySearch';
+import useQueryJob from '@/app/(root)/job/hooks/useQueryJob';
 interface IProps {
   totalPages: number;
   currentPage: number;
-  urlSearchParams: URLSearchParams;
 }
-export default function Pagination({ totalPages, currentPage, urlSearchParams }: IProps) {
+export default function Pagination({ totalPages, currentPage }: IProps) {
   const prevPage = currentPage - 1;
   const nextPage = currentPage + 1;
+  const { createQueryString } = useQueryJob();
 
   return (
     <ul className=" flex items-center gap-x-2 justify-center">
@@ -18,38 +20,29 @@ export default function Pagination({ totalPages, currentPage, urlSearchParams }:
         <Link
           scroll={false}
           className="text-[#4D4D4D] hover:text-primary"
-          href={`?${genQuerySearch('page', prevPage.toString(), urlSearchParams)}`}
+          href={`?${createQueryString('page', prevPage.toString())}`}
         >
           <FaChevronLeft />
         </Link>
       )}
-      <NavItem currentPage={currentPage} pageNum={1} urlSearchParams={urlSearchParams} />
+      <NavItem currentPage={currentPage} pageNum={1} />
       {prevPage > 2 && (
         <div className=" flex py-2 px-4 items-center justify-center   font-medium bg-[#F2F2F2] text-[#4D4D4D] ">
           ...
         </div>
       )}
-      {prevPage > 1 && (
-        <NavItem currentPage={currentPage} pageNum={currentPage - 1} urlSearchParams={urlSearchParams} />
-      )}
-      {currentPage !== 1 && currentPage !== totalPages && (
-        <NavItem currentPage={currentPage} pageNum={currentPage} urlSearchParams={urlSearchParams} />
-      )}
-      {nextPage < totalPages && (
-        <NavItem currentPage={currentPage} pageNum={currentPage + 1} urlSearchParams={urlSearchParams} />
-      )}
+      {prevPage > 1 && <NavItem currentPage={currentPage} pageNum={currentPage - 1} />}
+      {currentPage !== 1 && currentPage !== totalPages && <NavItem currentPage={currentPage} pageNum={currentPage} />}
+      {nextPage < totalPages && <NavItem currentPage={currentPage} pageNum={currentPage + 1} />}
       {nextPage < totalPages - 1 && (
         <div className=" flex py-2 px-4 items-center justify-center   font-medium bg-[#F2F2F2] text-[#4D4D4D] ">
           ...
         </div>
       )}
-      {totalPages !== 1 && <NavItem currentPage={currentPage} pageNum={totalPages} urlSearchParams={urlSearchParams} />}
+      {totalPages !== 1 && <NavItem currentPage={currentPage} pageNum={totalPages} />}
 
       {currentPage < totalPages && (
-        <Link
-          className="text-[#4D4D4D] hover:text-primary"
-          href={`?${genQuerySearch('page', nextPage.toString(), urlSearchParams)}`}
-        >
+        <Link className="text-[#4D4D4D] hover:text-primary" href={`?${createQueryString('page', nextPage.toString())}`}>
           <FaChevronRight />
         </Link>
       )}
@@ -57,17 +50,9 @@ export default function Pagination({ totalPages, currentPage, urlSearchParams }:
   );
 }
 
-function NavItem({
-  currentPage,
-  pageNum,
-  urlSearchParams,
-}: {
-  currentPage: number;
-  pageNum: number;
-  urlSearchParams: URLSearchParams;
-}) {
+function NavItem({ currentPage, pageNum }: { currentPage: number; pageNum: number }) {
+  const { createQueryString } = useQueryJob();
   if (pageNum < 1) return;
-
   return (
     <li className="">
       <Link
@@ -75,7 +60,7 @@ function NavItem({
         className={` ${
           currentPage === pageNum ? 'bg-green text-white' : 'bg-[#F2F2F2] text-[#4D4D4D]'
         }  py-2 px-4 hover:opacity-80 font-medium  `}
-        href={`?${genQuerySearch('page', pageNum.toString(), urlSearchParams)}`}
+        href={`?${createQueryString('page', pageNum.toString())}`}
       >
         {pageNum}
       </Link>

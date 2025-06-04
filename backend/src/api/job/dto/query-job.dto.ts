@@ -1,6 +1,6 @@
 import { QueryPaginationDto } from '@/common/dto/query-pagination.dto';
-import { JobType, SortJob } from '@/common/enums';
-import { Type } from 'class-transformer';
+import { JobLevel, JobType, SortJob } from '@/common/enums';
+import { Transform, Type } from 'class-transformer';
 import { IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class QueryJobDto extends QueryPaginationDto {
@@ -14,6 +14,12 @@ export class QueryJobDto extends QueryPaginationDto {
 
   @IsEnum(JobType)
   @IsOptional()
+  @Transform(({ value }) => {
+    if (!value) {
+      return null;
+    }
+    return value;
+  })
   jobType?: JobType;
 
   @IsOptional()
@@ -28,7 +34,17 @@ export class QueryJobDto extends QueryPaginationDto {
 
   @IsEnum(SortJob)
   @IsOptional()
-  sort?: SortJob;
+  sort?: SortJob = SortJob.NEWEST;
+
+  @IsOptional()
+  @IsEnum(JobLevel)
+  @Transform(({ value }) => {
+    if (!value) {
+      return null;
+    }
+    return value;
+  })
+  jobLevel?: JobLevel;
 }
 
 /*
