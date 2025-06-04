@@ -86,19 +86,19 @@ export default function ManageJobItem({ job }: IProps) {
       </div>
 
       <div className="flex justify-center mt-2 items-center gap-2">
-        <Button>
+        <Button variant={'outline'}>
           <ChartColumn /> Thông kê
         </Button>
-        <Button>
+        <Button variant={'outline'}>
           <Pencil /> Sửa
         </Button>
         {job.status === JobStatus.PUBLISHED && (
-          <Button>
+          <Button variant={'outline'}>
             <EyeOff /> Ẩn
           </Button>
         )}
         {job.status === JobStatus.HIDDEN && (
-          <Button>
+          <Button variant={'outline'}>
             <Eye /> Hiện
           </Button>
         )}
