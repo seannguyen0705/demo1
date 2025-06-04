@@ -80,15 +80,11 @@ export class JobService {
         );
       }
       if (data.addresses) {
-        const createJobAddresses: CreateJobAddressDto[] = await Promise.all(
-          data.addresses.map(async (address) => {
-            const createdAddress = await queryRunner.manager.save(Address, address);
-            return {
-              addressId: createdAddress.id,
-              jobId: newJob.id,
-            };
-          }),
-        );
+        const createdAddress = await queryRunner.manager.save(Address, data.addresses);
+        const createJobAddresses: CreateJobAddressDto[] = createdAddress.map((address) => ({
+          addressId: address.id,
+          jobId: newJob.id,
+        }));
         await queryRunner.manager.insert(JobAddress, createJobAddresses);
       }
       await queryRunner.commitTransaction();
@@ -129,16 +125,11 @@ export class JobService {
       );
 
       // create address
-      const createJobAddresses: CreateJobAddressDto[] = await Promise.all(
-        data.addresses.map(async (address) => {
-          const createdAddress = await queryRunner.manager.save(Address, address);
-          return {
-            addressId: createdAddress.id,
-            jobId: newJob.id,
-          };
-        }),
-      );
-      // create job addresses
+      const createdAddress = await queryRunner.manager.save(Address, data.addresses);
+      const createJobAddresses: CreateJobAddressDto[] = createdAddress.map((address) => ({
+        addressId: address.id,
+        jobId: newJob.id,
+      }));
       await queryRunner.manager.insert(JobAddress, createJobAddresses);
       await queryRunner.commitTransaction();
       return newJob;
@@ -261,12 +252,14 @@ export class JobService {
       ])
       .andWhere('job.status =:status', { status: JobStatus.PUBLISHED });
 
-    await this.searchJobByKeyword(queryBuilder, keyword);
-    await this.searchJobByProvinceName(queryBuilder, provinceName);
-    await this.searchJobByJobType(queryBuilder, jobType);
-    await this.searchJobBySalary(queryBuilder, minSalary, maxSalary);
-    await this.searchJobByJobLevel(queryBuilder, jobLevel);
-    await this.orderJob(queryBuilder, sort);
+    await Promise.all([
+      this.searchJobByKeyword(queryBuilder, keyword),
+      this.searchJobByProvinceName(queryBuilder, provinceName),
+      this.searchJobByJobType(queryBuilder, jobType),
+      this.searchJobBySalary(queryBuilder, minSalary, maxSalary),
+      this.searchJobByJobLevel(queryBuilder, jobLevel),
+      this.orderJob(queryBuilder, sort),
+    ]);
     const [jobs, total] = await queryBuilder.getManyAndCount();
     const numPage = Math.ceil(total / limit);
     if (page + 1 > numPage) {
@@ -312,13 +305,15 @@ export class JobService {
       ])
       .andWhere('job.companyId =:companyId', { companyId: company.id });
 
-    await this.searchJobByKeyword(queryBuilder, keyword);
-    await this.searchJobByProvinceName(queryBuilder, provinceName);
-    await this.searchJobByJobType(queryBuilder, jobType);
-    await this.searchJobBySalary(queryBuilder, minSalary, maxSalary);
-    await this.searchJobByJobLevel(queryBuilder, jobLevel);
-    await this.searchJobByStatus(queryBuilder, status);
-    await this.orderJob(queryBuilder, sort);
+    await Promise.all([
+      this.searchJobByKeyword(queryBuilder, keyword),
+      this.searchJobByProvinceName(queryBuilder, provinceName),
+      this.searchJobByJobType(queryBuilder, jobType),
+      this.searchJobBySalary(queryBuilder, minSalary, maxSalary),
+      this.searchJobByJobLevel(queryBuilder, jobLevel),
+      this.searchJobByStatus(queryBuilder, status),
+      this.orderJob(queryBuilder, sort),
+    ]);
     const [jobs, total] = await queryBuilder.getManyAndCount();
     const numPage = Math.ceil(total / limit);
     if (page + 1 > numPage) {

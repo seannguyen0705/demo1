@@ -20,7 +20,7 @@ export default async function CompanyReviewsPage({ params, searchParams }: IProp
     getReviewByCompanyId(company.data.id, {
       orderBy: orderBy as OrderByReview,
       order: order as Order,
-      page: page.toString(),
+      page: page,
     }),
   ]);
   const numJobs = jobs.data.length;

@@ -35,8 +35,8 @@ interface IUser {
 }
 
 interface IQueryPagination {
-  page?: string;
-  limit?: string;
+  page?: number;
+  limit?: number;
 }
 
 type SearchParams = { [key: string]: string | string[] | undefined };
