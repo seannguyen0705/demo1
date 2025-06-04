@@ -15,15 +15,17 @@ interface IProps {
 export default async function JobDetailPage({ params }: IProps) {
   const { id } = await params;
   const job = await getJobById(id);
-  const company = await findCompanyByName(job.data.company.name);
-  const { data: companyImages } = await getCompanyImage(company.data.id);
+  const [company, companyImages] = await Promise.all([
+    findCompanyByName(job.data.company.name),
+    getCompanyImage(job.data.company.id),
+  ]);
 
   return (
     <div className="container mx-auto flex mt-[30px] gap-4 px-2">
       <div className="flex-1">
         <JobHeader job={job.data} company={company.data} />
         <div className="p-4 space-y-4 ">
-          <CompanyImage companyImages={companyImages} />
+          <CompanyImage companyImages={companyImages.data} />
           <JobInfo job={job.data} />
           <JobDescription job={job.data} />
           <JobRequirement job={job.data} />

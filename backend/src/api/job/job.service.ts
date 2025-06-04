@@ -89,6 +89,7 @@ export class JobService {
             };
           }),
         );
+
         await queryRunner.manager.insert(JobAddress, createJobAddresses);
       }
       await queryRunner.commitTransaction();
