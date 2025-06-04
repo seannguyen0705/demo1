@@ -30,10 +30,7 @@ interface ICreatePublishedJob {
   salaryMin?: string;
   salaryMax?: string;
   jobLevel: string;
-  addresses: {
-    detail: string;
-    provinceId: string;
-  }[];
+  addressIds: string[];
   jobType: string;
   jobExpertise: string;
   jobDomain: string;
@@ -49,10 +46,7 @@ interface ICreateDraftJob {
   salaryType?: string;
   salaryMin?: string;
   salaryMax?: string;
-  addresses?: {
-    detail: string;
-    provinceId: string;
-  }[];
+  addressIds?: string[];
   jobLevel?: string;
   jobType?: string;
   jobExpertise?: string;

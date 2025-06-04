@@ -65,6 +65,7 @@ export class AuthController {
     return {
       accessTokenCookie,
       refreshTokenCookie,
+      role: req.user.role,
     };
   }
 

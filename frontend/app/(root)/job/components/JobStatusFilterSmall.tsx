@@ -8,13 +8,6 @@ interface IProps {
 }
 
 export default function JobStatusFilterSmall({ jobStatus, onChange }: IProps) {
-  const { user, isLoading } = useGetMe();
-  if (!user || isLoading) {
-    return;
-  }
-  if (user.role !== UserRole.EMPLOYER) {
-    return;
-  }
   const handleChange = (value: string) => {
     if (jobStatus === value) {
       onChange('');

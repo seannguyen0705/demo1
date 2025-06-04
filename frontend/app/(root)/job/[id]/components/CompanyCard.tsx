@@ -8,9 +8,15 @@ interface IProps {
 
 export default function CompanyCard({ company }: IProps) {
   return (
-    <article className="flex dark:bg-gray-800 h-auto max-h-[400px] bg-light-green rounded-lg p-4 flex-col gap-2">
-      <Link href={`/company/${company.name}`} className="flex items-center gap-2">
-        <Image src={company.logo.url} alt={company.name} width={120} height={120} />
+    <article className="flex dark:bg-gray-800 h-auto bg-light-green rounded-lg p-4 flex-col gap-2">
+      <Link href={`/company/${company.name}`} className="flex lg:flex-row flex-col items-center gap-2">
+        <Image
+          src={company.logo.url}
+          alt={company.name}
+          width={120}
+          height={120}
+          className="border-2 size-[120px] border-gray-200 rounded-sm"
+        />
         <h3 className="text-lg font-bold">{company.name}</h3>
       </Link>
       <h3 className="font-light">{company.name}</h3>

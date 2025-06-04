@@ -24,7 +24,7 @@ export default async function JobPage({ searchParams }: IProps) {
       <SearchJob keyword={keyword || ''} />
       <div className="flex items-center justify-between container mx-auto px-2">
         <Filter />
-        <FilterSmallScreen isAuth={isAuth} />
+        <FilterSmallScreen isEmployer={false} />
         <OrderBy />
       </div>
       {isAuth ? <AuthJobList /> : <PublicJobList searchParams={queryParams} />}

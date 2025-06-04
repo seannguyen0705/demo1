@@ -9,12 +9,10 @@ import {
   IsOptional,
   IsString,
   IsUUID,
-  ValidateNested,
 } from 'class-validator';
 import { JobType, JobStatus, SalaryType, JobLevel } from '@/common/enums';
 import { Transform, Type } from 'class-transformer';
 import { IsSalaryValid } from '@/decorators';
-import { CreateAddressDto } from '@/api/address/dto/create-address.dto';
 
 export class CreatePublishedJobDto {
   @IsString()
@@ -50,10 +48,11 @@ export class CreatePublishedJobDto {
   @IsArray()
   @IsNotEmpty()
   @ArrayMinSize(1)
-  @ArrayMaxSize(3)
-  @ValidateNested({ each: true })
-  @Type(() => CreateAddressDto)
-  addresses: CreateAddressDto[];
+  @IsUUID('4', { each: true })
+  @ApiProperty({
+    example: ['123e4567-e89b-12d3-a456-426614174000', '123e4567-e89b-12d3-a456-426614174000'],
+  })
+  addressIds: string[];
 
   @IsEnum(JobType)
   @IsNotEmpty()

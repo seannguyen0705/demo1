@@ -10,8 +10,6 @@ import { DataSource, SelectQueryBuilder } from 'typeorm';
 import { JobSkill } from '../job-skill/entities/job-skill.entity';
 import { CreatePublishedJobDto } from './dto/create-published-job.dto';
 import { JobAlreadyExistsException } from './job.exception';
-import { CreateJobAddressDto } from '../job-address/dto/create-job-address.dto';
-import { Address } from '../address/entities/address.entity';
 import { JobAddress } from '../job-address/entities/job-address.entity';
 import { QueryJobDto } from './dto/query-job.dto';
 import { SkillService } from '../skill/skill.service';
@@ -79,10 +77,9 @@ export class JobService {
           data.skillIds.map((skillId) => ({ jobId: newJob.id, skillId })),
         );
       }
-      if (data.addresses) {
-        const createdAddress = await queryRunner.manager.save(Address, data.addresses);
-        const createJobAddresses: CreateJobAddressDto[] = createdAddress.map((address) => ({
-          addressId: address.id,
+      if (data.addressIds) {
+        const createJobAddresses = data.addressIds.map((addressId) => ({
+          addressId,
           jobId: newJob.id,
         }));
         await queryRunner.manager.insert(JobAddress, createJobAddresses);
@@ -124,10 +121,8 @@ export class JobService {
         data.skillIds.map((skillId) => ({ jobId: newJob.id, skillId })),
       );
 
-      // create address
-      const createdAddress = await queryRunner.manager.save(Address, data.addresses);
-      const createJobAddresses: CreateJobAddressDto[] = createdAddress.map((address) => ({
-        addressId: address.id,
+      const createJobAddresses = data.addressIds.map((addressId) => ({
+        addressId,
         jobId: newJob.id,
       }));
       await queryRunner.manager.insert(JobAddress, createJobAddresses);
@@ -281,6 +276,8 @@ export class JobService {
       .leftJoin('address.province', 'province')
       .leftJoin('job.jobSkills', 'jobSkills')
       .leftJoin('jobSkills.skill', 'skill')
+      .skip(limit * (page - 1))
+      .take(limit)
 
       .select([
         'job.id',
