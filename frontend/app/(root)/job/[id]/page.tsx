@@ -21,9 +21,9 @@ export default async function JobDetailPage({ params }: IProps) {
   ]);
 
   return (
-    <div className="container mx-auto flex mt-[30px] gap-4 px-2">
+    <div className="container mx-auto flex flex-col lg:flex-row mt-[30px] gap-4 px-2">
       <div className="flex-1">
-        <JobHeader job={job.data} company={company.data} />
+        <JobHeader job={job.data} />
         <div className="p-4 space-y-4 ">
           <CompanyImage companyImages={companyImages.data} />
           <JobInfo job={job.data} />
@@ -32,7 +32,7 @@ export default async function JobDetailPage({ params }: IProps) {
           <JobBenefit job={job.data} />
         </div>
       </div>
-      <div className="w-[400px]">
+      <div className="w-full lg:w-[400px]">
         <CompanyCard company={company.data} />
       </div>
     </div>

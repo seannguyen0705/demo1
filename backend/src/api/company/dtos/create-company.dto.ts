@@ -1,7 +1,7 @@
 import { CreateAddressDto } from '@/api/address/dto/create-address.dto';
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { ArrayMaxSize, ArrayMinSize, IsArray, IsNotEmpty, IsString, IsUrl, ValidateNested } from 'class-validator';
+import { ArrayMinSize, IsArray, IsNotEmpty, IsString, IsUrl, ValidateNested } from 'class-validator';
 
 export class CreateCompanyDto {
   @IsNotEmpty()
@@ -15,7 +15,6 @@ export class CreateCompanyDto {
   @IsArray()
   @ValidateNested({ each: true })
   @ArrayMinSize(1)
-  @ArrayMaxSize(3)
   @Type(() => CreateAddressDto)
   @ApiProperty({
     example: [

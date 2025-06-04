@@ -25,6 +25,7 @@ export const getJobs = async (queryString: string) => {
     });
     return response;
   } catch (error) {
+    console.error(error);
     return {
       data: {
         jobs: [],

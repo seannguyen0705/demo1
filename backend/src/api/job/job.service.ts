@@ -10,8 +10,6 @@ import { DataSource, SelectQueryBuilder } from 'typeorm';
 import { JobSkill } from '../job-skill/entities/job-skill.entity';
 import { CreatePublishedJobDto } from './dto/create-published-job.dto';
 import { JobAlreadyExistsException } from './job.exception';
-import { CreateJobAddressDto } from '../job-address/dto/create-job-address.dto';
-import { Address } from '../address/entities/address.entity';
 import { JobAddress } from '../job-address/entities/job-address.entity';
 import { QueryJobDto } from './dto/query-job.dto';
 import { SkillService } from '../skill/skill.service';
@@ -79,17 +77,11 @@ export class JobService {
           data.skillIds.map((skillId) => ({ jobId: newJob.id, skillId })),
         );
       }
-      if (data.addresses) {
-        const createJobAddresses: CreateJobAddressDto[] = await Promise.all(
-          data.addresses.map(async (address) => {
-            const createdAddress = await queryRunner.manager.save(Address, address);
-            return {
-              addressId: createdAddress.id,
-              jobId: newJob.id,
-            };
-          }),
-        );
-
+      if (data.addressIds) {
+        const createJobAddresses = data.addressIds.map((addressId) => ({
+          addressId,
+          jobId: newJob.id,
+        }));
         await queryRunner.manager.insert(JobAddress, createJobAddresses);
       }
       await queryRunner.commitTransaction();
@@ -129,17 +121,10 @@ export class JobService {
         data.skillIds.map((skillId) => ({ jobId: newJob.id, skillId })),
       );
 
-      // create address
-      const createJobAddresses: CreateJobAddressDto[] = await Promise.all(
-        data.addresses.map(async (address) => {
-          const createdAddress = await queryRunner.manager.save(Address, address);
-          return {
-            addressId: createdAddress.id,
-            jobId: newJob.id,
-          };
-        }),
-      );
-      // create job addresses
+      const createJobAddresses = data.addressIds.map((addressId) => ({
+        addressId,
+        jobId: newJob.id,
+      }));
       await queryRunner.manager.insert(JobAddress, createJobAddresses);
       await queryRunner.commitTransaction();
       return newJob;
@@ -262,12 +247,14 @@ export class JobService {
       ])
       .andWhere('job.status =:status', { status: JobStatus.PUBLISHED });
 
-    await this.searchJobByKeyword(queryBuilder, keyword);
-    await this.searchJobByProvinceName(queryBuilder, provinceName);
-    await this.searchJobByJobType(queryBuilder, jobType);
-    await this.searchJobBySalary(queryBuilder, minSalary, maxSalary);
-    await this.searchJobByJobLevel(queryBuilder, jobLevel);
-    await this.orderJob(queryBuilder, sort);
+    await Promise.all([
+      this.searchJobByKeyword(queryBuilder, keyword),
+      this.searchJobByProvinceName(queryBuilder, provinceName),
+      this.searchJobByJobType(queryBuilder, jobType),
+      this.searchJobBySalary(queryBuilder, minSalary, maxSalary),
+      this.searchJobByJobLevel(queryBuilder, jobLevel),
+      this.orderJob(queryBuilder, sort),
+    ]);
     const [jobs, total] = await queryBuilder.getManyAndCount();
     const numPage = Math.ceil(total / limit);
     if (page + 1 > numPage) {
@@ -289,6 +276,8 @@ export class JobService {
       .leftJoin('address.province', 'province')
       .leftJoin('job.jobSkills', 'jobSkills')
       .leftJoin('jobSkills.skill', 'skill')
+      .skip(limit * (page - 1))
+      .take(limit)
 
       .select([
         'job.id',
@@ -313,13 +302,15 @@ export class JobService {
       ])
       .andWhere('job.companyId =:companyId', { companyId: company.id });
 
-    await this.searchJobByKeyword(queryBuilder, keyword);
-    await this.searchJobByProvinceName(queryBuilder, provinceName);
-    await this.searchJobByJobType(queryBuilder, jobType);
-    await this.searchJobBySalary(queryBuilder, minSalary, maxSalary);
-    await this.searchJobByJobLevel(queryBuilder, jobLevel);
-    await this.searchJobByStatus(queryBuilder, status);
-    await this.orderJob(queryBuilder, sort);
+    await Promise.all([
+      this.searchJobByKeyword(queryBuilder, keyword),
+      this.searchJobByProvinceName(queryBuilder, provinceName),
+      this.searchJobByJobType(queryBuilder, jobType),
+      this.searchJobBySalary(queryBuilder, minSalary, maxSalary),
+      this.searchJobByJobLevel(queryBuilder, jobLevel),
+      this.searchJobByStatus(queryBuilder, status),
+      this.orderJob(queryBuilder, sort),
+    ]);
     const [jobs, total] = await queryBuilder.getManyAndCount();
     const numPage = Math.ceil(total / limit);
     if (page + 1 > numPage) {

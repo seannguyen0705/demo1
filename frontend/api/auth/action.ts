@@ -7,6 +7,7 @@ import { cookies } from 'next/headers';
 import { LoginDto, ResponseLoginDto, TokenCookie } from './interface';
 import { CreateCandidateDto } from '../candidate/interface';
 import { redirect } from 'next/navigation';
+import { UserRole } from '@/utils/enums';
 
 export const registerCandidate = async (data: CreateCandidateDto) => {
   const response = await actionFetch('candidate/register', {
@@ -45,7 +46,7 @@ export const login = async (data: LoginDto) => {
   }
 
   const cookieStore = await cookies();
-  const { accessTokenCookie, refreshTokenCookie } = response.data;
+  const { accessTokenCookie, refreshTokenCookie, role } = response.data;
   cookieStore.set('Authentication', accessTokenCookie.token, {
     httpOnly: true,
     path: '/',
@@ -56,6 +57,11 @@ export const login = async (data: LoginDto) => {
     path: '/',
     maxAge: refreshTokenCookie.ttl,
   });
+  if (role === UserRole.EMPLOYER) {
+    redirect('/profile-personal');
+  } else {
+    redirect('/');
+  }
 
   return response;
 };

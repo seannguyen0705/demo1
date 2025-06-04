@@ -198,18 +198,17 @@ export default function BusinessForm() {
                             </FormControl>
                           </div>
                         ))}
-                        {field.value.length < 3 && (
-                          <Button
-                            type="button"
-                            variant="outline"
-                            className="w-full border-dashed border-green"
-                            onClick={() => {
-                              field.onChange([...field.value, { provinceId: '', detail: '' }]);
-                            }}
-                          >
-                            <Plus /> Thêm địa chỉ
-                          </Button>
-                        )}
+
+                        <Button
+                          type="button"
+                          variant="outline"
+                          className="w-full border-dashed border-green"
+                          onClick={() => {
+                            field.onChange([...field.value, { provinceId: '', detail: '' }]);
+                          }}
+                        >
+                          <Plus /> Thêm địa chỉ
+                        </Button>
                       </div>
                       <FormMessage />
                     </FormItem>

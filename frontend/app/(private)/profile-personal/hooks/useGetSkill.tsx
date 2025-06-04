@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { IQuerySkill, ISkillResponse } from '@/api/skill/interface';
 import axiosInstance from '@/config/axios-config';
 
-const getSkills = async ({ page = '1', limit = '10', keyword = '', excludeSkillIds = [] }: IQuerySkill) => {
+const getSkills = async ({ page = 1, limit = 10, keyword = '', excludeSkillIds = [] }: IQuerySkill) => {
   const response = await axiosInstance.get<{ data: ISkillResponse }>('/skills', {
     params: {
       page,

@@ -13,8 +13,8 @@ interface ISkillResponse {
 }
 
 interface IQuerySkill extends IQueryPagination {
-  keyword: string;
-  excludeSkillIds: string[];
+  keyword?: string;
+  excludeSkillIds?: string[];
 }
 
 export type { ISkill, ISkillResponse, IQuerySkill };

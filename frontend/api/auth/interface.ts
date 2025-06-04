@@ -15,6 +15,7 @@ interface TokenCookie {
 interface ResponseLoginDto {
   accessTokenCookie: TokenCookie;
   refreshTokenCookie: TokenCookie;
+  role: UserRole;
 }
 
 export type { LoginDto, TokenCookie, ResponseLoginDto };

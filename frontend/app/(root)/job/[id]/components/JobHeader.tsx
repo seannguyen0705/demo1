@@ -1,17 +1,14 @@
 import { IJob } from '@/api/job/interface';
 import getStringSalary from '@/utils/helpers/getStringSalary';
 import { CircleDollarSign, Heart } from 'lucide-react';
-import CompanyCard from './CompanyCard';
 import { Button } from '@/components/ui/button';
-import { ICompany } from '@/api/company/interface';
 interface IProps {
   job: IJob;
-  company: ICompany;
 }
 
-export default function JobHeader({ job, company }: IProps) {
+export default function JobHeader({ job }: IProps) {
   return (
-    <section className="p-4">
+    <section className="p-4 sticky top-20 bg-white dark:bg-black rounded-lg z-10">
       <div className="">
         <h3 className="text-xl lg:text-2xl font-bold mb-3">{job.title}</h3>
         <p className="text-sm text-gray-500">{job.company.name}</p>

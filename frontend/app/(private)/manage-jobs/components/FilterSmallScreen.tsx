@@ -1,4 +1,8 @@
 'use client';
+import JobStatusFilterSmall from '@/app/(root)/job/components/JobStatusFilterSmall';
+import JobTypeFilterSmall from '@/app/(root)/job/components/JobTypeFIlterSmall';
+import LevelFilterSmall from '@/app/(root)/job/components/LevelFilterSmall';
+import ProvinceFilterSmall from '@/app/(root)/job/components/ProvinceFilterSmall';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -9,14 +13,11 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import LevelFilterSmall from './LevelFilterSmall';
+import { Input } from '@/components/ui/input';
 import { Funnel } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
-import JobTypeFilterSmall from './JobTypeFIlterSmall';
-import { Input } from '@/components/ui/input';
-import ProvinceFilterSmall from './ProvinceFilterSmall';
-import JobStatusFilterSmall from './JobStatusFilterSmall';
+
 interface IProps {
   isEmployer: boolean;
 }
@@ -67,7 +68,7 @@ export default function FilterSmallScreen({ isEmployer }: IProps) {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger className="lg:hidden" asChild>
+      <DialogTrigger className="xl:hidden" asChild>
         <Button variant="outline">
           <Funnel /> Bộ lọc ({countFilter()})
         </Button>

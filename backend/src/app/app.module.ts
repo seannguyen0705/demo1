@@ -98,11 +98,11 @@ const EnvSchema = {
     JobModule,
     AddressModule,
     ProvinceModule,
-    CompanyAddressModule,
     JobAddressModule,
     StaticsticsModule,
     ApplyJobModule,
     SaveJobModule,
+    CompanyAddressModule,
   ],
 
   controllers: [AppController],
