@@ -9,7 +9,7 @@ const getEmployerJobs = async (queryString: string) => {
 
 export default function useEmployerGetJobs(queryString: string) {
   const { data, isLoading } = useQuery({
-    queryKey: ['jobs', queryString],
+    queryKey: ['manage-jobs', queryString],
     queryFn: () => getEmployerJobs(queryString),
   });
   return { data, isLoading };

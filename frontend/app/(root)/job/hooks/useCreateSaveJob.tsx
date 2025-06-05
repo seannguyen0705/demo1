@@ -1,29 +1,25 @@
-import { ICreateApplyJob } from '@/api/apply-job/interface';
+import { ICreateSaveJob } from '@/api/save-job/interfacet';
 import axiosInstance from '@/config/axios-config';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { ErrorReponse } from '@/api/interface';
 import { toast } from 'sonner';
 
-const createApplyJob = async (data: ICreateApplyJob) => {
-  return axiosInstance.post('/apply-jobs', data);
+const createSaveJob = async (data: ICreateSaveJob) => {
+  const response = await axiosInstance.post('/save-jobs', data);
+  return response.data;
 };
 
-interface IProps {
-  jobId: string;
-}
-export default function useCreateApplyJob({ jobId }: IProps) {
+export default function useCreateSaveJob(jobId: string) {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: createApplyJob,
+    mutationFn: createSaveJob,
     onSuccess: () => {
-      toast.success('Ứng tuyển thành công');
       queryClient.invalidateQueries({ queryKey: ['job', jobId] });
-      queryClient.invalidateQueries({ queryKey: ['candidateGetJobApply'] });
       queryClient.invalidateQueries({ queryKey: ['candidateGetJobSaved'] });
     },
     onError: (error: AxiosError<ErrorReponse>) => {
-      toast.error(error.response?.data.message || 'Lỗi ứng tuyển');
+      toast.error(error.response?.data.message || 'Lỗi lưu việc làm');
     },
   });
 }

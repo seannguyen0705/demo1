@@ -45,8 +45,8 @@ export class CvService {
           order: { createdAt: 'ASC' },
         });
         await queryRunner.manager.delete(Cv, { id: oldestCv.id });
-        await queryRunner.manager.delete(File, { id: oldestCv.file.id });
-        await this.cloudinaryService.deleteFile(oldestCv.file.key);
+        // await queryRunner.manager.delete(File, { id: oldestCv.file.id });
+        // await this.cloudinaryService.deleteFile(oldestCv.file.key);
       }
       const newFile = await queryRunner.manager.save(File, data);
       const cv = await queryRunner.manager.save(Cv, {

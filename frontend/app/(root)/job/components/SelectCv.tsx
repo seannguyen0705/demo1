@@ -1,7 +1,7 @@
 import useGetMyCv from '@/app/(private)/profile-personal/hooks/useGetMyCv';
 import { format } from 'date-fns';
 import Link from 'next/link';
-import { ExternalLink, Upload } from 'lucide-react';
+import { ExternalLink, Loader2, Upload } from 'lucide-react';
 import useCreateCv from '@/app/(private)/profile-personal/hooks/useCreateCv';
 import { useState } from 'react';
 
@@ -20,7 +20,7 @@ export default function SelectCv({ fileId, onChange }: IProps) {
   };
 
   return (
-    <ul className="space-y-2">
+    <ul className="space-y-2 overflow-auto h-auto max-h-full">
       {myCvs?.map((cv) => (
         <li
           key={cv.file.id}
@@ -29,10 +29,10 @@ export default function SelectCv({ fileId, onChange }: IProps) {
           <Link
             href={cv.file.url}
             target="_blank"
-            className="relative z-10 hover:text-green inline-flex items-center gap-2"
+            className="relative z-10 hover:text-green inline-flex items-center gap-2 max-w-full"
           >
-            {cv.file.name}
-            <ExternalLink className="size-4" />
+            <span className="truncate">{cv.file.name}</span>
+            <ExternalLink className="size-4 flex-shrink-0" />
           </Link>
           <p className="text-sm text-gray-500">{cv.file.format.split('/')[1].toUpperCase()}</p>
 
@@ -70,7 +70,7 @@ function CreateCv() {
         className={`flex items-center border border-dashed border-gray-300 rounded-lg p-3 flex-col justify-center cursor-pointer gap-2 ${disable && 'opacity-50'}`}
       >
         <div className="inline-flex items-center gap-2">
-          Chọn File <Upload />{' '}
+          Chọn File{isPending ? <Loader2 className="size-4 animate-spin" /> : <Upload />}
         </div>
         <p className="text-sm text-gray-500">Hỗ trợ định dạng .doc, .docx hoặc .pdf, dưới 3MB</p>
       </label>

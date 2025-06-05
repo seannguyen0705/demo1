@@ -49,7 +49,7 @@ export default async function PublicJobList({ searchParams }: IProps) {
           </ul>
         </div>
       )}
-      {job && <JobDetail job={job.data} isAuth={false} />}
+      {job && <JobDetail job={job.data} />}
     </div>
   );
 }

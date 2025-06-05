@@ -8,7 +8,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { BsPersonWorkspace } from 'react-icons/bs';
 import { JobStatus } from '@/utils/enums';
-import useQueryParams from '@/app/hooks/useQueryParams';
 import { useSearchParams } from 'next/navigation';
 interface IProps {
   job: IJob;

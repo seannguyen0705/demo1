@@ -58,4 +58,12 @@ export default {
     jwtSecure: true,
     roles: [UserRole.CANDIDATE],
   },
+
+  candidateGetJobSaved: <IRouteParams>{
+    path: 'candidate/job/saved',
+    method: RequestMethod.GET,
+    code: HttpStatus.OK,
+    jwtSecure: true,
+    roles: [UserRole.CANDIDATE],
+  },
 };

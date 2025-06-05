@@ -9,7 +9,7 @@ export class SaveJob extends BaseEntity {
   @Column({ name: 'job_id' })
   jobId: string;
 
-  @ManyToOne(() => Job)
+  @ManyToOne(() => Job, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'job_id' })
   job: Job;
 

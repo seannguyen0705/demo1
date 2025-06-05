@@ -51,4 +51,9 @@ export class JobController {
   async candidateGetJobApply(@ReqUser() user: IJwtStrategy, @Query() query: QueryJobApplyDto) {
     return this.jobService.candidateGetJobApply(user.element.id, query);
   }
+
+  @InjectRoute(jobRoutes.candidateGetJobSaved)
+  async candidateGetJobSaved(@ReqUser() user: IJwtStrategy, @Query() query: QueryJobApplyDto) {
+    return this.jobService.candidateGetJobSaved(user.element.id, query);
+  }
 }

@@ -6,6 +6,7 @@ import JobItem from '@/components/JobItem';
 import Pagination from '@/components/Pagination';
 import JobDetail from './JobDetail';
 import useCandidateGetJobById from '../hooks/useCandidateGetJobById';
+import ClientJobDetail from './ClientJobDetail';
 
 export default function ClientJobList() {
   const searchParams = useSearchParams();
@@ -46,7 +47,7 @@ export default function ClientJobList() {
           </ul>
         </div>
       )}
-      {jobId && job && <JobDetail job={job.data} isAuth={true} />}
+      {jobId && job && <ClientJobDetail job={job.data} />}
     </div>
   );
 }

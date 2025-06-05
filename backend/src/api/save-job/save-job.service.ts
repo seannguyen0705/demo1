@@ -12,8 +12,8 @@ export class SaveJobService {
     return this.saveJobRepository.save(saveJob);
   }
 
-  public async deleteSaveJob(id: string) {
-    const saveJob = await this.saveJobRepository.findOneBy({ id });
+  public async deleteSaveJob(id: string, candidateId: string) {
+    const saveJob = await this.saveJobRepository.findOneBy({ id, candidateId });
     if (!saveJob) {
       throw new NotFoundException('Save job not found');
     }

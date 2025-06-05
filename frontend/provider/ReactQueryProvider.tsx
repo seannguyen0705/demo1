@@ -9,17 +9,13 @@ const queryClient = new QueryClient({
       retry: false,
       retryDelay: 1000,
       retryOnMount: false,
-      refetchOnMount: false,
+      refetchOnMount: true,
       refetchOnReconnect: false,
       refetchInterval: false,
       refetchIntervalInBackground: false,
     },
   },
 });
-export default function ReactQueryProvider({
-  children,
-}: Readonly<{ children: React.ReactNode }>) {
-  return (
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-  );
+export default function ReactQueryProvider({ children }: Readonly<{ children: React.ReactNode }>) {
+  return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>;
 }

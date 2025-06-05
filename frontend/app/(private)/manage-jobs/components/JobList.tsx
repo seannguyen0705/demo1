@@ -16,6 +16,8 @@ export default function JobList() {
   }
   const totalPages = Math.ceil(data?.data.total / 10);
 
+  console.log(data.data.jobs);
+
   return (
     <section className="">
       <ul className="grid grid-cols-1 lg:grid-cols-2 gap-4">

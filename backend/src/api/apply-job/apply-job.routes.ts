@@ -6,7 +6,7 @@ import { HttpStatus } from '@nestjs/common';
 export default {
   index: 'apply-jobs',
   create: <IRouteParams>{
-    path: '/',
+    path: '/apply-jobs',
     method: RequestMethod.POST,
     code: HttpStatus.CREATED,
     jwtSecure: true,

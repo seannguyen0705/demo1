@@ -71,7 +71,7 @@ export default function Application({ job }: IProps) {
           Ứng tuyển
         </Button>
       </DialogTrigger>
-      <DialogContent className="overflow-auto h-auto max-h-full sm:max-w-[600px]">
+      <DialogContent className="overflow-auto h-auto max-h-full sm:p-6 p-2 sm:max-w-[600px]">
         <DialogHeader>
           <DialogTitle>Ứng tuyển vào {job.company.name}</DialogTitle>
           <DialogDescription className="text-gray-800">

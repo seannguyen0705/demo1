@@ -1,25 +1,42 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
+import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
 import { ApplyJob } from './entities/apply-job.entity';
 import { ApplyJobRepository } from './apply-job.repository';
 import { CreateApplyJobDto } from './dto/create-apply-job.dto';
-import { CvService } from '../cv/cv.service';
+import { DataSource } from 'typeorm';
+import { SaveJob } from '../save-job/entities/save-job.entity';
 
 @Injectable()
 export class ApplyJobService {
   constructor(
     @InjectRepository(ApplyJob) private readonly applyJobRepository: ApplyJobRepository,
-    private readonly cvService: CvService,
+    @InjectDataSource() private readonly dataSource: DataSource,
   ) {}
 
   async create(data: CreateApplyJobDto) {
-    const hasApplied = await this.applyJobRepository.findOne({
-      where: { jobId: data.jobId, candidateId: data.candidateId },
-    });
-    if (hasApplied) {
-      throw new BadRequestException('Bạn đã ứng tuyển vào vị trí này');
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+    try {
+      const hasApplied = await queryRunner.manager.findOne(ApplyJob, {
+        where: { jobId: data.jobId, candidateId: data.candidateId },
+      });
+      if (hasApplied) {
+        throw new BadRequestException('Bạn đã ứng tuyển vào vị trí này');
+      }
+      await queryRunner.manager.save(ApplyJob, data);
+      const saveJob = await queryRunner.manager.findOne(SaveJob, {
+        where: { jobId: data.jobId, candidateId: data.candidateId },
+      });
+      if (saveJob) {
+        await queryRunner.manager.delete(SaveJob, saveJob.id);
+      }
+      await queryRunner.commitTransaction();
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+      throw error;
+    } finally {
+      await queryRunner.release();
     }
-    const applyJob = this.applyJobRepository.create(data);
-    return this.applyJobRepository.save(applyJob);
   }
 }

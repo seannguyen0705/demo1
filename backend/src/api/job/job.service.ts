@@ -226,6 +226,8 @@ export class JobService {
       .innerJoin('address.province', 'province')
       .leftJoin('job.jobSkills', 'jobSkills')
       .leftJoin('jobSkills.skill', 'skill')
+      .skip(limit * (page - 1))
+      .take(limit)
 
       .select([
         'job.id',
@@ -375,6 +377,7 @@ export class JobService {
       .leftJoin('job.jobSkills', 'jobSkills')
       .leftJoin('jobSkills.skill', 'skill')
       .leftJoin('job.applyJobs', 'applyJobs', 'applyJobs.candidateId =:candidateId', { candidateId })
+      .leftJoin('job.saveJobs', 'saveJobs', 'saveJobs.candidateId =:candidateId', { candidateId })
       .select([
         'job.id',
         'job.title',
@@ -401,6 +404,7 @@ export class JobService {
         'job.status',
         'applyJobs.id',
         'applyJobs.createdAt',
+        'saveJobs.id',
       ])
       .andWhere('job.id =:id', { id })
       .andWhere('job.status =:status', { status: JobStatus.PUBLISHED });
@@ -418,6 +422,8 @@ export class JobService {
       .leftJoin('jobAddresses.address', 'address')
       .leftJoin('address.province', 'province')
       .innerJoin('job.applyJobs', 'applyJobs', 'applyJobs.candidateId =:candidateId', { candidateId })
+      .skip(limit * (page - 1))
+      .take(limit)
       .select([
         'job.id',
         'job.title',
@@ -436,6 +442,47 @@ export class JobService {
         'job.jobLevel',
         'applyJobs.id',
         'applyJobs.createdAt',
+      ])
+      .andWhere('job.status =:status', { status: JobStatus.PUBLISHED });
+    await this.orderJob(queryBuilder, sort);
+
+    const [jobs, total] = await queryBuilder.getManyAndCount();
+    const numPage = Math.ceil(total / limit);
+    if (page + 1 > numPage) {
+      return { jobs, currentPage: page, nextPage: null, total };
+    }
+    return { jobs, currentPage: page, nextPage: page + 1, total };
+  }
+
+  public async candidateGetJobSaved(candidateId: string, query: QueryJobApplyDto) {
+    const { page, limit, sort } = query;
+    const queryBuilder = this.jobRepository
+      .createQueryBuilder('job')
+      .innerJoin('job.company', 'company')
+      .leftJoin('company.logo', 'logo')
+      .leftJoin('job.jobAddresses', 'jobAddresses')
+      .leftJoin('jobAddresses.address', 'address')
+      .leftJoin('address.province', 'province')
+      .innerJoin('job.saveJobs', 'saveJobs', 'saveJobs.candidateId =:candidateId', { candidateId })
+      .skip(limit * (page - 1))
+      .take(limit)
+      .select([
+        'job.id',
+        'job.title',
+        'company.name',
+        'company.id',
+        'logo.url',
+        'jobAddresses.id',
+        'address.id',
+        'province.name',
+        'job.jobType',
+        'job.createdAt',
+        'address.detail',
+        'job.salaryType',
+        'job.salaryMin',
+        'job.salaryMax',
+        'job.jobLevel',
+        'saveJobs.id',
       ])
       .andWhere('job.status =:status', { status: JobStatus.PUBLISHED });
     await this.orderJob(queryBuilder, sort);

@@ -6,7 +6,7 @@ import { IJwtStrategy } from '../auth/strategies';
 import applyJobRoutes from './apply-job.routes';
 import { Body } from '@nestjs/common';
 
-@InjectController({ name: applyJobRoutes.index })
+@InjectController({ name: applyJobRoutes.index, isCore: true })
 export class ApplyJobController {
   constructor(private readonly applyJobService: ApplyJobService) {}
 

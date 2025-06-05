@@ -15,7 +15,7 @@ export default async function JobHeader({ job }: IProps) {
   const isAuth = cookieStore.has('Refresh') || cookieStore.has('Authentication');
 
   return (
-    <section className="p-4 sticky top-20 bg-white dark:bg-gray-900 z-10">
+    <section className="p-4 sticky top-18 bg-white dark:bg-gray-900 z-10">
       <div className="">
         <h3 className="text-xl lg:text-2xl font-bold mb-3">{job.title}</h3>
         <p className="text-sm text-gray-500">{job.company.name}</p>

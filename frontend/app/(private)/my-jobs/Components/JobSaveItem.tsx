@@ -1,18 +1,22 @@
 import { IJob } from '@/api/job/interface';
+import Application from '@/app/(root)/job/components/Application';
+import Save from '@/app/(root)/job/components/Save';
 import getStringSalary from '@/utils/helpers/getStringSalary';
-import { format } from 'date-fns';
+import { formatDistanceToNow } from 'date-fns';
+import { vi } from 'date-fns/locale';
 import { CircleDollarSign } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+
 interface IProps {
   job: IJob;
 }
 
-export default function JobApplyItem({ job }: IProps) {
+export default function JobSaveItem({ job }: IProps) {
   const provinceNames = job.jobAddresses.map((jobAddress) => jobAddress.address.province.name);
   const setProvinceNames = new Set(provinceNames);
   return (
-    <article className="lg:p-4 relative flex flex-col sm:flex-row items-center justify-between border-b border-dashed hover:bg-gray-100">
+    <article className="lg:p-4 py-2 relative flex flex-col sm:flex-row justify-between border-b border-dashed hover:bg-gray-100">
       <div className="flex gap-4 items-center">
         <Link className="relative z-10" href={`/company/${job.company.name}`}>
           <Image
@@ -37,7 +41,17 @@ export default function JobApplyItem({ job }: IProps) {
         </div>
       </div>
 
-      <p className="text-sm text-right">Ứng tuyển vào {format(job.applyJobs[0].createdAt, 'dd/MM/yyyy')}</p>
+      <div className="w-auto">
+        <p className="text-sm mb-2 font-semibold text-right text-gray-500">
+          {formatDistanceToNow(new Date(job.createdAt), { addSuffix: true, locale: vi })}
+        </p>
+        <div className="flex gap-2 relative z-10 justify-end px-2 ">
+          <div className="flex-1">
+            <Application job={job} />
+          </div>
+          <Save job={job} />
+        </div>
+      </div>
       <Link href={`/job/${job.id}`} className="text-sm text-right absolute inset-0"></Link>
     </article>
   );

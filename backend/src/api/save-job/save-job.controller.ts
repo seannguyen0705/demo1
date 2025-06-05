@@ -14,7 +14,7 @@ export class SaveJobController {
   }
 
   @InjectRoute(saveJobRoutes.deleteSaveJob)
-  public async deleteSaveJob(@Param('id') id: string) {
-    return this.saveJobService.deleteSaveJob(id);
+  public async deleteSaveJob(@Param('id') id: string, @ReqUser() user: IJwtStrategy) {
+    return this.saveJobService.deleteSaveJob(id, user.element.id);
   }
 }

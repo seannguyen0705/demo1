@@ -1,16 +1,18 @@
 import Image from 'next/image';
 
 import { IJob } from '@/api/job/interface';
-import { CircleDollarSign, Heart } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { CircleCheckBig, CircleDollarSign } from 'lucide-react';
 import getStringSalary from '@/utils/helpers/getStringSalary';
 import Link from 'next/link';
+import Application from './Application';
+import { format } from 'date-fns';
+import Save from './Save';
 
 interface IProps {
   job: IJob;
 }
 
-export default function JobHeader({ job }: IProps) {
+export default function ClientJobHeader({ job }: IProps) {
   return (
     <section className="border-b-2 pb-4 relative">
       <div className="flex items-center gap-4 mb-3">
@@ -36,15 +38,20 @@ export default function JobHeader({ job }: IProps) {
           </div>
         </div>
       </div>
-      <div className="flex justify-center items-center gap-2">
-        <div className="flex-1">
-          <Link href={'/sign-in'} className="w-full">
-            <Button className="w-full bg-green text-white hover:bg-green/80 hover:text-white">Ứng tuyển</Button>
-          </Link>
-        </div>
-        <Button variant={'outline'}>
-          <Heart />
-        </Button>
+      <div className="flex items-center gap-2">
+        {job.applyJobs.length > 0 ? (
+          <p className="text-sm flex items-center gap-2 text-green">
+            <CircleCheckBig />
+            Đã ứng tuyển {format(job.applyJobs[0].createdAt, 'dd/MM/yyyy')}
+          </p>
+        ) : (
+          <div className="flex-1 flex items-center gap-2">
+            <div className="flex-1">
+              <Application job={job} />
+            </div>
+            <Save job={job} />
+          </div>
+        )}
       </div>
     </section>
   );
