@@ -15,7 +15,7 @@ interface IProps {
 export default function ManageJobDetail({ jobId, companyImages }: IProps) {
   const { data } = useGetJobById(jobId);
   if (!data) {
-    return;
+    return <div className="flex-1"></div>;
   }
   return (
     <div className="flex-1">

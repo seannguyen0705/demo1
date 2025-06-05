@@ -4,8 +4,6 @@ import JobInfo from '../../components/JobInfo';
 import JobDescription from '../../components/JobDescription';
 import CompanyImage from '@/app/(root)/company/components/CompanyImage';
 import JobRequirement from '../../components/JobRequirement.';
-import { IJob } from '@/api/job/interface';
-import { ICompanyImage } from '@/api/company-image/interface';
 import { getJobById } from '@/api/job/query';
 import { getCompanyImage } from '@/api/company-image/query';
 

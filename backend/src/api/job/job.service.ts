@@ -205,11 +205,10 @@ export class JobService {
           queryBuilder.orderBy('job.createdAt', 'ASC');
           break;
         case SortJob.SALARY_ASC:
-          queryBuilder.orderBy('COALESCE((job.salaryMin + job.salaryMax)/2, job.salaryMin, job.salaryMax, 0)', 'ASC');
+          queryBuilder.orderBy('job.salaryMin', 'ASC', 'NULLS LAST');
           break;
         case SortJob.SALARY_DESC:
-          queryBuilder.orderBy('COALESCE((job.salaryMin + job.salaryMax)/2, job.salaryMin, job.salaryMax, 0)', 'DESC');
-          break;
+          queryBuilder.orderBy('job.salaryMin', 'DESC', 'NULLS LAST');
       }
     }
   }
@@ -226,8 +225,6 @@ export class JobService {
       .innerJoin('address.province', 'province')
       .leftJoin('job.jobSkills', 'jobSkills')
       .leftJoin('jobSkills.skill', 'skill')
-      .skip(limit * (page - 1))
-      .take(limit)
 
       .select([
         'job.id',
@@ -258,6 +255,9 @@ export class JobService {
       this.searchJobByJobLevel(queryBuilder, jobLevel),
       this.orderJob(queryBuilder, sort),
     ]);
+
+    queryBuilder.skip(limit * (page - 1)).take(limit);
+
     const [jobs, total] = await queryBuilder.getManyAndCount();
     const numPage = Math.ceil(total / limit);
     if (page + 1 > numPage) {
