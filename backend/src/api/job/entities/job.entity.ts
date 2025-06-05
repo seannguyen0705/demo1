@@ -65,6 +65,9 @@ export class Job extends BaseEntity {
   @Column({ nullable: true })
   benefit: string;
 
+  @Column({ default: 0, name: 'view_count' })
+  viewCount: number;
+
   @Column({
     type: 'enum',
     enum: JobStatus,

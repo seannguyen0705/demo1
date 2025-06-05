@@ -11,11 +11,11 @@ export class JobAddress extends Base {
   @Column({ name: 'address_id' })
   addressId: string;
 
-  @ManyToOne(() => Job)
+  @ManyToOne(() => Job, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'job_id' })
   job: Job;
 
-  @ManyToOne(() => Address)
+  @ManyToOne(() => Address, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'address_id' })
   address: Address;
 }

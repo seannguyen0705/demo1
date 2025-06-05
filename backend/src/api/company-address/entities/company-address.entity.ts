@@ -11,11 +11,11 @@ export class CompanyAddress extends BaseEntity {
   @Column({ name: 'address_id' })
   addressId: string;
 
-  @ManyToOne(() => Company)
+  @ManyToOne(() => Company, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'company_id' })
   company: Company;
 
-  @OneToOne(() => Address)
+  @OneToOne(() => Address, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'address_id' })
   address: Address;
 }

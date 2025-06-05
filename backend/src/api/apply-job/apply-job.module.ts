@@ -8,5 +8,6 @@ import { ApplyJob } from './entities/apply-job.entity';
   imports: [TypeOrmModule.forFeature([ApplyJob])],
   controllers: [ApplyJobController],
   providers: [ApplyJobService],
+  exports: [ApplyJobService],
 })
 export class ApplyJobModule {}

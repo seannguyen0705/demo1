@@ -66,4 +66,20 @@ export default {
     jwtSecure: true,
     roles: [UserRole.CANDIDATE],
   },
+
+  getStaticsticsByJobId: <IRouteParams>{
+    path: 'jobs/:id/statistics',
+    method: RequestMethod.GET,
+    code: HttpStatus.OK,
+    jwtSecure: true,
+    roles: [UserRole.EMPLOYER, UserRole.ADMIN],
+  },
+
+  updateJob: <IRouteParams>{
+    path: 'jobs/:id',
+    method: RequestMethod.PUT,
+    code: HttpStatus.OK,
+    jwtSecure: true,
+    roles: [UserRole.EMPLOYER],
+  },
 };

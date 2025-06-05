@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { JobRepository } from './job.repository';
 import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
 import { Job } from './entities/job.entity';
@@ -15,6 +15,9 @@ import { QueryJobDto } from './dto/query-job.dto';
 import { SkillService } from '../skill/skill.service';
 import { EmployerQueryJobDto } from './dto/employer-query-job.dto';
 import { QueryJobApplyDto } from './dto/query-job-apply.dto';
+import { ApplyJobService } from '../apply-job/apply-job.service';
+import { UpdateJobDto } from './dto/update-job.dto';
+import { Company } from '../company/entities/company.entity';
 @Injectable()
 export class JobService {
   constructor(
@@ -22,6 +25,7 @@ export class JobService {
     private readonly companyService: CompanyService,
     private readonly skillService: SkillService,
     @InjectDataSource() private readonly dataSource: DataSource,
+    private readonly applyJobService: ApplyJobService,
   ) {}
 
   async findByCompanyId(companyId: string) {
@@ -225,7 +229,6 @@ export class JobService {
       .innerJoin('address.province', 'province')
       .leftJoin('job.jobSkills', 'jobSkills')
       .leftJoin('jobSkills.skill', 'skill')
-
       .select([
         'job.id',
         'job.title',
@@ -341,6 +344,7 @@ export class JobService {
         'job.description',
         'jobSkills.id',
         'skill.name',
+        'skill.id',
         'job.requirement',
         'job.benefit',
         'jobAddresses.id',
@@ -408,6 +412,8 @@ export class JobService {
       ])
       .andWhere('job.id =:id', { id })
       .andWhere('job.status =:status', { status: JobStatus.PUBLISHED });
+
+    await this.increaseViewCount(id);
 
     return queryBuilder.getOne();
   }
@@ -493,5 +499,83 @@ export class JobService {
       return { jobs, currentPage: page, nextPage: null, total };
     }
     return { jobs, currentPage: page, nextPage: page + 1, total };
+  }
+
+  public async getStaticsticsByJobId(jobId: string) {
+    const job = await this.jobRepository.findOneBy({ id: jobId });
+    if (!job) {
+      throw new NotFoundException('Job not found');
+    }
+    const statistics = await this.applyJobService.staticsticsByJobId(jobId);
+    return {
+      ...statistics,
+      viewCount: job.viewCount,
+    };
+  }
+
+  public async increaseViewCount(jobId: string) {
+    const job = await this.jobRepository.findOneBy({ id: jobId });
+    if (!job) {
+      throw new NotFoundException('Job not found');
+    }
+    job.viewCount++;
+    await this.jobRepository.save(job);
+  }
+
+  public async updateJob(jobId: string, employerId: string, data: UpdateJobDto) {
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+    const { addressIds, skillIds } = data;
+    try {
+      const company = await queryRunner.manager.findOneBy(Company, { employerId });
+      if (!company) {
+        throw new NotFoundException('Company not found');
+      }
+      const job = await queryRunner.manager.findOneBy(Job, { id: jobId, companyId: company.id });
+      if (!job) {
+        throw new NotFoundException('Job not found');
+      }
+
+      if (data.title && data.title !== job.title) {
+        const existingJob = await this.findOneByTitleAndCompanyId(data.title, company.id);
+        if (existingJob) {
+          throw new JobAlreadyExistsException();
+        }
+      }
+
+      // update address
+      if (addressIds) {
+        await Promise.all(
+          addressIds.map(async (addressId) => {
+            const jobAddress = await queryRunner.manager.findOneBy(JobAddress, { jobId, addressId });
+
+            if (!jobAddress) {
+              await queryRunner.manager.save(JobAddress, { jobId, addressId });
+            }
+          }),
+        );
+      }
+
+      // update skill
+      if (skillIds) {
+        await Promise.all(
+          skillIds.map(async (skillId) => {
+            const jobSkill = await queryRunner.manager.findOneBy(JobSkill, { jobId, skillId });
+            if (!jobSkill) {
+              await queryRunner.manager.save(JobSkill, { jobId, skillId });
+            }
+          }),
+        );
+      }
+
+      await queryRunner.manager.save(Job, { ...job, ...data });
+      await queryRunner.commitTransaction();
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+      throw error;
+    } finally {
+      await queryRunner.release();
+    }
   }
 }

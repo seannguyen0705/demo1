@@ -6,16 +6,18 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Form } from '@/components/ui/form';
 import { FormProvider } from 'react-hook-form';
-import CreateJobInfo from './components/CreateJobInfo';
+
 import { Rocket } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import CreateJobDescription from './components/CreateJobDescription';
-import CreateJobRequirement from './components/CreateJobRequirement';
-import CreateJobBenefit from './components/CreateJobBenefit';
+
 import useGetMe from '@/app/hooks/useGetMe';
-import useCreatePublishedJob from './hooks/useCreatePublishedJob';
-import useCreateDraftJob from './hooks/useCreateDraftJob';
-import removeFalsyValues from '@/utils/helpers/removeFalsyValues';
+
+import CreateJobInfo from '../../create-job/components/CreateJobInfo';
+import CreateJobDescription from '../../create-job/components/CreateJobDescription';
+import CreateJobRequirement from '../../create-job/components/CreateJobRequirement';
+import CreateJobBenefit from '../../create-job/components/CreateJobBenefit';
+import useUpdateJob from '../hooks/useUpdateJob';
+import { IJob } from '@/api/job/interface';
 const formSchema = z
   .object({
     title: z.string().min(1, {
@@ -115,53 +117,37 @@ const formSchema = z
     },
   );
 
-export type CreateJobFormSchema = z.infer<typeof formSchema>;
+export type UpdateJobFormSchema = z.infer<typeof formSchema>;
 
-export default function CreateJob() {
-  const form = useForm<CreateJobFormSchema>({
+interface IProps {
+  job: IJob;
+}
+export default function EditJob({ job }: IProps) {
+  const form = useForm<UpdateJobFormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title: '',
-      salaryType: '',
-      salaryMin: '',
-      salaryMax: '',
-      addressIds: [],
-      jobLevel: '',
-      jobType: '',
-      jobExpertise: '',
-      jobDomain: '',
-      description: '',
-      requirement: '',
-      benefit: '',
-      skills: [],
+      title: job.title || '',
+      salaryType: job.salaryType || '',
+      salaryMin: job.salaryMin?.toString() || '',
+      salaryMax: job.salaryMax?.toString() || '',
+      addressIds: job.jobAddresses.map((jobAddress) => jobAddress.address.id),
+      jobLevel: job.jobLevel || '',
+      jobType: job.jobType || '',
+      jobExpertise: job.jobExpertise || '',
+      jobDomain: job.jobDomain || '',
+      description: job.description || '',
+      requirement: job.requirement || '',
+      benefit: job.benefit || '',
+      skills: job.jobSkills.map((jobSkill) => ({ value: jobSkill.skill.id, label: jobSkill.skill.name })) || [],
     },
   });
-  const { user } = useGetMe();
-  const { mutate: publishJob, isPending: isPendingPublish } = useCreatePublishedJob({
-    form,
-  });
-  const { mutate: createDraftJob, isPending: isPendingDraft } = useCreateDraftJob({
-    form,
-  });
-  const onSubmit = (data: CreateJobFormSchema) => {
-    if (user?.company?.id) {
-      const skillIds = data.skills.map((skill) => skill.value);
-      publishJob({
-        ...data,
-        companyId: user.company.id,
-        skillIds,
-      });
-    }
-  };
 
-  const handleCreateDraftJob = () => {
-    const data = removeFalsyValues(form.getValues());
-    if (user?.company?.id) {
-      createDraftJob({
-        ...data,
-        companyId: user.company.id,
-      });
-    }
+  const { mutate: updateJob, isPending } = useUpdateJob({ id: job.id, form });
+  const onSubmit = (data: UpdateJobFormSchema) => {
+    updateJob({
+      ...data,
+      skillIds: data.skills.map((skill) => skill.value),
+    });
   };
 
   return (
@@ -181,17 +167,8 @@ export default function CreateJob() {
             <CreateJobRequirement />
             <CreateJobBenefit />
             <div className="flex justify-center mb-4 gap-2">
-              <Button type="submit" className="bg-green hover:bg-green/80 dark:text-white" disabled={isPendingPublish}>
-                {isPendingPublish ? 'Đang đăng tin...' : 'Đăng tin tuyển dụng'}
-              </Button>
-              <Button
-                variant="outline"
-                onClick={handleCreateDraftJob}
-                className="border-green dark:border-green"
-                type="button"
-                disabled={isPendingDraft}
-              >
-                {isPendingDraft ? 'Đang lưu bản nháp...' : 'Lưu bản nháp'}
+              <Button type="submit" className="bg-green hover:bg-green/80 dark:text-white" disabled={false}>
+                {false ? 'Đang cập nhật...' : 'Cập nhật tin tuyển dụng'}
               </Button>
             </div>
           </FormProvider>

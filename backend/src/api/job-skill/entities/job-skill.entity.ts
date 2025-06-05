@@ -3,7 +3,7 @@ import { Base as BaseEntity } from '@/common/entities';
 import { Job } from '@/api/job/entities/job.entity';
 import { Skill } from '@/api/skill/entities/skill.entity';
 
-@Entity('job_skill')
+@Entity('job_skills')
 @Unique(['jobId', 'skillId'])
 export class JobSkill extends BaseEntity {
   @Column({ name: 'job_id' })

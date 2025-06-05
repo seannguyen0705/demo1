@@ -8,6 +8,7 @@ import { CreatePublishedJobDto } from './dto/create-published-job.dto';
 import { QueryJobDto } from './dto/query-job.dto';
 import { EmployerQueryJobDto } from './dto/employer-query-job.dto';
 import { QueryJobApplyDto } from './dto/query-job-apply.dto';
+import { UpdateJobDto } from './dto/update-job.dto';
 @InjectController({ name: jobRoutes.index, isCore: true })
 export class JobController {
   constructor(private readonly jobService: JobService) {}
@@ -55,5 +56,15 @@ export class JobController {
   @InjectRoute(jobRoutes.candidateGetJobSaved)
   async candidateGetJobSaved(@ReqUser() user: IJwtStrategy, @Query() query: QueryJobApplyDto) {
     return this.jobService.candidateGetJobSaved(user.element.id, query);
+  }
+
+  @InjectRoute(jobRoutes.getStaticsticsByJobId)
+  async getStaticsticsByJobId(@Param('id') id: string) {
+    return this.jobService.getStaticsticsByJobId(id);
+  }
+
+  @InjectRoute(jobRoutes.updateJob)
+  async updateJob(@Param('id') id: string, @Body() data: UpdateJobDto, @ReqUser() user: IJwtStrategy) {
+    return this.jobService.updateJob(id, user.element.id, data);
   }
 }

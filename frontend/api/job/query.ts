@@ -14,6 +14,9 @@ export const getJobByCompanyId = async (companyId: string) => {
 export const getJobById = async (id: string) => {
   const response = queryFetch<IJob>(`jobs/${id}`, {
     method: 'GET',
+    next: {
+      tags: [`jobs/${id}`],
+    },
   });
   return response;
 };

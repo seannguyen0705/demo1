@@ -63,6 +63,21 @@ interface ICreateDraftJob {
   companyId?: string;
 }
 
+interface IUpdateJob {
+  title?: string;
+  addressIds?: string[];
+  salaryMin?: string;
+  salaryMax?: string;
+  jobType?: string;
+  jobLevel?: string;
+  jobExpertise?: string;
+  jobDomain?: string;
+  description?: string;
+  requirement?: string;
+  benefit?: string;
+  skillIds?: string[];
+}
+
 interface IQueryJob extends IQueryPagination {
   keyword?: string;
   provinceName?: string;
@@ -82,4 +97,14 @@ interface QueryJob {
   total: number;
 }
 
-export type { IJob, ICreatePublishedJob, ICreateDraftJob, IQueryJob, QueryJob };
+interface JobStatistics {
+  countNew: number;
+  countProcessing: number;
+  countInterviewing: number;
+  countHired: number;
+  countRejected: number;
+  countTotal: number;
+  viewCount: number;
+}
+
+export type { IJob, ICreatePublishedJob, ICreateDraftJob, IQueryJob, QueryJob, JobStatistics, IUpdateJob };
