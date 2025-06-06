@@ -12,10 +12,14 @@ export const getJobByCompanyId = async (companyId: string) => {
 };
 
 export const getJobById = async (id: string) => {
-  const response = queryFetch<IJob>(`jobs/${id}`, {
-    method: 'GET',
-  });
-  return response;
+  try {
+    const response = await queryFetch<IJob>(`jobs/${id}`, {
+      method: 'GET',
+    });
+    return response.data;
+  } catch (error) {
+    return null;
+  }
 };
 
 export const getJobs = async (queryString: string) => {

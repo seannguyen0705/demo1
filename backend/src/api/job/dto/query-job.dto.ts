@@ -7,12 +7,12 @@ import { IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
 export class QueryJobDto extends QueryPaginationDto {
   @IsOptional()
   @IsString()
-  @ApiPropertyOptional({ required: false })
+  @ApiPropertyOptional()
   keyword?: string; // title, description, requirement, benefit, skill
 
   @IsOptional()
   @IsString()
-  @ApiPropertyOptional({ required: false })
+  @ApiPropertyOptional()
   provinceName?: string;
 
   @IsEnum(JobType)
@@ -23,24 +23,24 @@ export class QueryJobDto extends QueryPaginationDto {
     }
     return value;
   })
-  @ApiPropertyOptional({ required: false })
+  @ApiPropertyOptional()
   jobType?: JobType;
 
   @IsOptional()
   @IsNumber()
   @Type(() => Number)
-  @ApiPropertyOptional({ required: false })
+  @ApiPropertyOptional()
   minSalary?: number;
 
   @IsOptional()
   @IsNumber()
   @Type(() => Number)
-  @ApiPropertyOptional({ required: false })
+  @ApiPropertyOptional()
   maxSalary?: number;
 
   @IsEnum(SortJob)
   @IsOptional()
-  @ApiPropertyOptional({ required: false, example: SortJob.NEWEST, enum: SortJob })
+  @ApiPropertyOptional({ example: SortJob.NEWEST, enum: SortJob })
   sort?: SortJob = SortJob.NEWEST;
 
   @IsOptional()
@@ -51,7 +51,7 @@ export class QueryJobDto extends QueryPaginationDto {
     }
     return value;
   })
-  @ApiPropertyOptional({ required: false })
+  @ApiPropertyOptional()
   jobLevel?: JobLevel;
 }
 
