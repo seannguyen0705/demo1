@@ -1,6 +1,6 @@
 import { Address } from '@/api/address/entities/address.entity';
 import { Skill } from '@/api/skill/entities/skill.entity';
-import { JobLevel, JobType } from '@/common/enums';
+import { JobLevel, JobType, SalaryType } from '@/common/enums';
 import { IsOnlyDate, IsSalaryValid } from '@/decorators/validate.decorator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Transform, Type } from 'class-transformer';
@@ -52,6 +52,13 @@ export class UpdatePublishedJobDto {
     return value;
   })
   skillIds: string[];
+
+  @IsEnum(SalaryType)
+  @IsNotEmpty()
+  @ApiProperty({
+    example: SalaryType.UPTO,
+  })
+  salaryType: SalaryType;
 
   @IsNumber()
   @IsOptional()

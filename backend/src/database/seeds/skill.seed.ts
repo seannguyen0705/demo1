@@ -13,6 +13,7 @@ export const seedSkills = async (dataSource: DataSource) => {
     'React',
     'Angular',
     'Vue.js',
+    'Figma',
     'Next.js',
     'NestJS',
     'Express.js',
