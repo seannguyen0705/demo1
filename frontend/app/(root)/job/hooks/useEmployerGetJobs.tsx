@@ -3,8 +3,17 @@ import axiosInstance from '@/config/axios-config';
 import { useQuery } from '@tanstack/react-query';
 
 const getEmployerJobs = async (queryString: string) => {
-  const response = await axiosInstance.get<{ data: QueryJob }>(`/employer/jobs?${queryString}`);
-  return response.data;
+  try {
+    const response = await axiosInstance.get<{ data: QueryJob }>(`/employer/jobs?${queryString}`);
+    return response.data.data;
+  } catch (error) {
+    return {
+      jobs: [],
+      currentPage: 1,
+      total: 0,
+      nextPage: null,
+    };
+  }
 };
 
 export default function useEmployerGetJobs(queryString: string) {

@@ -32,7 +32,7 @@ export default function CvItem({ cv }: { cv: ICv }) {
       <div className="flex items-center justify-center gap-2">
         <UpdateCv cvId={cv.id} updateCv={updateCv} disabled={isUpdating || isDeleting} />
         <ConfirmDelete
-          icon={<span className="">Xóa</span>}
+          button={<span className="">Xóa</span>}
           title="Xóa CV"
           description="Bạn có chắc chắn muốn xóa CV này không?"
           action={() => deleteCv(cv.id)}

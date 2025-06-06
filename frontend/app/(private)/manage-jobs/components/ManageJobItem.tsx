@@ -13,6 +13,7 @@ import { useRouter } from 'next/navigation';
 import useDeleteJob from '../../edit-job/hooks/useDeleteJob';
 import ConfirmDelete from '@/components/ConfirmDelete';
 import isExpired from '@/utils/helpers/isExpired';
+import useUpdateJobStatus from '../hooks/useUpdateJobStatus';
 interface IProps {
   job: IJob;
 }
@@ -22,6 +23,7 @@ export default function ManageJobItem({ job }: IProps) {
   const setProvinceNames = new Set(provinceNames);
   const router = useRouter();
   const { mutate: deleteJob, isPending } = useDeleteJob();
+  const { mutate: updateJobStatus, isPending: isUpdatingStatus } = useUpdateJobStatus({ id: job.id });
   return (
     <article className="border h-full flex flex-col justify-between rounded-lg p-3 w-full relative">
       {/* Status label */}
@@ -105,12 +107,12 @@ export default function ManageJobItem({ job }: IProps) {
           <Pencil /> Sửa
         </Button>
         {job.status === JobStatus.PUBLISHED && (
-          <Button variant={'outline'}>
+          <Button disabled={isUpdatingStatus} variant={'outline'} onClick={() => updateJobStatus(JobStatus.HIDDEN)}>
             <EyeOff /> Ẩn
           </Button>
         )}
         {job.status === JobStatus.HIDDEN && (
-          <Button variant={'outline'}>
+          <Button disabled={isUpdatingStatus} variant={'outline'} onClick={() => updateJobStatus(JobStatus.PUBLISHED)}>
             <Eye /> Hiện
           </Button>
         )}

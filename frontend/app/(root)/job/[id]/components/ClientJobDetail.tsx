@@ -8,24 +8,29 @@ import CompanyImage from '@/app/(root)/company/components/CompanyImage';
 import JobInfo from '../../components/JobInfo';
 import ClientJobHeader from './ClientJobHeader';
 import useCandidateGetJobById from '../../hooks/useCandidateGetJobById';
+import { notFound } from 'next/navigation';
 interface IProps {
   jobId: string;
   companyImages: ICompanyImage[];
 }
 export default function ClientJobDetail({ jobId, companyImages }: IProps) {
-  const { data } = useCandidateGetJobById(jobId);
-  if (!data) {
+  const { data: job, isLoading } = useCandidateGetJobById(jobId);
+
+  if (isLoading) {
     return <div className="flex-1"></div>;
+  }
+  if (!job) {
+    notFound();
   }
   return (
     <div className="flex-1">
-      <ClientJobHeader job={data.data} />
+      <ClientJobHeader job={job} />
       <div className="p-4 space-y-4 ">
         <CompanyImage companyImages={companyImages} />
-        <JobInfo job={data.data} isCandidate={true} />
-        <JobDescription job={data.data} />
-        <JobRequirement job={data.data} />
-        <JobBenefit job={data.data} />
+        <JobInfo job={job} isCandidate={true} />
+        <JobDescription job={job} />
+        <JobRequirement job={job} />
+        <JobBenefit job={job} />
       </div>
     </div>
   );

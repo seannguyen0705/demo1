@@ -5,6 +5,7 @@ import UpdateExperience from './UpdateExperience';
 import ConfirmDelete from '@/components/ConfirmDelete';
 import useDeleteExperience from '../hooks/useDeleteExperience';
 import { Trash2 } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 interface IProps {
   experience: IExperience;
@@ -23,7 +24,11 @@ export default function ExperienceItem({ experience }: IProps) {
       <div className="absolute top-[10px] flex gap-2 right-[10px]">
         <UpdateExperience experience={experience} />
         <ConfirmDelete
-          icon={<Trash2 />}
+          button={
+            <Button variant="outline" size="icon">
+              <Trash2 />
+            </Button>
+          }
           title="Xóa kinh nghiệm"
           description="Bạn có chắc chắn muốn xóa kinh nghiệm này không?"
           action={() => deleteExperience(experience.id)}

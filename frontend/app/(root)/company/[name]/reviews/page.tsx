@@ -15,9 +15,9 @@ export default async function CompanyReviewsPage({ params, searchParams }: IProp
   const { orderBy = OrderByReview.CREATED_AT, order = Order.DESC, page = 1 } = await searchParams;
   const company = await findCompanyByName(name);
   const [jobs, statistics, reviews] = await Promise.all([
-    getJobByCompanyId(company.data.id),
-    getStatisticsReviewCompany(company.data.id),
-    getReviewByCompanyId(company.data.id, {
+    getJobByCompanyId(company.id),
+    getStatisticsReviewCompany(company.id),
+    getReviewByCompanyId(company.id, {
       orderBy: orderBy as OrderByReview,
       order: order as Order,
       page: page,
@@ -28,8 +28,8 @@ export default async function CompanyReviewsPage({ params, searchParams }: IProp
   return (
     <div className="container mx-auto flex gap-3 flex-col md:flex-row lg:p-2 mt-[20px]">
       <main className="flex-1 p-2 md:p-0 ">
-        <HeaderCompany company={company.data} numJobs={numJobs} statistics={statistics.data} />
-        <CompanyReview company={company.data} />
+        <HeaderCompany company={company} numJobs={numJobs} statistics={statistics} />
+        <CompanyReview company={company} />
         <ListReview reviews={reviews} />
       </main>
       <aside className="lg:w-[300px] mx-2 lg:mx-0">

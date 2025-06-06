@@ -318,7 +318,8 @@ export class JobService {
         'job.jobLevel',
         'job.status',
       ])
-      .andWhere('job.id =:id', { id });
+      .andWhere('job.id =:id', { id })
+      .andWhere('job.status  !=:status', { status: JobStatus.DRAFT });
 
     const job = await queryBuilder.getOne();
     if (!job) {
@@ -509,6 +510,9 @@ export class JobService {
   }
 
   public async updateStatus(jobId: string, employerId: string, status: JobStatus) {
+    if (status === JobStatus.DRAFT) {
+      throw new BadRequestException('Cannot update job status to draft');
+    }
     const company = await this.companyService.findOneByEmployerId(employerId);
     if (!company) {
       throw new NotFoundException('Company not found');
@@ -516,9 +520,6 @@ export class JobService {
     const job = await this.jobRepository.findOneBy({ id: jobId, companyId: company.id });
     if (!job) {
       throw new NotFoundException('Job not found');
-    }
-    if (status === JobStatus.DRAFT) {
-      throw new BadRequestException('Cannot update job status to draft');
     }
     job.status = status;
     return this.jobRepository.save(job);

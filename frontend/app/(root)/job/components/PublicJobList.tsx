@@ -24,7 +24,7 @@ export default async function PublicJobList({ searchParams }: IProps) {
     job = await getJobById(jobId);
   }
 
-  if (jobs.length === 0 || !job?.data) {
+  if (jobs.length === 0 || !job) {
     return <NotFoundJob />;
   }
   return (
@@ -51,7 +51,7 @@ export default async function PublicJobList({ searchParams }: IProps) {
         </ul>
       </div>
 
-      {job && <JobDetail job={job.data} />}
+      {job && <JobDetail job={job} />}
     </div>
   );
 }

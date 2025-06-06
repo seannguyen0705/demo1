@@ -112,6 +112,10 @@ interface JobStatistics {
   viewCount: number;
 }
 
+interface IUpdateJobStatus {
+  status: JobStatus;
+}
+
 export type {
   IJob,
   ICreatePublishedJob,
@@ -121,4 +125,5 @@ export type {
   JobStatistics,
   IUpdateJob,
   IUpdatePublishedJob,
+  IUpdateJobStatus,
 };

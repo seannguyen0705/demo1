@@ -1,7 +1,14 @@
 'use server';
 
 import actionFetch from '@/utils/helpers/actionFetch';
-import { ICreateDraftJob, ICreatePublishedJob, IJob, IUpdateJob, IUpdatePublishedJob } from './interface';
+import {
+  ICreateDraftJob,
+  ICreatePublishedJob,
+  IJob,
+  IUpdateJob,
+  IUpdateJobStatus,
+  IUpdatePublishedJob,
+} from './interface';
 import { isErrorResponse } from '@/utils/helpers/isErrorResponse';
 import { revalidateTag } from 'next/cache';
 
@@ -56,6 +63,22 @@ export const deleteJob = async (id: string) => {
     credentials: 'include',
   });
   if (!isErrorResponse(response)) {
+    revalidateTag(`company/${response.data.companyId}/jobs`);
+  }
+  return response;
+};
+
+export const updateJobStatus = async (id: string, data: IUpdateJobStatus) => {
+  const response = await actionFetch<IJob>(`jobs/${id}/status`, {
+    method: 'PUT',
+    body: JSON.stringify(data),
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  if (!isErrorResponse(response)) {
+    revalidateTag(`jobs/${id}`);
     revalidateTag(`company/${response.data.companyId}/jobs`);
   }
   return response;

@@ -19,15 +19,12 @@ export const getJobByCompanyId = async (companyId: string) => {
 
 export const getJobById = async (id: string) => {
   try {
-    const response = queryFetch<IJob>(`jobs/${id}`, {
+    const response = await queryFetch<IJob>(`jobs/${id}`, {
       method: 'GET',
-      next: {
-        tags: [`jobs/${id}`],
-      },
     });
-    return response;
+    return response.data;
   } catch (error) {
-    return { data: null };
+    return null;
   }
 };
 

@@ -90,4 +90,11 @@ export default {
     jwtSecure: true,
     roles: [UserRole.EMPLOYER],
   },
+  updateStatus: <IRouteParams>{
+    path: 'jobs/:id/status',
+    method: RequestMethod.PUT,
+    code: HttpStatus.OK,
+    jwtSecure: true,
+    roles: [UserRole.EMPLOYER],
+  },
 };

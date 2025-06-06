@@ -30,7 +30,7 @@ export default async function JobHeader({ job }: IProps) {
               <p className="text-red-500">Đã hết hạn</p>
             </div>
           ) : (
-            <div className="flex-1">
+            <div className="flex-1 flex items-center gap-2">
               {isAuth ? (
                 <Application job={job} />
               ) : (

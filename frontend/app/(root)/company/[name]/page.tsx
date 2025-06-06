@@ -12,19 +12,16 @@ interface IProps {
 export default async function CompanyPage({ params }: IProps) {
   const { name } = await params;
   const company = await findCompanyByName(name);
-  const [jobs, statistics] = await Promise.all([
-    getJobByCompanyId(company.data.id),
-    getStatisticsReviewCompany(company.data.id),
-  ]);
+  const [jobs, statistics] = await Promise.all([getJobByCompanyId(company.id), getStatisticsReviewCompany(company.id)]);
   const numJobs = jobs.data.length;
 
   return (
     <div className="container mx-auto gap-3 flex flex-col lg:flex-row lg:p-2 mt-[20px]">
       <main className="flex-1 p-2 md:p-0 ">
-        <HeaderCompany company={company.data} numJobs={numJobs} statistics={statistics.data} />
-        <CompanyInfo company={company.data} />
-        <CompanyIntro company={company.data} />
-        <CompanyBenefit company={company.data} />
+        <HeaderCompany company={company} numJobs={numJobs} statistics={statistics} />
+        <CompanyInfo company={company} />
+        <CompanyIntro company={company} />
+        <CompanyBenefit company={company} />
       </main>
       <aside className="lg:w-[300px] mx-2 lg:mx-0">
         {numJobs > 0 ? (

@@ -12,11 +12,11 @@ interface IProps {
 export default async function JobDetailPage({ params }: IProps) {
   const { id } = await params;
   const job = await getJobById(id);
-  if (!job.data) {
+  if (!job) {
     notFound();
   }
 
-  const companyImages = await getCompanyImage(job.data.company.id);
+  const companyImages = await getCompanyImage(job.company.id);
 
   const cookieStore = await cookies();
   const isAuth = cookieStore.has('Refresh') || cookieStore.has('Authentication');
@@ -24,7 +24,7 @@ export default async function JobDetailPage({ params }: IProps) {
     <main className="container mx-auto flex flex-col lg:flex-row mt-[30px] gap-4 px-2">
       {isAuth ? <AuthJobDetail jobId={id} companyImages={companyImages.data} /> : <JobDetail jobId={id} />}
       <div className="w-full lg:w-[400px]">
-        <CompanyCard companyName={job.data.company.name} />
+        <CompanyCard companyName={job.company.name} />
       </div>
     </main>
   );

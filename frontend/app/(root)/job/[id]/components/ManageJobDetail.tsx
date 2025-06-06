@@ -13,19 +13,19 @@ interface IProps {
   companyImages: ICompanyImage[];
 }
 export default function ManageJobDetail({ jobId, companyImages }: IProps) {
-  const { data } = useGetJobById(jobId);
-  if (!data) {
+  const { job } = useGetJobById(jobId);
+  if (!job) {
     return <div className="flex-1"></div>;
   }
   return (
     <div className="flex-1">
-      <ManageJobHeader job={data.data} />
+      <ManageJobHeader job={job} />
       <div className="p-4 space-y-4 ">
         <CompanyImage companyImages={companyImages} />
-        <JobInfo job={data.data} isCandidate={false} />
-        <JobDescription job={data.data} />
-        <JobRequirement job={data.data} />
-        <JobBenefit job={data.data} />
+        <JobInfo job={job} isCandidate={false} />
+        <JobDescription job={job} />
+        <JobRequirement job={job} />
+        <JobBenefit job={job} />
       </div>
     </div>
   );

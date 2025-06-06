@@ -12,5 +12,5 @@ export default async function EditJobPage({ params }: IProps) {
   if (!job) {
     notFound();
   }
-  return <EditJob job={job.data} />;
+  return <EditJob job={job} />;
 }
