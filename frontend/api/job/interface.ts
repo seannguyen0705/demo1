@@ -1,17 +1,17 @@
 import { JobType, JobStatus, SalaryType, JobLevel } from '@/utils/enums';
 import { ICompany } from '@/api/company/interface';
-import { IJobAddress } from '@/api/job-address/interface';
-import { IJobSkill } from '@/api/job-skill/interface';
 import { IQueryPagination } from '../interface';
 import { IApplyJob } from '../apply-job/interface';
 import { ISaveJob } from '../save-job/interfacet';
+import { IAddress } from '@/api/address/interface';
+import { ISkill } from '@/api/skill/interface';
 
 interface IJob {
   id: string;
   title: string;
   description: string;
-  jobAddresses: IJobAddress[];
-  jobSkills: IJobSkill[];
+  addresses: IAddress[];
+  skills: ISkill[];
   jobType: JobType;
   status: JobStatus;
   salaryType: SalaryType;
@@ -24,7 +24,8 @@ interface IJob {
   benefit: string;
   companyId: string;
   company: ICompany;
-  createdAt: Date;
+  expiredAt: string;
+  createdAt: string;
   applyJobs: IApplyJob[];
   saveJobs: ISaveJob[];
 }
@@ -63,7 +64,7 @@ interface ICreateDraftJob {
   companyId?: string;
 }
 
-interface IUpdateJob {
+interface IUpdatePublishedJob {
   title?: string;
   addressIds?: string[];
   salaryMin?: string;
@@ -76,6 +77,10 @@ interface IUpdateJob {
   requirement?: string;
   benefit?: string;
   skillIds?: string[];
+}
+
+interface IUpdateJob extends IUpdatePublishedJob {
+  status?: JobStatus;
 }
 
 interface IQueryJob extends IQueryPagination {
@@ -107,4 +112,13 @@ interface JobStatistics {
   viewCount: number;
 }
 
-export type { IJob, ICreatePublishedJob, ICreateDraftJob, IQueryJob, QueryJob, JobStatistics, IUpdateJob };
+export type {
+  IJob,
+  ICreatePublishedJob,
+  ICreateDraftJob,
+  IQueryJob,
+  QueryJob,
+  JobStatistics,
+  IUpdateJob,
+  IUpdatePublishedJob,
+};

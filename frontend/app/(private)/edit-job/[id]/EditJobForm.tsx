@@ -1,23 +1,20 @@
 'use client';
 
-import { SalaryType } from '@/utils/enums';
+import { JobStatus, SalaryType } from '@/utils/enums';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Form } from '@/components/ui/form';
 import { FormProvider } from 'react-hook-form';
-
 import { Rocket } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-
-import useGetMe from '@/app/hooks/useGetMe';
-
 import CreateJobInfo from '../../create-job/components/CreateJobInfo';
 import CreateJobDescription from '../../create-job/components/CreateJobDescription';
 import CreateJobRequirement from '../../create-job/components/CreateJobRequirement';
 import CreateJobBenefit from '../../create-job/components/CreateJobBenefit';
-import useUpdateJob from '../hooks/useUpdateJob';
 import { IJob } from '@/api/job/interface';
+import useUpdatePublishedJob from '../hooks/useUpdatePublishedJob';
+import { format } from 'date-fns';
 const formSchema = z
   .object({
     title: z.string().min(1, {
@@ -52,7 +49,12 @@ const formSchema = z
     requirement: z.string().min(1, {
       message: 'Yêu cầu công việc không được để trống',
     }),
-    skills: z.array(z.object({ value: z.string(), label: z.string() })),
+    skills: z.array(z.object({ value: z.string(), label: z.string() })).min(1, {
+      message: 'Kỹ năng không được để trống',
+    }),
+    expiredAt: z.string().min(1, {
+      message: 'Ngày hết hạn không được để trống',
+    }),
   })
   .refine(
     (data) => {
@@ -115,8 +117,70 @@ const formSchema = z
       message: 'Lương tối đa không được để trống',
       path: ['salaryMax'],
     },
+  )
+  .refine(
+    (data) => {
+      if (data.description === '<p></p>') {
+        return false;
+      }
+      return true;
+    },
+    {
+      message: 'Mô tả công việc không được để trống',
+      path: ['description'],
+    },
+  )
+  .refine(
+    (data) => {
+      if (data.requirement === '<p></p>') {
+        return false;
+      }
+      return true;
+    },
+    {
+      message: 'Yêu cầu công việc không được để trống',
+      path: ['requirement'],
+    },
+  )
+  .refine(
+    (data) => {
+      if (data.benefit === '<p></p>') {
+        return false;
+      }
+      return true;
+    },
+    {
+      message: 'Lợi ích không được để trống',
+      path: ['benefit'],
+    },
+  )
+  .refine(
+    (data) => {
+      // less than 60 days
+      const expiredAt = new Date(data.expiredAt);
+      const now = new Date();
+      const diffTime = Math.abs(expiredAt.getTime() - now.getTime());
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      const check = diffDays <= 60;
+      return check;
+    },
+    {
+      message: 'Tối đa 60 ngày',
+      path: ['expiredAt'],
+    },
+  )
+  .refine(
+    (data) => {
+      const expiredAt = new Date(data.expiredAt);
+      const now = new Date();
+      const check = expiredAt > now;
+      return check;
+    },
+    {
+      message: 'Ngày hết hạn phải lớn hơn ngày hiện tại',
+      path: ['expiredAt'],
+    },
   );
-
 export type UpdateJobFormSchema = z.infer<typeof formSchema>;
 
 interface IProps {
@@ -130,7 +194,7 @@ export default function EditJob({ job }: IProps) {
       salaryType: job.salaryType || '',
       salaryMin: job.salaryMin?.toString() || '',
       salaryMax: job.salaryMax?.toString() || '',
-      addressIds: job.jobAddresses.map((jobAddress) => jobAddress.address.id),
+      addressIds: job.addresses.map((address) => address.id),
       jobLevel: job.jobLevel || '',
       jobType: job.jobType || '',
       jobExpertise: job.jobExpertise || '',
@@ -138,13 +202,14 @@ export default function EditJob({ job }: IProps) {
       description: job.description || '',
       requirement: job.requirement || '',
       benefit: job.benefit || '',
-      skills: job.jobSkills.map((jobSkill) => ({ value: jobSkill.skill.id, label: jobSkill.skill.name })) || [],
+      expiredAt: job.expiredAt ? format(new Date(job.expiredAt), 'yyyy-MM-dd') : '',
+      skills: job.skills.map((skill) => ({ value: skill.id, label: skill.name })) || [],
     },
   });
 
-  const { mutate: updateJob, isPending } = useUpdateJob({ id: job.id, form });
+  const { mutate: updatePublishedJob, isPending: isUpdatingPublishedJob } = useUpdatePublishedJob({ id: job.id, form });
   const onSubmit = (data: UpdateJobFormSchema) => {
-    updateJob({
+    updatePublishedJob({
       ...data,
       skillIds: data.skills.map((skill) => skill.value),
     });
@@ -155,9 +220,9 @@ export default function EditJob({ job }: IProps) {
       <div className="text-center">
         <div className="inline-flex text-green items-center gap-2">
           <Rocket />
-          <h3 className="text-2xl font-bold">Đăng tin tuyển dụng</h3>
+          <h3 className="text-2xl font-bold">Chỉnh sửa tin tuyển dụng</h3>
         </div>
-        <p className="text-muted-foreground">Tạo tin tuyển dụng chi tiết và chuyên nghiệp</p>
+        {/* <p className="text-muted-foreground">Chỉnh sửa tin tuyển dụng chi tiết và chuyên nghiệp</p> */}
       </div>
       <Form {...form}>
         <form className="max-w-4xl mx-auto space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
@@ -167,8 +232,12 @@ export default function EditJob({ job }: IProps) {
             <CreateJobRequirement />
             <CreateJobBenefit />
             <div className="flex justify-center mb-4 gap-2">
-              <Button type="submit" className="bg-green hover:bg-green/80 dark:text-white" disabled={false}>
-                {false ? 'Đang cập nhật...' : 'Cập nhật tin tuyển dụng'}
+              <Button
+                type="submit"
+                className="bg-green hover:bg-green/80 dark:text-white"
+                disabled={isUpdatingPublishedJob}
+              >
+                {isUpdatingPublishedJob ? 'Đang cập nhật...' : 'Cập nhật tin tuyển dụng'}
               </Button>
             </div>
           </FormProvider>

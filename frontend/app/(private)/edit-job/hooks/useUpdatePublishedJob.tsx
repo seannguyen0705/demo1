@@ -1,20 +1,25 @@
-import { createPublishedJob } from '@/api/job/action';
-import { isErrorResponse } from '@/utils/helpers/isErrorResponse';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { toast } from 'sonner';
+
+import { updatePublishedJob } from '@/api/job/action';
+
+import { IUpdatePublishedJob } from '@/api/job/interface';
 import { UseFormReturn } from 'react-hook-form';
-import { CreateJobFormSchema } from '../page';
+import { UpdateJobFormSchema } from '../[id]/EditJobForm';
+import { isErrorResponse } from '@/utils/helpers/isErrorResponse';
+import { toast } from 'sonner';
 import EXCEPTION_CODE from '@/utils/constants/exception';
 import { useRouter } from 'next/navigation';
+
 interface IProps {
-  form: UseFormReturn<CreateJobFormSchema>;
+  id: string;
+  form: UseFormReturn<UpdateJobFormSchema>;
 }
 
-export default function useCreatePublishedJob({ form }: IProps) {
+export default function useUpdatePublishedJob({ id, form }: IProps) {
   const queryClient = useQueryClient();
   const router = useRouter();
   return useMutation({
-    mutationFn: createPublishedJob,
+    mutationFn: (data: IUpdatePublishedJob) => updatePublishedJob(id, data),
     onSuccess: (data) => {
       if (isErrorResponse(data)) {
         if (data.errorCode === EXCEPTION_CODE.JOB_ALREADY_EXISTS_CODE) {
@@ -28,8 +33,9 @@ export default function useCreatePublishedJob({ form }: IProps) {
       } else {
         const { data: job } = data;
         queryClient.invalidateQueries({ queryKey: ['manage-jobs'] });
+        queryClient.invalidateQueries({ queryKey: ['job', id] });
         router.push(`/job/${job.id}`);
-        toast.success('Đăng tin tuyển dụng thành công');
+        toast.success('Cập nhật tin tuyển dụng thành công');
       }
     },
   });

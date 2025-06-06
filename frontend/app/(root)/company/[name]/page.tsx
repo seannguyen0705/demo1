@@ -27,7 +27,13 @@ export default async function CompanyPage({ params }: IProps) {
         <CompanyBenefit company={company.data} />
       </main>
       <aside className="lg:w-[300px] mx-2 lg:mx-0">
-        <h2 className="text-lg mb-2 font-bold"> {numJobs} Việc làm đang tuyển dụng</h2>
+        {numJobs > 0 ? (
+          <div className="text-lg mb-2 font-bold"> {numJobs} Việc làm đang tuyển dụng</div>
+        ) : (
+          <div className="text-lg mb-2 text-gray-700 dark:text-gray-300 font-bold">
+            Không có việc làm đang tuyển dụng
+          </div>
+        )}
         <JobList jobs={jobs.data} />
       </aside>
     </div>

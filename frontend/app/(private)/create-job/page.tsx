@@ -50,7 +50,12 @@ const formSchema = z
     requirement: z.string().min(1, {
       message: 'Yêu cầu công việc không được để trống',
     }),
-    skills: z.array(z.object({ value: z.string(), label: z.string() })),
+    skills: z.array(z.object({ value: z.string(), label: z.string() })).min(1, {
+      message: 'Kỹ năng không được để trống',
+    }),
+    expiredAt: z.string().min(1, {
+      message: 'Ngày hết hạn không được để trống',
+    }),
   })
   .refine(
     (data) => {
@@ -113,8 +118,70 @@ const formSchema = z
       message: 'Lương tối đa không được để trống',
       path: ['salaryMax'],
     },
+  )
+  .refine(
+    (data) => {
+      if (data.description === '<p></p>') {
+        return false;
+      }
+      return true;
+    },
+    {
+      message: 'Mô tả công việc không được để trống',
+      path: ['description'],
+    },
+  )
+  .refine(
+    (data) => {
+      if (data.requirement === '<p></p>') {
+        return false;
+      }
+      return true;
+    },
+    {
+      message: 'Yêu cầu công việc không được để trống',
+      path: ['requirement'],
+    },
+  )
+  .refine(
+    (data) => {
+      if (data.benefit === '<p></p>') {
+        return false;
+      }
+      return true;
+    },
+    {
+      message: 'Lợi ích không được để trống',
+      path: ['benefit'],
+    },
+  )
+  .refine(
+    (data) => {
+      // less than 60 days
+      const expiredAt = new Date(data.expiredAt);
+      const now = new Date();
+      const diffTime = Math.abs(expiredAt.getTime() - now.getTime());
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      const check = diffDays <= 60;
+      return check;
+    },
+    {
+      message: 'Tối đa 60 ngày',
+      path: ['expiredAt'],
+    },
+  )
+  .refine(
+    (data) => {
+      const expiredAt = new Date(data.expiredAt);
+      const now = new Date();
+      const check = expiredAt > now;
+      return check;
+    },
+    {
+      message: 'Ngày hết hạn phải lớn hơn ngày hiện tại',
+      path: ['expiredAt'],
+    },
   );
-
 export type CreateJobFormSchema = z.infer<typeof formSchema>;
 
 export default function CreateJob() {
@@ -134,6 +201,7 @@ export default function CreateJob() {
       requirement: '',
       benefit: '',
       skills: [],
+      expiredAt: '',
     },
   });
   const { user } = useGetMe();

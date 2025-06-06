@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import Application from '@/app/(root)/job/components/Application';
 import Link from 'next/link';
 import { cookies } from 'next/headers';
+import isExpired from '@/utils/helpers/isExpired';
 
 interface IProps {
   job: IJob;
@@ -24,19 +25,24 @@ export default async function JobHeader({ job }: IProps) {
           <p className="text-sm">{getStringSalary(job.salaryType, job.salaryMin, job.salaryMax)}</p>
         </div>
         <div className="flex gap-2">
-          <div className="flex-1">
-            {isAuth ? (
-              <Application job={job} />
-            ) : (
-              <Link href={'/sign-in'} className="w-full">
-                <Button className="w-full bg-green text-white hover:bg-green/80 hover:text-white">Ứng tuyển</Button>
-              </Link>
-            )}
-          </div>
-
-          <Button className="" variant={'outline'}>
-            <Heart />
-          </Button>
+          {isExpired(job.expiredAt) ? (
+            <div className="flex-1 bg-red-100 flex items-center px-4 py-2 rounded-md">
+              <p className="text-red-500">Đã hết hạn</p>
+            </div>
+          ) : (
+            <div className="flex-1">
+              {isAuth ? (
+                <Application job={job} />
+              ) : (
+                <Link href={'/sign-in'} className="w-full">
+                  <Button className="w-full bg-green text-white hover:bg-green/80 hover:text-white">Ứng tuyển</Button>
+                </Link>
+              )}
+              <Button className="" variant={'outline'}>
+                <Heart />
+              </Button>
+            </div>
+          )}
         </div>
       </div>
     </section>

@@ -7,6 +7,7 @@ import Pagination from '@/components/Pagination';
 import { useSearchParams } from 'next/navigation';
 import OrderBy from '@/app/(root)/job/components/OrderBy';
 import useCandidateGetJobSaved from '../hooks/useCandidateGetJobSave';
+import NotFoundJob from '@/app/(root)/job/components/NotFoundJob';
 export default function AppliedJobs() {
   const searchParams = useSearchParams();
 
@@ -39,10 +40,16 @@ export default function AppliedJobs() {
         <OrderBy />
       </div>
 
-      <JobApplyList jobs={appliedData.jobs} />
-      <div className="my-3">
-        <Pagination totalPages={totalPages} currentPage={appliedData.currentPage} />
-      </div>
+      {appliedData.jobs.length === 0 ? (
+        <NotFoundJob title="Không có việc làm đã ứng tuyển" />
+      ) : (
+        <>
+          <JobApplyList jobs={appliedData.jobs} />
+          <div className="my-3">
+            <Pagination totalPages={totalPages} currentPage={appliedData.currentPage} />
+          </div>
+        </>
+      )}
     </main>
   );
 }

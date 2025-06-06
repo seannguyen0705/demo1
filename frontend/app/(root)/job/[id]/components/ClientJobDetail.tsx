@@ -22,7 +22,7 @@ export default function ClientJobDetail({ jobId, companyImages }: IProps) {
       <ClientJobHeader job={data.data} />
       <div className="p-4 space-y-4 ">
         <CompanyImage companyImages={companyImages} />
-        <JobInfo job={data.data} />
+        <JobInfo job={data.data} isCandidate={true} />
         <JobDescription job={data.data} />
         <JobRequirement job={data.data} />
         <JobBenefit job={data.data} />

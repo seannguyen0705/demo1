@@ -75,7 +75,15 @@ export default {
     roles: [UserRole.EMPLOYER, UserRole.ADMIN],
   },
 
-  updateJob: <IRouteParams>{
+  deleteJob: <IRouteParams>{
+    path: 'jobs/:id',
+    method: RequestMethod.DELETE,
+    code: HttpStatus.OK,
+    jwtSecure: true,
+    roles: [UserRole.EMPLOYER],
+  },
+
+  updatePublishedJob: <IRouteParams>{
     path: 'jobs/:id',
     method: RequestMethod.PUT,
     code: HttpStatus.OK,

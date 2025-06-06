@@ -67,7 +67,10 @@ export default function Application({ job }: IProps) {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button className="w-full bg-green hover:bg-green/80 text-white hover:text-white" variant="outline">
+        <Button
+          className="w-full bg-green dark:bg-green dark:hover:bg-green/80 hover:bg-green/80 text-white hover:text-white"
+          variant="outline"
+        >
           Ứng tuyển
         </Button>
       </DialogTrigger>

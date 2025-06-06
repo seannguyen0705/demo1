@@ -6,12 +6,16 @@ import { Button } from '@/components/ui/button';
 import getStringSalary from '@/utils/helpers/getStringSalary';
 import { JobStatus } from '@/utils/enums';
 import Link from 'next/link';
+import useDeleteJob from '@/app/(private)/edit-job/hooks/useDeleteJob';
+import ConfirmDelete from '@/components/ConfirmDelete';
 
 interface IProps {
   job: IJob;
 }
 
 export default function ManageJobHeader({ job }: IProps) {
+  const { mutate: deleteJob, isPending } = useDeleteJob();
+
   return (
     <section className="border-b-2 pb-4 relative">
       <span
@@ -69,9 +73,17 @@ export default function ManageJobHeader({ job }: IProps) {
             <Eye /> Hiện
           </Button>
         )}
-        <Button variant={'destructive'}>
-          <Trash /> Xóa
-        </Button>
+        <ConfirmDelete
+          title="Xóa tin tuyển dụng"
+          description="Bạn có chắc chắn muốn xóa tin tuyển dụng này không?"
+          action={() => deleteJob(job.id)}
+          disabled={isPending}
+          button={
+            <Button variant={'outline'} className="text-red-500 hover:text-red-600">
+              <Trash /> Xóa
+            </Button>
+          }
+        />
       </div>
     </section>
   );

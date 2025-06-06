@@ -162,8 +162,8 @@ export default function EditProfile({ user }: IProps) {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Ngày sinh</FormLabel>
-                    <FormControl className="">
-                      <Input className="selection:bg-green" type="date" {...field} />
+                    <FormControl>
+                      <Input className="selection:bg-green w-full" type="date" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

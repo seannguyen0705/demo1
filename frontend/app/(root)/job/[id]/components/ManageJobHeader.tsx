@@ -1,14 +1,21 @@
 import { IJob } from '@/api/job/interface';
 import getStringSalary from '@/utils/helpers/getStringSalary';
-import { ChartColumn, CircleDollarSign, Eye, EyeOff, Pencil, Trash } from 'lucide-react';
+import { CircleDollarSign, Eye, EyeOff, Pencil, Trash } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { JobStatus } from '@/utils/enums';
+import useDeleteJob from '@/app/(private)/edit-job/hooks/useDeleteJob';
+import ConfirmDelete from '@/components/ConfirmDelete';
+import { Staticstics } from '@/components/Staticstics';
+import { useRouter } from 'next/navigation';
 
 interface IProps {
   job: IJob;
 }
 
 export default function ManageJobHeader({ job }: IProps) {
+  const { mutate: deleteJob, isPending } = useDeleteJob();
+  const router = useRouter();
+
   return (
     <section className="p-4 sticky top-18 bg-white dark:bg-gray-900 z-10">
       <div className="">
@@ -20,10 +27,8 @@ export default function ManageJobHeader({ job }: IProps) {
         </div>
         <div className="flex gap-2">
           <div className="flex justify-end mt-2 items-center gap-2">
-            <Button variant={'outline'}>
-              <ChartColumn /> Thông kê
-            </Button>
-            <Button variant={'outline'}>
+            <Staticstics job={job} />
+            <Button variant={'outline'} onClick={() => router.push(`/edit-job/${job.id}`)}>
               <Pencil /> Sửa
             </Button>
             {job.status === JobStatus.PUBLISHED && (
@@ -36,9 +41,17 @@ export default function ManageJobHeader({ job }: IProps) {
                 <Eye /> Hiện
               </Button>
             )}
-            <Button variant={'outline'} className="text-red-500 hover:text-red-600">
-              <Trash /> Xóa
-            </Button>
+            <ConfirmDelete
+              title="Xóa tin tuyển dụng"
+              description="Bạn có chắc chắn muốn xóa tin tuyển dụng này không?"
+              action={() => deleteJob(job.id)}
+              disabled={isPending}
+              button={
+                <Button variant={'outline'} className="text-red-500 hover:text-red-600">
+                  <Trash /> Xóa
+                </Button>
+              }
+            />
           </div>
         </div>
       </div>

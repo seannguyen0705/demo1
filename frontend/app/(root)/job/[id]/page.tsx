@@ -4,7 +4,7 @@ import JobDetail from './components/JobDetail';
 import CompanyCard from './components/CompanyCard';
 import { getJobById } from '@/api/job/query';
 import { getCompanyImage } from '@/api/company-image/query';
-
+import { notFound } from 'next/navigation';
 interface IProps {
   params: Promise<{ id: string }>;
 }
@@ -12,6 +12,10 @@ interface IProps {
 export default async function JobDetailPage({ params }: IProps) {
   const { id } = await params;
   const job = await getJobById(id);
+  if (!job.data) {
+    notFound();
+  }
+
   const companyImages = await getCompanyImage(job.data.company.id);
 
   const cookieStore = await cookies();

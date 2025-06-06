@@ -1,4 +1,9 @@
+import { Address } from '@/api/address/entities/address.entity';
+import { Skill } from '@/api/skill/entities/skill.entity';
+import { JobLevel, JobType } from '@/common/enums';
+import { IsOnlyDate, IsSalaryValid } from '@/decorators/validate.decorator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { Transform, Type } from 'class-transformer';
 import {
   ArrayMaxSize,
   ArrayMinSize,
@@ -10,26 +15,43 @@ import {
   IsString,
   IsUUID,
 } from 'class-validator';
-import { JobType, JobStatus, SalaryType, JobLevel } from '@/common/enums';
-import { Transform, Type } from 'class-transformer';
-import { IsOnlyDate, IsSalaryValid } from '@/decorators';
-import { Address } from '@/api/address/entities/address.entity';
-import { Skill } from '@/api/skill/entities/skill.entity';
 
-export class CreatePublishedJobDto {
-  @IsString()
+export class UpdatePublishedJobDto {
   @IsNotEmpty()
+  @IsString()
   @ApiProperty({
     example: 'Nhân viên bán hàng',
   })
   title: string;
 
-  @IsEnum(SalaryType)
+  @IsArray()
   @IsNotEmpty()
+  @ArrayMinSize(1)
+  @IsUUID('4', { each: true })
   @ApiProperty({
-    example: SalaryType.NEGOTIATION,
+    example: ['123e4567-e89b-12d3-a456-426614174000', '123e4567-e89b-12d3-a456-426614174000'],
   })
-  salaryType: SalaryType;
+  addressIds: string[];
+
+  @IsArray()
+  @IsNotEmpty()
+  @IsUUID('4', { each: true })
+  @ArrayMinSize(1)
+  @ArrayMaxSize(10)
+  @ApiProperty({
+    example: [
+      '123e4567-e89b-12d3-a456-426614174000',
+      '123e4567-e89b-12d3-a456-426614174000',
+      '123e4567-e89b-12d3-a456-426614174000',
+    ],
+  })
+  @Transform(({ value }) => {
+    if (typeof value === 'string') {
+      return [value];
+    }
+    return value;
+  })
+  skillIds: string[];
 
   @IsNumber()
   @IsOptional()
@@ -46,15 +68,6 @@ export class CreatePublishedJobDto {
   })
   @Type(() => Number)
   salaryMax: number;
-
-  @IsArray()
-  @IsNotEmpty()
-  @ArrayMinSize(1)
-  @IsUUID('4', { each: true })
-  @ApiProperty({
-    example: ['123e4567-e89b-12d3-a456-426614174000', '123e4567-e89b-12d3-a456-426614174000'],
-  })
-  addressIds: string[];
 
   @IsEnum(JobType)
   @IsNotEmpty()
@@ -105,26 +118,6 @@ export class CreatePublishedJobDto {
   })
   benefit: string;
 
-  @IsArray()
-  @IsNotEmpty()
-  @IsUUID('4', { each: true })
-  @ArrayMinSize(1)
-  @ArrayMaxSize(10)
-  @ApiProperty({
-    example: [
-      '123e4567-e89b-12d3-a456-426614174000',
-      '123e4567-e89b-12d3-a456-426614174000',
-      '123e4567-e89b-12d3-a456-426614174000',
-    ],
-  })
-  @Transform(({ value }) => {
-    if (typeof value === 'string') {
-      return [value];
-    }
-    return value;
-  })
-  skillIds: string[];
-
   @IsNotEmpty()
   @IsOnlyDate()
   @ApiProperty({
@@ -141,8 +134,6 @@ export class CreatePublishedJobDto {
   })
   salaryValidator: boolean;
 
-  status: JobStatus;
-  companyId: string;
   addresses: Address[];
   skills: Skill[];
 }

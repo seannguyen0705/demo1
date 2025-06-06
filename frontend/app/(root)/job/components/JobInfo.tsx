@@ -7,19 +7,20 @@ import Link from 'next/link';
 
 interface IProps {
   job: IJob;
+  isCandidate: boolean;
 }
 
-export default function JobInfo({ job }: IProps) {
-  const { jobAddresses, jobSkills } = job;
+export default function JobInfo({ job, isCandidate }: IProps) {
+  const { addresses, skills } = job;
   return (
     <>
       <section className="border-b-2 mb-4 pb-4 border-dashed">
         <div className="">
-          {jobAddresses.map((jobAddress) => (
-            <div key={jobAddress.id} className="mb-2 flex gap-2 items-center">
+          {addresses.map((address) => (
+            <div key={address.id} className="mb-2 flex gap-2 items-center">
               <MapPin size={20} />
               <span className="text-sm">
-                {jobAddress.address.detail} {jobAddress.address.province.name}
+                {address.detail} {address.province.name}
               </span>
             </div>
           ))}
@@ -41,12 +42,16 @@ export default function JobInfo({ job }: IProps) {
         <div className="flex gap-2 items-center px-1">
           <span className="font-semibold text-left w-30">Kĩ năng:</span>
           <ul className="flex gap-2 flex-wrap">
-            {jobSkills.map((jobSkill) => (
+            {skills.map((skill) => (
               <li
-                key={jobSkill.id}
+                key={skill.id}
                 className="dark:bg-gray-800 bg-[#309689] text-center text-sm sm:text-base rounded-2xl border text-white border-gray-200 px-2 py-1"
               >
-                <Link href={`?keyword=${jobSkill.skill.name}`}>{jobSkill.skill.name}</Link>
+                {isCandidate ? (
+                  <Link href={`job/?keyword=${skill.name}`}>{skill.name}</Link>
+                ) : (
+                  <span>{skill.name}</span>
+                )}
               </li>
             ))}
           </ul>

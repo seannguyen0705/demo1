@@ -13,7 +13,7 @@ interface IProps {
 }
 
 export default function JobSaveItem({ job }: IProps) {
-  const provinceNames = job.jobAddresses.map((jobAddress) => jobAddress.address.province.name);
+  const provinceNames = job.addresses.map((address) => address.province.name);
   const setProvinceNames = new Set(provinceNames);
   return (
     <article className="lg:p-4 py-2 relative flex flex-col sm:flex-row justify-between border-b border-dashed hover:bg-gray-100">

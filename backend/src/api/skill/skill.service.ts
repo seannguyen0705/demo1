@@ -6,7 +6,7 @@ import { CreateSkillDto } from './dto/create-skill.dto';
 import { UpdateSkillDto } from './dto/update-skill.dto';
 import { QuerySkillDto } from './dto/query-skill.dto';
 import { CandidateSkillService } from '../candidate-skill/candidate-skill.service';
-import { ILike } from 'typeorm';
+import { ILike, In } from 'typeorm';
 @Injectable()
 export class SkillService {
   constructor(
@@ -110,6 +110,12 @@ export class SkillService {
   public async findOneByName(name: string): Promise<Skill> {
     return this.skillRepository.findOne({
       where: { name: ILike(name) },
+    });
+  }
+
+  public async findByIds(ids: string[]): Promise<Skill[]> {
+    return this.skillRepository.find({
+      where: { id: In(ids) },
     });
   }
 }

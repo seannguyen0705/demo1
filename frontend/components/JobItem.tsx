@@ -17,7 +17,7 @@ interface IProps {
 
 export default function JobItem({ job, navtoDetail, showStatus }: IProps) {
   const searchParams = useSearchParams();
-  const provinceNames = job.jobAddresses.map((jobAddress) => jobAddress.address.province.name);
+  const provinceNames = job.addresses.map((address) => address.province.name);
   const setProvinceNames = new Set(provinceNames);
   const getQueryStringSelectJob = () => {
     const params = new URLSearchParams(searchParams);
@@ -96,12 +96,12 @@ export default function JobItem({ job, navtoDetail, showStatus }: IProps) {
         </Link>
 
         <ul className="relative z-10 flex gap-2 w-auto max-w-full overflow-auto scrollbar-hide">
-          {job.jobSkills.map((jobSkill) => (
+          {job.skills.map((skill) => (
             <li
-              key={jobSkill.skill.id}
+              key={skill.id}
               className="dark:bg-gray-800 bg-[#309689] rounded-2xl border text-white border-gray-200 px-2 py-1 text-sm"
             >
-              <Link href={`/job?keyword=${jobSkill.skill.name}`}>{jobSkill.skill.name}</Link>
+              <Link href={`/job?keyword=${skill.name}`}>{skill.name}</Link>
             </li>
           ))}
         </ul>

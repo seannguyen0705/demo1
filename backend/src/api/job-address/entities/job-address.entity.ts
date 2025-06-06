@@ -1,14 +1,12 @@
-import { Column, Entity, JoinColumn, ManyToOne, Unique } from 'typeorm';
-import { Base } from '@/common/entities';
+import { CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryColumn, UpdateDateColumn } from 'typeorm';
 import { Job } from '@/api/job/entities/job.entity';
 import { Address } from '@/api/address/entities/address.entity';
 @Entity('job_addresses')
-@Unique(['jobId', 'addressId'])
-export class JobAddress extends Base {
-  @Column({ name: 'job_id' })
+export class JobAddress {
+  @PrimaryColumn({ name: 'job_id' })
   jobId: string;
 
-  @Column({ name: 'address_id' })
+  @PrimaryColumn({ name: 'address_id' })
   addressId: string;
 
   @ManyToOne(() => Job, { onDelete: 'CASCADE' })
@@ -18,4 +16,21 @@ export class JobAddress extends Base {
   @ManyToOne(() => Address, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'address_id' })
   address: Address;
+
+  @CreateDateColumn({
+    name: 'created_at',
+    type: 'timestamptz',
+    nullable: false,
+    default: () => 'CURRENT_TIMESTAMP(6)',
+  })
+  createdAt: Date;
+
+  @UpdateDateColumn({
+    name: 'updated_at',
+    type: 'timestamptz',
+    nullable: false,
+    default: () => 'CURRENT_TIMESTAMP(6)',
+    onUpdate: 'CURRENT_TIMESTAMP(6)',
+  })
+  updatedAt: Date;
 }

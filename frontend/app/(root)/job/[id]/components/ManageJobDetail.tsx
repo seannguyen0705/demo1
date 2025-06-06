@@ -22,7 +22,7 @@ export default function ManageJobDetail({ jobId, companyImages }: IProps) {
       <ManageJobHeader job={data.data} />
       <div className="p-4 space-y-4 ">
         <CompanyImage companyImages={companyImages} />
-        <JobInfo job={data.data} />
+        <JobInfo job={data.data} isCandidate={false} />
         <JobDescription job={data.data} />
         <JobRequirement job={data.data} />
         <JobBenefit job={data.data} />

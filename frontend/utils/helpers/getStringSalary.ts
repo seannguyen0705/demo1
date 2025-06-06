@@ -8,13 +8,13 @@ export default function getStringSalary(salaryType?: string, salaryMin?: number,
     return 'Thương lượng';
   }
   if (salaryType === SalaryType.RANGE) {
-    return `${salaryMin} - ${salaryMax} VND`;
+    return `${salaryMin?.toLocaleString()} - ${salaryMax?.toLocaleString()} VND`;
   }
   if (salaryType === SalaryType.ATLEAST) {
-    return `Ít nhất ${salaryMin} VND`;
+    return `Ít nhất ${salaryMin?.toLocaleString()} VND`;
   }
   if (salaryType === SalaryType.UPTO) {
-    return `Lên đến ${salaryMax} VND`;
+    return `Lên đến ${salaryMax?.toLocaleString()} VND`;
   }
   return '';
 }

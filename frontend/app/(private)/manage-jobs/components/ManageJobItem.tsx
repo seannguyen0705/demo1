@@ -3,21 +3,25 @@ import { IJob } from '@/api/job/interface';
 import getStringSalary from '@/utils/helpers/getStringSalary';
 import { formatDistanceToNow } from 'date-fns';
 import { vi } from 'date-fns/locale';
-import { ChevronsUp, CircleDollarSign, EyeOff, Pencil, Eye, MapPin, Trash, ChartColumn } from 'lucide-react';
+import { ChevronsUp, CircleDollarSign, EyeOff, Pencil, Eye, MapPin, Trash } from 'lucide-react';
 import Link from 'next/link';
 import { BsPersonWorkspace } from 'react-icons/bs';
 import { JobStatus } from '@/utils/enums';
 import { Button } from '@/components/ui/button';
 import { Staticstics } from '@/components/Staticstics';
 import { useRouter } from 'next/navigation';
+import useDeleteJob from '../../edit-job/hooks/useDeleteJob';
+import ConfirmDelete from '@/components/ConfirmDelete';
+import isExpired from '@/utils/helpers/isExpired';
 interface IProps {
   job: IJob;
 }
 
 export default function ManageJobItem({ job }: IProps) {
-  const provinceNames = job.jobAddresses.map((jobAddress) => jobAddress.address.province.name);
+  const provinceNames = job.addresses.map((address) => address.province.name);
   const setProvinceNames = new Set(provinceNames);
   const router = useRouter();
+  const { mutate: deleteJob, isPending } = useDeleteJob();
   return (
     <article className="border h-full flex flex-col justify-between rounded-lg p-3 w-full relative">
       {/* Status label */}
@@ -69,25 +73,27 @@ export default function ManageJobItem({ job }: IProps) {
           </div>
         </div>
         <div className="flex flex-col">
-          {Array.from(setProvinceNames).map((provinceName) => (
-            <Link href={`?provinceName=${provinceName}`} key={provinceName} className="">
-              <div className="inline-flex gap-1 relative z-10  items-center hover:text-green">
-                <MapPin className="text-gray-500" />
-                <span className="text-sm">{provinceName}</span>
-              </div>
-            </Link>
-          ))}
+          {Array.from(setProvinceNames)
+            .splice(0, 3)
+            .map((provinceName) => (
+              <Link href={`?provinceName=${provinceName}`} key={provinceName} className="">
+                <div className="inline-flex gap-1 relative z-10  items-center hover:text-green">
+                  <MapPin className="text-gray-500" />
+                  <span className="text-sm">{provinceName}</span>
+                </div>
+              </Link>
+            ))}
         </div>
       </div>
 
       <div className="pt-2 space-y-2">
         <ul className="relative z-10 flex gap-2 w-auto max-w-full overflow-auto scrollbar-hide">
-          {job.jobSkills.map((jobSkill) => (
+          {job.skills.map((skill) => (
             <li
-              key={jobSkill.skill.id}
+              key={skill.id}
               className="dark:bg-gray-800 bg-[#309689] rounded-2xl border text-white border-gray-200 px-2 py-1 text-sm"
             >
-              <span>{jobSkill.skill.name}</span>
+              <span className="w-auto text-nowrap">{skill.name}</span>
             </li>
           ))}
         </ul>
@@ -108,11 +114,25 @@ export default function ManageJobItem({ job }: IProps) {
             <Eye /> Hiện
           </Button>
         )}
-        <Button variant={'outline'} className="text-red-500 hover:text-red-600">
-          <Trash /> Xóa
-        </Button>
+        <ConfirmDelete
+          title="Xóa tin tuyển dụng"
+          description="Bạn có chắc chắn muốn xóa tin tuyển dụng này không?"
+          action={() => deleteJob(job.id)}
+          disabled={isPending}
+          button={
+            <Button variant={'outline'} className="text-red-500 hover:text-red-600">
+              <Trash /> Xóa
+            </Button>
+          }
+        />
       </div>
       <Link className="absolute inset-0" href={`/job/${job.id}`}></Link>
+
+      {isExpired(job.expiredAt) && (
+        <span className="absolute top-1/2 p-4 bg-gray-300 rounded-full right-1/2 translate-x-1/2 -translate-y-1/2 text-red-500 font-bold">
+          <span className="text-sm">Hết hạn</span>
+        </span>
+      )}
     </article>
   );
 }

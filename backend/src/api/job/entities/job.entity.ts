@@ -1,12 +1,13 @@
-import { Check, Column, Entity, JoinColumn, ManyToOne, OneToMany, Unique } from 'typeorm';
+import { Check, Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, Unique } from 'typeorm';
 import { Base as BaseEntity } from '@/common/entities';
 import { JobType, JobStatus, SalaryType, JobLevel } from '@/common/enums';
 import { Company } from '@/api/company/entities/company.entity';
-import { JobAddress } from '@/api/job-address/entities/job-address.entity';
-import { JobSkill } from '@/api/job-skill/entities/job-skill.entity';
 import { ApplyJob } from '@/api/apply-job/entities/apply-job.entity';
 import { SaveJob } from '@/api/save-job/entities/save-job.entity';
+import { Address } from '@/api/address/entities/address.entity';
+import { Skill } from '@/api/skill/entities/skill.entity';
 // allow save draft job, so many attribute is nullable
+
 @Entity('jobs')
 @Unique(['companyId', 'title'])
 @Check('salary_min <= salary_max')
@@ -78,15 +79,28 @@ export class Job extends BaseEntity {
   @Column({ name: 'company_id' })
   companyId: string;
 
+  @Column({ type: 'timestamptz', name: 'expired_at', nullable: true })
+  expiredAt: Date;
+
   @ManyToOne(() => Company)
   @JoinColumn({ name: 'company_id' })
   company: Company;
 
-  @OneToMany(() => JobAddress, (jobAddress) => jobAddress.job)
-  jobAddresses: JobAddress[];
+  @ManyToMany(() => Address)
+  @JoinTable({
+    name: 'job_addresses',
+    joinColumn: { name: 'job_id' },
+    inverseJoinColumn: { name: 'address_id' },
+  })
+  addresses: Address[];
 
-  @OneToMany(() => JobSkill, (jobSkill) => jobSkill.job)
-  jobSkills: JobSkill[];
+  @ManyToMany(() => Skill)
+  @JoinTable({
+    name: 'job_skills',
+    joinColumn: { name: 'job_id' },
+    inverseJoinColumn: { name: 'skill_id' },
+  })
+  skills: Skill[];
 
   @OneToMany(() => ApplyJob, (applyJob) => applyJob.job)
   applyJobs: ApplyJob[];

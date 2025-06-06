@@ -5,6 +5,8 @@ import { IsArray } from 'class-validator';
 import { IsOptional } from 'class-validator';
 import { ArrayMaxSize } from 'class-validator';
 import { Transform } from 'class-transformer';
+import { Skill } from '@/api/skill/entities/skill.entity';
+import { Address } from '@/api/address/entities/address.entity';
 
 export class CreateDraftJobDto extends PartialType(CreatePublishedJobDto) {
   @IsArray()
@@ -33,4 +35,7 @@ export class CreateDraftJobDto extends PartialType(CreatePublishedJobDto) {
     return value;
   })
   override skillIds: string[];
+
+  addresses: Address[];
+  skills: Skill[];
 }

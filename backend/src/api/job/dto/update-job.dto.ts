@@ -1,4 +1,6 @@
-import { JobLevel, JobType } from '@/common/enums';
+import { Address } from '@/api/address/entities/address.entity';
+import { Skill } from '@/api/skill/entities/skill.entity';
+import { JobLevel, JobStatus, JobType } from '@/common/enums';
 import { IsSalaryValid } from '@/decorators/validate.decorator';
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { Transform, Type } from 'class-transformer';
@@ -105,6 +107,14 @@ export class UpdateJobDto {
     example: 'Lợi ích',
   })
   benefit: string;
+
+  @IsOptional()
+  @IsEnum(JobStatus)
+  @ApiPropertyOptional({
+    example: JobStatus.PUBLISHED,
+  })
+  status?: JobStatus;
+
   @IsSalaryValid({
     message: `salaryMin and salaryMax must satisfy constraints based on salaryType
       - NEGOTIATION: both must be null
@@ -113,4 +123,7 @@ export class UpdateJobDto {
       - ATLEAST: only salaryMin is required`,
   })
   salaryValidator: boolean;
+
+  addresses: Address[];
+  skills: Skill[];
 }
