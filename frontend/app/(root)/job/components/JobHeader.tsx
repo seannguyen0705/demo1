@@ -1,7 +1,7 @@
 import Image from 'next/image';
 
 import { IJob } from '@/api/job/interface';
-import { ChartColumn, CircleDollarSign, EyeOff, Trash, Pencil, UsersRound, Eye, Heart } from 'lucide-react';
+import { CircleDollarSign, Heart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import getStringSalary from '@/utils/helpers/getStringSalary';
 import Link from 'next/link';
@@ -37,7 +37,11 @@ export default function JobHeader({ job }: IProps) {
         </div>
       </div>
       <div className="flex justify-center items-center gap-2">
-        <Button className="flex-1 bg-green text-white hover:bg-green/80">Ứng tuyển</Button>
+        <div className="flex-1">
+          <Link href={'/sign-in'} className="w-full">
+            <Button className="w-full bg-green text-white hover:bg-green/80 hover:text-white">Ứng tuyển</Button>
+          </Link>
+        </div>
         <Button variant={'outline'}>
           <Heart />
         </Button>

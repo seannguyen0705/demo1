@@ -46,7 +46,7 @@ export const login = async (data: LoginDto) => {
   }
 
   const cookieStore = await cookies();
-  const { accessTokenCookie, refreshTokenCookie, role } = response.data;
+  const { accessTokenCookie, refreshTokenCookie } = response.data;
   cookieStore.set('Authentication', accessTokenCookie.token, {
     httpOnly: true,
     path: '/',
@@ -57,12 +57,6 @@ export const login = async (data: LoginDto) => {
     path: '/',
     maxAge: refreshTokenCookie.ttl,
   });
-  if (role === UserRole.EMPLOYER) {
-    redirect('/profile-personal');
-  } else {
-    redirect('/');
-  }
-
   return response;
 };
 

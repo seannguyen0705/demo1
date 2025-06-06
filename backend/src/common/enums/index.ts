@@ -83,6 +83,14 @@ enum JobLevel {
   MANAGER = 'Manager',
 }
 
+enum ApplyJobStatus {
+  NEW = 'Mới',
+  PROCESSING = 'Đang xử lý',
+  INTERVIEWING = 'Phỏng vấn',
+  HIRED = 'Đã nhận',
+  REJECTED = 'Từ chối',
+}
+
 export {
   Gender,
   UserRole,
@@ -96,4 +104,5 @@ export {
   Order,
   SalaryType,
   JobLevel,
+  ApplyJobStatus,
 };

@@ -9,7 +9,6 @@ import { CloudinaryService } from '../cloudinary/cloudinary.service';
 import { FileService } from '../file/file.service';
 import { CreateFileDto } from '../file/dto/create-file.dto';
 import { File } from '../file/entities/file.entity';
-import { UpdateFileDto } from '../file/dto/update-file.dto';
 
 @Injectable()
 export class CvService {
@@ -39,6 +38,16 @@ export class CvService {
         key: uploadedFile.key,
         format: file.mimetype,
       };
+      const countCv = await queryRunner.manager.count(Cv, { where: { candidateId } });
+      if (countCv >= this.maxNumCv) {
+        const oldestCv = await queryRunner.manager.findOne(Cv, {
+          where: { candidateId },
+          order: { createdAt: 'ASC' },
+        });
+        await queryRunner.manager.delete(Cv, { id: oldestCv.id });
+        // await queryRunner.manager.delete(File, { id: oldestCv.file.id });
+        // await this.cloudinaryService.deleteFile(oldestCv.file.key);
+      }
       const newFile = await queryRunner.manager.save(File, data);
       const cv = await queryRunner.manager.save(Cv, {
         candidateId,
@@ -70,17 +79,18 @@ export class CvService {
       if (!cv) {
         throw new NotFoundException('CV not found');
       }
-      await this.cloudinaryService.deleteFile(cv.file.key);
+
       const { url, key } = await this.cloudinaryService.uploadFile(file, this.folder);
-      const data: UpdateFileDto = {
+      const data: CreateFileDto = {
         name: file.originalname,
         url,
         key,
         format: file.mimetype,
       };
-      const updateResult = await queryRunner.manager.update(File, cv.file.id, data);
+      const newFile = await queryRunner.manager.save(File, data);
+      await queryRunner.manager.update(Cv, { id }, { fileId: newFile.id });
       await queryRunner.commitTransaction();
-      return updateResult;
+      return newFile;
     } catch (error) {
       await queryRunner.rollbackTransaction();
       throw error;
@@ -90,31 +100,45 @@ export class CvService {
   }
 
   async deleteCv(id: string, candidateId: string) {
-    const queryRunner = this.dataSource.createQueryRunner();
-    await queryRunner.connect();
-    await queryRunner.startTransaction();
+    // const queryRunner = this.dataSource.createQueryRunner();
+    // await queryRunner.connect();
+    // await queryRunner.startTransaction();
 
-    try {
-      const cv = await queryRunner.manager.findOne(Cv, {
-        where: { id, candidateId },
-      });
-      if (!cv) {
-        throw new NotFoundException('CV not found');
-      }
+    // try {
+    //   const cv = await queryRunner.manager.findOne(Cv, {
+    //     where: { id, candidateId },
+    //   });
+    //   if (!cv) {
+    //     throw new NotFoundException('CV not found');
+    //   }
 
-      await queryRunner.manager.delete(Cv, { id, candidateId });
-      await this.cloudinaryService.deleteFile(cv.file.key);
-      await queryRunner.commitTransaction();
-      return { message: 'CV deleted successfully' };
-    } catch (error) {
-      await queryRunner.rollbackTransaction();
-      throw error;
-    } finally {
-      await queryRunner.release();
+    //   await queryRunner.manager.delete(Cv, { id, candidateId });
+    //   await queryRunner.manager.delete(File, { id: cv.file.id });
+    //   await this.cloudinaryService.deleteFile(cv.file.key);
+    //   await queryRunner.commitTransaction();
+    //   return { message: 'CV deleted successfully' };
+    // } catch (error) {
+    //   await queryRunner.rollbackTransaction();
+    //   throw error;
+    // } finally {
+    //   await queryRunner.release();
+    // }
+    const cv = await this.cvRepository.findOne({ where: { id, candidateId } });
+    if (!cv) {
+      throw new NotFoundException('CV not found');
     }
+    return this.cvRepository.delete(id);
   }
 
   async getMyCv(candidateId: string) {
-    return this.cvRepository.find({ where: { candidateId } });
+    return this.cvRepository.find({ where: { candidateId }, order: { createdAt: 'ASC' } });
+  }
+
+  async getCvByIdAndCandidateId(id: string, candidateId: string) {
+    return this.cvRepository.findOne({ where: { id, candidateId } });
+  }
+
+  async getCvByCandidateIdAndFileId(candidateId: string, fileId: string) {
+    return this.cvRepository.findOne({ where: { candidateId, fileId } });
   }
 }

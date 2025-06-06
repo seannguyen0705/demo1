@@ -4,6 +4,8 @@ import { JobType, JobStatus, SalaryType, JobLevel } from '@/common/enums';
 import { Company } from '@/api/company/entities/company.entity';
 import { JobAddress } from '@/api/job-address/entities/job-address.entity';
 import { JobSkill } from '@/api/job-skill/entities/job-skill.entity';
+import { ApplyJob } from '@/api/apply-job/entities/apply-job.entity';
+import { SaveJob } from '@/api/save-job/entities/save-job.entity';
 // allow save draft job, so many attribute is nullable
 @Entity('jobs')
 @Unique(['companyId', 'title'])
@@ -82,4 +84,10 @@ export class Job extends BaseEntity {
 
   @OneToMany(() => JobSkill, (jobSkill) => jobSkill.job)
   jobSkills: JobSkill[];
+
+  @OneToMany(() => ApplyJob, (applyJob) => applyJob.job)
+  applyJobs: ApplyJob[];
+
+  @OneToMany(() => SaveJob, (saveJob) => saveJob.job)
+  saveJobs: SaveJob[];
 }

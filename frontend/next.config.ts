@@ -16,6 +16,12 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  rewrites: async () => [
+    {
+      source: '/my-jobs',
+      destination: '/my-jobs/applied',
+    },
+  ],
 };
 
 export default nextConfig;

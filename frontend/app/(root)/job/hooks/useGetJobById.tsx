@@ -13,5 +13,5 @@ export default function useGetJobById(jobId: string) {
     queryFn: () => getJobById(jobId),
     enabled: !!jobId,
   });
-  return { data, isLoading };
+  return { job: data?.data, isLoading };
 }

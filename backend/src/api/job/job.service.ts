@@ -14,6 +14,7 @@ import { JobAddress } from '../job-address/entities/job-address.entity';
 import { QueryJobDto } from './dto/query-job.dto';
 import { SkillService } from '../skill/skill.service';
 import { EmployerQueryJobDto } from './dto/employer-query-job.dto';
+import { QueryJobApplyDto } from './dto/query-job-apply.dto';
 @Injectable()
 export class JobService {
   constructor(
@@ -204,11 +205,10 @@ export class JobService {
           queryBuilder.orderBy('job.createdAt', 'ASC');
           break;
         case SortJob.SALARY_ASC:
-          queryBuilder.orderBy('COALESCE((job.salaryMin + job.salaryMax)/2, job.salaryMin, job.salaryMax, 0)', 'ASC');
+          queryBuilder.orderBy('job.salaryMin', 'ASC', 'NULLS LAST');
           break;
         case SortJob.SALARY_DESC:
-          queryBuilder.orderBy('COALESCE((job.salaryMin + job.salaryMax)/2, job.salaryMin, job.salaryMax, 0)', 'DESC');
-          break;
+          queryBuilder.orderBy('job.salaryMin', 'DESC', 'NULLS LAST');
       }
     }
   }
@@ -255,6 +255,9 @@ export class JobService {
       this.searchJobByJobLevel(queryBuilder, jobLevel),
       this.orderJob(queryBuilder, sort),
     ]);
+
+    queryBuilder.skip(limit * (page - 1)).take(limit);
+
     const [jobs, total] = await queryBuilder.getManyAndCount();
     const numPage = Math.ceil(total / limit);
     if (page + 1 > numPage) {
@@ -333,6 +336,7 @@ export class JobService {
         'job.id',
         'job.title',
         'company.name',
+        'company.id',
         'logo.url',
         'job.description',
         'jobSkills.id',
@@ -360,5 +364,134 @@ export class JobService {
 
   public async countAllJobs() {
     return this.jobRepository.count({ where: { status: JobStatus.PUBLISHED } });
+  }
+
+  public async candidateGetJobById(id: string, candidateId: string) {
+    const queryBuilder = this.jobRepository
+      .createQueryBuilder('job')
+      .innerJoin('job.company', 'company')
+      .leftJoin('company.logo', 'logo')
+      .leftJoin('job.jobAddresses', 'jobAddresses')
+      .leftJoin('jobAddresses.address', 'address')
+      .leftJoin('address.province', 'province')
+      .leftJoin('job.jobSkills', 'jobSkills')
+      .leftJoin('jobSkills.skill', 'skill')
+      .leftJoin('job.applyJobs', 'applyJobs', 'applyJobs.candidateId =:candidateId', { candidateId })
+      .leftJoin('job.saveJobs', 'saveJobs', 'saveJobs.candidateId =:candidateId', { candidateId })
+      .select([
+        'job.id',
+        'job.title',
+        'company.name',
+        'company.id',
+        'logo.url',
+        'job.description',
+        'jobSkills.id',
+        'skill.name',
+        'job.requirement',
+        'job.benefit',
+        'jobAddresses.id',
+        'address.id',
+        'province.name',
+        'job.jobType',
+        'job.createdAt',
+        'address.detail',
+        'job.salaryType',
+        'job.salaryMin',
+        'job.jobExpertise',
+        'job.jobDomain',
+        'job.salaryMax',
+        'job.jobLevel',
+        'job.status',
+        'applyJobs.id',
+        'applyJobs.createdAt',
+        'saveJobs.id',
+      ])
+      .andWhere('job.id =:id', { id })
+      .andWhere('job.status =:status', { status: JobStatus.PUBLISHED });
+
+    return queryBuilder.getOne();
+  }
+
+  public async candidateGetJobApply(candidateId: string, query: QueryJobApplyDto) {
+    const { page, limit, sort } = query;
+    const queryBuilder = this.jobRepository
+      .createQueryBuilder('job')
+      .innerJoin('job.company', 'company')
+      .leftJoin('company.logo', 'logo')
+      .leftJoin('job.jobAddresses', 'jobAddresses')
+      .leftJoin('jobAddresses.address', 'address')
+      .leftJoin('address.province', 'province')
+      .innerJoin('job.applyJobs', 'applyJobs', 'applyJobs.candidateId =:candidateId', { candidateId })
+      .skip(limit * (page - 1))
+      .take(limit)
+      .select([
+        'job.id',
+        'job.title',
+        'company.name',
+        'company.id',
+        'logo.url',
+        'jobAddresses.id',
+        'address.id',
+        'province.name',
+        'job.jobType',
+        'job.createdAt',
+        'address.detail',
+        'job.salaryType',
+        'job.salaryMin',
+        'job.salaryMax',
+        'job.jobLevel',
+        'applyJobs.id',
+        'applyJobs.createdAt',
+      ])
+      .andWhere('job.status =:status', { status: JobStatus.PUBLISHED });
+    await this.orderJob(queryBuilder, sort);
+
+    const [jobs, total] = await queryBuilder.getManyAndCount();
+    const numPage = Math.ceil(total / limit);
+    if (page + 1 > numPage) {
+      return { jobs, currentPage: page, nextPage: null, total };
+    }
+    return { jobs, currentPage: page, nextPage: page + 1, total };
+  }
+
+  public async candidateGetJobSaved(candidateId: string, query: QueryJobApplyDto) {
+    const { page, limit, sort } = query;
+    const queryBuilder = this.jobRepository
+      .createQueryBuilder('job')
+      .innerJoin('job.company', 'company')
+      .leftJoin('company.logo', 'logo')
+      .leftJoin('job.jobAddresses', 'jobAddresses')
+      .leftJoin('jobAddresses.address', 'address')
+      .leftJoin('address.province', 'province')
+      .innerJoin('job.saveJobs', 'saveJobs', 'saveJobs.candidateId =:candidateId', { candidateId })
+      .skip(limit * (page - 1))
+      .take(limit)
+      .select([
+        'job.id',
+        'job.title',
+        'company.name',
+        'company.id',
+        'logo.url',
+        'jobAddresses.id',
+        'address.id',
+        'province.name',
+        'job.jobType',
+        'job.createdAt',
+        'address.detail',
+        'job.salaryType',
+        'job.salaryMin',
+        'job.salaryMax',
+        'job.jobLevel',
+        'saveJobs.id',
+      ])
+      .andWhere('job.status =:status', { status: JobStatus.PUBLISHED });
+    await this.orderJob(queryBuilder, sort);
+
+    const [jobs, total] = await queryBuilder.getManyAndCount();
+    const numPage = Math.ceil(total / limit);
+    if (page + 1 > numPage) {
+      return { jobs, currentPage: page, nextPage: null, total };
+    }
+    return { jobs, currentPage: page, nextPage: page + 1, total };
   }
 }

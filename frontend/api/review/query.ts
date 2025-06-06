@@ -23,5 +23,5 @@ export const getStatisticsReviewCompany = async (companyId: string) => {
       tags: [`company/${companyId}/reviews/statistics`],
     },
   });
-  return response;
+  return response.data;
 };

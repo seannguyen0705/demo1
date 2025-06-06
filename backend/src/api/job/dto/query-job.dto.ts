@@ -1,15 +1,18 @@
 import { QueryPaginationDto } from '@/common/dto/query-pagination.dto';
 import { JobLevel, JobType, SortJob } from '@/common/enums';
+import { ApiPropertyOptional } from '@nestjs/swagger';
 import { Transform, Type } from 'class-transformer';
 import { IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class QueryJobDto extends QueryPaginationDto {
   @IsOptional()
   @IsString()
+  @ApiPropertyOptional()
   keyword?: string; // title, description, requirement, benefit, skill
 
   @IsOptional()
   @IsString()
+  @ApiPropertyOptional()
   provinceName?: string;
 
   @IsEnum(JobType)
@@ -20,20 +23,24 @@ export class QueryJobDto extends QueryPaginationDto {
     }
     return value;
   })
+  @ApiPropertyOptional()
   jobType?: JobType;
 
   @IsOptional()
   @IsNumber()
   @Type(() => Number)
+  @ApiPropertyOptional()
   minSalary?: number;
 
   @IsOptional()
   @IsNumber()
   @Type(() => Number)
+  @ApiPropertyOptional()
   maxSalary?: number;
 
   @IsEnum(SortJob)
   @IsOptional()
+  @ApiPropertyOptional({ example: SortJob.NEWEST, enum: SortJob })
   sort?: SortJob = SortJob.NEWEST;
 
   @IsOptional()
@@ -44,6 +51,7 @@ export class QueryJobDto extends QueryPaginationDto {
     }
     return value;
   })
+  @ApiPropertyOptional()
   jobLevel?: JobLevel;
 }
 

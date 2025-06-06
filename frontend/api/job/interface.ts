@@ -1,8 +1,11 @@
-import { JobType, JobStatus, SalaryType, JobLevel, SortJob } from '@/utils/enums';
+import { JobType, JobStatus, SalaryType, JobLevel } from '@/utils/enums';
 import { ICompany } from '@/api/company/interface';
 import { IJobAddress } from '@/api/job-address/interface';
 import { IJobSkill } from '@/api/job-skill/interface';
 import { IQueryPagination } from '../interface';
+import { IApplyJob } from '../apply-job/interface';
+import { ISaveJob } from '../save-job/interfacet';
+
 interface IJob {
   id: string;
   title: string;
@@ -22,6 +25,8 @@ interface IJob {
   companyId: string;
   company: ICompany;
   createdAt: Date;
+  applyJobs: IApplyJob[];
+  saveJobs: ISaveJob[];
 }
 
 interface ICreatePublishedJob {

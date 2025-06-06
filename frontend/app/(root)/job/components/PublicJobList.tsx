@@ -35,7 +35,12 @@ export default async function PublicJobList({ searchParams }: IProps) {
                 key={job.id}
                 className={`rounded-lg ${jobId === job.id ? 'bg-light-green dark:bg-gray-900 dark:border-gray-800 border-green border' : ''}`}
               >
-                <JobItem job={job} navtoDetail={false} showStatus={false} />
+                <div className="hidden lg:block">
+                  <JobItem job={job} navtoDetail={false} showStatus={false} />
+                </div>
+                <div className="lg:hidden">
+                  <JobItem job={job} navtoDetail={true} showStatus={false} />
+                </div>
               </li>
             ))}
             <div className="my-3">

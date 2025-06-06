@@ -8,7 +8,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { BsPersonWorkspace } from 'react-icons/bs';
 import { JobStatus } from '@/utils/enums';
-import useQueryParams from '@/app/hooks/useQueryParams';
+import { useSearchParams } from 'next/navigation';
 interface IProps {
   job: IJob;
   navtoDetail: boolean;
@@ -16,10 +16,15 @@ interface IProps {
 }
 
 export default function JobItem({ job, navtoDetail, showStatus }: IProps) {
-  const { createQueryString } = useQueryParams();
+  const searchParams = useSearchParams();
   const provinceNames = job.jobAddresses.map((jobAddress) => jobAddress.address.province.name);
   const setProvinceNames = new Set(provinceNames);
-  const href = navtoDetail ? `/job/${job.id}` : { pathname: '/job', query: createQueryString('job_selected', job.id) };
+  const getQueryStringSelectJob = () => {
+    const params = new URLSearchParams(searchParams);
+    params.set('job_selected', job.id);
+    return params.toString();
+  };
+  const href = navtoDetail ? `/job/${job.id}` : { pathname: '/job', query: getQueryStringSelectJob() };
   return (
     <article className="border flex flex-col rounded-lg p-3 w-full relative">
       {/* Status label */}

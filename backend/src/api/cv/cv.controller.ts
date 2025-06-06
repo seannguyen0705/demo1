@@ -6,7 +6,6 @@ import { DataSource } from 'typeorm';
 import cvRoutes from './cv.routes';
 import { Param, Req, UploadedFile } from '@nestjs/common';
 import { RequestWithUser } from '@/common/interfaces';
-import { CloudinaryService } from '../cloudinary/cloudinary.service';
 import { DocValidatorPipe } from '@/pipes';
 import { IJwtStrategy } from '../auth/strategies';
 @InjectController({ name: CvRoutes.index, isCore: true })
@@ -15,7 +14,6 @@ export class CvController {
   constructor(
     private readonly cvService: CvService,
     @InjectDataSource() private readonly dataSource: DataSource,
-    private readonly cloudinaryService: CloudinaryService,
   ) {
     this.folder = 'cv';
   }

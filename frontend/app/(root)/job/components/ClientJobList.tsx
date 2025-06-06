@@ -4,15 +4,16 @@ import { useSearchParams } from 'next/navigation';
 import NotFoundJob from './NotFoundJob';
 import JobItem from '@/components/JobItem';
 import Pagination from '@/components/Pagination';
-import useGetJobById from '../hooks/useGetJobById';
 import JobDetail from './JobDetail';
+import useCandidateGetJobById from '../hooks/useCandidateGetJobById';
+import ClientJobDetail from './ClientJobDetail';
 
 export default function ClientJobList() {
   const searchParams = useSearchParams();
   const { handleClear } = useQueryJob();
   const { data } = useGetJobs(handleClear('job_selected'));
   const jobId = searchParams.get('job_selected') || data?.data.jobs[0]?.id;
-  const { data: job } = useGetJobById(jobId as string);
+  const { data: job } = useCandidateGetJobById(jobId as string);
 
   if (!data) {
     return;
@@ -32,7 +33,12 @@ export default function ClientJobList() {
                 key={job.id}
                 className={`rounded-lg ${jobId === job.id ? 'bg-light-green dark:bg-gray-900 dark:border-gray-800 border-green border' : ''}`}
               >
-                <JobItem job={job} navtoDetail={false} showStatus={false} />
+                <div className="hidden lg:block">
+                  <JobItem job={job} navtoDetail={false} showStatus={false} />
+                </div>
+                <div className="lg:hidden">
+                  <JobItem job={job} navtoDetail={true} showStatus={false} />
+                </div>
               </li>
             ))}
             <div className="my-3">
@@ -41,7 +47,7 @@ export default function ClientJobList() {
           </ul>
         </div>
       )}
-      {jobId && job && <JobDetail job={job.data} />}
+      {jobId && job && <ClientJobDetail job={job.data} />}
     </div>
   );
 }

@@ -44,4 +44,26 @@ export default {
     code: HttpStatus.OK,
     jwtSecure: false,
   },
+  candidateGetJobById: <IRouteParams>{
+    path: 'candidate/jobs/:id',
+    method: RequestMethod.GET,
+    code: HttpStatus.OK,
+    jwtSecure: true,
+    roles: [UserRole.CANDIDATE],
+  },
+  candidateGetJobApply: <IRouteParams>{
+    path: 'candidate/job/applications',
+    method: RequestMethod.GET,
+    code: HttpStatus.OK,
+    jwtSecure: true,
+    roles: [UserRole.CANDIDATE],
+  },
+
+  candidateGetJobSaved: <IRouteParams>{
+    path: 'candidate/job/saved',
+    method: RequestMethod.GET,
+    code: HttpStatus.OK,
+    jwtSecure: true,
+    roles: [UserRole.CANDIDATE],
+  },
 };

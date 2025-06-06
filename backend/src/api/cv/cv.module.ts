@@ -10,5 +10,6 @@ import { FileModule } from '../file/file.module';
   imports: [TypeOrmModule.forFeature([Cv]), CloudinaryModule, FileModule],
   controllers: [CvController],
   providers: [CvService],
+  exports: [CvService],
 })
 export class CvModule {}
