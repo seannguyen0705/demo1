@@ -83,6 +83,10 @@ enum JobLevel {
   MANAGER = 'Manager',
 }
 
+enum OrderByApplyJob {
+  CREATED_AT = 'createdAt',
+}
+
 export {
   Gender,
   UserRole,

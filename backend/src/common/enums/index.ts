@@ -91,6 +91,10 @@ enum ApplyJobStatus {
   REJECTED = 'Từ chối',
 }
 
+enum OrderByApplyJob {
+  CREATED_AT = 'createdAt',
+}
+
 export {
   Gender,
   UserRole,
@@ -105,4 +109,5 @@ export {
   SalaryType,
   JobLevel,
   ApplyJobStatus,
+  OrderByApplyJob,
 };

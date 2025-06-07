@@ -12,4 +12,10 @@ export default {
     jwtSecure: true,
     roles: [UserRole.CANDIDATE],
   },
+  findAll: <IRouteParams>{
+    path: '/apply-jobs',
+    method: RequestMethod.GET,
+    jwtSecure: true,
+    roles: [UserRole.EMPLOYER],
+  },
 };

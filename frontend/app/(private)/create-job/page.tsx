@@ -239,7 +239,7 @@ export default function CreateJob() {
           <Rocket />
           <h3 className="text-2xl font-bold">Đăng tin tuyển dụng</h3>
         </div>
-        <p className="text-muted-foreground">Tạo tin tuyển dụng chi tiết và chuyên nghiệp</p>
+        <p className="text-muted-foreground dark:text-gray-200">Tạo tin tuyển dụng chi tiết và chuyên nghiệp</p>
       </div>
       <Form {...form}>
         <form className="max-w-4xl mx-auto space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
