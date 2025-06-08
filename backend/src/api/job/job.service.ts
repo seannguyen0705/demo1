@@ -345,6 +345,7 @@ export class JobService {
       .select([
         'job.id',
         'job.title',
+        'job.expiredAt',
         'company.name',
         'company.id',
         'logo.url',
@@ -370,7 +371,7 @@ export class JobService {
         'saveJobs.id',
       ])
       .andWhere('job.id =:id', { id })
-      .andWhere('job.status =:status', { status: JobStatus.PUBLISHED });
+      .andWhere('job.status !=:status', { status: JobStatus.DRAFT });
 
     await this.increaseViewCount(id);
 
@@ -403,10 +404,12 @@ export class JobService {
         'job.salaryMin',
         'job.salaryMax',
         'job.jobLevel',
+        'job.expiredAt',
+        'job.status',
         'applyJobs.id',
         'applyJobs.createdAt',
       ])
-      .andWhere('job.status =:status', { status: JobStatus.PUBLISHED });
+      .andWhere('job.status !=:status', { status: JobStatus.DRAFT });
     await this.orderJob(queryBuilder, sort);
 
     const [jobs, total] = await queryBuilder.getManyAndCount();
@@ -439,13 +442,15 @@ export class JobService {
         'province.name',
         'job.jobType',
         'job.createdAt',
+        'job.expiredAt',
+        'job.status',
         'job.salaryType',
         'job.salaryMin',
         'job.salaryMax',
         'job.jobLevel',
         'saveJobs.id',
       ])
-      .andWhere('job.status =:status', { status: JobStatus.PUBLISHED });
+      .andWhere('job.status !=:status', { status: JobStatus.DRAFT });
     await this.orderJob(queryBuilder, sort);
 
     const [jobs, total] = await queryBuilder.getManyAndCount();

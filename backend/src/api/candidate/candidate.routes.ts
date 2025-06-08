@@ -57,7 +57,7 @@ export default {
   getById: <IRouteParams>{
     path: '/:id',
     method: RequestMethod.GET,
-    roles: [UserRole.ADMIN],
+    roles: [UserRole.ADMIN, UserRole.EMPLOYER],
     swaggerInfo: {
       responses: [{ status: HttpStatus.OK, type: ResponseCandidateDetailDto }],
     },

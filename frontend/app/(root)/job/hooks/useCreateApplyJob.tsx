@@ -19,6 +19,7 @@ export default function useCreateApplyJob({ jobId }: IProps) {
     onSuccess: () => {
       toast.success('Ứng tuyển thành công');
       queryClient.invalidateQueries({ queryKey: ['job', jobId] });
+      queryClient.invalidateQueries({ queryKey: ['candidate-job', jobId] });
       queryClient.invalidateQueries({ queryKey: ['candidateGetJobApply'] });
       queryClient.invalidateQueries({ queryKey: ['candidateGetJobSaved'] });
     },

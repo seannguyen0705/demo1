@@ -87,6 +87,22 @@ enum OrderByApplyJob {
   CREATED_AT = 'createdAt',
 }
 
+enum ApplyJobStatus {
+  NEW = 'Mới',
+  SEEN = 'Đã xem',
+  INTERVIEWING = 'Phỏng vấn',
+  HIRED = 'Đã nhận',
+  REJECTED = 'Từ chối',
+}
+
+enum ApplyJobStatusDB {
+  'Mới' = 0,
+  'Đã xem' = 1,
+  'Phỏng vấn' = 2,
+  'Đã nhận' = 3,
+  'Từ chối' = 4,
+}
+
 export {
   Gender,
   UserRole,
@@ -100,4 +116,7 @@ export {
   Order,
   SalaryType,
   JobLevel,
+  ApplyJobStatus,
+  OrderByApplyJob,
+  ApplyJobStatusDB,
 };

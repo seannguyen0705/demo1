@@ -22,8 +22,7 @@ export default function useLogin() {
         } else {
           router.replace('/');
         }
-
-        queryClient.removeQueries({ queryKey: ['me'] });
+        queryClient.invalidateQueries({ queryKey: ['me'] });
       }
     },
   });

@@ -19,12 +19,12 @@ interface IProps {
   statistics: JobStatistics;
 }
 export default function BarChartJob({ statistics }: IProps) {
-  const { viewCount, countHired, countInterviewing, countNew, countProcessing, countRejected } = statistics;
+  const { viewCount, countHired, countInterviewing, countNew, countSeen, countRejected } = statistics;
 
   const chartData = [
     { status: 'Lượt xem', count: viewCount },
     { status: 'Mới nộp', count: countNew },
-    { status: 'Đang xử lý', count: countProcessing },
+    { status: 'Đã xem', count: countSeen },
     { status: 'Phỏng vấn', count: countInterviewing },
     { status: 'Đã nhận', count: countHired },
     { status: 'Từ chối', count: countRejected },

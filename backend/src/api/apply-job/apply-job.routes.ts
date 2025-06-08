@@ -18,4 +18,18 @@ export default {
     jwtSecure: true,
     roles: [UserRole.EMPLOYER],
   },
+
+  getApplyJobById: <IRouteParams>{
+    path: '/apply-jobs/:id',
+    method: RequestMethod.GET,
+    jwtSecure: true,
+    roles: [UserRole.EMPLOYER],
+  },
+
+  updateStatus: <IRouteParams>{
+    path: '/apply-jobs/:id/status',
+    method: RequestMethod.PUT,
+    jwtSecure: true,
+    roles: [UserRole.EMPLOYER],
+  },
 };

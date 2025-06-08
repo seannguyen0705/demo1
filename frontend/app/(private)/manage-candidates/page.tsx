@@ -1,18 +1,27 @@
-import { ScrollText } from 'lucide-react';
+'use client';
+
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import SearchAndFilter from './components/SearchAndFIlter';
 import CandidateTable from './components/CandidateTable';
 
 export default function ManageCandidates() {
-  return (
-    <main className="px-4">
-      {/* <section className="flex justify-center flex-col items-center">
-        <div className="flex items-center gap-2 text-green ">
-          <ScrollText className="" />
-          <h1 className="text-2xl font-bold">Quản lý ứng viên</h1>
-        </div>
-        <p className="text-muted-foreground dark:text-gray-200">Quản lý ứng viên đã ứng tuyển vào công việc của bạn</p>
-      </section> */}
+  // All hooks must be inside the component function
 
-      <CandidateTable />
+  return (
+    <main className="sm:px-4 px-2 w-full">
+      <Card>
+        <CardHeader>
+          <CardTitle>Quản lý ứng viên</CardTitle>
+          <CardDescription>Danh sách và quản lý thông tin các ứng viên</CardDescription>
+        </CardHeader>
+        <CardContent>
+          {/* Filters and Search */}
+          <SearchAndFilter />
+
+          {/* Table */}
+          <CandidateTable />
+        </CardContent>
+      </Card>
     </main>
   );
 }

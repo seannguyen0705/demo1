@@ -4,6 +4,7 @@ import { format } from 'date-fns';
 import { CircleDollarSign } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import ShowStatus from './ShowStatus';
 interface IProps {
   job: IJob;
 }
@@ -12,9 +13,9 @@ export default function JobApplyItem({ job }: IProps) {
   const provinceNames = job.addresses.map((address) => address.province.name);
   const setProvinceNames = new Set(provinceNames);
   return (
-    <article className="lg:p-4 relative flex flex-col sm:flex-row items-center justify-between border-b border-dashed hover:bg-gray-100 dark:hover:bg-gray-900">
-      <div className="flex gap-4 items-center">
-        <Link className="relative z-10" href={`/company/${job.company.name}`}>
+    <article className="lg:p-4 py-2 relative flex flex-col sm:flex-row items-center justify-between border-b border-dashed hover:bg-gray-100 dark:hover:bg-gray-900">
+      <div className="flex gap-4 w-full items-center">
+        <Link className="relative z-10 sm:size-[100px] size-[80px]" href={`/company/${job.company.name}`}>
           <Image
             className="sm:size-[100px] size-[80px]"
             src={job.company.logo.url}
@@ -23,8 +24,9 @@ export default function JobApplyItem({ job }: IProps) {
             height={100}
           />
         </Link>
-        <div>
-          <h3 className="text-base sm:text-lg font-bold">{job.title}</h3>
+
+        <div className="flex-1">
+          <h3 className="text-base sm:text-lg text-wrap font-bold">{job.title}</h3>
           <Link href={`/company/${job.company.name}`} className="text-sm relative z-10 hover:underline">
             {job.company.name}
           </Link>
@@ -36,8 +38,11 @@ export default function JobApplyItem({ job }: IProps) {
           </div>
         </div>
       </div>
+      <div className="flex flex-col w-full items-end">
+        <p className="text-sm text-right">Ứng tuyển vào {format(job.applyJobs[0].createdAt, 'dd/MM/yyyy')}</p>
+        <ShowStatus job={job} showExpired={false} />
+      </div>
 
-      <p className="text-sm text-right">Ứng tuyển vào {format(job.applyJobs[0].createdAt, 'dd/MM/yyyy')}</p>
       <Link href={`/job/${job.id}`} className="text-sm text-right absolute inset-0"></Link>
     </article>
   );

@@ -4,6 +4,7 @@ interface IFile {
   url: string;
   key: string;
   format: string;
+  createdAt: string;
 }
 
 export type { IFile };

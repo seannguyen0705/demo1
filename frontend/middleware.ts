@@ -10,16 +10,20 @@ export async function middleware(request: NextRequest) {
   const token = request.cookies.get('Authentication')?.value || request.cookies.get('Refresh')?.value;
   const user = token ? decodeUser(token) : null;
 
-  const isAuth = request.cookies.has('Refresh') || request.cookies.has('Authentication');
   const currentPath = request.nextUrl.pathname;
-
-  if (privatePaths.some((path) => currentPath.startsWith(path)) && !isAuth) {
-    return NextResponse.redirect(new URL('/sign-in', request.url));
+  if (user) {
+    if (authPaths.some((path) => currentPath.startsWith(path))) {
+      return NextResponse.redirect(new URL('/', request.url));
+    }
+    if (employerPaths.some((path) => currentPath.startsWith(path)) && user.role !== UserRole.EMPLOYER) {
+      return NextResponse.redirect(new URL('/', request.url));
+    }
+  } else {
+    if (privatePaths.some((path) => currentPath.startsWith(path))) {
+      return NextResponse.redirect(new URL('/sign-in', request.url));
+    }
   }
 
-  if (authPaths.some((path) => currentPath.startsWith(path)) && isAuth) {
-    return NextResponse.redirect(new URL('/', request.url));
-  }
   return NextResponse.next();
 }
 
@@ -28,5 +32,9 @@ export const config = {
 };
 
 function decodeUser(token: string) {
-  return jwtDecode(token) as { role: UserRole };
+  try {
+    return jwtDecode(token) as { role: UserRole };
+  } catch (error) {
+    return null;
+  }
 }

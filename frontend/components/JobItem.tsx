@@ -101,7 +101,9 @@ export default function JobItem({ job, navtoDetail, showStatus }: IProps) {
               key={skill.id}
               className="dark:bg-gray-800 bg-[#309689] rounded-2xl border text-white border-gray-200 px-2 py-1 text-sm"
             >
-              <Link href={`/job?keyword=${skill.name}`}>{skill.name}</Link>
+              <Link href={`/job?keyword=${skill.name}`} className="text-nowrap">
+                {skill.name}
+              </Link>
             </li>
           ))}
         </ul>

@@ -16,6 +16,7 @@ export default function useCreateSaveJob(jobId: string) {
     mutationFn: createSaveJob,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['job', jobId] });
+      queryClient.invalidateQueries({ queryKey: ['candidate-job', jobId] });
       queryClient.invalidateQueries({ queryKey: ['candidateGetJobSaved'] });
     },
     onError: (error: AxiosError<ErrorReponse>) => {

@@ -84,15 +84,16 @@ enum JobLevel {
 }
 
 enum ApplyJobStatus {
-  NEW = 'Mới',
-  PROCESSING = 'Đang xử lý',
-  INTERVIEWING = 'Phỏng vấn',
-  HIRED = 'Đã nhận',
-  REJECTED = 'Từ chối',
+  'Mới' = 0,
+  'Đã xem' = 1,
+  'Phỏng vấn' = 2,
+  'Đã nhận' = 3,
+  'Từ chối' = 4,
 }
 
 enum OrderByApplyJob {
   CREATED_AT = 'createdAt',
+  STATUS = 'status',
 }
 
 export {

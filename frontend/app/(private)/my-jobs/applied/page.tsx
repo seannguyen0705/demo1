@@ -28,11 +28,15 @@ export default function AppliedJobs() {
             className="border-b-2 flex items-center gap-2 py-2 font-bold text-green border-green"
           >
             Đã ứng tuyển
-            <span className="text-sm px-2 py-1 bg-green text-white rounded-full">{appliedData?.total}</span>
+            <span className="text-sm px-2 py-1 bg-green text-white rounded-full">
+              {appliedData?.total > 9 ? '9+' : appliedData?.total}
+            </span>
           </Link>
           <Link href="/my-jobs/saved" className="py-2 border-b-2 hover:border-green flex items-center gap-2">
             Đã lưu
-            <span className="text-sm px-2 py-1 bg-gray-200 text-gray-500 rounded-full">{savedData?.total}</span>
+            <span className="text-sm px-2 py-1 bg-gray-200 text-gray-500 rounded-full">
+              {savedData?.total > 9 ? '9+' : savedData?.total}
+            </span>
           </Link>
         </nav>
       </header>

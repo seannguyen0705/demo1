@@ -15,6 +15,7 @@ import CreateJobBenefit from '../../create-job/components/CreateJobBenefit';
 import { IJob } from '@/api/job/interface';
 import useUpdatePublishedJob from '../hooks/useUpdatePublishedJob';
 import { format } from 'date-fns';
+import isExpired from '@/utils/helpers/isExpired';
 const formSchema = z
   .object({
     title: z.string().min(1, {
@@ -204,6 +205,14 @@ export default function EditJob({ job }: IProps) {
       benefit: job.benefit || '',
       expiredAt: job.expiredAt ? format(new Date(job.expiredAt), 'yyyy-MM-dd') : '',
       skills: job.skills.map((skill) => ({ value: skill.id, label: skill.name })) || [],
+    },
+    errors: {
+      expiredAt: isExpired(job.expiredAt)
+        ? {
+            message: 'Hết hạn ứng tuyển',
+            type: 'manual',
+          }
+        : undefined,
     },
   });
 

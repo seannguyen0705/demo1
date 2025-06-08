@@ -114,7 +114,7 @@ export default function Info({ user }: IProps) {
         {fields.map((field) => (
           <div key={field.name} className="flex items-center gap-2">
             {field.icon}
-            <p className="">{field.value?.toString()}</p>
+            <p className="">{field.value?.toString() || 'Chưa cập nhật'}</p>
           </div>
         ))}
       </div>
