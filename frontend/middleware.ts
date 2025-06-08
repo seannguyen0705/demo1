@@ -2,8 +2,10 @@ import { jwtDecode } from 'jwt-decode';
 import { NextRequest, NextResponse } from 'next/server';
 import { UserRole } from './utils/enums';
 
-const privatePaths = ['/profile-personal'];
 const employerPaths = ['/manage-jobs', '/manage-candidates', '/create-job', 'edit-job'];
+const candidatePaths = ['/my-jobs'];
+const adminPaths = ['/manage/employer', '/manage/candidate', '/manage/job'];
+const privatePaths = [...employerPaths, ...candidatePaths, ...adminPaths, '/profile-personal'];
 const authPaths = ['/sign-in', '/sign-up', '/recruitment/sign-in', '/recruitment', '/admin/sign-in', 'create-job'];
 
 export async function middleware(request: NextRequest) {
@@ -16,6 +18,15 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(new URL('/', request.url));
     }
     if (employerPaths.some((path) => currentPath.startsWith(path)) && user.role !== UserRole.EMPLOYER) {
+      return NextResponse.redirect(new URL('/', request.url));
+    }
+    if (currentPath === '/job' && user.role !== UserRole.CANDIDATE) {
+      return NextResponse.redirect(new URL('/', request.url));
+    }
+    if (candidatePaths.some((path) => currentPath.startsWith(path)) && user.role !== UserRole.CANDIDATE) {
+      return NextResponse.redirect(new URL('/', request.url));
+    }
+    if (adminPaths.some((path) => currentPath.startsWith(path)) && user.role !== UserRole.ADMIN) {
       return NextResponse.redirect(new URL('/', request.url));
     }
   } else {
@@ -34,7 +45,7 @@ export const config = {
 function decodeUser(token: string) {
   try {
     return jwtDecode(token) as { role: UserRole };
-  } catch (error) {
+  } catch {
     return null;
   }
 }

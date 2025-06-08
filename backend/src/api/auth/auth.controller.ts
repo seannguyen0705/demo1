@@ -19,6 +19,9 @@ import { InjectDataSource } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 import { RequestWithUser } from '@/common/interfaces';
 import { IJwtStrategy } from './strategies/jwt.strategy';
+import { ForgotPasswordDto } from './dto/forgot-password.dto';
+import { ResetPasswordDto } from './dto/reset-password.dto';
+import { ActiveCandidateDto } from './dto/active-candidate.dto';
 
 @InjectController({ name: authRoutes.index, isCore: true })
 export class AuthController {
@@ -102,5 +105,20 @@ export class AuthController {
     const userDetail = await this.authService.getUserDetailById(user.element.id, user.role);
 
     return userDetail;
+  }
+
+  @InjectRoute(authRoutes.forgotPassword)
+  public async forgotPassword(@Body() data: ForgotPasswordDto) {
+    return this.authService.forgotPassword(data.email, data.role);
+  }
+
+  @InjectRoute(authRoutes.resetPassword)
+  public async resetPassword(@Body() data: ResetPasswordDto) {
+    return this.authService.resetPassword(data);
+  }
+
+  @InjectRoute(authRoutes.activeCandidate)
+  public async activeCandidate(@Body() data: ActiveCandidateDto) {
+    return this.authService.activeCandidate(data.accountToken);
   }
 }

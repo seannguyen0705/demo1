@@ -18,4 +18,18 @@ interface ResponseLoginDto {
   role: UserRole;
 }
 
-export type { LoginDto, TokenCookie, ResponseLoginDto };
+interface ForgotPasswordDto {
+  email: string;
+  role: UserRole;
+}
+
+interface ResetPasswordDto {
+  password: string;
+  accountToken: string;
+}
+
+interface ActiveCandidateDto {
+  accountToken: string;
+}
+
+export type { LoginDto, TokenCookie, ResponseLoginDto, ForgotPasswordDto, ResetPasswordDto, ActiveCandidateDto };

@@ -4,6 +4,7 @@ import * as cookieParser from 'cookie-parser';
 import { VersioningType } from '@nestjs/common';
 
 import type { INestApplication } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 
 export const loadMiddlewares = (app: INestApplication): void => {
   app.setGlobalPrefix('api');
@@ -12,9 +13,10 @@ export const loadMiddlewares = (app: INestApplication): void => {
     type: VersioningType.URI,
     defaultVersion: '1',
   });
+  const configService = app.get(ConfigService);
 
   app.enableCors({
-    origin: ['http://localhost:3000'], // allow other origin access to API
+    origin: [configService.get('FRONTEND_URL')], // allow other origin access to API
     credentials: true, //Access-Control-Allow-Credentials: true response header.
     allowedHeaders: ['Authorization', 'Content-Type'],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],

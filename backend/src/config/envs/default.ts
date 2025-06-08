@@ -20,9 +20,14 @@ export const config = {
   jwt: {
     secret: process.env.JWT_SECRET,
     refreshSecret: process.env.JWT_REFRESH_SECRET,
+    resetPasswordSecret: process.env.JWT_RESET_PASSWORD_SECRET,
+    activeAccountSecret: process.env.JWT_ACTIVE_ACCOUNT_SECRET,
   },
   code: {
     resetPassword: {
+      lifetime: 5 * Time.ONE_MINUTE,
+    },
+    activeAccount: {
       lifetime: 5 * Time.ONE_MINUTE,
     },
   },

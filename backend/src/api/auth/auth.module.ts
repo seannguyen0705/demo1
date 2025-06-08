@@ -15,7 +15,7 @@ import { JwtRefreshTokenStrategy } from './strategies/jwtRefresh.strategy';
 import { CompanyModule } from '../company/company.module';
 import { CloudinaryModule } from '../cloudinary/cloudinary.module';
 import { FileModule } from '../file/file.module';
-
+import { EmailModule } from '../email/email.module';
 @Module({
   imports: [
     AdminModule,
@@ -27,7 +27,7 @@ import { FileModule } from '../file/file.module';
     CompanyModule,
     CloudinaryModule,
     FileModule,
-
+    EmailModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],

@@ -8,6 +8,7 @@ import Pagination from '@/components/Pagination';
 import OrderBy from '@/app/(root)/job/components/OrderBy';
 import JobSaveList from '../Components/JobSaveList';
 import NotFoundJob from '@/app/(root)/job/components/NotFoundJob';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export default function SavedJobs() {
   const searchParams = useSearchParams();
@@ -16,7 +17,7 @@ export default function SavedJobs() {
   const { data: savedData } = useCandidateGetJobSaved({ queryString: searchParams.toString() });
 
   if (!appliedData || !savedData) {
-    return;
+    return <Skeleton className="w-full h-[500px] mx-4" />;
   }
   const totalPages = savedData?.total / 10;
   return (

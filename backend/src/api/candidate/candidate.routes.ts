@@ -62,14 +62,6 @@ export default {
       responses: [{ status: HttpStatus.OK, type: ResponseCandidateDetailDto }],
     },
   },
-  updateById: <IRouteParams>{
-    path: '/:id',
-    method: RequestMethod.PUT,
-    roles: [UserRole.ADMIN],
-    swaggerInfo: {
-      responses: [{ status: HttpStatus.OK, type: ResponseCandidateDto }],
-    },
-  },
   deleteById: <IRouteParams>{
     path: '/:id',
     method: RequestMethod.DELETE,

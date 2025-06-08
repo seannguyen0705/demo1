@@ -14,7 +14,6 @@ import { TokenService } from '../token/token.service';
 import { ThirdPartyUser } from '../auth/dto/thirPartyUser';
 import { plainToInstance } from 'class-transformer';
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
-import { FileService } from '../file/file.service';
 import { CreateFileDto } from '../file/dto/create-file.dto';
 import { File } from '../file/entities/file.entity';
 @Injectable()
@@ -26,7 +25,6 @@ export class CandidateService {
     private tokenService: TokenService,
     @InjectDataSource() private readonly dataSource: DataSource,
     private readonly cloudinaryService: CloudinaryService,
-    private readonly fileService: FileService,
   ) {
     this.folder = 'candidate/avatar';
   }
@@ -107,17 +105,6 @@ export class CandidateService {
     return updatedCandidate;
   }
 
-  public async updateById({ id, data }: { id: string; data: UpdateCandidateDto }): Promise<Candidate> {
-    const candidate = await this.candidateRepository.findOneBy({ id });
-
-    const updatedCandidate = await this.handleUpdateCandidate({
-      candidate,
-      data,
-    });
-
-    return updatedCandidate;
-  }
-
   public async updateByCandidate({
     candidate,
     data,
@@ -138,8 +125,7 @@ export class CandidateService {
   }
 
   public async createThirdPartyUser(user: ThirdPartyUser) {
-    const newCandidate = this.candidateRepository.create(user);
-    await this.candidateRepository.save(newCandidate);
+    const newCandidate = await this.candidateRepository.save({ ...user, status: UserStatus.ACTIVE });
     return newCandidate;
   }
 
@@ -224,5 +210,13 @@ export class CandidateService {
       .where('candidate.id = :id', { id });
     const candidate = await queryBuilder.getOne();
     return candidate;
+  }
+
+  public async updateById(id: string, data: UpdateCandidateDto) {
+    const candidate = await this.candidateRepository.findOneBy({ id });
+    if (!candidate) {
+      throw new NotFoundException('Candidate not found');
+    }
+    return this.handleUpdateCandidate({ candidate, data });
   }
 }

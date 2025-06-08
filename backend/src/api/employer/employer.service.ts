@@ -21,6 +21,7 @@ import { CreateCompanyAddressDto } from '../company-address/dto/create-company-a
 import { Company } from '../company/entities/company.entity';
 import { Address } from '../address/entities/address.entity';
 import { CompanyAddress } from '../company-address/entities/company-address.entity';
+import { UpdateEmployerDto } from './dto/update-employer.dto';
 @Injectable()
 export class EmployerService {
   private readonly folder: string;
@@ -128,10 +129,11 @@ export class EmployerService {
 
   public async updateEmployer(id: string, data: Partial<Employer>): Promise<Employer> {
     const employer = await this.findOneById(id);
-    return this.employerRepository.save({
-      ...employer,
-      ...data,
+    const updatedEmployer = await this.handleUpdateEmployer({
+      employer,
+      data,
     });
+    return updatedEmployer;
   }
 
   public async updateStatus(id: string, data: UpdateStatusUserDto) {
@@ -191,5 +193,42 @@ export class EmployerService {
     } finally {
       await queryRunner.release();
     }
+  }
+
+  private async handleUpdateEmployer({
+    employer,
+    data,
+  }: {
+    employer: Employer;
+    data: UpdateEmployerDto;
+  }): Promise<Employer> {
+    const { phoneNumber } = data;
+
+    if (phoneNumber && phoneNumber !== employer?.phoneNumber) {
+      const existedEmployer = await this.findOneByEmailOrPhoneNumber({
+        phoneNumber,
+      });
+
+      if (existedEmployer) {
+        throw new UserAlreadyException();
+      }
+    }
+
+    const updatedEmployer = this.employerRepository.create({
+      ...employer,
+      ...data,
+    });
+
+    await this.employerRepository.save(updatedEmployer);
+
+    return updatedEmployer;
+  }
+
+  public async updateById(id: string, data: UpdateEmployerDto) {
+    const employer = await this.employerRepository.findOneBy({ id });
+    if (!employer) {
+      throw new NotFoundException('Employer not found');
+    }
+    return this.handleUpdateEmployer({ employer, data });
   }
 }

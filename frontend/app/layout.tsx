@@ -8,6 +8,7 @@ import { ThemeProvider } from '@/provider/theme-provider';
 
 import { Toaster } from '@/components/ui/sonner';
 import ReactQueryProvider from '@/provider/ReactQueryProvider';
+import Footer from '@/components/Footer';
 
 const lexend = Lexend({
   variable: '--font-lexend',
@@ -32,6 +33,7 @@ export default async function AppLayout({
             <NuqsAdapter>
               <NavHeader />
               <div className="pt-[76px]">{children}</div>
+              <Footer />
               <Toaster />
             </NuqsAdapter>
           </ReactQueryProvider>
