@@ -47,6 +47,7 @@ export class Cv1749439260970 implements MigrationInterface {
           },
         ],
       }),
+      true,
     );
   }
 

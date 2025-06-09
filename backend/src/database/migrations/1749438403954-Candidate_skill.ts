@@ -53,6 +53,7 @@ export class CandidateSkill1749438403954 implements MigrationInterface {
           },
         ],
       }),
+      true,
     );
   }
 

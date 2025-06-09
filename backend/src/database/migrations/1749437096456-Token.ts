@@ -27,10 +27,7 @@ export class Token1749437096456 implements MigrationInterface {
             enumName: 'user_role_enum',
             default: `'candidate'::user_role_enum`,
           },
-          {
-            name: 'access_token',
-            type: 'varchar',
-          },
+
           {
             name: 'refresh_token',
             type: 'varchar',
@@ -47,6 +44,7 @@ export class Token1749437096456 implements MigrationInterface {
           },
         ],
       }),
+      true,
     );
   }
   public async down(queryRunner: QueryRunner): Promise<void> {

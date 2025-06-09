@@ -118,6 +118,7 @@ export class Company1749440695349 implements MigrationInterface {
           },
         ],
       }),
+      true,
     );
   }
 

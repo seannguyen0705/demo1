@@ -47,6 +47,7 @@ export class CompanyImage1749445897462 implements MigrationInterface {
           },
         ],
       }),
+      true,
     );
   }
 

@@ -89,6 +89,7 @@ export class ApplyJob1749444759836 implements MigrationInterface {
           },
         ],
       }),
+      true,
     );
   }
 

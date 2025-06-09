@@ -47,6 +47,7 @@ export class CompanyAddress1749444422668 implements MigrationInterface {
           },
         ],
       }),
+      true,
     );
   }
 

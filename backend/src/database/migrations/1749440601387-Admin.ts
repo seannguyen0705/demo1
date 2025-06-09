@@ -73,6 +73,7 @@ export class Admin1749440601387 implements MigrationInterface {
           },
         ],
       }),
+      true,
     );
   }
 

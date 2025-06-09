@@ -42,6 +42,7 @@ export class JobSkill1749444698100 implements MigrationInterface {
           },
         ],
       }),
+      true,
     );
   }
 

@@ -89,6 +89,7 @@ export class Employer1749439635572 implements MigrationInterface {
           },
         ],
       }),
+      true,
     );
   }
 

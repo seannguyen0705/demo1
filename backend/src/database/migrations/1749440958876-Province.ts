@@ -29,6 +29,7 @@ export class Province1749440958876 implements MigrationInterface {
           },
         ],
       }),
+      true,
     );
   }
 

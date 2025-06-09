@@ -128,6 +128,7 @@ export class Job1749444615631 implements MigrationInterface {
           },
         ],
       }),
+      true,
     );
   }
 

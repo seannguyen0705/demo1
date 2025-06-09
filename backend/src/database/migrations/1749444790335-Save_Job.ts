@@ -53,6 +53,7 @@ export class SaveJob1749444790335 implements MigrationInterface {
           },
         ],
       }),
+      true,
     );
   }
 

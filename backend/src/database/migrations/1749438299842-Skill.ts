@@ -30,6 +30,7 @@ export class Skill1749438299842 implements MigrationInterface {
           },
         ],
       }),
+      true,
     );
   }
 

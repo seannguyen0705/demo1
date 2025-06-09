@@ -41,6 +41,7 @@ export class Address1749441014494 implements MigrationInterface {
           },
         ],
       }),
+      true,
     );
   }
 

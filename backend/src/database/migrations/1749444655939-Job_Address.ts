@@ -42,6 +42,7 @@ export class JobAddress1749444655939 implements MigrationInterface {
           },
         ],
       }),
+      true,
     );
   }
 

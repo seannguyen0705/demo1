@@ -113,6 +113,7 @@ export class Candidate1749437642354 implements MigrationInterface {
           },
         ],
       }),
+      true,
     );
   }
 

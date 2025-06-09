@@ -27,7 +27,7 @@ export class Candidate extends BaseUserEntity {
   address: string;
 
   @Column({ nullable: true, name: 'personal_website' })
-  personalWebsite: string;
+  personal_website: string;
 
   @Column({ nullable: true })
   introduction: string;

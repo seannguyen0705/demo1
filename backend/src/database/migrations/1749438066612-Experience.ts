@@ -33,11 +33,11 @@ export class Experience1749438066612 implements MigrationInterface {
           },
           {
             name: 'start_date',
-            type: 'date',
+            type: 'varchar',
           },
           {
             name: 'end_date',
-            type: 'date',
+            type: 'varchar',
           },
           {
             name: 'description',
@@ -58,6 +58,7 @@ export class Experience1749438066612 implements MigrationInterface {
           },
         ],
       }),
+      true,
     );
   }
 

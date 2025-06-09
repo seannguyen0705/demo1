@@ -41,6 +41,7 @@ export class File1749439076733 implements MigrationInterface {
           },
         ],
       }),
+      true,
     );
   }
 

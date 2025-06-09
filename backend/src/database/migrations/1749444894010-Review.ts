@@ -70,6 +70,7 @@ export class Review1749444894010 implements MigrationInterface {
           },
         ],
       }),
+      true,
     );
   }
 
