@@ -104,7 +104,7 @@ interface QueryJob {
 
 interface JobStatistics {
   countNew: number;
-  countProcessing: number;
+  countSeen: number;
   countInterviewing: number;
   countHired: number;
   countRejected: number;

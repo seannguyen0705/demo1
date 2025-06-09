@@ -6,6 +6,7 @@ import { CircleCheckBig, CircleDollarSign } from 'lucide-react';
 import Application from '@/app/(root)/job/components/Application';
 import { format } from 'date-fns';
 import Save from '../../components/Save';
+import StatusJob from './StatusJob';
 interface IProps {
   job: IJob;
 }
@@ -26,12 +27,7 @@ export default function ClientJobHeader({ job }: IProps) {
             Đã ứng tuyển {format(job.applyJobs[0].createdAt, 'dd/MM/yyyy')}
           </p>
         ) : (
-          <div className="flex gap-2">
-            <div className="flex-1">
-              <Application job={job} />
-            </div>
-            <Save job={job} />
-          </div>
+          <StatusJob job={job} />
         )}
       </div>
     </section>

@@ -25,9 +25,7 @@ export default function ReviewItem({ review, isOwner = false }: IProps) {
       <div className="flex items-center justify-between">
         <div className="inline-flex items-center gap-2">
           <StarRating rating={review.rating} icon={<Star size={16} className="fill-yellow-500 text-yellow-500" />} />
-          <span className="text-sm font-light">
-            {formatDistanceToNow(new Date(review.createdAt), { addSuffix: true, locale: vi })}
-          </span>
+          <span className="text-sm font-light">{formatDistanceToNow(new Date(review.createdAt), { locale: vi })}</span>
         </div>
         {isOwner && <ActionReview review={review} setIsEdit={setIsEdit} />}
       </div>

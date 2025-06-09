@@ -3,7 +3,7 @@ import { Lexend } from 'next/font/google';
 import './globals.css';
 
 import NavHeader from '@/components/NavHeader';
-
+import { NuqsAdapter } from 'nuqs/adapters/next/app';
 import { ThemeProvider } from '@/provider/theme-provider';
 
 import { Toaster } from '@/components/ui/sonner';
@@ -29,9 +29,11 @@ export default async function AppLayout({
       <body className={` ${lexend.variable} antialiased`}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <ReactQueryProvider>
-            <NavHeader />
-            <div className="pt-[76px]">{children}</div>
-            <Toaster />
+            <NuqsAdapter>
+              <NavHeader />
+              <div className="pt-[76px]">{children}</div>
+              <Toaster />
+            </NuqsAdapter>
           </ReactQueryProvider>
         </ThemeProvider>
       </body>

@@ -7,7 +7,7 @@ interface IProps {
 
 export default function JobSaveList({ jobs }: IProps) {
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col">
       {jobs.map((job) => (
         <JobSaveItem key={job.id} job={job} />
       ))}

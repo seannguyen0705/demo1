@@ -16,6 +16,7 @@ export default function useDeleteSaveJob(jobId: string) {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['job', jobId] });
       queryClient.invalidateQueries({ queryKey: ['candidateGetJobSaved'] });
+      queryClient.invalidateQueries({ queryKey: ['candidate-job', jobId] });
     },
     onError: (error: AxiosError<ErrorReponse>) => {
       toast.error(error.response?.data.message || 'Lỗi, vui lòng thử lại');

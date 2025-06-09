@@ -13,7 +13,7 @@ const candidateGetJobById = async (jobId: string) => {
 
 export default function useCandidateGetJobById(jobId: string) {
   const { data, isLoading } = useQuery({
-    queryKey: ['job', jobId],
+    queryKey: ['candidate-job', jobId],
     queryFn: () => candidateGetJobById(jobId),
     enabled: !!jobId,
   });

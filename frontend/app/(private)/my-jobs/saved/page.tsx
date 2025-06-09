@@ -26,14 +26,18 @@ export default function SavedJobs() {
         <nav className="flex gap-4 items-center">
           <Link href="/my-jobs/applied" className="py-2 border-b-2 hover:border-green flex items-center gap-2">
             Đã ứng tuyển
-            <span className="text-sm px-2 py-1 bg-gray-200 text-gray-500 rounded-full">{appliedData?.total}</span>
+            <span className="text-sm px-2 py-1 bg-gray-200 text-gray-500 rounded-full">
+              {appliedData?.total > 9 ? '9+' : appliedData?.total}
+            </span>
           </Link>
           <Link
             href="/my-jobs/saved"
             className="border-b-2 flex items-center gap-2 py-2 font-bold text-green border-green"
           >
             Đã lưu
-            <span className="text-sm px-2 py-1 bg-green text-white rounded-full">{savedData?.total}</span>
+            <span className="text-sm px-2 py-1 bg-green text-white rounded-full">
+              {savedData?.total > 9 ? '9+' : savedData?.total}
+            </span>
           </Link>
         </nav>
       </header>

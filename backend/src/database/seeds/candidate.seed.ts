@@ -11,7 +11,7 @@
 //     candidate.email = faker.internet.email();
 //     candidate.password = '@12345678';
 //     candidate.fullName = faker.person.fullName();
-//     candidate.phoneNumber = faker.phone.number();
+//     candidate.phoneNumber = faker.phone.number({ style: 'international' });
 //     candidate.gender = Gender.MALE;
 //     candidate.bod = faker.date.birthdate();
 //     candidate.title = faker.lorem.sentence();

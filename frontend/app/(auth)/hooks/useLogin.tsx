@@ -18,12 +18,11 @@ export default function useLogin() {
         toast.error(data.message);
       } else {
         if (data.data.role === UserRole.EMPLOYER) {
-          router.push('/profile-personal');
+          router.replace('/profile-personal');
         } else {
-          router.push('/');
+          router.replace('/');
         }
-
-        queryClient.removeQueries({ queryKey: ['me'] });
+        queryClient.invalidateQueries({ queryKey: ['me'] });
       }
     },
   });

@@ -70,7 +70,12 @@ export class CandidateController {
   @InjectRoute(candidateRoutes.deleteById)
   public async deleteById(@Param('id') id: string): Promise<string> {
     await this.candidateService.deleteById(id);
-
     return id;
+  }
+
+  @InjectRoute(candidateRoutes.getById)
+  public async getById(@Param('id') id: string) {
+    const candidate = await this.candidateService.findOneById(id);
+    return candidate;
   }
 }

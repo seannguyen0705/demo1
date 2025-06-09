@@ -83,6 +83,26 @@ enum JobLevel {
   MANAGER = 'Manager',
 }
 
+enum OrderByApplyJob {
+  CREATED_AT = 'createdAt',
+}
+
+enum ApplyJobStatus {
+  NEW = 'Mới',
+  SEEN = 'Đã xem',
+  INTERVIEWING = 'Phỏng vấn',
+  HIRED = 'Đã nhận',
+  REJECTED = 'Từ chối',
+}
+
+enum ApplyJobStatusDB {
+  NEW = 0,
+  SEEN = 1,
+  INTERVIEWING = 2,
+  HIRED = 3,
+  REJECTED = 4,
+}
+
 export {
   Gender,
   UserRole,
@@ -96,4 +116,7 @@ export {
   Order,
   SalaryType,
   JobLevel,
+  ApplyJobStatus,
+  OrderByApplyJob,
+  ApplyJobStatusDB,
 };

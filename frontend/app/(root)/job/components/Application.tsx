@@ -25,7 +25,7 @@ import useCreateApplyJob from '../hooks/useCreateApplyJob';
 
 const formSchema = z.object({
   fullName: z.string().min(1, { message: 'Tên không được để trống' }),
-  phoneNumber: z.string().min(1, { message: 'Số điện thoại không được để trống' }),
+  phoneNumber: z.string().regex(/^[0-9]{10}$/, { message: 'Số điện thoại không hợp lệ' }),
   expectedAddress: z.array(z.string()).min(1, { message: 'Địa chỉ mong muốn không được để trống' }),
   message: z.string().optional(),
   fileId: z.string().min(1, { message: 'Bạn chưa chọn CV' }),
@@ -77,7 +77,7 @@ export default function Application({ job }: IProps) {
       <DialogContent className="overflow-auto h-auto max-h-full sm:p-6 p-2 sm:max-w-[600px]">
         <DialogHeader>
           <DialogTitle>Ứng tuyển vào {job.company.name}</DialogTitle>
-          <DialogDescription className="text-gray-800">
+          <DialogDescription className="text-gray-800 dark:text-gray-200">
             Cập nhật thông tin bên dưới để ứng tuyển vào vị trí <span className="font-bold">{job.title}</span>
           </DialogDescription>
         </DialogHeader>

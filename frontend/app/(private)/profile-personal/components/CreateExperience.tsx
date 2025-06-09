@@ -14,14 +14,7 @@ import { Input } from '@/components/ui/input';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { useState } from 'react';
 import useCreateExperience from '../hooks/useCreateExperience';
 import { Select } from '@/components/ui/select';
@@ -58,8 +51,7 @@ export default function CreateExperience() {
     },
   });
 
-  const { mutate: createExperience, isPending: isCreating } =
-    useCreateExperience();
+  const { mutate: createExperience, isPending: isCreating } = useCreateExperience();
 
   const [isCurrent, setIsCurrent] = useState(false);
 
@@ -118,9 +110,7 @@ export default function CreateExperience() {
       <DialogContent className="h-full overflow-auto sm:max-w-[600px] md:h-auto">
         <DialogHeader>
           <DialogTitle>Kinh nghiệm làm việc</DialogTitle>
-          <DialogDescription>
-            Thêm kinh nghiệm làm việc của bạn
-          </DialogDescription>
+          <DialogDescription>Thêm kinh nghiệm làm việc của bạn</DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -174,10 +164,7 @@ export default function CreateExperience() {
                 name="startMonth"
                 render={({ field }) => (
                   <FormItem>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
                         <SelectTrigger className=" w-full">
                           <SelectValue placeholder="Tháng" />
@@ -201,23 +188,23 @@ export default function CreateExperience() {
                 name="startYear"
                 render={({ field }) => (
                   <FormItem>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
                         <SelectTrigger className=" w-full">
                           <SelectValue placeholder="Năm" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {Array.from({ length: currentYear - 2000 + 1 }).map(
-                          (_, index) => (
-                            <SelectItem key={index} value={`${index + 2000}`}>
-                              {index + 2000}
+                        {Array.from({ length: currentYear - 2000 + 1 })
+                          .map((_, index) => ({
+                            value: `${currentYear - index}`,
+                            label: currentYear - index,
+                          }))
+                          .map(({ value, label }) => (
+                            <SelectItem key={value} value={value}>
+                              {label}
                             </SelectItem>
-                          ),
-                        )}
+                          ))}
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -232,11 +219,7 @@ export default function CreateExperience() {
                 name="endMonth"
                 render={({ field }) => (
                   <FormItem>
-                    <Select
-                      disabled={isCurrent}
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
+                    <Select disabled={isCurrent} onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
                         <SelectTrigger className=" w-full">
                           <SelectValue placeholder="Tháng" />
@@ -261,24 +244,23 @@ export default function CreateExperience() {
                 name="endYear"
                 render={({ field }) => (
                   <FormItem>
-                    <Select
-                      disabled={isCurrent}
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
+                    <Select disabled={isCurrent} onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
                         <SelectTrigger className=" w-full">
                           <SelectValue placeholder="Năm" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {Array.from({ length: currentYear - 2000 + 1 }).map(
-                          (_, index) => (
-                            <SelectItem key={index} value={`${index + 2000}`}>
-                              {index + 2000}
+                        {Array.from({ length: currentYear - 2000 + 1 })
+                          .map((_, index) => ({
+                            value: `${currentYear - index}`,
+                            label: currentYear - index,
+                          }))
+                          .map(({ value, label }) => (
+                            <SelectItem key={value} value={value}>
+                              {label}
                             </SelectItem>
-                          ),
-                        )}
+                          ))}
                       </SelectContent>
                     </Select>
                     <FormMessage />

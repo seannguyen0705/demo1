@@ -190,4 +190,39 @@ export class CandidateService {
       },
     });
   }
+
+  public async findOneById(id: string): Promise<Candidate> {
+    const queryBuilder = this.candidateRepository
+      .createQueryBuilder('candidate')
+      .leftJoin('candidate.avatar', 'avatar')
+      .leftJoin('candidate.experiences', 'experiences')
+      .leftJoin('candidate.candidateSkills', 'candidateSkills')
+      .leftJoin('candidateSkills.skill', 'skill')
+      .select([
+        'candidate.id',
+        'candidate.fullName',
+        'candidate.email',
+        'candidate.phoneNumber',
+        'candidate.address',
+        'candidate.introduction',
+        'candidate.personal_website',
+        'candidate.bod',
+        'candidate.gender',
+        'candidate.avatar_url',
+        'candidate.title',
+        'avatar.url',
+        'experiences.id',
+        'experiences.workTitle',
+        'experiences.companyName',
+        'experiences.startDate',
+        'experiences.endDate',
+        'experiences.description',
+        'skill.id',
+        'skill.name',
+        'candidateSkills.skillYear',
+      ])
+      .where('candidate.id = :id', { id });
+    const candidate = await queryBuilder.getOne();
+    return candidate;
+  }
 }

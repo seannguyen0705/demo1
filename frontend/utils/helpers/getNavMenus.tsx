@@ -7,6 +7,7 @@ import {
   UserRoundPlus,
   Settings,
   Mail,
+  UsersRound,
 } from 'lucide-react';
 
 import { JSX } from 'react';
@@ -22,11 +23,11 @@ interface NavItem {
 const getNavMenus = (user: IUser | undefined): NavItem[] => {
   const navs = {
     [UserRole.EMPLOYER]: [
-      {
-        name: 'Tổng quan',
-        href: '/employer-dashboard',
-        icon: <LayoutDashboard />,
-      },
+      // {
+      //   name: 'Tổng quan',
+      //   href: '/employer-dashboard',
+      //   icon: <LayoutDashboard />,
+      // },
       { name: 'Việc làm', href: '/manage-jobs', icon: <Briefcase /> },
       { name: 'Hồ sơ cá nhân', href: '/profile-personal', icon: <UserRound /> },
       {
@@ -40,29 +41,29 @@ const getNavMenus = (user: IUser | undefined): NavItem[] => {
         icon: <PencilLine />,
       },
       {
-        name: 'Tìm kiếm ứng viên',
-        href: '/candidate',
-        icon: <UserRoundPlus />,
+        name: 'Ứng viên',
+        href: '/manage-candidates',
+        icon: <UsersRound />,
       },
       { name: 'Cài đặt', href: '/settings', icon: <Settings /> },
     ],
     [UserRole.CANDIDATE]: [
-      {
-        name: 'Tổng quan',
-        href: '/profile-dashboard',
-        icon: <LayoutDashboard />,
-      },
+      // {
+      //   name: 'Tổng quan',
+      //   href: '/profile-dashboard',
+      //   icon: <LayoutDashboard />,
+      // },
       { name: 'Hồ sơ cá nhân', href: '/profile-personal', icon: <UserRound /> },
       { name: 'Việc làm của tôi', href: '/my-jobs', icon: <Briefcase /> },
       { name: 'Đăng kí nhận email', href: '/subscription', icon: <Mail /> },
       { name: 'Cài đặt', href: '/settings', icon: <Settings /> },
     ],
     [UserRole.ADMIN]: [
-      {
-        name: 'Tổng quan',
-        href: '/profile-dashboard',
-        icon: <LayoutDashboard />,
-      },
+      // {
+      //   name: 'Tổng quan',
+      //   href: '/profile-dashboard',
+      //   icon: <LayoutDashboard />,
+      // },
       { name: 'Hồ sơ cá nhân', href: '/profile-personal', icon: <UserRound /> },
       { name: 'Quản lí nhà tuyển dụng', href: '/employer', icon: <Building /> },
       { name: 'Quản lí ứng viên', href: '/candidate', icon: <UserRoundPlus /> },

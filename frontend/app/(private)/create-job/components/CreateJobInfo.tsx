@@ -53,8 +53,10 @@ export default function CreateJobInfo() {
                     }
                   }}
                   key={companyAddress.id}
-                  className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-all duration-200 hover:bg-gray-50 ${
-                    field.value.includes(companyAddress.address.id) ? 'border-green-500 bg-green-50' : 'border-gray-200'
+                  className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-all duration-200 hover:bg-gray-50 dark:hover:bg-gray-800 ${
+                    field.value.includes(companyAddress.address.id)
+                      ? 'border-green-500 bg-green-50 dark:bg-gray-800 '
+                      : 'border-gray-200 dark:border-gray-700'
                   }`}
                 >
                   <CheckBox checked={field.value.includes(companyAddress.address.id)} />

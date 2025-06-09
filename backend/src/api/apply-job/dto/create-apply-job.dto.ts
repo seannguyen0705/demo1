@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsPhoneNumber, IsString } from 'class-validator';
 
 export class CreateApplyJobDto {
   @IsNotEmpty()
@@ -14,7 +14,7 @@ export class CreateApplyJobDto {
   fullName: string;
 
   @IsNotEmpty()
-  @IsString()
+  @IsPhoneNumber('VN')
   phoneNumber: string;
 
   @IsNotEmpty()
