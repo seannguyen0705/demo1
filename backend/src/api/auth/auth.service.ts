@@ -203,7 +203,7 @@ export class AuthService {
     const userService = this.services[payload.role];
     const user = await userService.findOneByEmail(payload.email);
     if (!user) {
-      throw new WrongCredentialsException();
+      throw new NotFoundException('Tài khoản không tồn tại');
     }
     if (user.accountToken !== accountToken) {
       throw new BadRequestException('Token không hợp lệ');

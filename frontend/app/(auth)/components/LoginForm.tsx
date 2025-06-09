@@ -28,10 +28,13 @@ export default function LoginForm() {
   const currentPath = usePathname();
 
   let role = UserRole.CANDIDATE;
-  if (currentPath.includes('recruitment')) {
+  let hrefForgetPassword = '/candidate/forget-password';
+  if (currentPath.startsWith('/recruitment')) {
     role = UserRole.EMPLOYER;
-  } else if (currentPath.includes('admin')) {
+    hrefForgetPassword = '/recruitment/forget-password';
+  } else if (currentPath.startsWith('/admin')) {
     role = UserRole.ADMIN;
+    hrefForgetPassword = '/admin/forget-password';
   }
 
   const form = useForm<FormValues>({
@@ -90,7 +93,7 @@ export default function LoginForm() {
             <FormItem>
               <div className="flex items-center justify-between">
                 <FormLabel>Mật khẩu</FormLabel>
-                <Link href="/forget-password" className="text-sm hover:underline text-muted-foreground">
+                <Link href={hrefForgetPassword} className="text-sm hover:underline text-muted-foreground">
                   Quên mật khẩu?
                 </Link>
               </div>

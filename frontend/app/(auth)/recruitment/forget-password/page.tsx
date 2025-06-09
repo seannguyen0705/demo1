@@ -10,7 +10,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Info } from 'lucide-react';
 import { useState } from 'react';
-import useForgotPassword from './hooks/useForgotPassword';
+import useForgotPassword from '../../hooks/useForgotPassword';
 import { UserRole } from '@/utils/enums';
 const formSchema = z.object({
   email: z.string().email('Email không hợp lệ'),
@@ -29,7 +29,7 @@ export default function ForgetPasswordPage() {
   function onSubmit(values: z.infer<typeof formSchema>) {
     // TODO: Implement password reset logic
     forgotPassword(
-      { email: values.email, role: UserRole.CANDIDATE },
+      { email: values.email, role: UserRole.EMPLOYER },
       {
         onSuccess: () => {
           setIsSuccess(true);
@@ -59,7 +59,7 @@ export default function ForgetPasswordPage() {
                   <FormItem>
                     <FormLabel>Email</FormLabel>
                     <FormControl>
-                      <Input className="selection:bg-green" placeholder="Nhập email của bạn" {...field} />
+                      <Input className="selection:bg-green" placeholder="Nhập email nhà tuyển dụng" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

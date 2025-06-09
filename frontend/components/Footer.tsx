@@ -37,20 +37,16 @@ const Footer = () => {
             <h3 className="text-xl font-semibold mb-4">Liên Kết Nhanh</h3>
             <ul className="space-y-2">
               <li>
-                <Link href="/jobs" className="text-gray-400 hover:text-white transition">
+                <Link href="/job" className="text-gray-400 hover:text-white transition">
                   Tìm Việc Làm
                 </Link>
               </li>
               <li>
-                <Link href="/companies" className="text-gray-400 hover:text-white transition">
+                <Link href="/company" className="text-gray-400 hover:text-white transition">
                   Công Ty
                 </Link>
               </li>
-              <li>
-                <Link href="/careers" className="text-gray-400 hover:text-white transition">
-                  Tài Nguyên Nghề Nghiệp
-                </Link>
-              </li>
+
               <li>
                 <Link href="/contact" className="text-gray-400 hover:text-white transition">
                   Liên Hệ

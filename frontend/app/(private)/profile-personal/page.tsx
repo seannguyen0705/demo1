@@ -10,7 +10,7 @@ export default function ProfilePersonal() {
   const { user } = useGetMe();
   return (
     <main className="flex flex-col lg:flex-row">
-      <div className="flex-1 space-y-4 px-4">
+      <div className="flex-1 space-y-4 px-4 min-h-[60vh]">
         <Info user={user} />
         <Intro user={user} />
         {user?.role === UserRole.CANDIDATE && <Experience />}
