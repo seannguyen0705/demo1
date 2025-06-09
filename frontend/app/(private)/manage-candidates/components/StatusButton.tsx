@@ -17,13 +17,13 @@ export default function StatusButton({ status, applyJobId }: IProps) {
         <ConfirmAction
           title="Phỏng vấn"
           description="Bạn có chắc chắn muốn phỏng vấn ứng viên này không?"
-          action={() => updateApplyJobStatus({ status: ApplyJobStatusDB['Phỏng vấn'] })}
+          action={() => updateApplyJobStatus({ status: ApplyJobStatusDB.INTERVIEWING })}
           button={<Button variant="outline">Phỏng vấn</Button>}
         />
         <ConfirmAction
           title="Từ chối"
           description="Bạn có chắc chắn muốn từ chối ứng viên này không?"
-          action={() => updateApplyJobStatus({ status: ApplyJobStatusDB['Từ chối'] })}
+          action={() => updateApplyJobStatus({ status: ApplyJobStatusDB.REJECTED })}
           button={<Button variant="destructive">Từ chối</Button>}
         />
       </div>
@@ -37,13 +37,13 @@ export default function StatusButton({ status, applyJobId }: IProps) {
         <ConfirmAction
           title="Nhận"
           description="Bạn có chắc chắn muốn nhận ứng viên này không?"
-          action={() => updateApplyJobStatus({ status: ApplyJobStatusDB['Đã nhận'] })}
+          action={() => updateApplyJobStatus({ status: ApplyJobStatusDB.HIRED })}
           button={<Button variant="outline">Nhận</Button>}
         />
         <ConfirmAction
           title="Từ chối"
           description="Bạn có chắc chắn muốn từ chối ứng viên này không?"
-          action={() => updateApplyJobStatus({ status: ApplyJobStatusDB['Từ chối'] })}
+          action={() => updateApplyJobStatus({ status: ApplyJobStatusDB.REJECTED })}
           button={<Button variant="destructive">Từ chối</Button>}
         />
       </div>

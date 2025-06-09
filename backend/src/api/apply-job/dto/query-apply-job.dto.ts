@@ -1,5 +1,5 @@
 import { QueryPaginationDto } from '@/common/dto/query-pagination.dto';
-import { ApplyJobStatus, Order, OrderByApplyJob } from '@/common/enums';
+import { ApplyJobStatusQuery, Order, OrderByApplyJob } from '@/common/enums';
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
 import { IsEnum, IsOptional, IsString } from 'class-validator';
@@ -10,7 +10,7 @@ export class QueryApplyJobDto extends QueryPaginationDto {
   @ApiPropertyOptional()
   keyword: string;
 
-  @IsEnum(Object.keys(ApplyJobStatus))
+  @IsEnum(ApplyJobStatusQuery)
   @IsOptional()
   @ApiPropertyOptional()
   @Transform(({ value }) => {
@@ -22,7 +22,7 @@ export class QueryApplyJobDto extends QueryPaginationDto {
     }
     return value;
   })
-  status: ApplyJobStatus;
+  status: ApplyJobStatusQuery;
 
   @IsEnum(OrderByApplyJob)
   @IsOptional()

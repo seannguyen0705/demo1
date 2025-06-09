@@ -54,7 +54,7 @@ export default function JobItem({ job, navtoDetail, showStatus }: IProps) {
         <Link href={`/company/${job.company.name}`} className="inline-flex relative z-10 items-center gap-2 mb-2">
           <Image
             className="size-[50px] border-2 border-gray-500 rounded-sm"
-            src={job.company.logo.url || '/default_logo.png'}
+            src={job.company.logo?.url || '/default_logo.png'}
             alt={job.company.name}
             width={50}
             height={50}
