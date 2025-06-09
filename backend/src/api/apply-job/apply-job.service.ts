@@ -42,21 +42,23 @@ export class ApplyJobService {
   }
 
   public async staticsticsByJobId(jobId: string) {
-    const countNew = await this.applyJobRepository.count({
-      where: { jobId, status: ApplyJobStatus.NEW },
-    });
-    const countProcessing = await this.applyJobRepository.count({
-      where: { jobId, status: ApplyJobStatus.PROCESSING },
-    });
-    const countInterviewing = await this.applyJobRepository.count({
-      where: { jobId, status: ApplyJobStatus.INTERVIEWING },
-    });
-    const countHired = await this.applyJobRepository.count({
-      where: { jobId, status: ApplyJobStatus.HIRED },
-    });
-    const countRejected = await this.applyJobRepository.count({
-      where: { jobId, status: ApplyJobStatus.REJECTED },
-    });
+    const [countNew, countProcessing, countInterviewing, countHired, countRejected] = await Promise.all([
+      this.applyJobRepository.count({
+        where: { jobId, status: ApplyJobStatus.NEW },
+      }),
+      this.applyJobRepository.count({
+        where: { jobId, status: ApplyJobStatus.PROCESSING },
+      }),
+      this.applyJobRepository.count({
+        where: { jobId, status: ApplyJobStatus.INTERVIEWING },
+      }),
+      this.applyJobRepository.count({
+        where: { jobId, status: ApplyJobStatus.HIRED },
+      }),
+      this.applyJobRepository.count({
+        where: { jobId, status: ApplyJobStatus.REJECTED },
+      }),
+    ]);
     const countTotal = countNew + countProcessing + countInterviewing + countHired + countRejected;
     return {
       countNew,
