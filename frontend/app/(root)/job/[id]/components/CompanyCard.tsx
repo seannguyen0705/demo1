@@ -12,7 +12,7 @@ export default async function CompanyCard({ companyName }: IProps) {
     <article className="flex dark:bg-gray-800 h-auto bg-light-green rounded-lg p-4 flex-col gap-2">
       <Link href={`/company/${company.name}`} className="flex lg:flex-row flex-col items-center gap-2">
         <Image
-          src={company.logo.url}
+          src={company.logo?.url || '/default_logo.png'}
           alt={company.name}
           width={120}
           height={120}
