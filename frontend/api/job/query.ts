@@ -1,14 +1,20 @@
 import queryFetch from '@/utils/helpers/queryFetch';
 import { IJob, QueryJob } from './interface';
+import { notFound } from 'next/navigation';
 
 export const getJobByCompanyId = async (companyId: string) => {
-  const response = queryFetch<IJob[]>(`company/${companyId}/jobs`, {
-    method: 'GET',
-    next: {
-      tags: [`company/${companyId}/jobs`],
-    },
-  });
-  return response;
+  try {
+    const response = queryFetch<IJob[]>(`company/${companyId}/jobs`, {
+      method: 'GET',
+      next: {
+        tags: [`company/${companyId}/jobs`],
+      },
+    });
+    return response;
+  } catch (error) {
+    console.error(error);
+    return { data: [] };
+  }
 };
 
 export const getJobById = async (id: string) => {

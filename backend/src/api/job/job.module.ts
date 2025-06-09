@@ -5,8 +5,18 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Job } from './entities/job.entity';
 import { CompanyModule } from '../company/company.module';
 import { SkillModule } from '../skill/skill.module';
+import { ApplyJobModule } from '../apply-job/apply-job.module';
+import { AddressModule } from '../address/address.module';
+import { CompanyAddressModule } from '../company-address/company-address.module';
 @Module({
-  imports: [TypeOrmModule.forFeature([Job]), CompanyModule, SkillModule],
+  imports: [
+    TypeOrmModule.forFeature([Job]),
+    CompanyModule,
+    SkillModule,
+    ApplyJobModule,
+    AddressModule,
+    CompanyAddressModule,
+  ],
   controllers: [JobController],
   providers: [JobService],
   exports: [JobService],

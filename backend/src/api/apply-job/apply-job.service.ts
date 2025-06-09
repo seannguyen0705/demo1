@@ -5,6 +5,7 @@ import { ApplyJobRepository } from './apply-job.repository';
 import { CreateApplyJobDto } from './dto/create-apply-job.dto';
 import { DataSource } from 'typeorm';
 import { SaveJob } from '../save-job/entities/save-job.entity';
+import { ApplyJobStatus } from '@/common/enums';
 
 @Injectable()
 export class ApplyJobService {
@@ -38,5 +39,34 @@ export class ApplyJobService {
     } finally {
       await queryRunner.release();
     }
+  }
+
+  public async staticsticsByJobId(jobId: string) {
+    const [countNew, countProcessing, countInterviewing, countHired, countRejected] = await Promise.all([
+      this.applyJobRepository.count({
+        where: { jobId, status: ApplyJobStatus.NEW },
+      }),
+      this.applyJobRepository.count({
+        where: { jobId, status: ApplyJobStatus.PROCESSING },
+      }),
+      this.applyJobRepository.count({
+        where: { jobId, status: ApplyJobStatus.INTERVIEWING },
+      }),
+      this.applyJobRepository.count({
+        where: { jobId, status: ApplyJobStatus.HIRED },
+      }),
+      this.applyJobRepository.count({
+        where: { jobId, status: ApplyJobStatus.REJECTED },
+      }),
+    ]);
+    const countTotal = countNew + countProcessing + countInterviewing + countHired + countRejected;
+    return {
+      countNew,
+      countProcessing,
+      countInterviewing,
+      countHired,
+      countRejected,
+      countTotal,
+    };
   }
 }

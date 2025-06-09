@@ -66,4 +66,35 @@ export default {
     jwtSecure: true,
     roles: [UserRole.CANDIDATE],
   },
+
+  getStaticsticsByJobId: <IRouteParams>{
+    path: 'jobs/:id/statistics',
+    method: RequestMethod.GET,
+    code: HttpStatus.OK,
+    jwtSecure: true,
+    roles: [UserRole.EMPLOYER, UserRole.ADMIN],
+  },
+
+  deleteJob: <IRouteParams>{
+    path: 'jobs/:id',
+    method: RequestMethod.DELETE,
+    code: HttpStatus.OK,
+    jwtSecure: true,
+    roles: [UserRole.EMPLOYER],
+  },
+
+  updatePublishedJob: <IRouteParams>{
+    path: 'jobs/:id',
+    method: RequestMethod.PUT,
+    code: HttpStatus.OK,
+    jwtSecure: true,
+    roles: [UserRole.EMPLOYER],
+  },
+  updateStatus: <IRouteParams>{
+    path: 'jobs/:id/status',
+    method: RequestMethod.PUT,
+    code: HttpStatus.OK,
+    jwtSecure: true,
+    roles: [UserRole.EMPLOYER],
+  },
 };

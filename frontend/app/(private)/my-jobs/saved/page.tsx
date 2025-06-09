@@ -7,6 +7,7 @@ import { useSearchParams } from 'next/navigation';
 import Pagination from '@/components/Pagination';
 import OrderBy from '@/app/(root)/job/components/OrderBy';
 import JobSaveList from '../Components/JobSaveList';
+import NotFoundJob from '@/app/(root)/job/components/NotFoundJob';
 
 export default function SavedJobs() {
   const searchParams = useSearchParams();
@@ -39,11 +40,16 @@ export default function SavedJobs() {
       <div className="flex justify-end mb-3">
         <OrderBy />
       </div>
-
-      <JobSaveList jobs={savedData.jobs} />
-      <div className="my-3">
-        <Pagination totalPages={totalPages} currentPage={savedData.currentPage} />
-      </div>
+      {savedData.jobs.length === 0 ? (
+        <NotFoundJob title="Không có việc làm đã lưu" />
+      ) : (
+        <>
+          <JobSaveList jobs={savedData.jobs} />
+          <div className="my-3">
+            <Pagination totalPages={totalPages} currentPage={savedData.currentPage} />
+          </div>
+        </>
+      )}
     </main>
   );
 }

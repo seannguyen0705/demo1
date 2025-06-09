@@ -12,7 +12,7 @@ export default function SearchHome() {
         <h1 className="text-[30px] lg:text-[50px] leading-[30px] lg:leading-[50px] text-center font-bold">
           Tìm kiếm công việc mơ ước của bạn ngay hôm nay!
         </h1>
-        <p className="font-medium text-center text-gray-700 text-sm lg:text-lg">
+        <p className="font-medium text-center dark:text-gray-300 text-gray-700 text-sm lg:text-lg">
           Kết nối với hàng trăm công việc cùng với doanh nghiệp hàng đầu trong ngành
         </p>
         <form
@@ -31,7 +31,7 @@ export default function SearchHome() {
           </Button>
         </form>
         <div className="flex flex-col md:flex-row gap-2 md:items-center">
-          <span className="text-lg text-gray-700">Gợi ý cho bạn:</span>
+          <span className="text-lg text-gray-700 dark:text-gray-300">Gợi ý cho bạn:</span>
           <ul className="flex flex-wrap gap-2">
             {skills.map((skill) => (
               <li

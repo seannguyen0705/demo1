@@ -20,7 +20,8 @@
     "migration:generate": "NAME=$NAME yarn workspace backend migration:generate",
     "migration:create": "NAME=$NAME yarn workspace backend migration:create",
     "migration:run": "yarn workspace backend migration:run",
-    "migration:revert": "yarn workspace backend migration:revert"
+    "migration:revert": "yarn workspace backend migration:revert",
+    "db:seed": "yarn workspace backend db:seed"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^6.20.0",

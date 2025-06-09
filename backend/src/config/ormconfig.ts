@@ -16,7 +16,7 @@ export const AppDataSource = new DataSource({
   database: configService.get('DB_NAME'),
   logging: true,
   synchronize: false,
-  entities: ['dist/api/**/*.entity.js'],
-  migrations: ['dist/database/migrations/*.js'],
+  entities: [`${__dirname}/../**/*.entity{.ts,.js}`],
+  migrations: [`${__dirname}/../database/migrations/*.js`],
   namingStrategy: new SnakeNamingStrategy(),
 });

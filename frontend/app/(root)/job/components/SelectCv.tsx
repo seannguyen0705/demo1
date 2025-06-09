@@ -24,7 +24,7 @@ export default function SelectCv({ fileId, onChange }: IProps) {
       {myCvs?.map((cv) => (
         <li
           key={cv.file.id}
-          className={`relative bg-light-green border-2 rounded-lg p-3 ${selectedCvId === cv.file.id ? 'border-green' : 'border-transparent'}`}
+          className={`relative bg-light-green dark:bg-green/10 border-2 rounded-lg p-3 ${selectedCvId === cv.file.id ? 'border-green' : 'border-transparent'}`}
         >
           <Link
             href={cv.file.url}
@@ -64,7 +64,7 @@ function CreateCv() {
   };
 
   return (
-    <div className={`mt-4 w-full ${isPending && 'opacity-50'}`}>
+    <div className={`mt-4 mb-2 w-full ${isPending && 'opacity-50'}`}>
       <label
         htmlFor="cv-upload"
         className={`flex items-center border border-dashed border-gray-300 rounded-lg p-3 flex-col justify-center cursor-pointer gap-2 ${disable && 'opacity-50'}`}

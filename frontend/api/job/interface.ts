@@ -1,17 +1,17 @@
 import { JobType, JobStatus, SalaryType, JobLevel } from '@/utils/enums';
 import { ICompany } from '@/api/company/interface';
-import { IJobAddress } from '@/api/job-address/interface';
-import { IJobSkill } from '@/api/job-skill/interface';
 import { IQueryPagination } from '../interface';
 import { IApplyJob } from '../apply-job/interface';
 import { ISaveJob } from '../save-job/interfacet';
+import { IAddress } from '@/api/address/interface';
+import { ISkill } from '@/api/skill/interface';
 
 interface IJob {
   id: string;
   title: string;
   description: string;
-  jobAddresses: IJobAddress[];
-  jobSkills: IJobSkill[];
+  addresses: IAddress[];
+  skills: ISkill[];
   jobType: JobType;
   status: JobStatus;
   salaryType: SalaryType;
@@ -24,7 +24,8 @@ interface IJob {
   benefit: string;
   companyId: string;
   company: ICompany;
-  createdAt: Date;
+  expiredAt: string;
+  createdAt: string;
   applyJobs: IApplyJob[];
   saveJobs: ISaveJob[];
 }
@@ -63,6 +64,25 @@ interface ICreateDraftJob {
   companyId?: string;
 }
 
+interface IUpdatePublishedJob {
+  title?: string;
+  addressIds?: string[];
+  salaryMin?: string;
+  salaryMax?: string;
+  jobType?: string;
+  jobLevel?: string;
+  jobExpertise?: string;
+  jobDomain?: string;
+  description?: string;
+  requirement?: string;
+  benefit?: string;
+  skillIds?: string[];
+}
+
+interface IUpdateJob extends IUpdatePublishedJob {
+  status?: JobStatus;
+}
+
 interface IQueryJob extends IQueryPagination {
   keyword?: string;
   provinceName?: string;
@@ -82,4 +102,28 @@ interface QueryJob {
   total: number;
 }
 
-export type { IJob, ICreatePublishedJob, ICreateDraftJob, IQueryJob, QueryJob };
+interface JobStatistics {
+  countNew: number;
+  countProcessing: number;
+  countInterviewing: number;
+  countHired: number;
+  countRejected: number;
+  countTotal: number;
+  viewCount: number;
+}
+
+interface IUpdateJobStatus {
+  status: JobStatus;
+}
+
+export type {
+  IJob,
+  ICreatePublishedJob,
+  ICreateDraftJob,
+  IQueryJob,
+  QueryJob,
+  JobStatistics,
+  IUpdateJob,
+  IUpdatePublishedJob,
+  IUpdateJobStatus,
+};

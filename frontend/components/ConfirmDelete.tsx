@@ -16,25 +16,15 @@ interface IProps {
   title: string;
   description: string;
   action: () => void;
-  icon: React.ReactNode;
+  button: React.ReactNode;
   disabled?: boolean;
 }
 
-export default function ConfirmDelete({
-  title,
-  description,
-  action,
-  icon,
-  disabled,
-}: IProps) {
+export default function ConfirmDelete({ title, description, action, button, disabled }: IProps) {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild>
-        <Button disabled={disabled} variant="destructive">
-          {icon}
-        </Button>
-      </DialogTrigger>
+      <DialogTrigger asChild>{button}</DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
@@ -45,6 +35,7 @@ export default function ConfirmDelete({
             Hủy
           </Button>
           <Button
+            disabled={disabled}
             variant="destructive"
             onClick={async () => {
               action();

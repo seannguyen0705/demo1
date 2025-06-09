@@ -23,7 +23,7 @@ export default async function JobDetail({ jobId }: IProps) {
       <JobHeader job={job} />
       <div className="p-4 space-y-4 ">
         <CompanyImage companyImages={companyImages.data} />
-        <JobInfo job={job} />
+        <JobInfo job={job} isCandidate={true} />
         <JobDescription job={job} />
         <JobRequirement job={job} />
         <JobBenefit job={job} />

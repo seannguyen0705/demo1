@@ -5,6 +5,7 @@ import { CircleDollarSign, Heart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import getStringSalary from '@/utils/helpers/getStringSalary';
 import Link from 'next/link';
+import isExpired from '@/utils/helpers/isExpired';
 
 interface IProps {
   job: IJob;
@@ -14,11 +15,11 @@ export default function JobHeader({ job }: IProps) {
   return (
     <section className="border-b-2 pb-4 relative">
       <div className="flex items-center gap-4 mb-3">
-        <Link href={`/company/${job.company.name}`}>
+        <Link href={`/company/${job?.company?.name}`}>
           <Image
             className="border-2 border-gray-300 rounded-md"
-            src={job.company.logo.url}
-            alt={job.company.name}
+            src={job?.company?.logo?.url}
+            alt={job?.company?.name}
             width={100}
             height={100}
           />
@@ -36,16 +37,23 @@ export default function JobHeader({ job }: IProps) {
           </div>
         </div>
       </div>
-      <div className="flex justify-center items-center gap-2">
-        <div className="flex-1">
-          <Link href={'/sign-in'} className="w-full">
-            <Button className="w-full bg-green text-white hover:bg-green/80 hover:text-white">Ứng tuyển</Button>
-          </Link>
+
+      {isExpired(job.expiredAt) ? (
+        <div className="flex justify-center items-center gap-2">
+          <p className="text-red-500">Đã hết hạn</p>
         </div>
-        <Button variant={'outline'}>
-          <Heart />
-        </Button>
-      </div>
+      ) : (
+        <div className="flex justify-center items-center gap-2">
+          <div className="flex-1">
+            <Link href={'/sign-in'} className="w-full">
+              <Button className="w-full bg-green text-white hover:bg-green/80 hover:text-white">Ứng tuyển</Button>
+            </Link>
+          </div>
+          <Button variant={'outline'}>
+            <Heart />
+          </Button>
+        </div>
+      )}
     </section>
   );
 }

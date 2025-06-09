@@ -2,8 +2,6 @@ import { useFormContext } from 'react-hook-form';
 import { CreateJobFormSchema } from '../page';
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { Minus, Plus } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import { SalaryType } from '@/utils/enums';
 import RadioSalaryType from './RadioSalaryType';
 import { useState } from 'react';
@@ -15,7 +13,7 @@ import CheckBox from '@/components/Checkbox';
 
 export default function CreateJobInfo() {
   const form = useFormContext<CreateJobFormSchema>();
-  const [salaryType, setSalaryType] = useState('');
+  const [salaryType, setSalaryType] = useState(form.getValues('salaryType'));
   const disabledSalaryMin = salaryType === SalaryType.NEGOTIATION || salaryType === SalaryType.UPTO;
   const disabledSalaryMax = salaryType === SalaryType.NEGOTIATION || salaryType === SalaryType.ATLEAST;
 
@@ -79,7 +77,7 @@ export default function CreateJobInfo() {
             <FormLabel>Loại lương</FormLabel>
             <FormControl>
               <RadioSalaryType
-                value={salaryType}
+                value={field.value || salaryType}
                 onChange={(value) => {
                   setSalaryType(value);
                   field.onChange(value);
@@ -189,16 +187,31 @@ export default function CreateJobInfo() {
 
       <FormField
         control={form.control}
-        name="skillIds"
+        name="skills"
         render={({ field }) => (
           <FormItem className="sm:col-span-2">
             <FormLabel>Kĩ năng</FormLabel>
             <FormControl>
               <AddSkill
+                skills={field.value}
                 onChange={(value) => {
                   field.onChange(value);
                 }}
               />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+
+      <FormField
+        control={form.control}
+        name="expiredAt"
+        render={({ field }) => (
+          <FormItem className="">
+            <FormLabel>Hạn ứng tuyển</FormLabel>
+            <FormControl>
+              <Input type="date" className="selection:bg-green w-fit" placeholder="Ex: 2025-01-01" {...field} />
             </FormControl>
             <FormMessage />
           </FormItem>

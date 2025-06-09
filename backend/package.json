@@ -25,7 +25,7 @@
     "migration:generate": "yarn build && npm run typeorm -- -d ./src/config/ormconfig.ts migration:generate ./src/database/migrations/$NAME",
     "migration:create": "yarn build && npm run typeorm -- migration:create ./src/database/migrations/$NAME",
     "migration:revert": "yarn build && npm run typeorm -- -d ./src/config/ormconfig.ts migration:revert",
-    "db:seed": "yarn build && node dist/database/seeds/index.js"
+    "db:seed": "ts-node -r tsconfig-paths/register src/database/seeds/index.ts    "
   },
   "dependencies": {
     "@nestjs-modules/mailer": "^2.0.2",

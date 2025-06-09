@@ -12,7 +12,9 @@ import {
 } from 'class-validator';
 import { JobType, JobStatus, SalaryType, JobLevel } from '@/common/enums';
 import { Transform, Type } from 'class-transformer';
-import { IsSalaryValid } from '@/decorators';
+import { IsOnlyDate, IsSalaryValid } from '@/decorators';
+import { Address } from '@/api/address/entities/address.entity';
+import { Skill } from '@/api/skill/entities/skill.entity';
 
 export class CreatePublishedJobDto {
   @IsString()
@@ -123,6 +125,13 @@ export class CreatePublishedJobDto {
   })
   skillIds: string[];
 
+  @IsNotEmpty()
+  @IsOnlyDate()
+  @ApiProperty({
+    example: '2025-01-01',
+  })
+  expiredAt: Date;
+
   @IsSalaryValid({
     message: `salaryMin and salaryMax must satisfy constraints based on salaryType
       - NEGOTIATION: both must be null
@@ -130,8 +139,10 @@ export class CreatePublishedJobDto {
       - RANGE: both salaryMin and salaryMax are required
       - ATLEAST: only salaryMin is required`,
   })
-  salaryValidator: boolean; // Dummy property to trigger validation
+  salaryValidator: boolean;
 
   status: JobStatus;
   companyId: string;
+  addresses: Address[];
+  skills: Skill[];
 }

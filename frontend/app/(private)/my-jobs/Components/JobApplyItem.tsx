@@ -9,10 +9,10 @@ interface IProps {
 }
 
 export default function JobApplyItem({ job }: IProps) {
-  const provinceNames = job.jobAddresses.map((jobAddress) => jobAddress.address.province.name);
+  const provinceNames = job.addresses.map((address) => address.province.name);
   const setProvinceNames = new Set(provinceNames);
   return (
-    <article className="lg:p-4 relative flex flex-col sm:flex-row items-center justify-between border-b border-dashed hover:bg-gray-100">
+    <article className="lg:p-4 relative flex flex-col sm:flex-row items-center justify-between border-b border-dashed hover:bg-gray-100 dark:hover:bg-gray-900">
       <div className="flex gap-4 items-center">
         <Link className="relative z-10" href={`/company/${job.company.name}`}>
           <Image

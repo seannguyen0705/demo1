@@ -3,36 +3,37 @@ import SelectSkill from '../../profile-personal/components/SelectSkill';
 import { Button } from '@/components/ui/button';
 import { X } from 'lucide-react';
 interface IProps {
-  onChange: (value: string[]) => void;
+  skills: { value: string; label: string }[];
+  onChange: (value: { value: string; label: string }[]) => void;
 }
 
-export default function AddSkill({ onChange }: IProps) {
+export default function AddSkill({ skills, onChange }: IProps) {
   const [skill, setSkill] = useState({ value: '', label: '' });
-  const [skillList, setSkillList] = useState<{ value: string; label: string }[]>([]);
+  // const [skillList, setSkillList] = useState<{ value: string; label: string }[]>(skills);
   const handleAddSkill = () => {
     if (skill.value) {
-      setSkillList([...skillList, skill]);
+      onChange([...skills, skill]);
       setSkill({ value: '', label: '' });
     }
   };
   const handleRemoveSkill = (value: string) => {
-    setSkillList(skillList.filter((item) => item.value !== value));
+    onChange(skills.filter((item) => item.value !== value));
   };
 
-  useEffect(() => {
-    onChange(skillList.map((item) => item.value));
-  }, [skillList]);
+  // useEffect(() => {
+  //   onChange(skillList.map((item) => item.value));
+  // }, [skillList]);
   return (
     <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
       <div className="w-full">
         <SelectSkill
           skill={skill}
           onChange={(value) => setSkill(value)}
-          excludeSkillIds={skillList.map((item) => item.value)}
+          excludeSkillIds={skills.map((item) => item.value)}
         />
       </div>
       <Button
-        disabled={skillList.length >= 10}
+        disabled={skills.length >= 10}
         type="button"
         className="bg-green text-white hover:bg-green hover:opacity-80"
         onClick={handleAddSkill}
@@ -40,10 +41,10 @@ export default function AddSkill({ onChange }: IProps) {
         Thêm
       </Button>
 
-      <p className="text-sm text-muted-foreground">Đã chọn {skillList.length}/10 kĩ năng</p>
+      <p className="text-sm text-muted-foreground">Đã chọn {skills.length}/10 kĩ năng</p>
 
       <ul className="col-span-2 flex flex-wrap gap-2">
-        {skillList.map((item) => (
+        {skills.map((item) => (
           <li key={item.value}>
             <SkillItem skill={item} onRemove={handleRemoveSkill} />
           </li>

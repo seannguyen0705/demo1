@@ -1,27 +1,31 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { JobRepository } from './job.repository';
-import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
 import { Job } from './entities/job.entity';
 import { JobLevel, JobStatus, JobType, SortJob } from '@/common/enums';
 
 import { CompanyService } from '../company/company.service';
 import { CreateDraftJobDto } from './dto/create-draft-job.dto';
-import { DataSource, SelectQueryBuilder } from 'typeorm';
-import { JobSkill } from '../job-skill/entities/job-skill.entity';
+import { SelectQueryBuilder } from 'typeorm';
 import { CreatePublishedJobDto } from './dto/create-published-job.dto';
 import { JobAlreadyExistsException } from './job.exception';
-import { JobAddress } from '../job-address/entities/job-address.entity';
 import { QueryJobDto } from './dto/query-job.dto';
 import { SkillService } from '../skill/skill.service';
 import { EmployerQueryJobDto } from './dto/employer-query-job.dto';
 import { QueryJobApplyDto } from './dto/query-job-apply.dto';
+import { ApplyJobService } from '../apply-job/apply-job.service';
+import { AddressService } from '../address/address.service';
+import { UpdatePublishedJobDto } from './dto/update-published-job.dto';
+import { CompanyAddressService } from '../company-address/company-address.service';
 @Injectable()
 export class JobService {
   constructor(
     @InjectRepository(Job) private readonly jobRepository: JobRepository,
     private readonly companyService: CompanyService,
     private readonly skillService: SkillService,
-    @InjectDataSource() private readonly dataSource: DataSource,
+    private readonly applyJobService: ApplyJobService,
+    private readonly addressService: AddressService,
+    private readonly companyAddressService: CompanyAddressService,
   ) {}
 
   async findByCompanyId(companyId: string) {
@@ -29,11 +33,9 @@ export class JobService {
       .createQueryBuilder('job')
       .innerJoin('job.company', 'company')
       .leftJoin('company.logo', 'logo')
-      .innerJoin('job.jobAddresses', 'jobAddresses')
-      .innerJoin('jobAddresses.address', 'address')
-      .innerJoin('address.province', 'province')
-      .leftJoin('job.jobSkills', 'jobSkills')
-      .leftJoin('jobSkills.skill', 'skill')
+      .innerJoin('job.addresses', 'addresses')
+      .innerJoin('addresses.province', 'province')
+      .leftJoin('job.skills', 'skills')
       .select([
         'job.id',
         'job.title',
@@ -46,53 +48,37 @@ export class JobService {
         'job.jobType',
         'job.jobLevel',
         'logo.url',
-        'jobAddresses.id',
-        'address.id',
+        'addresses.id',
         'province.name',
-        'jobSkills.id',
-        'skill.id',
-        'skill.name',
+        'skills.id',
+        'skills.name',
         'job.status',
       ])
-      .andWhere('job.status =:status', { status: JobStatus.PUBLISHED });
+      .andWhere('job.status =:status', { status: JobStatus.PUBLISHED })
+      .andWhere('job.expiredAt >:now', { now: new Date() });
     queryBuilder.andWhere('job.companyId =:companyId', { companyId }).orderBy('job.createdAt', 'DESC');
 
     return queryBuilder.getMany();
   }
   async createDraftJob(employerId: string, data: CreateDraftJobDto) {
-    const queryRunner = this.dataSource.createQueryRunner();
-    await queryRunner.connect();
-    await queryRunner.startTransaction();
-    try {
-      const company = await this.companyService.findOneByEmployerId(employerId);
-      if (data.title) {
-        const existingJob = await this.findOneByTitleAndCompanyId(data.title, company.id);
-        if (existingJob) {
-          throw new JobAlreadyExistsException();
-        }
+    const { addressIds, skillIds } = data;
+    const company = await this.companyService.findOneByEmployerId(employerId);
+    if (data.title) {
+      const existingJob = await this.findOneByTitleAndCompanyId(data.title, company.id);
+      if (existingJob) {
+        throw new JobAlreadyExistsException();
       }
-      const newJob = await queryRunner.manager.save(Job, { ...data, companyId: company.id, status: JobStatus.DRAFT });
-      if (data.skillIds) {
-        await queryRunner.manager.insert(
-          JobSkill,
-          data.skillIds.map((skillId) => ({ jobId: newJob.id, skillId })),
-        );
-      }
-      if (data.addressIds) {
-        const createJobAddresses = data.addressIds.map((addressId) => ({
-          addressId,
-          jobId: newJob.id,
-        }));
-        await queryRunner.manager.insert(JobAddress, createJobAddresses);
-      }
-      await queryRunner.commitTransaction();
-      return newJob;
-    } catch (error) {
-      await queryRunner.rollbackTransaction();
-      throw error;
-    } finally {
-      await queryRunner.release();
     }
+    if (addressIds) {
+      const addresses = await this.addressService.findByIds(addressIds);
+      data.addresses = addresses;
+    }
+    if (skillIds) {
+      const skills = await this.skillService.findByIds(skillIds);
+      data.skills = skills;
+    }
+    const newJob = await this.jobRepository.save({ ...data, companyId: company.id, status: JobStatus.DRAFT });
+    return newJob;
   }
 
   public async findOneByTitleAndCompanyId(title: string, companyId: string) {
@@ -102,39 +88,21 @@ export class JobService {
     });
   }
   async createPublishedJob(employerId: string, data: CreatePublishedJobDto) {
-    const queryRunner = this.dataSource.createQueryRunner();
-    await queryRunner.connect();
-    await queryRunner.startTransaction();
-    try {
-      const company = await this.companyService.findOneByEmployerId(employerId);
-      const existingJob = await this.findOneByTitleAndCompanyId(data.title, company.id);
-      if (existingJob) {
-        throw new JobAlreadyExistsException();
-      }
-      const newJob = await queryRunner.manager.save(Job, {
-        ...data,
-        companyId: company.id,
-        status: JobStatus.PUBLISHED,
-      });
-
-      await queryRunner.manager.insert(
-        JobSkill,
-        data.skillIds.map((skillId) => ({ jobId: newJob.id, skillId })),
-      );
-
-      const createJobAddresses = data.addressIds.map((addressId) => ({
-        addressId,
-        jobId: newJob.id,
-      }));
-      await queryRunner.manager.insert(JobAddress, createJobAddresses);
-      await queryRunner.commitTransaction();
-      return newJob;
-    } catch (error) {
-      await queryRunner.rollbackTransaction();
-      throw error;
-    } finally {
-      await queryRunner.release();
+    const company = await this.companyService.findOneByEmployerId(employerId);
+    const existingJob = await this.findOneByTitleAndCompanyId(data.title, company.id);
+    if (existingJob) {
+      throw new JobAlreadyExistsException();
     }
+    const addresses = await this.addressService.findByIds(data.addressIds);
+    const skills = await this.skillService.findByIds(data.skillIds);
+    const newJob = await this.jobRepository.save({
+      ...data,
+      companyId: company.id,
+      status: JobStatus.PUBLISHED,
+      addresses,
+      skills,
+    });
+    return newJob;
   }
 
   private async searchJobByKeyword(queryBuilder: SelectQueryBuilder<Job>, keyword?: string) {
@@ -146,7 +114,7 @@ export class JobService {
       }
       const skill = await this.skillService.findOneByName(keyword);
       if (skill) {
-        queryBuilder.andWhere('skill.name ILIKE :keyword', { keyword });
+        queryBuilder.andWhere('skills.name ILIKE :keyword', { keyword });
         return;
       }
       queryBuilder.andWhere(
@@ -220,12 +188,9 @@ export class JobService {
       .createQueryBuilder('job')
       .innerJoin('job.company', 'company')
       .leftJoin('company.logo', 'logo')
-      .innerJoin('job.jobAddresses', 'jobAddresses')
-      .innerJoin('jobAddresses.address', 'address')
-      .innerJoin('address.province', 'province')
-      .leftJoin('job.jobSkills', 'jobSkills')
-      .leftJoin('jobSkills.skill', 'skill')
-
+      .innerJoin('job.addresses', 'addresses')
+      .innerJoin('addresses.province', 'province')
+      .leftJoin('job.skills', 'skills')
       .select([
         'job.id',
         'job.title',
@@ -238,14 +203,13 @@ export class JobService {
         'job.jobType',
         'job.jobLevel',
         'logo.url',
-        'jobAddresses.id',
-        'address.id',
+        'addresses.id',
         'province.name',
-        'jobSkills.id',
-        'skill.id',
-        'skill.name',
+        'skills.id',
+        'skills.name',
       ])
-      .andWhere('job.status =:status', { status: JobStatus.PUBLISHED });
+      .andWhere('job.status =:status', { status: JobStatus.PUBLISHED })
+      .andWhere('job.expiredAt >:now', { now: new Date() });
 
     await Promise.all([
       this.searchJobByKeyword(queryBuilder, keyword),
@@ -274,11 +238,9 @@ export class JobService {
       .createQueryBuilder('job')
       .innerJoin('job.company', 'company')
       .leftJoin('company.logo', 'logo')
-      .leftJoin('job.jobAddresses', 'jobAddresses')
-      .leftJoin('jobAddresses.address', 'address')
-      .leftJoin('address.province', 'province')
-      .leftJoin('job.jobSkills', 'jobSkills')
-      .leftJoin('jobSkills.skill', 'skill')
+      .leftJoin('job.addresses', 'addresses')
+      .leftJoin('addresses.province', 'province')
+      .leftJoin('job.skills', 'skills')
       .skip(limit * (page - 1))
       .take(limit)
 
@@ -290,18 +252,19 @@ export class JobService {
         'job.salaryType',
         'company.name',
         'job.salaryMin',
+        'job.expiredAt',
         'job.salaryMax',
         'job.jobType',
         'job.status',
         'job.jobLevel',
         'logo.url',
-        'jobAddresses.id',
-        'address.id',
-        'address.detail',
+        'addresses.id',
+        'addresses.id',
+        'addresses.detail',
         'province.name',
-        'jobSkills.id',
-        'skill.id',
-        'skill.name',
+        'skills.id',
+        'skills.id',
+        'skills.name',
       ])
       .andWhere('job.companyId =:companyId', { companyId: company.id });
 
@@ -327,28 +290,26 @@ export class JobService {
       .createQueryBuilder('job')
       .innerJoin('job.company', 'company')
       .leftJoin('company.logo', 'logo')
-      .leftJoin('job.jobAddresses', 'jobAddresses')
-      .leftJoin('jobAddresses.address', 'address')
-      .leftJoin('address.province', 'province')
-      .leftJoin('job.jobSkills', 'jobSkills')
-      .leftJoin('jobSkills.skill', 'skill')
+      .leftJoin('job.addresses', 'addresses')
+      .leftJoin('addresses.province', 'province')
+      .leftJoin('job.skills', 'skills')
       .select([
         'job.id',
         'job.title',
+        'job.expiredAt',
         'company.name',
         'company.id',
         'logo.url',
         'job.description',
-        'jobSkills.id',
-        'skill.name',
+        'skills.id',
+        'skills.name',
         'job.requirement',
         'job.benefit',
-        'jobAddresses.id',
-        'address.id',
+        'addresses.id',
+        'addresses.detail',
         'province.name',
         'job.jobType',
         'job.createdAt',
-        'address.detail',
         'job.salaryType',
         'job.salaryMin',
         'job.jobExpertise',
@@ -357,9 +318,14 @@ export class JobService {
         'job.jobLevel',
         'job.status',
       ])
-      .andWhere('job.id =:id', { id });
+      .andWhere('job.id =:id', { id })
+      .andWhere('job.status  !=:status', { status: JobStatus.DRAFT });
 
-    return queryBuilder.getOne();
+    const job = await queryBuilder.getOne();
+    if (!job) {
+      throw new NotFoundException('Job not found');
+    }
+    return job;
   }
 
   public async countAllJobs() {
@@ -371,11 +337,9 @@ export class JobService {
       .createQueryBuilder('job')
       .innerJoin('job.company', 'company')
       .leftJoin('company.logo', 'logo')
-      .leftJoin('job.jobAddresses', 'jobAddresses')
-      .leftJoin('jobAddresses.address', 'address')
-      .leftJoin('address.province', 'province')
-      .leftJoin('job.jobSkills', 'jobSkills')
-      .leftJoin('jobSkills.skill', 'skill')
+      .leftJoin('job.addresses', 'addresses')
+      .leftJoin('addresses.province', 'province')
+      .leftJoin('job.skills', 'skills')
       .leftJoin('job.applyJobs', 'applyJobs', 'applyJobs.candidateId =:candidateId', { candidateId })
       .leftJoin('job.saveJobs', 'saveJobs', 'saveJobs.candidateId =:candidateId', { candidateId })
       .select([
@@ -385,16 +349,15 @@ export class JobService {
         'company.id',
         'logo.url',
         'job.description',
-        'jobSkills.id',
-        'skill.name',
+        'skills.id',
+        'skills.name',
         'job.requirement',
         'job.benefit',
-        'jobAddresses.id',
-        'address.id',
+        'addresses.id',
+        'addresses.detail',
         'province.name',
         'job.jobType',
         'job.createdAt',
-        'address.detail',
         'job.salaryType',
         'job.salaryMin',
         'job.jobExpertise',
@@ -409,6 +372,8 @@ export class JobService {
       .andWhere('job.id =:id', { id })
       .andWhere('job.status =:status', { status: JobStatus.PUBLISHED });
 
+    this.increaseViewCount(id);
+
     return queryBuilder.getOne();
   }
 
@@ -418,9 +383,8 @@ export class JobService {
       .createQueryBuilder('job')
       .innerJoin('job.company', 'company')
       .leftJoin('company.logo', 'logo')
-      .leftJoin('job.jobAddresses', 'jobAddresses')
-      .leftJoin('jobAddresses.address', 'address')
-      .leftJoin('address.province', 'province')
+      .leftJoin('job.addresses', 'addresses')
+      .leftJoin('addresses.province', 'province')
       .innerJoin('job.applyJobs', 'applyJobs', 'applyJobs.candidateId =:candidateId', { candidateId })
       .skip(limit * (page - 1))
       .take(limit)
@@ -430,12 +394,11 @@ export class JobService {
         'company.name',
         'company.id',
         'logo.url',
-        'jobAddresses.id',
-        'address.id',
+        'addresses.id',
+        'addresses.detail',
         'province.name',
         'job.jobType',
         'job.createdAt',
-        'address.detail',
         'job.salaryType',
         'job.salaryMin',
         'job.salaryMax',
@@ -460,9 +423,8 @@ export class JobService {
       .createQueryBuilder('job')
       .innerJoin('job.company', 'company')
       .leftJoin('company.logo', 'logo')
-      .leftJoin('job.jobAddresses', 'jobAddresses')
-      .leftJoin('jobAddresses.address', 'address')
-      .leftJoin('address.province', 'province')
+      .leftJoin('job.addresses', 'addresses')
+      .leftJoin('addresses.province', 'province')
       .innerJoin('job.saveJobs', 'saveJobs', 'saveJobs.candidateId =:candidateId', { candidateId })
       .skip(limit * (page - 1))
       .take(limit)
@@ -472,12 +434,11 @@ export class JobService {
         'company.name',
         'company.id',
         'logo.url',
-        'jobAddresses.id',
-        'address.id',
+        'addresses.id',
+        'addresses.detail',
         'province.name',
         'job.jobType',
         'job.createdAt',
-        'address.detail',
         'job.salaryType',
         'job.salaryMin',
         'job.salaryMax',
@@ -493,5 +454,74 @@ export class JobService {
       return { jobs, currentPage: page, nextPage: null, total };
     }
     return { jobs, currentPage: page, nextPage: page + 1, total };
+  }
+
+  public async getStaticsticsByJobId(jobId: string) {
+    const job = await this.jobRepository.findOneBy({ id: jobId });
+    if (!job) {
+      throw new NotFoundException('Job not found');
+    }
+    const statistics = await this.applyJobService.staticsticsByJobId(jobId);
+    return {
+      ...statistics,
+      viewCount: job.viewCount,
+    };
+  }
+
+  public async increaseViewCount(jobId: string) {
+    const job = await this.jobRepository.findOneBy({ id: jobId });
+    if (!job) {
+      throw new NotFoundException('Job not found');
+    }
+    job.viewCount++;
+    await this.jobRepository.save(job);
+  }
+
+  public async deleteJob(jobId: string, employerId: string) {
+    const company = await this.companyService.findOneByEmployerId(employerId);
+    if (!company) {
+      throw new NotFoundException('Company not found');
+    }
+    const job = await this.jobRepository.findOneBy({ id: jobId, companyId: company.id });
+    if (!job) {
+      throw new NotFoundException('Job not found');
+    }
+
+    return this.jobRepository.remove(job);
+  }
+
+  public async updatePublishedJob(jobId: string, employerId: string, data: UpdatePublishedJobDto) {
+    const { addressIds, skillIds } = data;
+    const company = await this.companyService.findOneByEmployerId(employerId);
+    if (!company) {
+      throw new NotFoundException('Company not found');
+    }
+    const job = await this.jobRepository.findOneBy({ id: jobId, companyId: company.id });
+    if (!job) {
+      throw new NotFoundException('Job not found');
+    }
+    if (addressIds) {
+      job.addresses = await this.companyAddressService.getAddressByCompanyIdAndAddressIds(company.id, addressIds);
+    }
+    if (skillIds) {
+      job.skills = await this.skillService.findByIds(skillIds);
+    }
+    return this.jobRepository.save({ ...job, ...data, status: JobStatus.PUBLISHED });
+  }
+
+  public async updateStatus(jobId: string, employerId: string, status: JobStatus) {
+    if (status === JobStatus.DRAFT) {
+      throw new BadRequestException('Cannot update job status to draft');
+    }
+    const company = await this.companyService.findOneByEmployerId(employerId);
+    if (!company) {
+      throw new NotFoundException('Company not found');
+    }
+    const job = await this.jobRepository.findOneBy({ id: jobId, companyId: company.id });
+    if (!job) {
+      throw new NotFoundException('Job not found');
+    }
+    job.status = status;
+    return this.jobRepository.save(job);
   }
 }
