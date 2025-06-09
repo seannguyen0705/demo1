@@ -33,4 +33,7 @@ export class BaseUserEntity extends BaseEntity {
   @OneToOne(() => File, { eager: true })
   @JoinColumn({ name: 'avatar_id' })
   avatar?: File;
+
+  @Column({ nullable: true, name: 'account_token' })
+  accountToken?: string;
 }

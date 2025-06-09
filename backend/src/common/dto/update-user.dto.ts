@@ -32,4 +32,9 @@ export class UpdateUserDto {
     example: '2021-01-01',
   })
   bod?: Date;
+
+  @IsOptional()
+  @IsString()
+  @ApiPropertyOptional({ required: false, example: '1234567890' })
+  accountToken?: string;
 }

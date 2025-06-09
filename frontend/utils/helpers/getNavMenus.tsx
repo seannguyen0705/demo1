@@ -1,14 +1,4 @@
-import {
-  LayoutDashboard,
-  Briefcase,
-  UserRound,
-  Building,
-  PencilLine,
-  UserRoundPlus,
-  Settings,
-  Mail,
-  UsersRound,
-} from 'lucide-react';
+import { Briefcase, UserRound, Building, PencilLine, UserRoundPlus, Settings, Mail, UsersRound } from 'lucide-react';
 
 import { JSX } from 'react';
 import { UserRole } from '../enums';
@@ -59,14 +49,10 @@ const getNavMenus = (user: IUser | undefined): NavItem[] => {
       { name: 'Cài đặt', href: '/settings', icon: <Settings /> },
     ],
     [UserRole.ADMIN]: [
-      // {
-      //   name: 'Tổng quan',
-      //   href: '/profile-dashboard',
-      //   icon: <LayoutDashboard />,
-      // },
-      { name: 'Hồ sơ cá nhân', href: '/profile-personal', icon: <UserRound /> },
-      { name: 'Quản lí nhà tuyển dụng', href: '/employer', icon: <Building /> },
-      { name: 'Quản lí ứng viên', href: '/candidate', icon: <UserRoundPlus /> },
+      { name: 'Nhà tuyển dụng', href: '/manage/employer', icon: <Building /> },
+      { name: 'Ứng viên', href: '/manage/candidate', icon: <UsersRound /> },
+      { name: 'Việc làm', href: '/manage/job', icon: <Briefcase /> },
+      { name: 'Cài đặt', href: '/settings', icon: <Settings /> },
     ],
   };
   return navs[user?.role || UserRole.CANDIDATE];

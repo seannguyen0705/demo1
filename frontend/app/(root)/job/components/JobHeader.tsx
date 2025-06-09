@@ -18,7 +18,7 @@ export default function JobHeader({ job }: IProps) {
         <Link href={`/company/${job?.company?.name}`}>
           <Image
             className="border-2 border-gray-300 rounded-md"
-            src={job?.company?.logo?.url}
+            src={job?.company?.logo?.url || '/default_logo.png'}
             alt={job?.company?.name}
             width={100}
             height={100}

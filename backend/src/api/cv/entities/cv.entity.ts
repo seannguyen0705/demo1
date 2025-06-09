@@ -8,14 +8,14 @@ export class Cv extends BaseEntity {
   @Column({ name: 'candidate_id' })
   candidateId: string;
 
-  @ManyToOne(() => Candidate)
+  @ManyToOne(() => Candidate, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'candidate_id' })
   candidate: Candidate;
 
   @Column({ name: 'file_id' })
   fileId: string;
 
-  @ManyToOne(() => File, { eager: true })
+  @ManyToOne(() => File, { eager: true, onDelete: 'CASCADE' })
   @JoinColumn({ name: 'file_id' })
   file: File;
 }

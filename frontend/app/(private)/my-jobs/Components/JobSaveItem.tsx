@@ -24,7 +24,7 @@ export default function JobSaveItem({ job }: IProps) {
         <Link className="relative z-10" href={`/company/${job.company.name}`}>
           <Image
             className="sm:size-[100px] size-[80px]"
-            src={job.company.logo.url}
+            src={job.company.logo?.url || '/default_logo.png'}
             alt={job.company.name}
             width={100}
             height={100}

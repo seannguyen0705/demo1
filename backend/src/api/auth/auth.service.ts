@@ -1,6 +1,6 @@
 import { compareSync } from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
 import { AdminService } from '@/api/admin/admin.service';
@@ -20,6 +20,9 @@ import { ResponseCandidateDto } from '../candidate/dto';
 import { EmployerService } from '../employer/employer.service';
 import { Employer } from '../employer/entities/employer.entity';
 import { ThirdPartyUser } from './dto/thirPartyUser';
+import { EmailService } from '../email/email.service';
+import { ResetPasswordDto } from './dto/reset-password.dto';
+import { hash } from '@/utils/helpers';
 
 export type TUser = Admin | Candidate | Employer;
 
@@ -34,6 +37,7 @@ export class AuthService {
     private configService: ConfigService,
     private candidateService: CandidateService,
     private employerService: EmployerService,
+    private emailService: EmailService,
   ) {
     this.services = {
       [UserRole.CANDIDATE]: this.candidateService,
@@ -44,7 +48,7 @@ export class AuthService {
 
   public async registerCandidate(userInfo: RegisterCandidateDto): Promise<ResponseCandidateDto> {
     const registeredCandidate = await this.candidateService.create(userInfo);
-
+    await this.sendMailActiveCandidate(registeredCandidate);
     return registeredCandidate;
   }
 
@@ -90,6 +94,9 @@ export class AuthService {
       throw new BannedUserException();
     }
     if (user.status === UserStatus.INACTIVE) {
+      if (role === UserRole.CANDIDATE) {
+        await this.sendMailActiveCandidate(user as Candidate);
+      }
       throw new InactiveEmployerException();
     }
     return user;
@@ -162,5 +169,86 @@ export class AuthService {
     const user = await userService.getDetailById(id);
 
     return user;
+  }
+
+  public async forgotPassword(email: string, role: UserRole) {
+    const userService = this.services[role];
+    const user = await userService.findOneByEmail(email);
+    if (!user) {
+      throw new WrongCredentialsException();
+    }
+    const payload: ITokenPayload = {
+      email: user.email,
+      role,
+    };
+    const ttl = this.configService.get('code.resetPassword.lifetime') / 1000;
+    const accountToken = this.jwtService.sign(payload, {
+      expiresIn: ttl,
+      secret: this.configService.get('jwt.resetPasswordSecret'),
+    });
+    const link_reset = `${this.configService.get('FRONTEND_URL')}/reset-password?token=${accountToken}`;
+    await userService.updateById(user.id, { accountToken });
+    await this.emailService.resetPassword(user.email, user.fullName, link_reset);
+    return {
+      message: 'Email đã được gửi đến người dùng',
+    };
+  }
+
+  public async resetPassword(data: ResetPasswordDto) {
+    const { accountToken, password } = data;
+    const payload = this.jwtService.verify(accountToken, {
+      secret: this.configService.get('jwt.resetPasswordSecret'),
+      ignoreExpiration: false,
+    });
+
+    const userService = this.services[payload.role];
+    const user = await userService.findOneByEmail(payload.email);
+    if (!user) {
+      throw new NotFoundException('Tài khoản không tồn tại');
+    }
+    if (user.accountToken !== accountToken) {
+      throw new BadRequestException('Token không hợp lệ');
+    }
+    data.password = await hash.generateWithBcrypt({ source: password });
+    await userService.updateById(user.id, {
+      password: data.password,
+      accountToken: null,
+    });
+    return {
+      message: 'Mật khẩu đã được đặt lại',
+    };
+  }
+
+  public async sendMailActiveCandidate(candidate: Candidate) {
+    const payload: ITokenPayload = {
+      role: UserRole.CANDIDATE,
+      email: candidate.email,
+    };
+    const ttl = this.configService.get('code.activeAccount.lifetime') / 1000;
+    const accountToken = this.jwtService.sign(payload, {
+      expiresIn: ttl,
+      secret: this.configService.get('jwt.activeAccountSecret'),
+    });
+    await this.candidateService.updateById(candidate.id, { accountToken });
+    const link_active = `${this.configService.get('FRONTEND_URL')}/active-candidate?token=${accountToken}`;
+    await this.emailService.activeCandidate(candidate.email, candidate.fullName, link_active);
+  }
+
+  public async activeCandidate(token: string) {
+    const payload = this.jwtService.verify(token, {
+      secret: this.configService.get('jwt.activeAccountSecret'),
+      ignoreExpiration: false,
+    });
+    const candidate = await this.candidateService.findOneByEmail(payload.email);
+    if (!candidate) {
+      throw new NotFoundException('Tài khoản không tồn tại');
+    }
+    if (candidate.accountToken !== token) {
+      throw new BadRequestException('Token không hợp lệ');
+    }
+    if (candidate.status === UserStatus.ACTIVE) {
+      throw new BadRequestException('Tài khoản đã được kích hoạt');
+    }
+    return this.candidateService.updateById(candidate.id, { status: UserStatus.ACTIVE, accountToken: null });
   }
 }

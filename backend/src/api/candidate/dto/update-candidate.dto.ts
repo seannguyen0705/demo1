@@ -2,6 +2,7 @@ import { UpdateUserDto } from '@/common/dto/update-user.dto';
 import { IsOptional } from 'class-validator';
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { IsString } from 'class-validator';
+import { UserStatus } from '@/common/enums';
 
 export class UpdateCandidateDto extends UpdateUserDto {
   @IsOptional()
@@ -26,4 +27,6 @@ export class UpdateCandidateDto extends UpdateUserDto {
     example: 'Tôi là một lập trình viên',
   })
   introduction?: string;
+
+  status?: UserStatus;
 }

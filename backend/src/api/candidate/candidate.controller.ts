@@ -57,16 +57,6 @@ export class CandidateController {
     return updatedCandidate;
   }
 
-  @InjectRoute(candidateRoutes.updateById)
-  public async updateById(@Param('id') id: string, @Body() data: UpdateCandidateDto): Promise<ResponseCandidateDto> {
-    const updatedCandidate = await this.candidateService.updateById({
-      id,
-      data,
-    });
-
-    return updatedCandidate.toResponse();
-  }
-
   @InjectRoute(candidateRoutes.deleteById)
   public async deleteById(@Param('id') id: string): Promise<string> {
     await this.candidateService.deleteById(id);

@@ -44,16 +44,6 @@ export class AdminController {
     return gotAdmin;
   }
 
-  @InjectRoute(adminRoutes.updateById)
-  public async updateById(@Param('id') id: string, @Body() data: UpdateAdminDto): Promise<ResponseAdminDto> {
-    const updatedAdmin = await this.adminService.updateById({
-      id,
-      data,
-    });
-
-    return updatedAdmin;
-  }
-
   @InjectRoute(adminRoutes.deleteById)
   public async deleteById(@Param('id') id: string): Promise<string> {
     await this.adminService.deleteById(id);

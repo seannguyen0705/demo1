@@ -11,10 +11,10 @@ export class Review extends BaseEntity {
   @Column({ type: 'decimal', precision: 2, scale: 1, default: 5 })
   rating: number;
 
-  @Column()
+  @Column({ type: 'text' })
   comment: string;
 
-  @Column({ name: 'candidate_id', nullable: true })
+  @Column({ name: 'candidate_id' })
   candidateId: string;
 
   @ManyToOne(() => Candidate, { onDelete: 'SET NULL' })

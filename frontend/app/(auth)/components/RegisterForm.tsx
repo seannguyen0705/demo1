@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { Eye, EyeOff } from 'lucide-react';
+import { Eye, EyeOff, Info } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
@@ -43,6 +43,7 @@ type FormValues = z.infer<typeof formSchema>;
 
 export default function RegisterForm() {
   const [showPassword, setShowPassword] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const { mutate: registerCandidate, isPending } = useRegisterCandidate();
@@ -60,12 +61,22 @@ export default function RegisterForm() {
 
   // Handle form submission
   async function onSubmit(data: FormValues) {
-    registerCandidate(data);
+    registerCandidate(data, {
+      onSuccess: () => {
+        setIsSuccess(true);
+      },
+    });
   }
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 ">
+        {isSuccess && (
+          <div className="flex items-center gap-2 bg-light-green p-4 rounded-md text-sm text-green mb-4">
+            <Info className="w-6 h-6" />
+            Vui lòng kiểm tra email để xác thực tài khoản
+          </div>
+        )}
         <FormField
           control={form.control}
           name="fullName"

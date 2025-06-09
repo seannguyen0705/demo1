@@ -16,7 +16,7 @@ const getCenterNav = (role?: UserRole) => {
         href: '/contact',
       },
     ],
-    auth: [
+    [UserRole.CANDIDATE]: [
       {
         name: 'Trang chủ',
         href: '/',
@@ -24,6 +24,20 @@ const getCenterNav = (role?: UserRole) => {
       {
         name: 'Việc làm',
         href: '/job',
+      },
+      {
+        name: 'Về chúng tôi',
+        href: '/about',
+      },
+      {
+        name: 'Liên hệ',
+        href: '/contact',
+      },
+    ],
+    [UserRole.ADMIN]: [
+      {
+        name: 'Trang chủ',
+        href: '/',
       },
       {
         name: 'Về chúng tôi',
@@ -57,13 +71,10 @@ const getCenterNav = (role?: UserRole) => {
       },
     ],
   };
-  if (role === UserRole.EMPLOYER) {
-    return navs[UserRole.EMPLOYER];
+  if (!role) {
+    return navs.default;
   }
-  if (role) {
-    return navs.auth;
-  }
-  return navs.default;
+  return navs[role];
 };
 
 export default getCenterNav;

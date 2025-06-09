@@ -14,10 +14,10 @@ export class Candidate extends BaseUserEntity {
   @Column({ type: 'enum', enum: AuthBy, default: AuthBy.LOCAL, name: 'auth_by' })
   authBy: AuthBy;
 
-  @Column({ type: 'enum', enum: UserStatus, default: UserStatus.ACTIVE })
+  @Column({ type: 'enum', enum: UserStatus, default: UserStatus.INACTIVE })
   status: UserStatus;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, name: 'avatar_url' })
   avatar_url: string;
 
   @Column({ nullable: true })
@@ -26,7 +26,7 @@ export class Candidate extends BaseUserEntity {
   @Column({ nullable: true })
   address: string;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, name: 'personal_website' })
   personal_website: string;
 
   @Column({ nullable: true })

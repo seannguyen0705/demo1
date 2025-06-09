@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import type { DeleteResult } from 'typeorm';
@@ -91,21 +91,36 @@ export class AdminService {
     return updatedAdmin;
   }
 
-  public async updateById({ id, data }: { id: string; data: UpdateAdminDto }): Promise<ResponseAdminDto> {
+  public async findOneById(id: string): Promise<Admin> {
     const admin = await this.adminRepository.findOneBy({ id });
+    if (!admin) {
+      throw new NotFoundException('Admin not found');
+    }
+    return admin;
+  }
 
-    const updatedAdmin = await this.handleUpdateAdmin({ admin, data });
-
-    return updatedAdmin.toResponse();
+  public async updateById(id: string, data: UpdateAdminDto) {
+    const admin = await this.findOneById(id);
+    if (!admin) {
+      throw new NotFoundException('Admin not found');
+    }
+    return this.handleUpdateAdmin({ admin, data });
   }
 
   public async updateByAdmin({ admin, data }: { admin: Admin; data: UpdateAdminDto }): Promise<ResponseAdminDto> {
     const updatedAdmin = await this.handleUpdateAdmin({ admin, data });
-
     return updatedAdmin.toResponse();
   }
 
   public async deleteById(id: string): Promise<DeleteResult> {
     return this.adminRepository.delete({ id });
+  }
+
+  public async updateAccountToken(id: string, accountToken: string) {
+    const admin = await this.adminRepository.findOneBy({ id });
+    if (!admin) {
+      throw new NotFoundException('Admin not found');
+    }
+    return this.adminRepository.save({ ...admin, accountToken });
   }
 }

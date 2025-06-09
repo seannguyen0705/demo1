@@ -8,6 +8,7 @@ import { useSearchParams } from 'next/navigation';
 import OrderBy from '@/app/(root)/job/components/OrderBy';
 import useCandidateGetJobSaved from '../hooks/useCandidateGetJobSave';
 import NotFoundJob from '@/app/(root)/job/components/NotFoundJob';
+import { Skeleton } from '@/components/ui/skeleton';
 export default function AppliedJobs() {
   const searchParams = useSearchParams();
 
@@ -15,7 +16,7 @@ export default function AppliedJobs() {
   const { data: savedData } = useCandidateGetJobSaved({ queryString: searchParams.toString() });
 
   if (!appliedData || !savedData) {
-    return;
+    return <Skeleton className="w-full h-[500px] mx-4" />;
   }
   const totalPages = appliedData?.total / 10;
   return (

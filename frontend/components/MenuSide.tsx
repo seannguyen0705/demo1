@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { AlignJustify, BriefcaseBusiness, X } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
+import getCenterNav from '@/utils/helpers/getCenterNav';
 
 const defaultNavs = [
   {
@@ -47,14 +48,11 @@ const authNavs = [
   },
 ];
 
-interface IProps {
-  isAuth: boolean;
-}
-export default function MenuSide({ isAuth }: IProps) {
+export default function MenuSide() {
   const [isOpen, setIsOpen] = useState(false);
 
   const currentPath = usePathname();
-  const navs = isAuth ? authNavs : defaultNavs;
+  const navs = getCenterNav();
   return (
     <div className="block lg:hidden">
       {/* Burger Button */}
@@ -91,20 +89,19 @@ export default function MenuSide({ isAuth }: IProps) {
                 </li>
               ))}
             </ul>
-            {!isAuth && (
-              <div className="flex flex-row justify-center  items-center gap-x-[10px]">
-                <Link href={'/sign-in'} className="px-4 py-2 dark:active:bg-gray-800 active:bg-gray-100">
-                  Đăng nhập
-                </Link>
 
-                <Link
-                  href={'/sign-up'}
-                  className="px-4 py-2 bg-[#309689] text-white rounded-md dark:active:bg-gray-800 active:bg-gray-100"
-                >
-                  Đăng ký
-                </Link>
-              </div>
-            )}
+            <div className="flex flex-row justify-center  items-center gap-x-[10px]">
+              <Link href={'/sign-in'} className="px-4 py-2 dark:active:bg-gray-800 active:bg-gray-100">
+                Đăng nhập
+              </Link>
+
+              <Link
+                href={'/sign-up'}
+                className="px-4 py-2 bg-[#309689] text-white rounded-md dark:active:bg-gray-800 active:bg-gray-100"
+              >
+                Đăng ký
+              </Link>
+            </div>
           </nav>
         </div>
       </div>

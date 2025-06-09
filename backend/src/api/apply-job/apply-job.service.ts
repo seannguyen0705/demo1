@@ -57,19 +57,19 @@ export class ApplyJobService {
   public async staticsticsByJobId(jobId: string) {
     const [countNew, countSeen, countInterviewing, countHired, countRejected] = await Promise.all([
       this.applyJobRepository.count({
-        where: { jobId, status: ApplyJobStatus['Mới'] },
+        where: { jobId, status: ApplyJobStatus.NEW },
       }),
       this.applyJobRepository.count({
-        where: { jobId, status: ApplyJobStatus['Đã xem'] },
+        where: { jobId, status: ApplyJobStatus.SEEN },
       }),
       this.applyJobRepository.count({
-        where: { jobId, status: ApplyJobStatus['Phỏng vấn'] },
+        where: { jobId, status: ApplyJobStatus.INTERVIEWING },
       }),
       this.applyJobRepository.count({
-        where: { jobId, status: ApplyJobStatus['Đã nhận'] },
+        where: { jobId, status: ApplyJobStatus.HIRED },
       }),
       this.applyJobRepository.count({
-        where: { jobId, status: ApplyJobStatus['Từ chối'] },
+        where: { jobId, status: ApplyJobStatus.REJECTED },
       }),
     ]);
     const countTotal = countNew + countSeen + countInterviewing + countHired + countRejected;

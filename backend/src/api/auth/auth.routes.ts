@@ -73,4 +73,24 @@ export default {
       secure: true,
     },
   },
+
+  forgotPassword: <IRouteParams>{
+    path: '/forgot-password',
+    jwtSecure: false,
+    code: HttpStatus.OK,
+    method: RequestMethod.POST,
+  },
+  resetPassword: <IRouteParams>{
+    path: '/reset-password',
+    jwtSecure: false,
+    code: HttpStatus.OK,
+    method: RequestMethod.POST,
+  },
+
+  activeCandidate: <IRouteParams>{
+    path: '/active-candidate',
+    jwtSecure: false,
+    code: HttpStatus.OK,
+    method: RequestMethod.POST,
+  },
 };
