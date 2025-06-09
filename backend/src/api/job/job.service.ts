@@ -373,7 +373,7 @@ export class JobService {
       .andWhere('job.id =:id', { id })
       .andWhere('job.status !=:status', { status: JobStatus.DRAFT });
 
-    await this.increaseViewCount(id);
+    this.increaseViewCount(id);
 
     return queryBuilder.getOne();
   }
