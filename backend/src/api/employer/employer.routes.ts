@@ -8,7 +8,7 @@ export default {
   index: 'employers',
   updateStatus: <IRouteParams>{
     path: '/:id/status',
-    method: RequestMethod.POST,
+    method: RequestMethod.PUT,
     roles: [UserRole.ADMIN],
     jwtSecure: true,
   },

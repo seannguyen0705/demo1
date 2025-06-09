@@ -318,8 +318,7 @@ export class JobService {
         'job.jobLevel',
         'job.status',
       ])
-      .andWhere('job.id =:id', { id })
-      .andWhere('job.status  !=:status', { status: JobStatus.DRAFT });
+      .andWhere('job.id =:id', { id });
 
     const job = await queryBuilder.getOne();
     if (!job) {
@@ -373,7 +372,7 @@ export class JobService {
       .andWhere('job.id =:id', { id })
       .andWhere('job.status !=:status', { status: JobStatus.DRAFT });
 
-    await this.increaseViewCount(id);
+    this.increaseViewCount(id);
 
     return queryBuilder.getOne();
   }

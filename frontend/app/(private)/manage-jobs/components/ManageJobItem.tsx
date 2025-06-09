@@ -14,6 +14,7 @@ import useDeleteJob from '../../edit-job/hooks/useDeleteJob';
 import ConfirmDelete from '@/components/ConfirmDelete';
 import isExpired from '@/utils/helpers/isExpired';
 import useUpdateJobStatus from '../hooks/useUpdateJobStatus';
+import ShowStatusJob from './ShowStatusJob';
 interface IProps {
   job: IJob;
 }
@@ -27,17 +28,7 @@ export default function ManageJobItem({ job }: IProps) {
   return (
     <article className="border h-full flex flex-col justify-between rounded-lg p-3 w-full relative">
       {/* Status label */}
-      <span
-        className={`absolute top-2 right-2 z-20 px-2 py-1 text-xs font-bold rounded ${
-          job.status === JobStatus.PUBLISHED
-            ? 'bg-green-100 text-green-700 border border-green-400'
-            : job.status === JobStatus.DRAFT
-              ? 'bg-yellow-100 text-yellow-700 border border-yellow-400'
-              : 'bg-gray-300 text-gray-700 border border-gray-400'
-        }`}
-      >
-        {job.status}
-      </span>
+      <ShowStatusJob job={job} />
       <p className="text-sm font-semibold text-gray-500">
         {formatDistanceToNow(new Date(job.createdAt), { addSuffix: true, locale: vi })}
       </p>
@@ -129,12 +120,6 @@ export default function ManageJobItem({ job }: IProps) {
         />
       </div>
       <Link className="absolute inset-0" href={`/job/${job.id}`}></Link>
-
-      {isExpired(job.expiredAt) && (
-        <span className="absolute top-1/2 p-4 bg-gray-300 rounded-full right-1/2 translate-x-1/2 -translate-y-1/2 text-red-500 font-bold">
-          <span className="text-sm">Hết hạn</span>
-        </span>
-      )}
     </article>
   );
 }
