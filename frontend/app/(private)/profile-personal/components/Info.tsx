@@ -6,6 +6,7 @@ import Image from 'next/image';
 import EditProfile from './EditProfile';
 import { UserRole } from '@/utils/enums';
 import useUpdateAvatar from '../hooks/useUpdateAvatar';
+import Link from 'next/link';
 
 function SkeletonInfo() {
   return (
@@ -66,11 +67,6 @@ export default function Info({ user }: IProps) {
       icon: <MapPin />,
       value: user?.address,
     },
-    {
-      name: 'personal_website',
-      icon: <Globe />,
-      value: user?.personal_website,
-    },
   ];
   if (user.role === UserRole.EMPLOYER) {
     // remove address
@@ -117,6 +113,12 @@ export default function Info({ user }: IProps) {
             <p className="">{field.value?.toString() || 'Chưa cập nhật'}</p>
           </div>
         ))}
+        <div className="flex items-center gap-2">
+          <Globe />
+          <Link className="" target="_blank" href={user?.personal_website || ''}>
+            {user?.personal_website || 'Chưa cập nhật'}
+          </Link>
+        </div>
       </div>
     </section>
   );

@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
 
 import { EmployerRepository } from './employer.repository';
@@ -138,7 +138,11 @@ export class EmployerService {
 
   public async updateStatus(id: string, data: UpdateStatusUserDto) {
     const employer = await this.findOneById(id);
-    if (employer.status === UserStatus.INACTIVE && data.status == UserStatus.ACTIVE) {
+    const { status } = data;
+    if (status === UserStatus.INACTIVE) {
+      throw new BadRequestException('Không được phép chuyển về inactive');
+    }
+    if (employer.status === UserStatus.INACTIVE && status == UserStatus.ACTIVE) {
       const password = generateSecurePassword();
       await this.emailService.activeEmployer(employer.email, employer.fullName, password);
       const hashedPassword = await hash.generateWithBcrypt({

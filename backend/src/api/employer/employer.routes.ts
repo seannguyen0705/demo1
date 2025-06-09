@@ -7,7 +7,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 export default {
   index: 'employers',
   updateStatus: <IRouteParams>{
-    path: '/status/:id',
+    path: '/:id/status',
     method: RequestMethod.POST,
     roles: [UserRole.ADMIN],
     jwtSecure: true,
