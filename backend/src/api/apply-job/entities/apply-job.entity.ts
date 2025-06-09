@@ -38,7 +38,7 @@ export class ApplyJob extends BaseEntity {
   @Column({ name: 'expected_address' })
   expectedAddress: string;
 
-  @Column({ name: 'message' })
+  @Column({ name: 'message', type: 'text', nullable: true })
   message: string;
 
   @Column({ name: 'status', default: ApplyJobStatus['Mới'] })

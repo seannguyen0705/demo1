@@ -24,10 +24,10 @@ export class Company extends BaseEntity {
   @Column({ nullable: true, name: 'working_time' })
   workingTime?: string; // 8:00 - 17:00
 
-  @Column({ type: 'text', nullable: true, default: '' })
+  @Column({ type: 'text', nullable: true })
   overview?: string;
 
-  @Column({ type: 'text', nullable: true, default: '' })
+  @Column({ type: 'text', nullable: true })
   benefits?: string;
 
   @OneToMany(() => CompanyAddress, (companyAddress) => companyAddress.company)
@@ -37,7 +37,7 @@ export class Company extends BaseEntity {
   website: string;
 
   @Column({ name: 'background_id', nullable: true })
-  backgroundId: string;
+  backgroundId?: string;
 
   @OneToOne(() => File)
   @JoinColumn({ name: 'background_id' })
@@ -63,7 +63,7 @@ export class Company extends BaseEntity {
   @Column({ name: 'employer_id' })
   employerId: string;
 
-  @OneToOne(() => Employer, (employer) => employer.company)
+  @OneToOne(() => Employer, (employer) => employer.company, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'employer_id' })
   employer: Employer;
 }

@@ -125,6 +125,7 @@ export class AuthService {
     const accessTokenCookie = await this.getCookieWithJwtAccessToken(payload);
 
     const refreshTokenCookie = await this.getCookieWithJwtRefreshToken(payload);
+
     await this.tokenService.create({
       refreshToken: refreshTokenCookie.token,
       userRole: UserRole.CANDIDATE,

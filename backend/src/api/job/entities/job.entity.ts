@@ -57,13 +57,13 @@ export class Job extends BaseEntity {
   })
   jobLevel: JobLevel;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: 'text' })
   description: string;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: 'text' })
   requirement: string;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: 'text' })
   benefit: string;
 
   @Column({ default: 0, name: 'view_count' })
