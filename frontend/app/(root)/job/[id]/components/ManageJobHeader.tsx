@@ -8,6 +8,7 @@ import ConfirmDelete from '@/components/ConfirmDelete';
 import { Staticstics } from '@/components/Staticstics';
 import { useRouter } from 'next/navigation';
 import useUpdateJobStatus from '@/app/(private)/manage-jobs/hooks/useUpdateJobStatus';
+import ShowStatusJob from '@/app/(private)/manage-jobs/components/ShowStatusJob';
 
 interface IProps {
   job: IJob;
@@ -23,17 +24,7 @@ export default function ManageJobHeader({ job }: IProps) {
       <div className="">
         <div className="flex items-center justify-between gap-2">
           <h3 className="text-xl lg:text-2xl font-bold mb-3">{job.title}</h3>
-          <span
-            className={`px-2 py-1 text-xs font-bold rounded ${
-              job.status === JobStatus.PUBLISHED
-                ? 'bg-green-100 text-green-700 border border-green-400'
-                : job.status === JobStatus.DRAFT
-                  ? 'bg-yellow-100 text-yellow-700 border border-yellow-400'
-                  : 'bg-gray-300 text-gray-700 border border-gray-400'
-            }`}
-          >
-            {job.status}
-          </span>
+          <ShowStatusJob job={job} />
         </div>
         <p className="text-sm text-gray-500">{job.company.name}</p>
         <div className="flex items-center gap-2 text-green mb-2">
