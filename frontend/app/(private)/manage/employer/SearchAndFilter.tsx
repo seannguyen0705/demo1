@@ -1,0 +1,45 @@
+import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { ApplyJobStatus } from '@/utils/enums';
+import { Filter } from 'lucide-react';
+import { useQueryState } from 'nuqs';
+
+const statusOptions = [
+  { value: 'Tất cả', label: 'Tất cả' },
+  { value: 'Chưa kích hoạt', label: 'Chưa kích hoạt' },
+  { value: 'Kích hoạt', label: 'Kích hoạt' },
+  { value: 'Đã chặn', label: 'Đã chặn' },
+];
+
+export default function SearchAndFilter() {
+  const [keyword, setKeyword] = useQueryState('keyword', { defaultValue: '' });
+  const [status, setStatus] = useQueryState('status', { defaultValue: '' });
+
+  return (
+    <div className="flex flex-col sm:flex-row  gap-4 mb-6">
+      <div className="flex-1">
+        <Input
+          placeholder="Tìm kiếm theo tên, email, số điện thoại hoặc công việc..."
+          value={keyword}
+          onChange={(e) => setKeyword(e.target.value)}
+          className="max-w-md selection:bg-green"
+        />
+      </div>
+      <div className="inline-flex gap-2">
+        <Select value={status} onValueChange={setStatus}>
+          <SelectTrigger className="sm:w-auto w-full">
+            <Filter className="w-4 h-4 mr-2" />
+            <SelectValue placeholder="Lọc theo trạng thái" />
+          </SelectTrigger>
+          <SelectContent>
+            {statusOptions.map((option) => (
+              <SelectItem key={option.value} value={option.value}>
+                {option.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+    </div>
+  );
+}
