@@ -96,11 +96,11 @@ enum ApplyJobStatus {
 }
 
 enum ApplyJobStatusDB {
-  'Mới' = 0,
-  'Đã xem' = 1,
-  'Phỏng vấn' = 2,
-  'Đã nhận' = 3,
-  'Từ chối' = 4,
+  NEW = 0,
+  SEEN = 1,
+  INTERVIEWING = 2,
+  HIRED = 3,
+  REJECTED = 4,
 }
 
 export {

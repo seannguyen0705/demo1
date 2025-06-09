@@ -5,10 +5,11 @@ import { ApplyJobRepository } from './apply-job.repository';
 import { CreateApplyJobDto } from './dto/create-apply-job.dto';
 import { DataSource, SelectQueryBuilder } from 'typeorm';
 import { SaveJob } from '../save-job/entities/save-job.entity';
-import { ApplyJobStatus, JobStatus, Order, OrderByApplyJob } from '@/common/enums';
+import { ApplyJobStatus, ApplyJobStatusQuery, JobStatus, Order, OrderByApplyJob } from '@/common/enums';
 import { QueryApplyJobDto } from './dto/query-apply-job.dto';
 import { UpdateApplyJobStatusDto } from './dto/update-apply-job-status.dto';
 import { Job } from '../job/entities/job.entity';
+import mapQueryStatusToStatusDb from '@/utils/helpers/mapQueryStatusToStatusDb';
 
 @Injectable()
 export class ApplyJobService {
@@ -95,9 +96,9 @@ export class ApplyJobService {
     }
   }
 
-  private async searchByStatus(queryBuilder: SelectQueryBuilder<ApplyJob>, status: ApplyJobStatus) {
+  private async searchByStatus(queryBuilder: SelectQueryBuilder<ApplyJob>, status: ApplyJobStatusQuery) {
     if (status) {
-      queryBuilder.andWhere('applyJob.status =:status', { status: ApplyJobStatus[status] });
+      queryBuilder.andWhere('applyJob.status =:status', { status: mapQueryStatusToStatusDb(status) });
     }
   }
 
@@ -173,8 +174,8 @@ export class ApplyJobService {
       ])
       .where('applyJob.id = :id', { id });
     const applyJob = await queryBuilder.getOne();
-    if (applyJob.status === ApplyJobStatus.Mới) {
-      await this.applyJobRepository.update(id, { status: ApplyJobStatus['Đã xem'] });
+    if (applyJob.status === ApplyJobStatus.NEW) {
+      await this.applyJobRepository.update(id, { status: ApplyJobStatus.SEEN });
     }
     return applyJob.toResponse();
   }
@@ -191,18 +192,18 @@ export class ApplyJobService {
       throw new NotFoundException('Không tìm thấy ứng viên');
     }
 
-    if (applyJob.status === ApplyJobStatus.Mới || applyJob.status === ApplyJobStatus['Đã xem']) {
+    if (applyJob.status === ApplyJobStatus.NEW || applyJob.status === ApplyJobStatus.SEEN) {
       // allow set to SEEN OR REJECTED OR INTERVIEWING
       if (
-        status === ApplyJobStatus['Đã xem'] ||
-        status === ApplyJobStatus['Từ chối'] ||
-        status === ApplyJobStatus['Phỏng vấn']
+        status === ApplyJobStatus.SEEN ||
+        status === ApplyJobStatus.REJECTED ||
+        status === ApplyJobStatus.INTERVIEWING
       ) {
         return await this.applyJobRepository.update(id, data);
       }
     } else if (applyJob.status === ApplyJobStatus['Phỏng vấn']) {
       // allow set to HIRED OR REJECTED
-      if (status === ApplyJobStatus['Đã nhận'] || status === ApplyJobStatus['Từ chối']) {
+      if (status === ApplyJobStatus.HIRED || status === ApplyJobStatus.REJECTED) {
         return await this.applyJobRepository.update(id, data);
       }
     }

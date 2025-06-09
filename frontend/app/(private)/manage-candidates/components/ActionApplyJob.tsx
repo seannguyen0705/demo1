@@ -43,7 +43,7 @@ function ExtraAction({ status, applyJobId }: { status: ApplyJobStatus; applyJobI
           <ConfirmAction
             title="Phỏng vấn"
             description="Bạn có chắc chắn muốn phỏng vấn ứng viên này không?"
-            action={() => updateApplyJobStatus({ status: ApplyJobStatusDB['Phỏng vấn'] })}
+            action={() => updateApplyJobStatus({ status: ApplyJobStatusDB.INTERVIEWING })}
             button={<button>Phỏng vấn</button>}
           />
         </li>
@@ -51,7 +51,7 @@ function ExtraAction({ status, applyJobId }: { status: ApplyJobStatus; applyJobI
           <ConfirmAction
             title="Từ chối"
             description="Bạn có chắc chắn muốn từ chối ứng viên này không?"
-            action={() => updateApplyJobStatus({ status: ApplyJobStatusDB['Từ chối'] })}
+            action={() => updateApplyJobStatus({ status: ApplyJobStatusDB.REJECTED })}
             button={<button>Từ chối</button>}
           />
         </li>
@@ -65,7 +65,7 @@ function ExtraAction({ status, applyJobId }: { status: ApplyJobStatus; applyJobI
           <ConfirmAction
             title="Nhận"
             description="Bạn có chắc chắn muốn nhận ứng viên này không?"
-            action={() => updateApplyJobStatus({ status: ApplyJobStatusDB['Đã nhận'] })}
+            action={() => updateApplyJobStatus({ status: ApplyJobStatusDB.HIRED })}
             button={<button>Nhận</button>}
           />
         </li>
@@ -73,7 +73,7 @@ function ExtraAction({ status, applyJobId }: { status: ApplyJobStatus; applyJobI
           <ConfirmAction
             title="Từ chối"
             description="Bạn có chắc chắn muốn từ chối ứng viên này không?"
-            action={() => updateApplyJobStatus({ status: ApplyJobStatusDB['Từ chối'] })}
+            action={() => updateApplyJobStatus({ status: ApplyJobStatusDB.REJECTED })}
             button={<button>Từ chối</button>}
           />
         </li>

@@ -7,9 +7,9 @@ interface ICompany {
   overview: string;
   benefits: string;
   website: string;
-  logo: IFile;
+  logo?: IFile;
   proof: IFile;
-  background: IFile;
+  background?: IFile;
   backgroundId: string;
   size: string;
   type: string;

@@ -4,6 +4,7 @@ import { Job } from '@/api/job/entities/job.entity';
 import { ApplyJobStatus } from '@/common/enums';
 import { Candidate } from '@/api/candidate/entities';
 import { File } from '@/api/file/entities/file.entity';
+import mapStatusDbToQueryStatus from '@/utils/helpers/mapStatusDbToQueryStatus';
 
 @Entity('apply_jobs')
 @Unique(['jobId', 'candidateId'])
@@ -47,7 +48,7 @@ export class ApplyJob extends BaseEntity {
   public toResponse() {
     return {
       ...this,
-      status: ApplyJobStatus[this.status],
+      status: mapStatusDbToQueryStatus(this.status),
     };
   }
 }
