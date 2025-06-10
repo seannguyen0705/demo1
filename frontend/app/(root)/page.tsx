@@ -1,4 +1,4 @@
-import SearchHome from './components/SearchHome';
+import SearchHome from '../components/SearchHome';
 
 export default function Home() {
   return (

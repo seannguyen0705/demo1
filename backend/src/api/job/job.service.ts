@@ -75,6 +75,7 @@ export class JobService {
     }
     if (skillIds) {
       const skills = await this.skillService.findByIds(skillIds);
+
       data.skills = skills;
     }
     const newJob = await this.jobRepository.save({ ...data, companyId: company.id, status: JobStatus.DRAFT });

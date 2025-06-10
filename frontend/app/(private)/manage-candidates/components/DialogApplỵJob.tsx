@@ -18,6 +18,7 @@ import Link from 'next/link';
 import useGetApplyJobById from '../hooks/useGetApplyJobById';
 import InfoCandidate from './InfoCandidate';
 import StatusButton from './StatusButton';
+import { FaFilePdf } from 'react-icons/fa';
 
 interface IProps {
   applyJobId: string;
@@ -45,8 +46,8 @@ export default function DialogApplyJob({ applyJobId }: IProps) {
           <Card className="px-4">
             <div className="flex justify-between">
               <div className="flex items-center gap-2">
-                <span className="p-2 rounded-sm bg-blue-100 dark:bg-blue-900 inline">
-                  <FileText className="text-blue-500 dark:text-blue-400" />
+                <span className="p-2 rounded-sm bg-red-100 dark:bg-red-900 inline">
+                  <FaFilePdf className="text-red-500 dark:text-red-400" />
                 </span>
                 <div className="min-w-0 max-w-[200px]">
                   <p className="truncate">{applyJob.file.name}</p>

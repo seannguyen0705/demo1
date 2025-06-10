@@ -83,7 +83,7 @@ export default function BusinessForm() {
                     <FormItem>
                       <FormLabel>Họ và tên</FormLabel>
                       <FormControl>
-                        <Input placeholder="Nhập họ và tên" {...field} />
+                        <Input className="selection:bg-green" placeholder="Nhập họ và tên" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -96,7 +96,7 @@ export default function BusinessForm() {
                     <FormItem>
                       <FormLabel>Chức vụ</FormLabel>
                       <FormControl>
-                        <Input placeholder="Nhập chức vụ" {...field} />
+                        <Input className="selection:bg-green" placeholder="Nhập chức vụ" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -109,7 +109,7 @@ export default function BusinessForm() {
                     <FormItem>
                       <FormLabel>Email</FormLabel>
                       <FormControl>
-                        <Input placeholder="Nhập email" type="email" {...field} />
+                        <Input className="selection:bg-green" placeholder="Nhập email" type="email" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -122,7 +122,7 @@ export default function BusinessForm() {
                     <FormItem>
                       <FormLabel>Số điện thoại</FormLabel>
                       <FormControl>
-                        <Input placeholder="Nhập số điện thoại" {...field} />
+                        <Input className="selection:bg-green" placeholder="Nhập số điện thoại" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -144,7 +144,7 @@ export default function BusinessForm() {
                     <FormItem>
                       <FormLabel>Tên công ty</FormLabel>
                       <FormControl>
-                        <Input placeholder="Nhập tên công ty" {...field} />
+                        <Input className="selection:bg-green" placeholder="Nhập tên công ty" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -221,7 +221,7 @@ export default function BusinessForm() {
                     <FormItem>
                       <FormLabel>Địa chỉ website</FormLabel>
                       <FormControl>
-                        <Input placeholder="Nhập địa chỉ website" {...field} />
+                        <Input className="selection:bg-green" placeholder="Nhập địa chỉ website" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>

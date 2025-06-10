@@ -13,7 +13,7 @@ export default function SearchJob({ keyword }: IProps) {
         className="flex mb-4 flex-row md:h-[60px] h-[50px] items-center border rounded-2xl w-[90%] max-w-[800px] mx-auto overflow-hidden"
       >
         <Input
-          className="border-none bg-white rounded-none h-full outline-none"
+          className="border-none selection:bg-green bg-white rounded-none h-full outline-none"
           name="keyword"
           type="text"
           placeholder="Nhập từ khóa theo kĩ năng, chức vụ, công ty..."

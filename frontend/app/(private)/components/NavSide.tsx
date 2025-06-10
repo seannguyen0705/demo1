@@ -38,28 +38,26 @@ export default function NavSide() {
   }
   const navs = getNavMenus(user);
   return (
-    <div>
-      <aside className=" bg-light-green fixed hidden w-64 rounded-[20px] p-4 lg:block dark:bg-gray-900">
-        <p className=" flex items-center gap-2 text-sm">
-          <PiHandWaving size={25} color="green" />
-          Xin chào
-        </p>
-        <p className="text-lg">{user?.fullName}</p>
+    <aside className="bg-light-green fixed hidden w-64 rounded-[20px] p-4 lg:block dark:bg-gray-900">
+      <p className="flex items-center gap-2 text-sm">
+        <PiHandWaving size={25} color="green" />
+        Xin chào
+      </p>
+      <p className="text-lg">{user?.fullName}</p>
 
-        <ul className="mt-4">
-          {navs.map((nav) => (
-            <li key={nav.name}>
-              <Link
-                className="flex items-center gap-2 rounded-md p-2 hover:bg-white dark:hover:bg-gray-700"
-                href={nav.href}
-              >
-                {nav.icon}
-                {nav.name}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </aside>
-    </div>
+      <ul className="mt-4">
+        {navs.map((nav) => (
+          <li key={nav.name}>
+            <Link
+              className="flex items-center gap-2 rounded-md p-2 hover:bg-white dark:hover:bg-gray-700"
+              href={nav.href}
+            >
+              {nav.icon}
+              {nav.name}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </aside>
   );
 }

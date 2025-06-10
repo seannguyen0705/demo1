@@ -38,7 +38,7 @@ export default async function HeaderCompany({ company, numJobs, statistics }: IP
           alt={company.name}
           width={128}
           height={128}
-          className="relative -top-14 left-8 size-[128px] rounded-sm border-2 border-white bg-white"
+          className="relative -top-14 left-8 size-[128px] rounded-sm border-2 border-white bg-white object-cover"
         />
       )}
 

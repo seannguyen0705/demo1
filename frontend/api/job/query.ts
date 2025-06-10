@@ -1,6 +1,5 @@
 import queryFetch from '@/utils/helpers/queryFetch';
 import { IJob, QueryJob } from './interface';
-import { notFound } from 'next/navigation';
 
 export const getJobByCompanyId = async (companyId: string) => {
   try {

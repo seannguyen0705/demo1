@@ -18,7 +18,7 @@ const Footer = () => {
   };
 
   return (
-    <footer className="bg-gray-900 text-white py-12 mt-12 ">
+    <footer className="bg-gray-900 text-white py-12">
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto text-center mb-8">
           <p className="text-xl italic text-gray-300 mb-4">&quot;{getRandomQuote()}&quot;</p>
