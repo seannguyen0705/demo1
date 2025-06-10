@@ -5,6 +5,7 @@ import { CreateCompanyDto } from './dtos/create-company.dto';
 import { Company } from './entities/company.entity';
 import { QueryRunner } from 'typeorm';
 import UpdateCompanyDto from './dtos/update-company.dto';
+import { ILike } from 'typeorm';
 @Injectable()
 export class CompanyService {
   constructor(
@@ -23,7 +24,7 @@ export class CompanyService {
 
   public async findOneByName(name: string) {
     return this.companyRepository.findOne({
-      where: { name },
+      where: { name: ILike(name) },
       relations: {
         logo: true,
         background: true,

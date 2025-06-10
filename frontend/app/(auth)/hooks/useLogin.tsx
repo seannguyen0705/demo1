@@ -22,7 +22,14 @@ export default function useLogin() {
         } else {
           router.replace('/');
         }
+        queryClient.invalidateQueries({ queryKey: ['my-review'] });
         queryClient.invalidateQueries({ queryKey: ['me'] });
+        queryClient.invalidateQueries({ queryKey: ['candidate-job'] });
+        queryClient.invalidateQueries({ queryKey: ['manage-jobs'] });
+        queryClient.invalidateQueries({ queryKey: ['manage-candidates'] });
+        queryClient.invalidateQueries({ queryKey: ['candidateGetJobApply'] });
+        queryClient.invalidateQueries({ queryKey: ['candidateGetJobSaved'] });
+        queryClient.invalidateQueries({ queryKey: ['candidateGetJobById'] });
       }
     },
   });

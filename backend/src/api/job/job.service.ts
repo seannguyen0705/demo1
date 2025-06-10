@@ -109,8 +109,9 @@ export class JobService {
   private async searchJobByKeyword(queryBuilder: SelectQueryBuilder<Job>, keyword?: string) {
     if (keyword) {
       const company = await this.companyService.findOneByName(keyword);
+
       if (company) {
-        queryBuilder.andWhere('company.name =:keyword', { keyword });
+        queryBuilder.andWhere('company.name ILIKE :keyword', { keyword });
         return;
       }
       const skill = await this.skillService.findOneByName(keyword);
