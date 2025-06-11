@@ -47,4 +47,9 @@ export class EmployerController {
   public async findEmployers(@Query() query: QueryEmployer) {
     return this.employerService.findEmployers(query);
   }
+
+  @InjectRoute(employerRoutes.findEmployerById)
+  public async findEmployerById(@Param('id') id: string) {
+    return this.employerService.findEmployerById(id);
+  }
 }

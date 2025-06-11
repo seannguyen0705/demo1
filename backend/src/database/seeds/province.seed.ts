@@ -1,9 +1,7 @@
 import { Province } from '@/api/province/entities/province.entity';
-import { DataSource } from 'typeorm';
+import { QueryRunner } from 'typeorm';
 
-export const seedProvinces = async (dataSource: DataSource) => {
-  const provinceRepo = dataSource.getRepository(Province);
-
+export const seedProvinces = async (queryRunner: QueryRunner) => {
   const provinces = [
     'An Giang',
     'Bà Rịa - Vũng Tàu',
@@ -72,9 +70,9 @@ export const seedProvinces = async (dataSource: DataSource) => {
   ];
 
   for (const name of provinces) {
-    const exists = await provinceRepo.findOneBy({ name });
+    const exists = await queryRunner.manager.findOneBy(Province, { name });
     if (!exists) {
-      await provinceRepo.save(provinceRepo.create({ name }));
+      await queryRunner.manager.save(Province, { name });
     }
   }
 

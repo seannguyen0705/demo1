@@ -52,4 +52,11 @@ export default {
     roles: [UserRole.ADMIN],
     jwtSecure: true,
   },
+
+  findEmployerById: <IRouteParams>{
+    path: '/:id',
+    method: RequestMethod.GET,
+    roles: [UserRole.ADMIN],
+    jwtSecure: true,
+  },
 };

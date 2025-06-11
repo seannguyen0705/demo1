@@ -28,10 +28,8 @@ export class CompanyService {
       relations: {
         logo: true,
         background: true,
-        companyAddresses: {
-          address: {
-            province: true,
-          },
+        addresses: {
+          province: true,
         },
       },
     });

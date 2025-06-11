@@ -1,9 +1,7 @@
-import { DataSource } from 'typeorm';
+import { QueryRunner } from 'typeorm';
 import { Skill } from '@/api/skill/entities/skill.entity';
 
-export const seedSkills = async (dataSource: DataSource) => {
-  const skillRepository = dataSource.getRepository(Skill);
-
+export const seedSkills = async (queryRunner: QueryRunner) => {
   const skills = [
     'JavaScript',
     'TypeScript',
@@ -93,10 +91,9 @@ export const seedSkills = async (dataSource: DataSource) => {
   ];
 
   for (const name of skills) {
-    const existing = await skillRepository.findOne({ where: { name } });
+    const existing = await queryRunner.manager.findOneBy(Skill, { name });
     if (!existing) {
-      const skill = skillRepository.create({ name });
-      await skillRepository.save(skill);
+      await queryRunner.manager.save(Skill, { name });
     }
   }
 

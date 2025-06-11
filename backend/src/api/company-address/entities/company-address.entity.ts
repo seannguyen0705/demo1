@@ -1,14 +1,13 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from 'typeorm';
-import { Base as BaseEntity } from '@/common/entities';
+import { CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryColumn, UpdateDateColumn } from 'typeorm';
 import { Company } from '@/api/company/entities/company.entity';
 import { Address } from '@/api/address/entities/address.entity';
 
 @Entity('company_addresses')
-export class CompanyAddress extends BaseEntity {
-  @Column({ name: 'company_id' })
+export class CompanyAddress {
+  @PrimaryColumn({ name: 'company_id' })
   companyId: string;
 
-  @Column({ name: 'address_id' })
+  @PrimaryColumn({ name: 'address_id' })
   addressId: string;
 
   @ManyToOne(() => Company, { onDelete: 'CASCADE' })
@@ -18,4 +17,21 @@ export class CompanyAddress extends BaseEntity {
   @OneToOne(() => Address, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'address_id' })
   address: Address;
+
+  @CreateDateColumn({
+    name: 'created_at',
+    type: 'timestamptz',
+    nullable: false,
+    default: () => 'CURRENT_TIMESTAMP(6)',
+  })
+  createdAt: Date;
+
+  @UpdateDateColumn({
+    name: 'updated_at',
+    type: 'timestamptz',
+    nullable: false,
+    default: () => 'CURRENT_TIMESTAMP(6)',
+    onUpdate: 'CURRENT_TIMESTAMP(6)',
+  })
+  updatedAt: Date;
 }

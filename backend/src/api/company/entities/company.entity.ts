@@ -1,10 +1,10 @@
-import { Column, Entity, JoinColumn, OneToMany, OneToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, OneToMany, OneToOne } from 'typeorm';
 import { Base as BaseEntity } from '@/common/entities';
 import { File } from '@/api/file/entities/file.entity';
 import { Employer } from '@/api/employer/entities/employer.entity';
-import { CompanyAddress } from '@/api/company-address/entities/company-address.entity';
 import { Review } from '@/api/review/entities/review.entity';
 import { Job } from '@/api/job/entities/job.entity';
+import { Address } from '@/api/address/entities/address.entity';
 
 @Entity('companies')
 export class Company extends BaseEntity {
@@ -32,8 +32,13 @@ export class Company extends BaseEntity {
   @Column({ type: 'text', nullable: true })
   benefits?: string;
 
-  @OneToMany(() => CompanyAddress, (companyAddress) => companyAddress.company)
-  companyAddresses: CompanyAddress[];
+  @ManyToMany(() => Address)
+  @JoinTable({
+    name: 'company_addresses',
+    joinColumn: { name: 'company_id' },
+    inverseJoinColumn: { name: 'address_id' },
+  })
+  addresses: Address[];
 
   @Column()
   website: string;

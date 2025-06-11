@@ -20,7 +20,7 @@ const formSchema = z.object({
   fullName: z.string().min(2, 'Họ tên phải có ít nhất 2 ký tự'),
   title: z.string().min(2, 'Chức vụ phải có ít nhất 2 ký tự'),
   email: z.string().email('Email không hợp lệ'),
-  phoneNumber: z.string().min(10, 'Số điện thoại phải có ít nhất 10 số'),
+  phoneNumber: z.string().regex(/^[0-9]{10}$/, 'Số điện thoại phải có 10 số và bắt đầu bằng 0'),
 
   // Company Information
   name: z.string().min(2, 'Tên công ty phải có ít nhất 2 ký tự'),

@@ -17,10 +17,8 @@ import { CloudinaryService } from '../cloudinary/cloudinary.service';
 import { CreateFileDto } from '../file/dto/create-file.dto';
 import { File } from '../file/entities/file.entity';
 import { CreateBusinessDto } from '../auth/dto/create-business.dto';
-import { CreateCompanyAddressDto } from '../company-address/dto/create-company-address.dto';
 import { Company } from '../company/entities/company.entity';
 import { Address } from '../address/entities/address.entity';
-import { CompanyAddress } from '../company-address/entities/company-address.entity';
 import { UpdateEmployerDto } from './dto/update-employer.dto';
 import { QueryEmployer } from './dto/query-employer.dto';
 @Injectable()
@@ -54,23 +52,17 @@ export class EmployerService {
     try {
       // create employers
       const createdEmployer = await queryRunner.manager.save(Employer, data);
+
+      // create addresses
+      const newAddresses = await queryRunner.manager.save(Address, addresses);
       // create company
-      const createdCompany = await queryRunner.manager.save(Company, {
+      await queryRunner.manager.save(Company, {
         ...data,
         employerId: createdEmployer.id,
+        addresses: newAddresses,
       });
       // create address
-      const createCompanyAddresses: CreateCompanyAddressDto[] = await Promise.all(
-        addresses.map(async (address) => {
-          const createdAddress = await queryRunner.manager.save(Address, address);
-          return {
-            addressId: createdAddress.id,
-            companyId: createdCompany.id,
-          };
-        }),
-      );
-      // create company addresses
-      await queryRunner.manager.insert(CompanyAddress, createCompanyAddresses);
+
       await queryRunner.commitTransaction();
       return { message: 'Đăng kí tài khoản doanh nghiệp thành công ' };
     } catch (error) {
@@ -261,6 +253,9 @@ export class EmployerService {
     const queryBuilder = this.employerRepository
       .createQueryBuilder('employer')
       .leftJoin('employer.company', 'company')
+      .leftJoin('company.logo', 'logo')
+      .leftJoin('company.addresses', 'addresses')
+      .leftJoin('addresses.province', 'province')
       .select([
         'employer.id',
         'employer.fullName',
@@ -268,9 +263,13 @@ export class EmployerService {
         'employer.phoneNumber',
         'employer.createdAt',
         'employer.status',
-        'employer.countViolation',
         'company.name',
         'company.id',
+        'company.website',
+        'logo.url',
+        'addresses.id',
+        'addresses.detail',
+        'province.name',
       ])
       .skip((page - 1) * limit)
       .take(limit);
@@ -289,5 +288,32 @@ export class EmployerService {
       return { employers, currentPage: page, nextPage: null, total };
     }
     return { employers, currentPage: page, nextPage: page + 1, total };
+  }
+
+  public async findEmployerById(id: string) {
+    const queryBuilder = this.employerRepository
+      .createQueryBuilder('employer')
+      .innerJoin('employer.company', 'company')
+      .leftJoin('employer.avatar', 'avatar')
+      .leftJoin('company.logo', 'logo')
+      .leftJoin('company.addresses', 'addresses')
+      .leftJoin('addresses.province', 'province')
+      .select([
+        'employer.id',
+        'employer.fullName',
+        'employer.email',
+        'employer.phoneNumber',
+        'employer.status',
+        'company.name',
+        'company.id',
+        'avatar.url',
+        'logo.url',
+        'addresses.id',
+        'addresses.detail',
+        'province.name',
+      ])
+      .where('employer.id = :id', { id });
+
+    return queryBuilder.getOne();
   }
 }

@@ -51,11 +51,7 @@ export class Admin1749440601387 implements MigrationInterface {
             enumName: 'gender_enum',
             isNullable: true,
           },
-          {
-            name: 'count_violation',
-            type: 'integer',
-            default: 0,
-          },
+
           {
             name: 'bod',
             type: 'date',

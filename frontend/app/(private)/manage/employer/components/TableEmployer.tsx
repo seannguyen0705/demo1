@@ -1,13 +1,14 @@
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { formatDate } from 'date-fns';
-import Pagination from '../../manage-candidates/components/Pagination';
+import Pagination from '../../../manage-candidates/components/Pagination';
 import { parseAsInteger, useQueryState } from 'nuqs';
 import { useMemo } from 'react';
-import useGetEmployer from './hooks/useGetEmployer';
+import useGetEmployer from '../hooks/useGetEmployer';
 import { Skeleton } from '@/components/ui/skeleton';
 import { mapEnumStatusUser } from '@/utils/helpers/mapEnumStatusUser';
-
+import ShowStatusUser from './ShowStatusUser';
+import ActionEmployer from './ActionEmployer';
 export default function TableEmployer() {
   const [status] = useQueryState('status', { defaultValue: '' });
   const [orderBy, setOrderBy] = useQueryState('orderBy', { defaultValue: '' });
@@ -46,7 +47,6 @@ export default function TableEmployer() {
                 Ngày tạo
               </Button>
             </TableHead>
-            <TableHead>Vi phạm</TableHead>
             <TableHead>
               <Button variant="ghost" className="h-auto p-0 font-medium hover:bg-transparent">
                 Trạng thái
@@ -70,9 +70,12 @@ export default function TableEmployer() {
                 <TableCell className="font-medium">{employer.fullName}</TableCell>
                 <TableCell className="font-medium">{employer.company?.name}</TableCell>
                 <TableCell>{formatDate(employer.createdAt, 'dd/MM/yyyy')}</TableCell>
-                <TableCell className="text-center">{employer.countViolation}</TableCell>
-                <TableCell>{mapEnumStatusUser(employer.status)}</TableCell>
-                <TableCell className="text-right"></TableCell>
+                <TableCell>
+                  <ShowStatusUser status={employer.status} />
+                </TableCell>
+                <TableCell className="text-right">
+                  <ActionEmployer employerId={employer.id} />
+                </TableCell>
               </TableRow>
             ))
           )}

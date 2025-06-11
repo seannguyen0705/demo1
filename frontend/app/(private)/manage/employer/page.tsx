@@ -1,8 +1,8 @@
 'use client';
 
 import { Card, CardContent, CardDescription, CardTitle, CardHeader } from '@/components/ui/card';
-import SearchAndFilter from './SearchAndFilter';
-import TableEmployer from './TableEmployer';
+import SearchAndFilter from './components/SearchAndFilter';
+import TableEmployer from './components/TableEmployer';
 
 export default function ManageEmployer() {
   return (

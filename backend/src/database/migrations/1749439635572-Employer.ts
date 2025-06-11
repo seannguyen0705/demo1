@@ -52,11 +52,6 @@ export class Employer1749439635572 implements MigrationInterface {
             isNullable: true,
           },
           {
-            name: 'count_violation',
-            type: 'integer',
-            default: 0,
-          },
-          {
             name: 'bod',
             type: 'date',
             isNullable: true,

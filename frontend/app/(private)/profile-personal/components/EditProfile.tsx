@@ -24,15 +24,15 @@ import { isErrorResponse } from '@/utils/helpers/isErrorResponse';
 import useUpdateUser from '../hooks/useUpdateUser';
 
 const formSchema = z.object({
-  fullName: z.string().min(2, 'Full name must be at least 2 characters'),
-  title: z.string().min(2, 'Title must be at least 2 characters'),
-  phoneNumber: z.string().regex(/^[0-9]{10}$/, 'Phone number must be 10 digits'),
+  fullName: z.string().min(2, 'Họ và tên phải có ít nhất 2 ký tự'),
+  title: z.string().min(2, 'Chức danh phải có ít nhất 2 ký tự'),
+  phoneNumber: z.string().regex(/^[0-9]{10}$/, 'Số điện thoại phải có 10 số và bắt đầu bằng 0'),
   gender: z.nativeEnum(Gender),
   bod: z.string().refine((date) => !isNaN(Date.parse(date)), {
     message: 'Ngày sinh không hợp lệ',
   }),
   address: z.string(),
-  personal_website: z.string().url('Invalid website URL').optional().or(z.literal('')),
+  personal_website: z.string().url('URL không hợp lệ').optional().or(z.literal('')),
 });
 
 interface IProps {
