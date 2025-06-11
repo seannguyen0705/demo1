@@ -52,4 +52,9 @@ export class EmployerController {
   public async findEmployerById(@Param('id') id: string) {
     return this.employerService.findEmployerById(id);
   }
+
+  @InjectRoute(employerRoutes.deleteEmployer)
+  public async deleteEmployer(@Param('id') id: string) {
+    return this.employerService.deleteEmployer(id);
+  }
 }

@@ -1,6 +1,6 @@
 import { UserStatus } from '@/utils/enums';
 import { Button } from '@/components/ui/button';
-import { Check, Lock } from 'lucide-react';
+import { Check } from 'lucide-react';
 import { CiLock, CiUnlock } from 'react-icons/ci';
 import useUpdateEmployerStatus from '../hooks/useUpdateEmployerStatus';
 import ConfirmAction from '@/app/(private)/manage-candidates/components/ConfirmAction';
@@ -15,6 +15,7 @@ export default function ActionStatus({ employerId, status }: IProps) {
     return (
       <ConfirmAction
         title="Xác nhận khóa tài khoản"
+        disabled={isPending}
         description="Bạn có chắc chắn muốn khóa tài khoản này không?"
         action={() => updateEmployerStatus({ status: UserStatus.BANNED })}
         button={
@@ -29,6 +30,7 @@ export default function ActionStatus({ employerId, status }: IProps) {
     return (
       <ConfirmAction
         title="Xác nhận kích hoạt tài khoản"
+        disabled={isPending}
         description="Bạn có chắc chắn muốn kích hoạt tài khoản này không?"
         action={() => updateEmployerStatus({ status: UserStatus.ACTIVE })}
         button={
@@ -43,6 +45,7 @@ export default function ActionStatus({ employerId, status }: IProps) {
     return (
       <ConfirmAction
         title="Xác nhận mở khóa tài khoản"
+        disabled={isPending}
         description="Bạn có chắc chắn muốn mở khóa tài khoản này không?"
         action={() => updateEmployerStatus({ status: UserStatus.ACTIVE })}
         button={

@@ -7,7 +7,7 @@ import { TokenService } from '../token/token.service';
 import { UserAlreadyException } from '../auth/auth.exceptions';
 import { ResponseEmployerDetailDto, ResponseEmployerDto } from './dto/response-employer.dto';
 import { Order, OrderByEmployer, UserRole, UserStatus } from '@/common/enums';
-import { DataSource, SelectQueryBuilder } from 'typeorm';
+import { DataSource, QueryRunner, SelectQueryBuilder } from 'typeorm';
 import { UpdateStatusUserDto } from '@/common/dto/update-status-user.dto';
 import generateSecurePassword from '@/utils/helpers/generateSecurePassword';
 import { EmailService } from '../email/email.service';
@@ -21,6 +21,9 @@ import { Company } from '../company/entities/company.entity';
 import { Address } from '../address/entities/address.entity';
 import { UpdateEmployerDto } from './dto/update-employer.dto';
 import { QueryEmployer } from './dto/query-employer.dto';
+import { CompanyAddress } from '../company-address/entities/company-address.entity';
+import { query } from 'express';
+import { CompanyImage } from '../company-image/entities/companyImage.entity';
 @Injectable()
 export class EmployerService {
   private readonly folder: string;
@@ -321,5 +324,65 @@ export class EmployerService {
       .where('employer.id = :id', { id });
 
     return queryBuilder.getOne();
+  }
+
+  private async deleteFile(fileId: string, deleteKeys: string[], queryRunner: QueryRunner) {
+    const file = await queryRunner.manager.findOneBy(File, { id: fileId });
+    if (file) {
+      await queryRunner.manager.delete(File, file.id);
+      deleteKeys.push(file.key);
+    }
+  }
+
+  public async deleteEmployer(id: string) {
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+    const deleteKeys = [];
+
+    try {
+      const employer = await queryRunner.manager.findOneBy(Employer, { id });
+      if (!employer) {
+        throw new NotFoundException('Employer not found');
+      }
+      const company = await queryRunner.manager.findOneBy(Company, { employerId: id });
+      const companyAddresses = await queryRunner.manager.findBy(CompanyAddress, { companyId: company.id });
+      const addressIds = companyAddresses.map((address) => address.addressId);
+      const companyImages = await queryRunner.manager.findBy(CompanyImage, { companyId: company.id });
+      await Promise.all(
+        companyImages.map(async (companyImage) => {
+          if (companyImage.fileId) {
+            await queryRunner.manager.delete(CompanyImage, companyImage.id);
+            await this.deleteFile(companyImage.fileId, deleteKeys, queryRunner);
+          }
+        }),
+      );
+      await queryRunner.manager.delete(Address, addressIds);
+      if (!company) {
+        throw new NotFoundException('Company not found');
+      }
+      if (company.proofId) {
+        await this.deleteFile(company.proofId, deleteKeys, queryRunner);
+      }
+      if (company.logoId) {
+        await this.deleteFile(company.logoId, deleteKeys, queryRunner);
+      }
+      if (company.backgroundId) {
+        await this.deleteFile(company.backgroundId, deleteKeys, queryRunner);
+      }
+      if (employer.avatarId) {
+        await this.deleteFile(employer.avatarId, deleteKeys, queryRunner);
+      }
+      await queryRunner.manager.delete(Employer, id);
+      await queryRunner.manager.delete(Company, company.id);
+      Promise.all(deleteKeys.map((key) => this.cloudinaryService.deleteFile(key))); // side effect
+      await queryRunner.commitTransaction();
+      return { message: 'Xóa tài khoản doanh nghiệp thành công' };
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+      throw error;
+    } finally {
+      await queryRunner.release();
+    }
   }
 }
