@@ -9,7 +9,7 @@ interface IProps {
 }
 
 export default function CompanyCard({ company }: IProps) {
-  const provinceNames = company.companyAddresses.map((companyAddress) => companyAddress.address.province.name);
+  const provinceNames = company.addresses.map((address) => address.province.name);
   const setProvinceNames = new Set(provinceNames);
 
   return (
