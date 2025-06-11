@@ -54,17 +54,17 @@ export class EmployerService {
 
     try {
       // create employers
-      const createdEmployer = await queryRunner.manager.save(Employer, data);
+      const [createdEmployer, newAddresses] = await Promise.all([
+        queryRunner.manager.save(Employer, data),
+        queryRunner.manager.save(Address, addresses),
+      ]);
 
-      // create addresses
-      const newAddresses = await queryRunner.manager.save(Address, addresses);
       // create company
       await queryRunner.manager.save(Company, {
         ...data,
         employerId: createdEmployer.id,
         addresses: newAddresses,
       });
-      // create address
 
       await queryRunner.commitTransaction();
       return { message: 'Đăng kí tài khoản doanh nghiệp thành công ' };
