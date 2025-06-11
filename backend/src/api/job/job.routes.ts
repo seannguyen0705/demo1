@@ -72,7 +72,7 @@ export default {
     method: RequestMethod.GET,
     code: HttpStatus.OK,
     jwtSecure: true,
-    roles: [UserRole.EMPLOYER, UserRole.ADMIN],
+    roles: [UserRole.EMPLOYER],
   },
 
   deleteJob: <IRouteParams>{

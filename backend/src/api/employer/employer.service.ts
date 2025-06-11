@@ -6,8 +6,8 @@ import { Employer } from './entities/employer.entity';
 import { TokenService } from '../token/token.service';
 import { UserAlreadyException } from '../auth/auth.exceptions';
 import { ResponseEmployerDetailDto, ResponseEmployerDto } from './dto/response-employer.dto';
-import { UserRole, UserStatus } from '@/common/enums';
-import { DataSource } from 'typeorm';
+import { Order, OrderByEmployer, UserRole, UserStatus } from '@/common/enums';
+import { DataSource, SelectQueryBuilder } from 'typeorm';
 import { UpdateStatusUserDto } from '@/common/dto/update-status-user.dto';
 import generateSecurePassword from '@/utils/helpers/generateSecurePassword';
 import { EmailService } from '../email/email.service';
@@ -22,6 +22,7 @@ import { Company } from '../company/entities/company.entity';
 import { Address } from '../address/entities/address.entity';
 import { CompanyAddress } from '../company-address/entities/company-address.entity';
 import { UpdateEmployerDto } from './dto/update-employer.dto';
+import { QueryEmployer } from './dto/query-employer.dto';
 @Injectable()
 export class EmployerService {
   private readonly folder: string;
@@ -96,12 +97,6 @@ export class EmployerService {
     phoneNumber: string;
   }): Promise<Employer> {
     return this.employerRepository.findOneBy([{ email }, { phoneNumber }]);
-  }
-
-  public async getAll(): Promise<ResponseEmployerDto[]> {
-    const employers = await this.employerRepository.find();
-
-    return employers.map((employer) => employer.toResponse());
   }
 
   public async getDetailById(id: string): Promise<ResponseEmployerDetailDto> {
@@ -234,5 +229,65 @@ export class EmployerService {
       throw new NotFoundException('Employer not found');
     }
     return this.handleUpdateEmployer({ employer, data });
+  }
+
+  private async searchByKeyword(queryBuilder: SelectQueryBuilder<Employer>, keyword: string) {
+    if (keyword) {
+      queryBuilder.andWhere('(employer.fullName ILIKE :keyword OR company.name ILIKE :keyword)', {
+        keyword: `%${keyword}%`,
+      });
+    }
+  }
+
+  private async orderEmployer(queryBuilder: SelectQueryBuilder<Employer>, orderBy: OrderByEmployer, order: Order) {
+    if (orderBy) {
+      switch (orderBy) {
+        case OrderByEmployer.CREATED_AT:
+          queryBuilder.orderBy('employer.createdAt', order);
+          break;
+      }
+    }
+  }
+
+  private async filterByStatus(queryBuilder: SelectQueryBuilder<Employer>, status: UserStatus) {
+    if (status) {
+      queryBuilder.andWhere('employer.status = :status', { status });
+    }
+  }
+
+  public async findEmployers(query: QueryEmployer) {
+    const { keyword, status, orderBy, order, page, limit } = query;
+
+    const queryBuilder = this.employerRepository
+      .createQueryBuilder('employer')
+      .leftJoin('employer.company', 'company')
+      .select([
+        'employer.id',
+        'employer.fullName',
+        'employer.email',
+        'employer.phoneNumber',
+        'employer.createdAt',
+        'employer.status',
+        'employer.countViolation',
+        'company.name',
+        'company.id',
+      ])
+      .skip((page - 1) * limit)
+      .take(limit);
+
+    await Promise.all([
+      this.searchByKeyword(queryBuilder, keyword),
+      this.filterByStatus(queryBuilder, status),
+      this.orderEmployer(queryBuilder, orderBy, order),
+    ]);
+
+    const [employers, total] = await queryBuilder.getManyAndCount();
+
+    const numPage = Math.ceil(total / limit);
+
+    if (page + 1 > numPage) {
+      return { employers, currentPage: page, nextPage: null, total };
+    }
+    return { employers, currentPage: page, nextPage: page + 1, total };
   }
 }

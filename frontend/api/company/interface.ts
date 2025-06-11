@@ -19,6 +19,7 @@ interface ICompany {
   country: string;
   employerId: string;
   companyAddresses: ICompanyAddress[];
+  jobCount: number;
 }
 
 interface IUpdateCompany {

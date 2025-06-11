@@ -462,8 +462,12 @@ export class JobService {
     return { jobs, currentPage: page, nextPage: page + 1, total };
   }
 
-  public async getStaticsticsByJobId(jobId: string) {
-    const job = await this.jobRepository.findOneBy({ id: jobId });
+  public async getStaticsticsByJobId(jobId: string, employerId: string) {
+    const company = await this.companyService.findOneByEmployerId(employerId);
+    if (!company) {
+      throw new NotFoundException('Company not found');
+    }
+    const job = await this.jobRepository.findOneBy({ id: jobId, companyId: company.id });
     if (!job) {
       throw new NotFoundException('Job not found');
     }

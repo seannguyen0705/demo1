@@ -67,4 +67,28 @@ export class CompanyService {
   public async countAllCompanies() {
     return this.companyRepository.count();
   }
+
+  public async getTop10Companies() {
+    const queryBuilder = this.companyRepository
+      .createQueryBuilder('company')
+      .leftJoin('company.reviews', 'reviews')
+      .leftJoin('company.logo', 'logo')
+      .leftJoin('company.jobs', 'jobs')
+      .leftJoin('company.companyAddresses', 'companyAddresses')
+      .leftJoin('companyAddresses.address', 'address')
+      .innerJoin('address.province', 'province')
+      .loadRelationCountAndMap('company.jobCount', 'company.jobs')
+      .select(['company.id', 'company.name', 'logo.url', 'companyAddresses.id', 'address.id', 'province.name'])
+
+      .groupBy('company.id')
+      .addGroupBy('logo.id')
+      .addGroupBy('companyAddresses.id')
+      .addGroupBy('address.id')
+      .addGroupBy('province.id')
+      .orderBy('AVG(reviews.rating)', 'DESC')
+      .addOrderBy('COUNT(reviews.id)', 'DESC')
+      .limit(10);
+    const companies = await queryBuilder.getMany();
+    return companies;
+  }
 }

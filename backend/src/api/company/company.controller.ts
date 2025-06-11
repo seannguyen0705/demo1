@@ -27,6 +27,12 @@ export class CompanyController {
     this.folderBackground = 'company/background';
   }
 
+  @InjectRoute(companyRoutes.getTop10Companies)
+  async getTop10Companies() {
+    const companies = await this.companyService.getTop10Companies();
+    return companies;
+  }
+
   @InjectRoute(companyRoutes.findOneByName)
   async findOneByName(@Param('name') name: string) {
     const company = await this.companyService.findOneByName(name);

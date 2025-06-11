@@ -82,7 +82,7 @@ export class Job extends BaseEntity {
   @Column({ type: 'timestamptz', name: 'expired_at', nullable: true })
   expiredAt: Date;
 
-  @ManyToOne(() => Company)
+  @ManyToOne(() => Company, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'company_id' })
   company: Company;
 

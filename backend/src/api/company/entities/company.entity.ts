@@ -3,6 +3,8 @@ import { Base as BaseEntity } from '@/common/entities';
 import { File } from '@/api/file/entities/file.entity';
 import { Employer } from '@/api/employer/entities/employer.entity';
 import { CompanyAddress } from '@/api/company-address/entities/company-address.entity';
+import { Review } from '@/api/review/entities/review.entity';
+import { Job } from '@/api/job/entities/job.entity';
 
 @Entity('companies')
 export class Company extends BaseEntity {
@@ -66,4 +68,10 @@ export class Company extends BaseEntity {
   @OneToOne(() => Employer, (employer) => employer.company, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'employer_id' })
   employer: Employer;
+
+  @OneToMany(() => Review, (review) => review.company)
+  reviews: Review[];
+
+  @OneToMany(() => Job, (job) => job.company)
+  jobs: Job[];
 }

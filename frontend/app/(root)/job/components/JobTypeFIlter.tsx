@@ -21,7 +21,7 @@ export function JobTypeFilter() {
         >
           {jobType ? jobType : 'Loại việc làm'}{' '}
           {jobType ? (
-            <Link href={`?${handleClear('jobType')}`}>
+            <Link replace={true} href={`?${handleClear('jobType')}`}>
               <X />
             </Link>
           ) : (

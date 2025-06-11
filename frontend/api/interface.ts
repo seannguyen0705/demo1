@@ -36,6 +36,7 @@ interface IUser {
   experiences?: IExperience[];
   company?: ICompany;
   candidateSkills?: ICandidateSkill[];
+  createdAt: string;
 }
 
 interface IQueryPagination {

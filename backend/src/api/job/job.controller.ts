@@ -60,8 +60,8 @@ export class JobController {
   }
 
   @InjectRoute(jobRoutes.getStaticsticsByJobId)
-  async getStaticsticsByJobId(@Param('id') id: string) {
-    return this.jobService.getStaticsticsByJobId(id);
+  async getStaticsticsByJobId(@Param('id') id: string, @ReqUser() user: IJwtStrategy) {
+    return this.jobService.getStaticsticsByJobId(id, user.element.id);
   }
 
   @InjectRoute(jobRoutes.deleteJob)

@@ -1,25 +1,30 @@
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { ApplyJobStatus } from '@/utils/enums';
 import { Filter } from 'lucide-react';
-import { useQueryState } from 'nuqs';
+import { parseAsInteger, useQueryState } from 'nuqs';
+import { useEffect } from 'react';
 
 const statusOptions = [
   { value: 'Tất cả', label: 'Tất cả' },
-  { value: 'Chưa kích hoạt', label: 'Chưa kích hoạt' },
-  { value: 'Kích hoạt', label: 'Kích hoạt' },
-  { value: 'Đã chặn', label: 'Đã chặn' },
+  { value: 'inactive', label: 'Chưa kích hoạt' },
+  { value: 'active', label: 'Kích hoạt' },
+  { value: 'banned', label: 'Đã chặn' },
 ];
 
 export default function SearchAndFilter() {
   const [keyword, setKeyword] = useQueryState('keyword', { defaultValue: '' });
   const [status, setStatus] = useQueryState('status', { defaultValue: '' });
+  const [page, setPage] = useQueryState('page', parseAsInteger.withDefault(1));
+
+  useEffect(() => {
+    setPage(1);
+  }, [keyword, status]);
 
   return (
     <div className="flex flex-col sm:flex-row  gap-4 mb-6">
       <div className="flex-1">
         <Input
-          placeholder="Tìm kiếm theo tên, email, số điện thoại hoặc công việc..."
+          placeholder="Tìm kiếm theo tên, email, số điện thoại hoặc chức vụ"
           value={keyword}
           onChange={(e) => setKeyword(e.target.value)}
           className="max-w-md selection:bg-green"

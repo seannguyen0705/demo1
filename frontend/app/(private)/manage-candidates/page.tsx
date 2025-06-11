@@ -2,7 +2,7 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import SearchAndFilter from './components/SearchAndFIlter';
-import CandidateTable from './components/CandidateTable';
+import TableCandidate from './components/TableCandidate';
 
 export default function ManageCandidates() {
   // All hooks must be inside the component function
@@ -19,7 +19,7 @@ export default function ManageCandidates() {
           <SearchAndFilter />
 
           {/* Table */}
-          <CandidateTable />
+          <TableCandidate />
         </CardContent>
       </Card>
     </main>

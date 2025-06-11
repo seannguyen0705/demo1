@@ -45,4 +45,11 @@ export default {
     },
     extraDecorators: [UseInterceptors(FileInterceptor('file'))],
   },
+
+  findEmployers: <IRouteParams>{
+    path: '/',
+    method: RequestMethod.GET,
+    roles: [UserRole.ADMIN],
+    jwtSecure: true,
+  },
 };
