@@ -9,7 +9,7 @@ export default function ShowStatusUser({ status }: IProps) {
   if (status === UserStatus.ACTIVE) {
     return (
       <Badge variant="default" className="bg-green">
-        Hoạt động
+        Đã kích hoạt
       </Badge>
     );
   }

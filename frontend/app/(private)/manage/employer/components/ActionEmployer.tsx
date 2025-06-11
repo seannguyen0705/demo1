@@ -20,7 +20,7 @@ export default function ActionEmployer({ employerId, status }: IProps) {
         description="Bạn có chắc chắn muốn xóa tài khoản này không?"
         action={() => deleteEmployer(employerId)}
         button={
-          <Button variant="destructive" disabled={isPending}>
+          <Button variant="outline" className="text-red-500" disabled={isPending}>
             <Trash2 className="w-4 h-4" />
           </Button>
         }

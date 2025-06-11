@@ -7,7 +7,7 @@ import { useEffect } from 'react';
 const statusOptions = [
   { value: 'Tất cả', label: 'Tất cả' },
   { value: 'inactive', label: 'Chưa kích hoạt' },
-  { value: 'active', label: 'Kích hoạt' },
+  { value: 'active', label: 'Đã kích hoạt' },
   { value: 'banned', label: 'Đã khóa' },
 ];
 
