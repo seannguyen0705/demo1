@@ -8,7 +8,7 @@ const statusOptions = [
   { value: 'Tất cả', label: 'Tất cả' },
   { value: 'inactive', label: 'Chưa kích hoạt' },
   { value: 'active', label: 'Kích hoạt' },
-  { value: 'banned', label: 'Đã chặn' },
+  { value: 'banned', label: 'Đã khóa' },
 ];
 
 export default function SearchAndFilter() {
@@ -16,22 +16,28 @@ export default function SearchAndFilter() {
   const [status, setStatus] = useQueryState('status', { defaultValue: '' });
   const [page, setPage] = useQueryState('page', parseAsInteger.withDefault(1));
 
-  useEffect(() => {
+  const handleSearch = (keyword: string) => {
     setPage(1);
-  }, [keyword, status]);
+    setKeyword(keyword);
+  };
+
+  const handleStatusChange = (status: string) => {
+    setPage(1);
+    setStatus(status);
+  };
 
   return (
     <div className="flex flex-col sm:flex-row  gap-4 mb-6">
       <div className="flex-1">
         <Input
-          placeholder="Tìm kiếm theo tên, email, số điện thoại hoặc chức vụ"
+          placeholder="Tìm kiếm theo tên, tên công ty"
           value={keyword}
-          onChange={(e) => setKeyword(e.target.value)}
+          onChange={(e) => handleSearch(e.target.value)}
           className="max-w-md selection:bg-green"
         />
       </div>
       <div className="inline-flex gap-2">
-        <Select value={status} onValueChange={setStatus}>
+        <Select value={status} onValueChange={handleStatusChange}>
           <SelectTrigger className="sm:w-auto w-full">
             <Filter className="w-4 h-4 mr-2" />
             <SelectValue placeholder="Lọc theo trạng thái" />

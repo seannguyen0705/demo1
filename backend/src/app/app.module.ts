@@ -71,7 +71,6 @@ const EnvSchema = {
       validationSchema: Joi.object().keys(EnvSchema),
       load: [configuration],
       isGlobal: true,
-      envFilePath: ['.env.development', '.env.production'],
     }),
     AuthModule,
     TokenModule,

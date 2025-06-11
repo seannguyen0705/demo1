@@ -225,9 +225,12 @@ export class EmployerService {
 
   private async searchByKeyword(queryBuilder: SelectQueryBuilder<Employer>, keyword: string) {
     if (keyword) {
-      queryBuilder.andWhere('(employer.fullName ILIKE :keyword OR company.name ILIKE :keyword)', {
-        keyword: `%${keyword}%`,
-      });
+      queryBuilder.andWhere(
+        '(employer.fullName ILIKE :keyword OR company.name ILIKE :keyword OR employer.phoneNumber ILIKE :keyword)',
+        {
+          keyword: `%${keyword}%`,
+        },
+      );
     }
   }
 
@@ -298,6 +301,7 @@ export class EmployerService {
       .leftJoin('company.logo', 'logo')
       .leftJoin('company.addresses', 'addresses')
       .leftJoin('addresses.province', 'province')
+      .innerJoin('company.proof', 'proof')
       .select([
         'employer.id',
         'employer.fullName',
@@ -310,7 +314,9 @@ export class EmployerService {
         'logo.url',
         'addresses.id',
         'addresses.detail',
+        'company.website',
         'province.name',
+        'proof.url',
       ])
       .where('employer.id = :id', { id });
 

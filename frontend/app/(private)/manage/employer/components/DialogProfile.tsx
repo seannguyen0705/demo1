@@ -22,28 +22,25 @@ interface IProps {
 export default function DialogProfile({ employerId }: IProps) {
   const { employer, isLoading } = useGetEmployerById({ employerId });
   if (!employer) {
-    return null;
+    return (
+      <Button variant="outline">
+        <UserRound />
+      </Button>
+    );
   }
   return (
     <Dialog>
-      <DialogTrigger>
-        <Tooltip>
-          <TooltipTrigger>
-            <Button variant="outline">
-              <UserRound />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>Hồ sơ</p>
-          </TooltipContent>
-        </Tooltip>
+      <DialogTrigger asChild>
+        <Button variant="outline">
+          <UserRound />
+        </Button>
       </DialogTrigger>
-      <DialogContent className="overflow-auto h-auto max-h-full sm:max-w-[1000px] sm:p-6 p-2">
+      <DialogContent className="overflow-auto h-auto max-h-full lg:max-h-[95vh] sm:max-w-[800px] sm:p-6 p-2">
         <DialogHeader>
           <DialogTitle>Hồ sơ nhà tuyển dụng</DialogTitle>
           <DialogDescription>Xem thông tin chi tiết hồ sơ nhà tuyển dụng.</DialogDescription>
         </DialogHeader>
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col">
           <InforEmployer employer={employer} />
           <InforCompany company={employer.company} />
         </div>

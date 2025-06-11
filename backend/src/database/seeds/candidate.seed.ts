@@ -11,7 +11,7 @@ export const seedCandidates = async (queryRunner: QueryRunner, count: number = 1
     candidate.email = faker.internet.email();
     candidate.password = '@12345678';
     candidate.fullName = faker.person.fullName();
-    candidate.phoneNumber = faker.phone.number({ style: 'international' });
+    candidate.phoneNumber = faker.helpers.fromRegExp(/^0[0-9]{9}$/);
     candidate.gender = Gender.MALE;
     candidate.bod = faker.date.birthdate();
     candidate.title = faker.lorem.sentence();

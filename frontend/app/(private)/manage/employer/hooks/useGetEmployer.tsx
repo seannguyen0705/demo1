@@ -1,6 +1,6 @@
 import { QueryEmployer } from '@/api/employer/interface';
 import axiosInstance from '@/config/axios-config';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, keepPreviousData } from '@tanstack/react-query';
 const getEmployer = async (queryString: string) => {
   try {
     const response = await axiosInstance.get<{ data: QueryEmployer }>(`/employers?${queryString}`);
@@ -19,6 +19,7 @@ export default function useGetEmployer(queryString: string) {
   const { data, isLoading } = useQuery({
     queryKey: ['employers', queryString],
     queryFn: () => getEmployer(queryString),
+    placeholderData: keepPreviousData,
   });
   return { data, isLoading };
 }

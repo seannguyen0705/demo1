@@ -9,10 +9,10 @@ import { Address } from '@/api/address/entities/address.entity';
 import { Province } from '@/api/province/entities/province.entity';
 
 const proof: CreateFileDto = {
-  name: 'Chapter 1 Introduction.pdf',
-  url: 'https://res.cloudinary.com/dvpof2yl0/image/upload/v1749527097/proof/ero7yik1pcx2wo1pahse.pdf',
-  key: 'proof/ero7yik1pcx2wo1pahse',
-  format: 'pdf',
+  name: '1_Introduction to Software Testing.pdf',
+  url: 'https://res.cloudinary.com/dvpof2yl0/image/upload/v1749625921/proof/yivvswwmwzlnv5zqfkip.pdf',
+  key: 'proof/yivvswwmwzlnv5zqfkip',
+  format: 'application/pdf',
 };
 
 export const seedEmployers = async (queryRunner: QueryRunner, count: number) => {
@@ -22,7 +22,7 @@ export const seedEmployers = async (queryRunner: QueryRunner, count: number) => 
 
   for (const _ of Array.from({ length: count })) {
     email = faker.internet.email();
-    phoneNumber = faker.phone.number({ style: 'international' });
+    phoneNumber = faker.helpers.fromRegExp(/0[0-9]{9}/);
     companyName = faker.company.name();
 
     const existingEmployer = await employerRepository.findOneBy([{ email }, { phoneNumber }]);

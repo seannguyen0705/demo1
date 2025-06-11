@@ -1,3 +1,4 @@
+import { UserStatus } from '@/utils/enums';
 import { IUser } from '../interface';
 
 interface UpdateEmployerDto {
@@ -18,4 +19,8 @@ interface QueryEmployer {
   total: number;
 }
 
-export type { UpdateEmployerDto, QueryEmployer };
+interface IUpdateEmployerStatus {
+  status: UserStatus;
+}
+
+export type { UpdateEmployerDto, QueryEmployer, IUpdateEmployerStatus };

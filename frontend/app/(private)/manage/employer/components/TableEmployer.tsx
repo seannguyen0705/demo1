@@ -9,6 +9,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { mapEnumStatusUser } from '@/utils/helpers/mapEnumStatusUser';
 import ShowStatusUser from './ShowStatusUser';
 import ActionEmployer from './ActionEmployer';
+import ShowSort from '@/app/(private)/manage-candidates/components/ShowSort';
 export default function TableEmployer() {
   const [status] = useQueryState('status', { defaultValue: '' });
   const [orderBy, setOrderBy] = useQueryState('orderBy', { defaultValue: '' });
@@ -28,11 +29,14 @@ export default function TableEmployer() {
     return urlSearchParams.toString();
   }, [status, orderBy, order, keyword, page, limit]);
   const { data } = useGetEmployer(queryString);
-  if (!data) {
-    return <Skeleton className="w-full h-[300px]" />;
-  }
+  if (!data) return <Skeleton className="w-full h-[300px]" />;
   const { employers, total } = data;
   const totalPages = total ? Math.ceil(total / limit) : 0;
+
+  const handleSort = (orderBy: string) => {
+    setOrder(order === 'ASC' ? 'DESC' : 'ASC');
+    setOrderBy(orderBy);
+  };
   return (
     <>
       <Table>
@@ -40,11 +44,16 @@ export default function TableEmployer() {
           <TableRow>
             <TableHead className="w-[60px]">STT</TableHead>
             <TableHead>Họ Tên</TableHead>
+            <TableHead>SĐT</TableHead>
             <TableHead>Tên Công ty</TableHead>
-
             <TableHead>
-              <Button variant="ghost" className="h-auto p-0 font-medium hover:bg-transparent">
+              <Button
+                variant="ghost"
+                className="h-auto p-0 font-medium hover:bg-transparent"
+                onClick={() => handleSort('createdAt')}
+              >
                 Ngày tạo
+                <ShowSort orderBy="createdAt" />
               </Button>
             </TableHead>
             <TableHead>
@@ -68,19 +77,21 @@ export default function TableEmployer() {
               <TableRow key={employer.id}>
                 <TableCell className="font-medium">{(page - 1) * limit + index + 1}</TableCell>
                 <TableCell className="font-medium">{employer.fullName}</TableCell>
+                <TableCell className="font-medium">{employer.phoneNumber}</TableCell>
                 <TableCell className="font-medium">{employer.company?.name}</TableCell>
-                <TableCell>{formatDate(employer.createdAt, 'dd/MM/yyyy')}</TableCell>
+                <TableCell className="text-center">{formatDate(employer.createdAt, 'dd/MM/yyyy')}</TableCell>
                 <TableCell>
                   <ShowStatusUser status={employer.status} />
                 </TableCell>
                 <TableCell className="text-right">
-                  <ActionEmployer employerId={employer.id} />
+                  <ActionEmployer employerId={employer.id} status={employer.status} />
                 </TableCell>
               </TableRow>
             ))
           )}
         </TableBody>
       </Table>
+
       <Pagination totalPages={totalPages} />
     </>
   );

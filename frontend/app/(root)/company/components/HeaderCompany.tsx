@@ -12,7 +12,7 @@ interface IProps {
   statistics: StatisticReviewCompany;
 }
 export default async function HeaderCompany({ company, numJobs, statistics }: IProps) {
-  const { companyAddresses } = company;
+  const { addresses, name } = company;
   const cookieStore = await cookies();
   const isAuth = cookieStore.has('Authentication') || cookieStore.has('Refresh');
 
@@ -45,10 +45,10 @@ export default async function HeaderCompany({ company, numJobs, statistics }: IP
       <div className="relative -top-12 space-y-2 px-8">
         <h1 className="mb-2 text-2xl font-medium text-gray-900">{company.name}</h1>
 
-        {companyAddresses.map((item) => (
+        {addresses.map((item) => (
           <div key={item.id} className="flex items-center gap-2 ">
             <MapPinIcon className="" />
-            <span className="text-sm">{item.address.detail + ', ' + item.address.province.name}</span>
+            <span className="text-sm">{item.detail + ', ' + item.province.name}</span>
           </div>
         ))}
 

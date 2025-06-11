@@ -41,7 +41,7 @@ export default function InforEmployer({ employer }: IProps) {
   ];
   return (
     <>
-      <h3 className="text-lg font-bold md:text-2xl text-center my-3">Thông tin nhà tuyển dụng</h3>
+      <h2 className="text-2xl font-bold tracking-tight my-6 text-center md:text-2xl">Thông Tin Nhà Tuyển Dụng</h2>
       <section className="relative rounded-[20px] bg-[#EBF5F4] dark:bg-gray-900">
         <div className="flex flex-col sm:flex-row items-center gap-2 p-4">
           <Image

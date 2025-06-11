@@ -1,5 +1,4 @@
 import { IAddress } from '../address/interface';
-import { ICompanyAddress } from '../company-address/interface';
 import { IFile } from '../file/interface';
 
 interface ICompany {
