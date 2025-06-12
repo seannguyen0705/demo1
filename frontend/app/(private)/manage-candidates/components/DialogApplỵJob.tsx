@@ -1,10 +1,9 @@
 'use client';
-import { IApplyJob } from '@/api/apply-job/interface';
+
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -13,7 +12,7 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { format } from 'date-fns';
-import { FileText, Mail } from 'lucide-react';
+import { Mail } from 'lucide-react';
 import Link from 'next/link';
 import useGetApplyJobById from '../hooks/useGetApplyJobById';
 import InfoCandidate from './InfoCandidate';

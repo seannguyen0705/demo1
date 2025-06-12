@@ -1,4 +1,4 @@
-import { CreateUserDto } from '../interface';
+import { CreateUserDto, IUser } from '../interface';
 
 type CreateCandidateDto = CreateUserDto;
 
@@ -14,4 +14,11 @@ interface UpdateCandidateDto {
   introduction?: string;
 }
 
-export type { CreateCandidateDto, UpdateCandidateDto };
+interface IQueryCandidate {
+  candidates: IUser[];
+  currentPage: number;
+  nextPage: number | null;
+  total: number;
+}
+
+export type { CreateCandidateDto, UpdateCandidateDto, IQueryCandidate };

@@ -16,14 +16,7 @@ export default {
       responses: [{ status: HttpStatus.OK, type: ResponseCandidateDto }],
     },
   },
-  getAll: <IRouteParams>{
-    path: '/',
-    method: RequestMethod.GET,
-    roles: [UserRole.ADMIN],
-    swaggerInfo: {
-      responses: [{ status: HttpStatus.OK, type: ResponseCandidateDto, isArray: true }],
-    },
-  },
+
   updateMe: <IRouteParams>{
     path: '/me',
     method: RequestMethod.PUT,
@@ -77,5 +70,18 @@ export default {
         },
       ],
     },
+  },
+
+  getCandidates: <IRouteParams>{
+    path: '/',
+    method: RequestMethod.GET,
+    roles: [UserRole.ADMIN],
+    jwtSecure: true,
+  },
+  updateStatus: <IRouteParams>{
+    path: '/:id/status',
+    method: RequestMethod.PUT,
+    roles: [UserRole.ADMIN],
+    jwtSecure: true,
   },
 };

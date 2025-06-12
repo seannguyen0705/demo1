@@ -1,8 +1,8 @@
-import { IUpdateEmployerStatus } from '@/api/employer/interface';
+import { IUpdateUserStatus } from '@/api/interface';
 import axiosInstance from '@/config/axios-config';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-const updateEmployerStatus = async (id: string, data: IUpdateEmployerStatus) => {
+const updateEmployerStatus = async (id: string, data: IUpdateUserStatus) => {
   return axiosInstance.put(`/employers/${id}/status`, data);
 };
 
@@ -12,7 +12,7 @@ interface IProps {
 export default function useUpdateEmployerStatus({ id }: IProps) {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (data: IUpdateEmployerStatus) => updateEmployerStatus(id, data),
+    mutationFn: (data: IUpdateUserStatus) => updateEmployerStatus(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['employers'] });
     },

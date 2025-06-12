@@ -1,9 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
 
-import type { DataSource, DeleteResult } from 'typeorm';
+import type { DataSource, DeleteResult, SelectQueryBuilder } from 'typeorm';
 
-import { UserRole, UserStatus } from '@/common/enums';
+import { Order, OrderByUser, UserRole, UserStatus } from '@/common/enums';
 import { UserAlreadyException } from '@/api/auth/auth.exceptions';
 
 import { Candidate } from './entities/candidate.entity';
@@ -16,6 +16,8 @@ import { plainToInstance } from 'class-transformer';
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
 import { CreateFileDto } from '../file/dto/create-file.dto';
 import { File } from '../file/entities/file.entity';
+import { QueryCandidate } from './dto/query-candidate.dto';
+import { UpdateStatusUserDto } from '@/common/dto/update-status-user.dto';
 @Injectable()
 export class CandidateService {
   private readonly folder: string;
@@ -56,12 +58,6 @@ export class CandidateService {
     phoneNumber: string;
   }): Promise<Candidate> {
     return this.candidateRepository.findOneBy([{ email }, { phoneNumber }]);
-  }
-
-  public async getAll(): Promise<ResponseCandidateDto[]> {
-    const candidates = await this.candidateRepository.find();
-
-    return candidates.map((candidate) => candidate.toResponse());
   }
 
   public async getDetailById(id: string): Promise<ResponseCandidateDetailDto> {
@@ -170,11 +166,7 @@ export class CandidateService {
   }
 
   public async countAllCandidates() {
-    return this.candidateRepository.count({
-      where: {
-        status: UserStatus.ACTIVE,
-      },
-    });
+    return this.candidateRepository.count({});
   }
 
   public async findOneById(id: string): Promise<Candidate> {
@@ -218,5 +210,80 @@ export class CandidateService {
       throw new NotFoundException('Candidate not found');
     }
     return this.handleUpdateCandidate({ candidate, data });
+  }
+
+  private async searchByKeyword(queryBuilder: SelectQueryBuilder<Candidate>, keyword: string) {
+    if (keyword) {
+      queryBuilder.andWhere(
+        '(candidate.fullName ILIKE :keyword OR candidate.email ILIKE :keyword OR candidate.phoneNumber ILIKE :keyword)',
+        {
+          keyword: `%${keyword}%`,
+        },
+      );
+    }
+  }
+
+  private async filterByStatus(queryBuilder: SelectQueryBuilder<Candidate>, status: UserStatus) {
+    if (status) {
+      queryBuilder.andWhere('candidate.status = :status', { status });
+    }
+  }
+
+  private async orderCandidate(queryBuilder: SelectQueryBuilder<Candidate>, orderBy: OrderByUser, order: Order) {
+    if (orderBy) {
+      switch (orderBy) {
+        case OrderByUser.CREATED_AT:
+          queryBuilder.orderBy('candidate.createdAt', order);
+          break;
+      }
+    }
+  }
+
+  public async findCandidates(query: QueryCandidate) {
+    const { keyword, status, orderBy, order, page, limit } = query;
+
+    const queryBuilder = this.candidateRepository
+      .createQueryBuilder('candidate')
+      .select([
+        'candidate.id',
+        'candidate.fullName',
+        'candidate.email',
+        'candidate.phoneNumber',
+        'candidate.createdAt',
+        'candidate.status',
+      ])
+      .orderBy('candidate.id', 'ASC')
+      .skip((page - 1) * limit)
+      .take(limit);
+
+    await Promise.all([
+      this.searchByKeyword(queryBuilder, keyword),
+      this.filterByStatus(queryBuilder, status),
+      this.orderCandidate(queryBuilder, orderBy, order),
+    ]);
+
+    const [candidates, total] = await queryBuilder.getManyAndCount();
+
+    const numPage = Math.ceil(total / limit);
+
+    if (page + 1 > numPage) {
+      return { candidates, currentPage: page, nextPage: null, total };
+    }
+    return { candidates, currentPage: page, nextPage: page + 1, total };
+  }
+
+  public async updateStatus(id: string, data: UpdateStatusUserDto) {
+    const candidate = await this.candidateRepository.findOneBy({ id });
+    if (!candidate) {
+      throw new NotFoundException('Candidate not found');
+    }
+
+    const { status } = data;
+    if (status === UserStatus.INACTIVE) {
+      throw new BadRequestException('Không được phép chuyển về inactive');
+    }
+    candidate.status = status;
+    await this.candidateRepository.save(candidate);
+    return { message: 'Cập nhật trạng thái thành công' };
   }
 }

@@ -69,4 +69,11 @@ export default {
     code: HttpStatus.OK,
     roles: [UserRole.CANDIDATE],
   },
+  getCvByCandidateId: <IRouteParams>{
+    path: 'candidate/:candidateId/cv',
+    method: RequestMethod.GET,
+    jwtSecure: true,
+    code: HttpStatus.OK,
+    roles: [UserRole.ADMIN],
+  },
 };

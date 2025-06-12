@@ -130,7 +130,7 @@ export class CvService {
     return this.cvRepository.delete(id);
   }
 
-  async getMyCv(candidateId: string) {
+  async getCvByCandidateId(candidateId: string) {
     return this.cvRepository.find({ where: { candidateId }, order: { createdAt: 'ASC' } });
   }
 

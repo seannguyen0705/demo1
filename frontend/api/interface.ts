@@ -39,6 +39,10 @@ interface IUser {
   createdAt: string;
 }
 
+interface IUpdateUserStatus {
+  status: UserStatus;
+}
+
 interface IQueryPagination {
   page?: number;
   limit?: number;
@@ -46,4 +50,4 @@ interface IQueryPagination {
 
 type SearchParams = { [key: string]: string | string[] | undefined };
 
-export type { CreateUserDto, ErrorReponse, IUser, IQueryPagination, SearchParams };
+export type { CreateUserDto, ErrorReponse, IUser, IQueryPagination, SearchParams, IUpdateUserStatus };

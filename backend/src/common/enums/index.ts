@@ -102,7 +102,7 @@ enum OrderByApplyJob {
   STATUS = 'status',
 }
 
-enum OrderByEmployer {
+enum OrderByUser {
   CREATED_AT = 'createdAt',
 }
 
@@ -122,5 +122,5 @@ export {
   ApplyJobStatus,
   OrderByApplyJob,
   ApplyJobStatusQuery,
-  OrderByEmployer,
+  OrderByUser,
 };

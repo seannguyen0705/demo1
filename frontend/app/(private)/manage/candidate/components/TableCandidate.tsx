@@ -1,15 +1,17 @@
-import { Button } from '@/components/ui/button';
+import { parseAsInteger } from 'nuqs';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { formatDate } from 'date-fns';
-import Pagination from '../../../manage-candidates/components/Pagination';
-import { parseAsInteger, useQueryState } from 'nuqs';
+import { useQueryState } from 'nuqs';
 import { useMemo } from 'react';
-import useGetEmployer from '../hooks/useGetEmployer';
+import useGetCandidate from '../hooks/useGetCandidate';
 import { Skeleton } from '@/components/ui/skeleton';
-import ShowStatusUser from './ShowStatusUser';
-import ActionEmployer from './ActionEmployer';
+import { Button } from '@/components/ui/button';
 import ShowSort from '@/app/(private)/manage-candidates/components/ShowSort';
-export default function TableEmployer() {
+import { formatDate } from 'date-fns';
+import ShowStatusUser from '../../employer/components/ShowStatusUser';
+import Pagination from '@/app/(private)/manage-candidates/components/Pagination';
+import ActionCandidate from './ActionCandidate';
+
+export default function TableCandidate() {
   const [status] = useQueryState('status', { defaultValue: '' });
   const [orderBy, setOrderBy] = useQueryState('orderBy', { defaultValue: '' });
   const [order, setOrder] = useQueryState('order', { defaultValue: '' });
@@ -27,9 +29,9 @@ export default function TableEmployer() {
     });
     return urlSearchParams.toString();
   }, [status, orderBy, order, keyword, page, limit]);
-  const { data } = useGetEmployer(queryString);
+  const { data } = useGetCandidate(queryString);
   if (!data) return <Skeleton className="w-full h-[300px]" />;
-  const { employers, total } = data;
+  const { candidates, total } = data;
   const totalPages = total ? Math.ceil(total / limit) : 0;
 
   const handleSort = (orderBy: string) => {
@@ -43,8 +45,8 @@ export default function TableEmployer() {
           <TableRow>
             <TableHead className="w-[60px]">STT</TableHead>
             <TableHead>Họ Tên</TableHead>
+            <TableHead>Email</TableHead>
             <TableHead>SĐT</TableHead>
-            <TableHead>Tên Công ty</TableHead>
             <TableHead>
               <Button
                 variant="ghost"
@@ -65,25 +67,25 @@ export default function TableEmployer() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {employers.length === 0 ? (
+          {candidates.length === 0 ? (
             <TableRow>
               <TableCell colSpan={8} className="text-center py-8 text-muted-foreground">
                 Không tìm thấy nhà tuyển dụng nào
               </TableCell>
             </TableRow>
           ) : (
-            employers.map((employer, index) => (
-              <TableRow key={employer.id}>
+            candidates.map((candidate, index) => (
+              <TableRow key={candidate.id}>
                 <TableCell className="font-medium">{(page - 1) * limit + index + 1}</TableCell>
-                <TableCell className="font-medium">{employer.fullName}</TableCell>
-                <TableCell className="font-medium">{employer.phoneNumber}</TableCell>
-                <TableCell className="font-medium">{employer.company?.name}</TableCell>
-                <TableCell className="text-center">{formatDate(employer.createdAt, 'dd/MM/yyyy')}</TableCell>
+                <TableCell className="font-medium truncate">{candidate.fullName}</TableCell>
+                <TableCell className="font-medium truncate max-w-[200px]">{candidate.email}</TableCell>
+                <TableCell className="font-medium">{candidate.phoneNumber}</TableCell>
+                <TableCell className="text-center">{formatDate(candidate.createdAt, 'dd/MM/yyyy')}</TableCell>
                 <TableCell>
-                  <ShowStatusUser status={employer.status} />
+                  <ShowStatusUser status={candidate.status} />
                 </TableCell>
-                <TableCell className="text-right">
-                  <ActionEmployer employerId={employer.id} status={employer.status} />
+                <TableCell className="">
+                  <ActionCandidate candidateId={candidate.id} status={candidate.status} />
                 </TableCell>
               </TableRow>
             ))

@@ -11,11 +11,8 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import useGetEmployerById from '../hooks/useGetEmployerById';
-import Info from '../../../manage-candidates/components/Info';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import InforEmployer from './InforEmployer';
 import InforCompany from './InforCompany';
-import { Skeleton } from '@/components/ui/skeleton';
 interface IProps {
   employerId: string;
 }
@@ -31,7 +28,7 @@ export default function DialogProfile({ employerId }: IProps) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline">
+        <Button variant="outline" className="shadow-md">
           <UserRound />
         </Button>
       </DialogTrigger>

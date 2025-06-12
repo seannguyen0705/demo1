@@ -6,8 +6,8 @@ import { Employer } from './entities/employer.entity';
 import { TokenService } from '../token/token.service';
 import { UserAlreadyException } from '../auth/auth.exceptions';
 import { ResponseEmployerDetailDto, ResponseEmployerDto } from './dto/response-employer.dto';
-import { Order, OrderByEmployer, UserRole, UserStatus } from '@/common/enums';
-import { DataSource, QueryRunner, SelectQueryBuilder } from 'typeorm';
+import { Order, OrderByUser, UserRole, UserStatus } from '@/common/enums';
+import { DataSource, SelectQueryBuilder } from 'typeorm';
 import { UpdateStatusUserDto } from '@/common/dto/update-status-user.dto';
 import generateSecurePassword from '@/utils/helpers/generateSecurePassword';
 import { EmailService } from '../email/email.service';
@@ -22,7 +22,6 @@ import { Address } from '../address/entities/address.entity';
 import { UpdateEmployerDto } from './dto/update-employer.dto';
 import { QueryEmployer } from './dto/query-employer.dto';
 import { CompanyAddress } from '../company-address/entities/company-address.entity';
-import { query } from 'express';
 import { CompanyImage } from '../company-image/entities/companyImage.entity';
 @Injectable()
 export class EmployerService {
@@ -237,10 +236,10 @@ export class EmployerService {
     }
   }
 
-  private async orderEmployer(queryBuilder: SelectQueryBuilder<Employer>, orderBy: OrderByEmployer, order: Order) {
+  private async orderEmployer(queryBuilder: SelectQueryBuilder<Employer>, orderBy: OrderByUser, order: Order) {
     if (orderBy) {
       switch (orderBy) {
-        case OrderByEmployer.CREATED_AT:
+        case OrderByUser.CREATED_AT:
           queryBuilder.orderBy('employer.createdAt', order);
           break;
       }
@@ -259,9 +258,7 @@ export class EmployerService {
     const queryBuilder = this.employerRepository
       .createQueryBuilder('employer')
       .leftJoin('employer.company', 'company')
-      .leftJoin('company.logo', 'logo')
-      .leftJoin('company.addresses', 'addresses')
-      .leftJoin('addresses.province', 'province')
+
       .select([
         'employer.id',
         'employer.fullName',
@@ -271,11 +268,6 @@ export class EmployerService {
         'employer.status',
         'company.name',
         'company.id',
-        'company.website',
-        'logo.url',
-        'addresses.id',
-        'addresses.detail',
-        'province.name',
       ])
       .skip((page - 1) * limit)
       .take(limit);
