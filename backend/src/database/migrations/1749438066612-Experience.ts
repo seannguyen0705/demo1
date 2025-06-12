@@ -15,12 +15,12 @@ export class Experience1749438066612 implements MigrationInterface {
           },
           {
             name: 'created_at',
-            type: 'timestamp',
+            type: 'timestamptz',
             default: `('now'::text)::timestamp(6) with time zone`,
           },
           {
             name: 'updated_at',
-            type: 'timestamp',
+            type: 'timestamptz',
             default: `('now'::text)::timestamp(6) with time zone`,
           },
           {

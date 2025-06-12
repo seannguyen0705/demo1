@@ -1,12 +1,11 @@
 import axiosInstance from '@/config/axios-config';
 import { QueryApplyJob } from '@/api/apply-job/interface';
-import { useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
 const getApplyJob = async (queryString: string) => {
   try {
     const response = await axiosInstance.get<{ data: QueryApplyJob }>(`/apply-jobs?${queryString}`);
     return response.data.data;
-  } catch (error) {
-    console.log(error);
+  } catch {
     return {
       applyJobs: [],
       currentPage: 1,
@@ -20,6 +19,7 @@ export default function useGetApplyJob(queryString: string) {
   const { data, isLoading } = useQuery({
     queryKey: ['manage-candidates', queryString],
     queryFn: () => getApplyJob(queryString),
+    placeholderData: keepPreviousData,
   });
   return { data, isLoading };
 }

@@ -16,12 +16,12 @@ export class CandidateSkill1749438403954 implements MigrationInterface {
           },
           {
             name: 'created_at',
-            type: 'timestamp',
+            type: 'timestamptz',
             default: `('now'::text)::timestamp(6) with time zone`,
           },
           {
             name: 'updated_at',
-            type: 'timestamp',
+            type: 'timestamptz',
             default: `('now'::text)::timestamp(6) with time zone`,
           },
           {

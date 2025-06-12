@@ -174,6 +174,9 @@ export class ApplyJobService {
       ])
       .where('applyJob.id = :id', { id });
     const applyJob = await queryBuilder.getOne();
+    if (!applyJob) {
+      throw new NotFoundException('Không tìm thấy đơn ứng tuyển');
+    }
     if (applyJob.status === ApplyJobStatus.NEW) {
       await this.applyJobRepository.update(id, { status: ApplyJobStatus.SEEN });
     }
@@ -182,6 +185,7 @@ export class ApplyJobService {
 
   public async updateStatus(id: string, employerId: string, data: UpdateApplyJobStatusDto) {
     const { status } = data;
+
     const queryBuilder = this.applyJobRepository
       .createQueryBuilder('applyJob')
       .innerJoin('applyJob.job', 'job')
@@ -199,12 +203,12 @@ export class ApplyJobService {
         status === ApplyJobStatus.REJECTED ||
         status === ApplyJobStatus.INTERVIEWING
       ) {
-        return await this.applyJobRepository.update(id, data);
+        return await this.applyJobRepository.update(id, { status });
       }
-    } else if (applyJob.status === ApplyJobStatus['Phỏng vấn']) {
+    } else if (applyJob.status === ApplyJobStatus.INTERVIEWING) {
       // allow set to HIRED OR REJECTED
       if (status === ApplyJobStatus.HIRED || status === ApplyJobStatus.REJECTED) {
-        return await this.applyJobRepository.update(id, data);
+        return await this.applyJobRepository.update(id, { status });
       }
     }
     throw new BadRequestException('Không thể cập nhật trạng thái');

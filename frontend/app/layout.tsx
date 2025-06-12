@@ -32,7 +32,7 @@ export default async function AppLayout({
           <ReactQueryProvider>
             <NuqsAdapter>
               <NavHeader />
-              <div className="pt-[76px]">{children}</div>
+              <div className="pt-[76px] mb-[40px] ">{children}</div>
               <Footer />
               <Toaster />
             </NuqsAdapter>

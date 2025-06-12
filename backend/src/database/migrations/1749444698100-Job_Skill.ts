@@ -8,12 +8,12 @@ export class JobSkill1749444698100 implements MigrationInterface {
         columns: [
           {
             name: 'created_at',
-            type: 'timestamp',
+            type: 'timestamptz',
             default: `('now'::text)::timestamp(6) with time zone`,
           },
           {
             name: 'updated_at',
-            type: 'timestamp',
+            type: 'timestamptz',
             default: `('now'::text)::timestamp(6) with time zone`,
           },
           {

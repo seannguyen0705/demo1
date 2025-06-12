@@ -5,6 +5,7 @@ import { CreateCompanyDto } from './dtos/create-company.dto';
 import { Company } from './entities/company.entity';
 import { QueryRunner } from 'typeorm';
 import UpdateCompanyDto from './dtos/update-company.dto';
+import { ILike } from 'typeorm';
 @Injectable()
 export class CompanyService {
   constructor(
@@ -23,14 +24,12 @@ export class CompanyService {
 
   public async findOneByName(name: string) {
     return this.companyRepository.findOne({
-      where: { name },
+      where: { name: ILike(name) },
       relations: {
         logo: true,
         background: true,
-        companyAddresses: {
-          address: {
-            province: true,
-          },
+        addresses: {
+          province: true,
         },
       },
     });
@@ -65,5 +64,27 @@ export class CompanyService {
 
   public async countAllCompanies() {
     return this.companyRepository.count();
+  }
+
+  public async getTop10Companies() {
+    const queryBuilder = this.companyRepository
+      .createQueryBuilder('company')
+      .leftJoin('company.reviews', 'reviews')
+      .leftJoin('company.logo', 'logo')
+      .leftJoin('company.jobs', 'jobs')
+      .leftJoin('company.addresses', 'addresses')
+      .leftJoin('addresses.province', 'province')
+      .loadRelationCountAndMap('company.jobCount', 'company.jobs')
+      .select(['company.id', 'company.name', 'logo.url', 'addresses.id', 'province.name'])
+
+      .groupBy('company.id')
+      .addGroupBy('logo.id')
+      .addGroupBy('addresses.id')
+      .addGroupBy('province.id')
+      .orderBy('AVG(reviews.rating)', 'DESC')
+      .addOrderBy('COUNT(reviews.id)', 'DESC')
+      .limit(10);
+    const companies = await queryBuilder.getMany();
+    return companies;
   }
 }

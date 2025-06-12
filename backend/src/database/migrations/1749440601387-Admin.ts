@@ -1,4 +1,4 @@
-import { Gender } from '@/common/enums';
+import { Gender, UserStatus } from '@/common/enums';
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
 export class Admin1749440601387 implements MigrationInterface {
@@ -51,11 +51,7 @@ export class Admin1749440601387 implements MigrationInterface {
             enumName: 'gender_enum',
             isNullable: true,
           },
-          {
-            name: 'count_violation',
-            type: 'integer',
-            default: 0,
-          },
+
           {
             name: 'bod',
             type: 'date',
@@ -70,6 +66,13 @@ export class Admin1749440601387 implements MigrationInterface {
             name: 'account_token',
             type: 'varchar',
             isNullable: true,
+          },
+          {
+            name: 'status',
+            type: 'enum',
+            enum: Object.values(UserStatus),
+            enumName: 'user_status_enum',
+            default: `'${UserStatus.ACTIVE}'`,
           },
         ],
       }),

@@ -19,7 +19,11 @@ export default async function CompanyBenefit({ company }: IProps) {
         <h3 className="text-lg font-medium ">Quyền lợi công ty</h3>
         {isAuth && <EditCompanyBenefit company={company} companyImages={companyImages} />}
       </div>
-      <div className="my-4" dangerouslySetInnerHTML={{ __html: benefits || '' }} />
+      {benefits && benefits !== '<p></p>' ? (
+        <div className="my-4" dangerouslySetInnerHTML={{ __html: benefits || '' }} />
+      ) : (
+        <p className="text-gray-500">Chưa cập nhật</p>
+      )}
       <CompanyImage companyImages={companyImages} />
     </section>
   );

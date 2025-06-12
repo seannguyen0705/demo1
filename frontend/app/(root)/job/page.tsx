@@ -20,7 +20,7 @@ export default async function JobPage({ searchParams }: IProps) {
   }
 
   return (
-    <>
+    <main className="min-h-[80vh]">
       <SearchJob keyword={keyword || ''} />
       <div className="flex items-center justify-between container mx-auto px-2">
         <Filter />
@@ -28,6 +28,6 @@ export default async function JobPage({ searchParams }: IProps) {
         <OrderBy />
       </div>
       {isAuth ? <AuthJobList /> : <PublicJobList searchParams={queryParams} />}
-    </>
+    </main>
   );
 }

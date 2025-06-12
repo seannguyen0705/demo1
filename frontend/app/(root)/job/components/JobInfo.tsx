@@ -1,9 +1,11 @@
 import { IJob } from '@/api/job/interface';
-import { Clock, MapPin } from 'lucide-react';
+import { ChevronsUp, Clock, MapPin } from 'lucide-react';
 import { BsPersonWorkspace } from 'react-icons/bs';
 import { formatDistanceToNow } from 'date-fns';
 import { vi } from 'date-fns/locale';
 import Link from 'next/link';
+import getStringJobType from '@/utils/helpers/getStringJobType';
+import getStringJobLevel from '@/utils/helpers/getStringJobLevel';
 
 interface IProps {
   job: IJob;
@@ -27,7 +29,12 @@ export default function JobInfo({ job, isCandidate }: IProps) {
         </div>
         <div className="flex gap-2 items-center px-1 mb-2">
           <BsPersonWorkspace className="" />
-          <span className="text-sm">{job.jobType}</span>
+          <span className="text-sm">{getStringJobType(job.jobType)}</span>
+        </div>
+
+        <div className="flex gap-1 items-center mb-2">
+          <ChevronsUp className="" />
+          <span className="text-sm">{getStringJobLevel(job.jobLevel)}</span>
         </div>
 
         <div className="flex gap-2 items-center px-1">

@@ -2,37 +2,19 @@
 
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { ArrowDownWideNarrow, ArrowUpDown, Edit, EllipsisVertical, Eye, Trash2 } from 'lucide-react';
 import { useQueryState } from 'nuqs';
 import { parseAsInteger } from 'nuqs';
 import useGetApplyJob from '../hooks/useGetApplyJob';
 import { useMemo } from 'react';
 import { format } from 'date-fns';
-import { Badge } from '@/components/ui/badge';
 import Pagination from './Pagination';
 import { Skeleton } from '@/components/ui/skeleton';
 import ActionApplyJob from './ActionApplyJob';
-import { ApplyJobStatus } from '@/utils/enums';
+
 import ShowSort from './ShowSort';
 import ShowStatus from './ShowStatus';
-const getStatusBadgeVariant = (status: string) => {
-  switch (status) {
-    case ApplyJobStatus.NEW:
-      return 'secondary';
-    case ApplyJobStatus.SEEN:
-      return 'outline';
-    case ApplyJobStatus.INTERVIEWING:
-      return 'default';
-    case ApplyJobStatus.HIRED:
-      return 'default';
-    case ApplyJobStatus.REJECTED:
-      return 'destructive';
-    default:
-      return 'secondary';
-  }
-};
 
-export default function CandidateTable() {
+export default function TableCandidate() {
   const [status] = useQueryState('status', { defaultValue: '' });
   const [orderBy, setOrderBy] = useQueryState('orderBy', { defaultValue: '' });
   const [order, setOrder] = useQueryState('order', { defaultValue: '' });

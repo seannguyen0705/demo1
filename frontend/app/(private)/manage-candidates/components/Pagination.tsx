@@ -18,6 +18,8 @@ export default function Pagination({ totalPages }: IProps) {
   };
   const handlePageChange = (page: number) => {
     setPage(page);
+    // scroll to top
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (

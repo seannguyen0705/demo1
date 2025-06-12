@@ -1,6 +1,6 @@
-import { jwtDecode } from 'jwt-decode';
 import { NextRequest, NextResponse } from 'next/server';
 import { UserRole } from './utils/enums';
+import decodeUser from './utils/helpers/decodeUser';
 
 const employerPaths = ['/manage-jobs', '/manage-candidates', '/create-job', 'edit-job'];
 const candidatePaths = ['/my-jobs'];
@@ -41,11 +41,3 @@ export async function middleware(request: NextRequest) {
 export const config = {
   matcher: ['/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)'],
 };
-
-function decodeUser(token: string) {
-  try {
-    return jwtDecode(token) as { role: UserRole };
-  } catch {
-    return null;
-  }
-}

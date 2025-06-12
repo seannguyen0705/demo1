@@ -23,12 +23,12 @@ export class ApplyJob1749444759836 implements MigrationInterface {
           },
           {
             name: 'created_at',
-            type: 'timestamp',
+            type: 'timestamptz',
             default: `('now'::text)::timestamp(6) with time zone`,
           },
           {
             name: 'updated_at',
-            type: 'timestamp',
+            type: 'timestamptz',
             default: `('now'::text)::timestamp(6) with time zone`,
           },
           {
@@ -65,7 +65,7 @@ export class ApplyJob1749444759836 implements MigrationInterface {
             type: 'enum',
             enum: enumh.getValuesAndToString<typeof ApplyJobStatus>(ApplyJobStatus),
             enumName: 'apply_job_status_enum',
-            default: `'${ApplyJobStatus['Mới']}'`,
+            default: `'${ApplyJobStatus.NEW}'`,
           },
         ],
         foreignKeys: [

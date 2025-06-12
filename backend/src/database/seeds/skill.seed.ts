@@ -1,9 +1,8 @@
-import { DataSource } from 'typeorm';
+import { QueryRunner } from 'typeorm';
 import { Skill } from '@/api/skill/entities/skill.entity';
 
-export const seedSkills = async (dataSource: DataSource) => {
-  const skillRepository = dataSource.getRepository(Skill);
-
+export const seedSkills = async (queryRunner: QueryRunner) => {
+  const skillRepository = queryRunner.manager.getRepository(Skill);
   const skills = [
     'JavaScript',
     'TypeScript',
@@ -45,7 +44,6 @@ export const seedSkills = async (dataSource: DataSource) => {
     'Firebase',
     'Agile',
     'Scrum',
-    'Docker',
     'Machine Learning',
     'Deep Learning',
     'Data Science',
@@ -92,13 +90,16 @@ export const seedSkills = async (dataSource: DataSource) => {
     'Jupyter Notebook',
   ];
 
+  const batch: Skill[] = [];
+
   for (const name of skills) {
-    const existing = await skillRepository.findOne({ where: { name } });
-    if (!existing) {
-      const skill = skillRepository.create({ name });
-      await skillRepository.save(skill);
+    const existing = await queryRunner.manager.findOneBy(Skill, { name });
+    if (!existing && !batch.some((skill) => skill.name === name)) {
+      batch.push(skillRepository.create({ name }));
     }
   }
+
+  await skillRepository.save(batch);
 
   console.log('✅ Seeded skills');
 };

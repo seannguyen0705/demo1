@@ -34,8 +34,9 @@ interface IUser {
   personal_website?: string;
   introduction?: string;
   experiences?: IExperience[];
-  company?: ICompany;
+  company: ICompany;
   candidateSkills?: ICandidateSkill[];
+  createdAt: string;
 }
 
 interface IQueryPagination {

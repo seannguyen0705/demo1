@@ -1,7 +1,7 @@
 enum Gender {
-  MALE = 'Nam',
-  FEMALE = 'Nữ',
-  OTHER = 'Khác',
+  MALE = 'male',
+  FEMALE = 'female',
+  OTHER = 'other',
 }
 
 enum UserRole {
@@ -14,6 +14,7 @@ enum UserStatus {
   BANNED = 'banned',
   ACTIVE = 'active',
   INACTIVE = 'inactive',
+  ALL = 'all',
 }
 
 enum AuthBy {
@@ -24,43 +25,41 @@ enum AuthBy {
 }
 
 enum SkillYear {
-  LESS_THAN_1_YEAR = '<1 năm',
-  ONE_YEAR = '1 năm',
-  TWO_YEAR = '2 năm',
-  THREE_YEAR = '3 năm',
-  FOUR_YEAR = '4 năm',
-  FIVE_YEAR = '5 năm',
-  SIX_YEAR = '6 năm',
-  SEVEN_YEAR = '7 năm',
-  EIGHT_YEAR = '8 năm',
-  NINE_YEAR = '9 năm',
-  TEN_YEAR = '10 năm',
-  MORE_THAN_10_YEAR = '>10 năm',
+  LESS_THAN_1_YEAR = '<1 year',
+  ONE_YEAR = '1 year',
+  TWO_YEAR = '2 years',
+  THREE_YEAR = '3 years',
+  FOUR_YEAR = '4 years',
+  FIVE_YEAR = '5 years',
+  SIX_YEAR = '6 years',
+  SEVEN_YEAR = '7 years',
+  EIGHT_YEAR = '8 years',
+  NINE_YEAR = '9 years',
+  TEN_YEAR = '10 years',
+  MORE_THAN_10_YEAR = '>10 years',
 }
 
 enum JobType {
-  OFFICE = 'Tại văn phòng',
-  HYBRID = 'Linh hoạt',
-  REMOTE = 'Từ xa',
-  FREELANCE = 'Freelance',
+  OFFICE = 'office',
+  HYBRID = 'hybrid',
+  REMOTE = 'remote',
+  FREELANCE = 'freelance',
 }
 
 enum JobStatus {
-  PUBLISHED = 'Đã đăng',
-  DRAFT = 'Bản nháp',
-  HIDDEN = 'Ẩn',
-}
-
-enum SortJob {
-  NEWEST = 'Mới nhất',
-  OLDEST = 'Cũ nhất',
-  SALARY_ASC = 'Lương tăng dần',
-  SALARY_DESC = 'Lương giảm dần',
+  PUBLISHED = 'published',
+  DRAFT = 'draft',
+  HIDDEN = 'hidden',
 }
 
 enum OrderByReview {
   CREATED_AT = 'createdAt',
   RATING = 'rating',
+}
+
+enum OrderByJob {
+  CREATED_AT = 'createdAt',
+  SALARY = 'salary',
 }
 
 enum Order {
@@ -69,18 +68,18 @@ enum Order {
 }
 
 enum SalaryType {
-  NEGOTIATION = 'Thương lượng',
-  UPTO = 'Lên đến',
-  RANGE = 'Khoảng',
-  ATLEAST = 'Tối thiểu',
+  NEGOTIATION = 'negotiation',
+  UPTO = 'upto',
+  RANGE = 'range',
+  ATLEAST = 'atleast',
 }
 
 enum JobLevel {
-  INTERN = 'Intern',
-  FRESHER = 'Fresher',
-  JUNIOR = 'Junior',
-  SENIOR = 'Senior',
-  MANAGER = 'Manager',
+  INTERN = 'intern',
+  FRESHER = 'fresher',
+  JUNIOR = 'junior',
+  SENIOR = 'senior',
+  MANAGER = 'manager',
 }
 
 enum OrderByApplyJob {
@@ -88,11 +87,12 @@ enum OrderByApplyJob {
 }
 
 enum ApplyJobStatus {
-  NEW = 'Mới',
-  SEEN = 'Đã xem',
-  INTERVIEWING = 'Phỏng vấn',
-  HIRED = 'Đã nhận',
-  REJECTED = 'Từ chối',
+  NEW = 'new',
+  SEEN = 'seen',
+  INTERVIEWING = 'interviewing',
+  HIRED = 'hired',
+  REJECTED = 'rejected',
+  ALL = 'all',
 }
 
 enum ApplyJobStatusDB {
@@ -111,7 +111,6 @@ export {
   SkillYear,
   JobType,
   JobStatus,
-  SortJob,
   OrderByReview,
   Order,
   SalaryType,
@@ -119,4 +118,5 @@ export {
   ApplyJobStatus,
   OrderByApplyJob,
   ApplyJobStatusDB,
+  OrderByJob,
 };

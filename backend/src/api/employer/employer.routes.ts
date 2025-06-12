@@ -7,8 +7,8 @@ import { FileInterceptor } from '@nestjs/platform-express';
 export default {
   index: 'employers',
   updateStatus: <IRouteParams>{
-    path: '/status/:id',
-    method: RequestMethod.POST,
+    path: '/:id/status',
+    method: RequestMethod.PUT,
     roles: [UserRole.ADMIN],
     jwtSecure: true,
   },
@@ -44,5 +44,25 @@ export default {
       responses: [{ status: HttpStatus.OK }],
     },
     extraDecorators: [UseInterceptors(FileInterceptor('file'))],
+  },
+
+  findEmployers: <IRouteParams>{
+    path: '/',
+    method: RequestMethod.GET,
+    roles: [UserRole.ADMIN],
+    jwtSecure: true,
+  },
+
+  findEmployerById: <IRouteParams>{
+    path: '/:id',
+    method: RequestMethod.GET,
+    roles: [UserRole.ADMIN],
+    jwtSecure: true,
+  },
+  deleteEmployer: <IRouteParams>{
+    path: '/:id',
+    method: RequestMethod.DELETE,
+    roles: [UserRole.ADMIN],
+    jwtSecure: true,
   },
 };

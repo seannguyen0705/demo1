@@ -1,8 +1,10 @@
-import { Column, Entity, JoinColumn, OneToMany, OneToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, OneToMany, OneToOne } from 'typeorm';
 import { Base as BaseEntity } from '@/common/entities';
 import { File } from '@/api/file/entities/file.entity';
 import { Employer } from '@/api/employer/entities/employer.entity';
-import { CompanyAddress } from '@/api/company-address/entities/company-address.entity';
+import { Review } from '@/api/review/entities/review.entity';
+import { Job } from '@/api/job/entities/job.entity';
+import { Address } from '@/api/address/entities/address.entity';
 
 @Entity('companies')
 export class Company extends BaseEntity {
@@ -30,8 +32,13 @@ export class Company extends BaseEntity {
   @Column({ type: 'text', nullable: true })
   benefits?: string;
 
-  @OneToMany(() => CompanyAddress, (companyAddress) => companyAddress.company)
-  companyAddresses: CompanyAddress[];
+  @ManyToMany(() => Address, { cascade: true })
+  @JoinTable({
+    name: 'company_addresses',
+    joinColumn: { name: 'company_id' },
+    inverseJoinColumn: { name: 'address_id' },
+  })
+  addresses: Address[];
 
   @Column()
   website: string;
@@ -50,7 +57,7 @@ export class Company extends BaseEntity {
   @JoinColumn({ name: 'logo_id' })
   logo?: File;
 
-  @OneToOne(() => File)
+  @OneToOne(() => File, { cascade: true })
   @JoinColumn({ name: 'proof_id' })
   proof: File;
 
@@ -66,4 +73,10 @@ export class Company extends BaseEntity {
   @OneToOne(() => Employer, (employer) => employer.company, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'employer_id' })
   employer: Employer;
+
+  @OneToMany(() => Review, (review) => review.company)
+  reviews: Review[];
+
+  @OneToMany(() => Job, (job) => job.company)
+  jobs: Job[];
 }

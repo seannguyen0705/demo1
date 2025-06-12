@@ -32,6 +32,7 @@ export const uploadLogo = async (file: Blob, name: string) => {
   });
   if (!isErrorResponse(response)) {
     revalidateTag(`company/${name}`);
+    revalidateTag(`company/${name}/jobs`);
   }
   return response;
 };

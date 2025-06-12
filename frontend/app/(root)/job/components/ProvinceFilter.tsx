@@ -30,7 +30,7 @@ export default function ProvinceFilter() {
         >
           {provinceName ? provinceName : 'Tỉnh/Thành phố'}
           {provinceName ? (
-            <Link className="hover:opacity-50" href={`?${createQueryString('provinceName', '')}`}>
+            <Link replace={true} className="hover:opacity-50" href={`?${createQueryString('provinceName', '')}`}>
               <X />
             </Link>
           ) : (

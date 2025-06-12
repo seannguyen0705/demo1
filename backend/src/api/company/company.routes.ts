@@ -58,4 +58,10 @@ export default {
       },
     },
   },
+  getTop10Companies: <IRouteParams>{
+    path: 'companies/top-10',
+    method: RequestMethod.GET,
+    code: HttpStatus.OK,
+    jwtSecure: false,
+  },
 };

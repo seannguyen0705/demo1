@@ -1,3 +1,4 @@
+import Footer from '@/components/Footer';
 import { Suspense } from 'react';
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {

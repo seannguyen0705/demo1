@@ -19,10 +19,11 @@ interface IProps {
   statistics: JobStatistics;
 }
 export default function BarChartJob({ statistics }: IProps) {
-  const { viewCount, countHired, countInterviewing, countNew, countSeen, countRejected } = statistics;
+  const { viewCount, countHired, countInterviewing, countSeen, countNew, countRejected, countTotal } = statistics;
 
   const chartData = [
     { status: 'Lượt xem', count: viewCount },
+    { status: 'Đã nộp', count: countTotal },
     { status: 'Mới nộp', count: countNew },
     { status: 'Đã xem', count: countSeen },
     { status: 'Phỏng vấn', count: countInterviewing },
@@ -30,25 +31,21 @@ export default function BarChartJob({ statistics }: IProps) {
     { status: 'Từ chối', count: countRejected },
   ];
   return (
-    <Card className="">
-      <CardContent className="">
-        <ChartContainer config={chartConfig}>
-          <BarChart
-            accessibilityLayer
-            data={chartData}
-            margin={{
-              top: 20,
-            }}
-          >
-            <CartesianGrid vertical={false} />
-            <XAxis dataKey="status" tickLine={false} tickMargin={10} axisLine={false} />
+    <ChartContainer config={chartConfig}>
+      <BarChart
+        accessibilityLayer
+        data={chartData}
+        margin={{
+          top: 20,
+        }}
+      >
+        <CartesianGrid vertical={false} />
+        <XAxis dataKey="status" tickLine={false} tickMargin={10} axisLine={false} />
 
-            <Bar dataKey="count" fill="var(--color-status)" radius={8}>
-              <LabelList position="top" offset={12} className="fill-foreground" fontSize={12} />
-            </Bar>
-          </BarChart>
-        </ChartContainer>
-      </CardContent>
-    </Card>
+        <Bar dataKey="count" fill="var(--color-status)" radius={8}>
+          <LabelList position="top" offset={12} className="fill-foreground" fontSize={12} />
+        </Bar>
+      </BarChart>
+    </ChartContainer>
   );
 }

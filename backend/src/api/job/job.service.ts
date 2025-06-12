@@ -2,7 +2,7 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 import { JobRepository } from './job.repository';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Job } from './entities/job.entity';
-import { JobLevel, JobStatus, JobType, SortJob } from '@/common/enums';
+import { JobLevel, JobStatus, JobType, OrderByJob, Order } from '@/common/enums';
 
 import { CompanyService } from '../company/company.service';
 import { CreateDraftJobDto } from './dto/create-draft-job.dto';
@@ -75,6 +75,7 @@ export class JobService {
     }
     if (skillIds) {
       const skills = await this.skillService.findByIds(skillIds);
+
       data.skills = skills;
     }
     const newJob = await this.jobRepository.save({ ...data, companyId: company.id, status: JobStatus.DRAFT });
@@ -108,8 +109,9 @@ export class JobService {
   private async searchJobByKeyword(queryBuilder: SelectQueryBuilder<Job>, keyword?: string) {
     if (keyword) {
       const company = await this.companyService.findOneByName(keyword);
+
       if (company) {
-        queryBuilder.andWhere('company.name =:keyword', { keyword });
+        queryBuilder.andWhere('company.name ILIKE :keyword', { keyword });
         return;
       }
       const skill = await this.skillService.findOneByName(keyword);
@@ -163,26 +165,19 @@ export class JobService {
     }
   }
 
-  private async orderJob(queryBuilder: SelectQueryBuilder<Job>, sort?: SortJob) {
-    if (sort) {
-      switch (sort) {
-        case SortJob.NEWEST:
-          queryBuilder.orderBy('job.createdAt', 'DESC');
-          break;
-        case SortJob.OLDEST:
-          queryBuilder.orderBy('job.createdAt', 'ASC');
-          break;
-        case SortJob.SALARY_ASC:
-          queryBuilder.orderBy('job.salaryMin', 'ASC', 'NULLS LAST');
-          break;
-        case SortJob.SALARY_DESC:
-          queryBuilder.orderBy('job.salaryMin', 'DESC', 'NULLS LAST');
-      }
+  private async orderJob(queryBuilder: SelectQueryBuilder<Job>, orderBy?: OrderByJob, order?: Order) {
+    if (!orderBy) {
+      return;
+    }
+    if (orderBy === OrderByJob.SALARY) {
+      queryBuilder.orderBy(`job.salaryMin`, order, 'NULLS LAST');
+    } else {
+      queryBuilder.orderBy(`job.${orderBy}`, order, 'NULLS LAST');
     }
   }
 
   async findJobs(query: QueryJobDto) {
-    const { keyword, provinceName, jobType, minSalary, maxSalary, sort, page, limit, jobLevel } = query;
+    const { keyword, provinceName, jobType, minSalary, maxSalary, orderBy, order, page, limit, jobLevel } = query;
 
     const queryBuilder = this.jobRepository
       .createQueryBuilder('job')
@@ -217,7 +212,7 @@ export class JobService {
       this.searchJobByJobType(queryBuilder, jobType),
       this.searchJobBySalary(queryBuilder, minSalary, maxSalary),
       this.searchJobByJobLevel(queryBuilder, jobLevel),
-      this.orderJob(queryBuilder, sort),
+      this.orderJob(queryBuilder, orderBy, order),
     ]);
 
     queryBuilder.skip(limit * (page - 1)).take(limit);
@@ -231,7 +226,8 @@ export class JobService {
   }
 
   public async employerFindJobs(employerId: string, query: EmployerQueryJobDto) {
-    const { keyword, provinceName, jobType, minSalary, maxSalary, sort, page, limit, jobLevel, status } = query;
+    const { keyword, provinceName, jobType, minSalary, maxSalary, orderBy, order, page, limit, jobLevel, status } =
+      query;
     const company = await this.companyService.findOneByEmployerId(employerId);
 
     const queryBuilder = this.jobRepository
@@ -275,7 +271,7 @@ export class JobService {
       this.searchJobBySalary(queryBuilder, minSalary, maxSalary),
       this.searchJobByJobLevel(queryBuilder, jobLevel),
       this.searchJobByStatus(queryBuilder, status),
-      this.orderJob(queryBuilder, sort),
+      this.orderJob(queryBuilder, orderBy, order),
     ]);
     const [jobs, total] = await queryBuilder.getManyAndCount();
     const numPage = Math.ceil(total / limit);
@@ -318,8 +314,7 @@ export class JobService {
         'job.jobLevel',
         'job.status',
       ])
-      .andWhere('job.id =:id', { id })
-      .andWhere('job.status  !=:status', { status: JobStatus.DRAFT });
+      .andWhere('job.id =:id', { id });
 
     const job = await queryBuilder.getOne();
     if (!job) {
@@ -379,7 +374,7 @@ export class JobService {
   }
 
   public async candidateGetJobApply(candidateId: string, query: QueryJobApplyDto) {
-    const { page, limit, sort } = query;
+    const { page, limit, orderBy, order } = query;
     const queryBuilder = this.jobRepository
       .createQueryBuilder('job')
       .innerJoin('job.company', 'company')
@@ -410,7 +405,7 @@ export class JobService {
         'applyJobs.createdAt',
       ])
       .andWhere('job.status !=:status', { status: JobStatus.DRAFT });
-    await this.orderJob(queryBuilder, sort);
+    await this.orderJob(queryBuilder, orderBy, order);
 
     const [jobs, total] = await queryBuilder.getManyAndCount();
     const numPage = Math.ceil(total / limit);
@@ -421,7 +416,7 @@ export class JobService {
   }
 
   public async candidateGetJobSaved(candidateId: string, query: QueryJobApplyDto) {
-    const { page, limit, sort } = query;
+    const { page, limit, orderBy, order } = query;
     const queryBuilder = this.jobRepository
       .createQueryBuilder('job')
       .innerJoin('job.company', 'company')
@@ -451,7 +446,7 @@ export class JobService {
         'saveJobs.id',
       ])
       .andWhere('job.status !=:status', { status: JobStatus.DRAFT });
-    await this.orderJob(queryBuilder, sort);
+    await this.orderJob(queryBuilder, orderBy, order);
 
     const [jobs, total] = await queryBuilder.getManyAndCount();
     const numPage = Math.ceil(total / limit);
@@ -461,8 +456,12 @@ export class JobService {
     return { jobs, currentPage: page, nextPage: page + 1, total };
   }
 
-  public async getStaticsticsByJobId(jobId: string) {
-    const job = await this.jobRepository.findOneBy({ id: jobId });
+  public async getStaticsticsByJobId(jobId: string, employerId: string) {
+    const company = await this.companyService.findOneByEmployerId(employerId);
+    if (!company) {
+      throw new NotFoundException('Company not found');
+    }
+    const job = await this.jobRepository.findOneBy({ id: jobId, companyId: company.id });
     if (!job) {
       throw new NotFoundException('Job not found');
     }

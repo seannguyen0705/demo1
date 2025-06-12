@@ -9,6 +9,7 @@ import { Staticstics } from '@/components/Staticstics';
 import { useRouter } from 'next/navigation';
 import useUpdateJobStatus from '@/app/(private)/manage-jobs/hooks/useUpdateJobStatus';
 import ShowStatusJob from '@/app/(private)/manage-jobs/components/ShowStatusJob';
+import useGetMe from '@/app/hooks/useGetMe';
 
 interface IProps {
   job: IJob;
@@ -16,6 +17,7 @@ interface IProps {
 
 export default function ManageJobHeader({ job }: IProps) {
   const { mutate: deleteJob, isPending } = useDeleteJob();
+  const { user } = useGetMe();
   const router = useRouter();
   const { mutate: updateJobStatus, isPending: isUpdatingStatus } = useUpdateJobStatus({ id: job.id });
 
@@ -32,37 +34,39 @@ export default function ManageJobHeader({ job }: IProps) {
           <p className="text-sm">{getStringSalary(job.salaryType, job.salaryMin, job.salaryMax)}</p>
         </div>
 
-        <div className="flex justify-start flex-wrap mt-2 items-center gap-2">
-          <Staticstics job={job} />
-          <Button variant={'outline'} onClick={() => router.push(`/edit-job/${job.id}`)}>
-            <Pencil /> Sửa
-          </Button>
-          {job.status === JobStatus.PUBLISHED && (
-            <Button disabled={isUpdatingStatus} variant={'outline'} onClick={() => updateJobStatus(JobStatus.HIDDEN)}>
-              <EyeOff /> Ẩn
+        {user?.company?.id === job.company.id && (
+          <div className="flex justify-start flex-wrap mt-2 items-center gap-2">
+            <Staticstics job={job} />
+            <Button variant={'outline'} onClick={() => router.push(`/edit-job/${job.id}`)}>
+              <Pencil /> Sửa
             </Button>
-          )}
-          {job.status === JobStatus.HIDDEN && (
-            <Button
-              disabled={isUpdatingStatus}
-              variant={'outline'}
-              onClick={() => updateJobStatus(JobStatus.PUBLISHED)}
-            >
-              <Eye /> Hiện
-            </Button>
-          )}
-          <ConfirmDelete
-            title="Xóa tin tuyển dụng"
-            description="Bạn có chắc chắn muốn xóa tin tuyển dụng này không?"
-            action={() => deleteJob(job.id)}
-            disabled={isPending}
-            button={
-              <Button variant={'outline'} className="text-red-500 hover:text-red-600">
-                <Trash /> Xóa
+            {job.status === JobStatus.PUBLISHED && (
+              <Button disabled={isUpdatingStatus} variant={'outline'} onClick={() => updateJobStatus(JobStatus.HIDDEN)}>
+                <EyeOff /> Ẩn
               </Button>
-            }
-          />
-        </div>
+            )}
+            {job.status === JobStatus.HIDDEN && (
+              <Button
+                disabled={isUpdatingStatus}
+                variant={'outline'}
+                onClick={() => updateJobStatus(JobStatus.PUBLISHED)}
+              >
+                <Eye /> Hiện
+              </Button>
+            )}
+            <ConfirmDelete
+              title="Xóa tin tuyển dụng"
+              description="Bạn có chắc chắn muốn xóa tin tuyển dụng này không?"
+              action={() => deleteJob(job.id)}
+              disabled={isPending}
+              button={
+                <Button variant={'outline'} className="text-red-500 hover:text-red-600">
+                  <Trash /> Xóa
+                </Button>
+              }
+            />
+          </div>
+        )}
       </div>
     </section>
   );

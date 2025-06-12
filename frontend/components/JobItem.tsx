@@ -7,8 +7,10 @@ import { ChevronsUp, CircleDollarSign, MapPin } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { BsPersonWorkspace } from 'react-icons/bs';
-import { JobStatus } from '@/utils/enums';
 import { useSearchParams } from 'next/navigation';
+import ShowStatusJob from '@/app/(private)/manage-jobs/components/ShowStatusJob';
+import getStringJobType from '@/utils/helpers/getStringJobType';
+import getStringJobLevel from '@/utils/helpers/getStringJobLevel';
 interface IProps {
   job: IJob;
   navtoDetail: boolean;
@@ -28,19 +30,7 @@ export default function JobItem({ job, navtoDetail, showStatus }: IProps) {
   return (
     <article className="border flex flex-col rounded-lg p-3 w-full relative">
       {/* Status label */}
-      {showStatus && (
-        <span
-          className={`absolute top-2 right-2 z-20 px-2 py-1 text-xs font-bold rounded ${
-            job.status === JobStatus.PUBLISHED
-              ? 'bg-green-100 text-green-700 border border-green-400'
-              : job.status === JobStatus.DRAFT
-                ? 'bg-yellow-100 text-yellow-700 border border-yellow-400'
-                : 'bg-gray-300 text-gray-700 border border-gray-400'
-          }`}
-        >
-          {job.status}
-        </span>
-      )}
+      {showStatus && <ShowStatusJob job={job} />}
       <p className="text-sm font-semibold text-gray-500">
         {formatDistanceToNow(new Date(job.createdAt), { addSuffix: true, locale: vi })}
       </p>
@@ -73,7 +63,7 @@ export default function JobItem({ job, navtoDetail, showStatus }: IProps) {
           className="relative z-10 inline-flex gap-2 items-center px-1 hover:text-green"
         >
           <BsPersonWorkspace className="text-gray-500" />
-          <span className="text-sm">{job.jobType}</span>
+          <span className="text-sm">{getStringJobType(job.jobType)}</span>
         </Link>
 
         <div className="flex flex-col">
@@ -89,10 +79,10 @@ export default function JobItem({ job, navtoDetail, showStatus }: IProps) {
 
         <Link
           href={`/job?jobLevel=${job.jobLevel || ''}`}
-          className="inline-flex gap-2 items-center relative z-10 hover:text-green"
+          className="inline-flex gap-1 items-center relative z-10 hover:text-green"
         >
           <ChevronsUp className="text-gray-500" />
-          <span className="text-sm">{job.jobLevel}</span>
+          <span className="text-sm">{getStringJobLevel(job.jobLevel)}</span>
         </Link>
 
         <ul className="relative z-10 flex gap-2 w-auto max-w-full overflow-auto scrollbar-hide">

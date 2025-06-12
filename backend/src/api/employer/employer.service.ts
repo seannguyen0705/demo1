@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
 
 import { EmployerRepository } from './employer.repository';
@@ -6,8 +6,8 @@ import { Employer } from './entities/employer.entity';
 import { TokenService } from '../token/token.service';
 import { UserAlreadyException } from '../auth/auth.exceptions';
 import { ResponseEmployerDetailDto, ResponseEmployerDto } from './dto/response-employer.dto';
-import { UserRole, UserStatus } from '@/common/enums';
-import { DataSource } from 'typeorm';
+import { Order, OrderByEmployer, UserRole, UserStatus } from '@/common/enums';
+import { DataSource, QueryRunner, SelectQueryBuilder } from 'typeorm';
 import { UpdateStatusUserDto } from '@/common/dto/update-status-user.dto';
 import generateSecurePassword from '@/utils/helpers/generateSecurePassword';
 import { EmailService } from '../email/email.service';
@@ -17,11 +17,13 @@ import { CloudinaryService } from '../cloudinary/cloudinary.service';
 import { CreateFileDto } from '../file/dto/create-file.dto';
 import { File } from '../file/entities/file.entity';
 import { CreateBusinessDto } from '../auth/dto/create-business.dto';
-import { CreateCompanyAddressDto } from '../company-address/dto/create-company-address.dto';
 import { Company } from '../company/entities/company.entity';
 import { Address } from '../address/entities/address.entity';
-import { CompanyAddress } from '../company-address/entities/company-address.entity';
 import { UpdateEmployerDto } from './dto/update-employer.dto';
+import { QueryEmployer } from './dto/query-employer.dto';
+import { CompanyAddress } from '../company-address/entities/company-address.entity';
+import { query } from 'express';
+import { CompanyImage } from '../company-image/entities/companyImage.entity';
 @Injectable()
 export class EmployerService {
   private readonly folder: string;
@@ -52,24 +54,18 @@ export class EmployerService {
 
     try {
       // create employers
-      const createdEmployer = await queryRunner.manager.save(Employer, data);
+      const [createdEmployer, newAddresses] = await Promise.all([
+        queryRunner.manager.save(Employer, data),
+        queryRunner.manager.save(Address, addresses),
+      ]);
+
       // create company
-      const createdCompany = await queryRunner.manager.save(Company, {
+      await queryRunner.manager.save(Company, {
         ...data,
         employerId: createdEmployer.id,
+        addresses: newAddresses,
       });
-      // create address
-      const createCompanyAddresses: CreateCompanyAddressDto[] = await Promise.all(
-        addresses.map(async (address) => {
-          const createdAddress = await queryRunner.manager.save(Address, address);
-          return {
-            addressId: createdAddress.id,
-            companyId: createdCompany.id,
-          };
-        }),
-      );
-      // create company addresses
-      await queryRunner.manager.insert(CompanyAddress, createCompanyAddresses);
+
       await queryRunner.commitTransaction();
       return { message: 'Đăng kí tài khoản doanh nghiệp thành công ' };
     } catch (error) {
@@ -96,12 +92,6 @@ export class EmployerService {
     phoneNumber: string;
   }): Promise<Employer> {
     return this.employerRepository.findOneBy([{ email }, { phoneNumber }]);
-  }
-
-  public async getAll(): Promise<ResponseEmployerDto[]> {
-    const employers = await this.employerRepository.find();
-
-    return employers.map((employer) => employer.toResponse());
   }
 
   public async getDetailById(id: string): Promise<ResponseEmployerDetailDto> {
@@ -138,7 +128,11 @@ export class EmployerService {
 
   public async updateStatus(id: string, data: UpdateStatusUserDto) {
     const employer = await this.findOneById(id);
-    if (employer.status === UserStatus.INACTIVE && data.status == UserStatus.ACTIVE) {
+    const { status } = data;
+    if (status === UserStatus.INACTIVE) {
+      throw new BadRequestException('Không được phép chuyển về inactive');
+    }
+    if (employer.status === UserStatus.INACTIVE && status == UserStatus.ACTIVE) {
       const password = generateSecurePassword();
       await this.emailService.activeEmployer(employer.email, employer.fullName, password);
       const hashedPassword = await hash.generateWithBcrypt({
@@ -230,5 +224,165 @@ export class EmployerService {
       throw new NotFoundException('Employer not found');
     }
     return this.handleUpdateEmployer({ employer, data });
+  }
+
+  private async searchByKeyword(queryBuilder: SelectQueryBuilder<Employer>, keyword: string) {
+    if (keyword) {
+      queryBuilder.andWhere(
+        '(employer.fullName ILIKE :keyword OR company.name ILIKE :keyword OR employer.phoneNumber ILIKE :keyword)',
+        {
+          keyword: `%${keyword}%`,
+        },
+      );
+    }
+  }
+
+  private async orderEmployer(queryBuilder: SelectQueryBuilder<Employer>, orderBy: OrderByEmployer, order: Order) {
+    if (orderBy) {
+      switch (orderBy) {
+        case OrderByEmployer.CREATED_AT:
+          queryBuilder.orderBy('employer.createdAt', order);
+          break;
+      }
+    }
+  }
+
+  private async filterByStatus(queryBuilder: SelectQueryBuilder<Employer>, status: UserStatus) {
+    if (status) {
+      queryBuilder.andWhere('employer.status = :status', { status });
+    }
+  }
+
+  public async findEmployers(query: QueryEmployer) {
+    const { keyword, status, orderBy, order, page, limit } = query;
+
+    const queryBuilder = this.employerRepository
+      .createQueryBuilder('employer')
+      .leftJoin('employer.company', 'company')
+      .leftJoin('company.logo', 'logo')
+      .leftJoin('company.addresses', 'addresses')
+      .leftJoin('addresses.province', 'province')
+      .select([
+        'employer.id',
+        'employer.fullName',
+        'employer.email',
+        'employer.phoneNumber',
+        'employer.createdAt',
+        'employer.status',
+        'company.name',
+        'company.id',
+        'company.website',
+        'logo.url',
+        'addresses.id',
+        'addresses.detail',
+        'province.name',
+      ])
+      .skip((page - 1) * limit)
+      .take(limit);
+
+    await Promise.all([
+      this.searchByKeyword(queryBuilder, keyword),
+      this.filterByStatus(queryBuilder, status),
+      this.orderEmployer(queryBuilder, orderBy, order),
+    ]);
+
+    const [employers, total] = await queryBuilder.getManyAndCount();
+
+    const numPage = Math.ceil(total / limit);
+
+    if (page + 1 > numPage) {
+      return { employers, currentPage: page, nextPage: null, total };
+    }
+    return { employers, currentPage: page, nextPage: page + 1, total };
+  }
+
+  public async findEmployerById(id: string) {
+    const queryBuilder = this.employerRepository
+      .createQueryBuilder('employer')
+      .innerJoin('employer.company', 'company')
+      .leftJoin('employer.avatar', 'avatar')
+      .leftJoin('company.logo', 'logo')
+      .leftJoin('company.addresses', 'addresses')
+      .leftJoin('addresses.province', 'province')
+      .innerJoin('company.proof', 'proof')
+      .select([
+        'employer.id',
+        'employer.fullName',
+        'employer.email',
+        'employer.phoneNumber',
+        'employer.status',
+        'company.name',
+        'company.id',
+        'avatar.url',
+        'logo.url',
+        'addresses.id',
+        'addresses.detail',
+        'company.website',
+        'province.name',
+        'proof.url',
+      ])
+      .where('employer.id = :id', { id });
+
+    return queryBuilder.getOne();
+  }
+
+  public async deleteEmployer(id: string) {
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+    const deleteFileIds = [];
+
+    try {
+      const employer = await queryRunner.manager.findOneBy(Employer, { id });
+      if (!employer) {
+        throw new NotFoundException('Employer not found');
+      }
+      const company = await queryRunner.manager.findOneBy(Company, { employerId: id });
+      const companyAddresses = await queryRunner.manager.findBy(CompanyAddress, { companyId: company.id });
+      const addressIds = companyAddresses.map((address) => address.addressId);
+      await queryRunner.manager.delete(Address, addressIds);
+      const companyImages = await queryRunner.manager.findBy(CompanyImage, { companyId: company.id });
+      await Promise.all(
+        companyImages.map(async (companyImage) => {
+          if (companyImage.fileId) {
+            await queryRunner.manager.delete(CompanyImage, companyImage.id);
+            deleteFileIds.push(companyImage.fileId);
+          }
+        }),
+      );
+      if (!company) {
+        throw new NotFoundException('Company not found');
+      }
+      if (company.proofId) {
+        deleteFileIds.push(company.proofId);
+      }
+      if (company.logoId) {
+        deleteFileIds.push(company.logoId);
+      }
+      if (company.backgroundId) {
+        deleteFileIds.push(company.backgroundId);
+      }
+      if (employer.avatarId) {
+        deleteFileIds.push(employer.avatarId);
+      }
+      await queryRunner.manager.delete(Employer, id);
+      await queryRunner.manager.delete(Company, company.id);
+      Promise.all(
+        deleteFileIds.map(async (id) => {
+          const file = await queryRunner.manager.findOneBy(File, { id });
+          if (file) {
+            await this.cloudinaryService.deleteFile(file.key);
+          }
+        }),
+      ); // delete file from cloudinary
+      await queryRunner.manager.delete(File, deleteFileIds); // delete file from database
+      await queryRunner.commitTransaction();
+      return { message: 'Xóa tài khoản doanh nghiệp thành công' };
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+      throw error;
+    } finally {
+      await queryRunner.release();
+    }
   }
 }

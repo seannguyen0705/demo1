@@ -224,16 +224,18 @@ export default function CreateJob() {
 
   const handleCreateDraftJob = () => {
     const data = removeFalsyValues(form.getValues());
+    const skillIds = data?.skills?.map((skill) => skill.value) || [];
     if (user?.company?.id) {
       createDraftJob({
         ...data,
         companyId: user.company.id,
+        skillIds,
       });
     }
   };
 
   return (
-    <main className="px-4">
+    <main className="px-8">
       <div className="text-center">
         <div className="inline-flex text-green items-center gap-2">
           <Rocket />
@@ -242,7 +244,7 @@ export default function CreateJob() {
         <p className="text-muted-foreground dark:text-gray-200">Tạo tin tuyển dụng chi tiết và chuyên nghiệp</p>
       </div>
       <Form {...form}>
-        <form className="max-w-4xl mx-auto space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
+        <form className="mx-auto space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
           <FormProvider {...form}>
             <CreateJobInfo />
             <CreateJobDescription />

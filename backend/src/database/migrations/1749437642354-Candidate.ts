@@ -16,12 +16,12 @@ export class Candidate1749437642354 implements MigrationInterface {
           },
           {
             name: 'created_at',
-            type: 'timestamp',
+            type: 'timestamptz',
             default: `('now'::text)::timestamp(6) with time zone`,
           },
           {
             name: 'updated_at',
-            type: 'timestamp',
+            type: 'timestamptz',
             default: `('now'::text)::timestamp(6) with time zone`,
           },
           {
@@ -50,11 +50,6 @@ export class Candidate1749437642354 implements MigrationInterface {
             enum: Object.values(Gender),
             enumName: 'gender_enum',
             isNullable: true,
-          },
-          {
-            name: 'count_violation',
-            type: 'integer',
-            default: 0,
           },
           {
             name: 'bod',

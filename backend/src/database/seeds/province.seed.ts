@@ -1,9 +1,8 @@
 import { Province } from '@/api/province/entities/province.entity';
-import { DataSource } from 'typeorm';
+import { QueryRunner } from 'typeorm';
 
-export const seedProvinces = async (dataSource: DataSource) => {
-  const provinceRepo = dataSource.getRepository(Province);
-
+export const seedProvinces = async (queryRunner: QueryRunner) => {
+  const provinceRepository = queryRunner.manager.getRepository(Province);
   const provinces = [
     'An Giang',
     'Bà Rịa - Vũng Tàu',
@@ -70,13 +69,16 @@ export const seedProvinces = async (dataSource: DataSource) => {
     'Yên Bái',
     'Quốc Tế',
   ];
+  const batch: Province[] = [];
 
   for (const name of provinces) {
-    const exists = await provinceRepo.findOneBy({ name });
+    const exists = await queryRunner.manager.findOneBy(Province, { name });
     if (!exists) {
-      await provinceRepo.save(provinceRepo.create({ name }));
+      batch.push(provinceRepository.create({ name }));
     }
   }
+
+  await provinceRepository.save(batch);
 
   console.log('✅ Seeded provinces successfully!');
 };

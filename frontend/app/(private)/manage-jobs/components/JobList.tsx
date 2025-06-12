@@ -34,7 +34,7 @@ export default function JobList() {
           </li>
         ))}
       </ul>
-      <div className="my-3">
+      <div className="my-8">
         <Pagination totalPages={totalPages} currentPage={jobQuery.currentPage} />
       </div>
     </section>

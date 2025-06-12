@@ -1,6 +1,5 @@
 import queryFetch from '@/utils/helpers/queryFetch';
 import { IJob, QueryJob } from './interface';
-import { notFound } from 'next/navigation';
 
 export const getJobByCompanyId = async (companyId: string) => {
   try {
@@ -11,8 +10,7 @@ export const getJobByCompanyId = async (companyId: string) => {
       },
     });
     return response;
-  } catch (error) {
-    console.error(error);
+  } catch {
     return { data: [] };
   }
 };
@@ -23,7 +21,7 @@ export const getJobById = async (id: string) => {
       method: 'GET',
     });
     return response.data;
-  } catch (error) {
+  } catch {
     return null;
   }
 };
@@ -34,8 +32,7 @@ export const getJobs = async (queryString: string) => {
       method: 'GET',
     });
     return response;
-  } catch (error) {
-    console.error(error);
+  } catch {
     return {
       data: {
         jobs: [],

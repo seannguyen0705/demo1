@@ -8,7 +8,24 @@ import CheckBox from '@/components/Checkbox';
 import { useSearchParams } from 'next/navigation';
 import useQueryJob from '../hooks/useQueryJob';
 
-const jobTypes = [JobType.OFFICE, JobType.HYBRID, JobType.REMOTE, JobType.FREELANCE];
+const jobTypeOptions = [
+  {
+    label: 'Tại văn phòng',
+    value: JobType.OFFICE,
+  },
+  {
+    label: 'Linh hoạt',
+    value: JobType.HYBRID,
+  },
+  {
+    label: 'Từ xa',
+    value: JobType.REMOTE,
+  },
+  {
+    label: 'Freelance',
+    value: JobType.FREELANCE,
+  },
+];
 
 export function JobTypeFilter() {
   const jobType = useSearchParams().get('jobType');
@@ -19,9 +36,9 @@ export function JobTypeFilter() {
         <div
           className={`flex cursor-pointer items-center gap-2 border dark:hover:border-white hover:border-green rounded-full px-2 py-1 dark:bg-gray-800 bg-light-green ${jobType && 'border-green text-green dark:text-white dark:border-white'}`}
         >
-          {jobType ? jobType : 'Loại việc làm'}{' '}
+          {jobType ? jobTypeOptions.find((item) => item.value === jobType)?.label : 'Loại việc làm'}{' '}
           {jobType ? (
-            <Link href={`?${handleClear('jobType')}`}>
+            <Link replace={true} href={`?${handleClear('jobType')}`}>
               <X />
             </Link>
           ) : (
@@ -31,15 +48,15 @@ export function JobTypeFilter() {
       </PopoverTrigger>
       <PopoverContent className="w-full p-0">
         <div className="">
-          {jobTypes.map((jobtype) => (
+          {jobTypeOptions.map((item) => (
             <Link
-              key={jobtype}
+              key={item.value}
               replace={true}
-              href={`?${createQueryString('jobType', jobtype)}`}
+              href={`?${createQueryString('jobType', item.value)}`}
               className="flex items-center gap-2 px-2 py-1 hover:bg-light-green dark:hover:bg-gray-800"
             >
-              <CheckBox checked={jobType === jobtype} />
-              <span>{jobtype}</span>
+              <CheckBox checked={jobType === item.value} />
+              <span>{item.label}</span>
             </Link>
           ))}
         </div>

@@ -21,8 +21,8 @@ export class BaseUserEntity extends BaseEntity {
   @Column({ type: 'enum', enum: Gender, nullable: true })
   gender?: Gender;
 
-  @Column({ name: 'count_violation', default: 0 })
-  countViolation: number;
+  // @Column({ name: 'count_violation', default: 0 })
+  // countViolation: number;
 
   @Column({ type: 'date', nullable: true })
   bod?: Date;

@@ -10,3 +10,10 @@ export const findCompanyByName = async (name: string) => {
   });
   return response.data;
 };
+
+export const getTop10Companies = async () => {
+  const response = await queryFetch<ICompany[]>('companies/top-10', {
+    method: 'GET',
+  });
+  return response.data;
+};

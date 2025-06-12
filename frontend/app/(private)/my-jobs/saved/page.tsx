@@ -21,7 +21,7 @@ export default function SavedJobs() {
   }
   const totalPages = savedData?.total / 10;
   return (
-    <main className="flex flex-col  px-4">
+    <main className="flex flex-col px-4">
       <header>
         <h3 className="text-2xl font-bold">Việc làm đã ứng tuyển</h3>
         <nav className="flex gap-4 items-center">

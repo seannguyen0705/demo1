@@ -39,6 +39,7 @@ const EnvSchema = {
   PORT: Joi.number(),
   NODE_ENV: Joi.string(),
   DB_TYPE: Joi.string().required(),
+  DB_SSL: Joi.boolean().required(),
   DB_HOST: Joi.string().required(),
   DB_PORT: Joi.number().required(),
   DB_NAME: Joi.string().required(),
