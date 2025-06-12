@@ -17,9 +17,6 @@ export class QueryApplyJobDto extends QueryPaginationDto {
     if (!value) {
       return null;
     }
-    if (value === 'all') {
-      return null;
-    }
     return value;
   })
   status: ApplyJobStatusQuery;

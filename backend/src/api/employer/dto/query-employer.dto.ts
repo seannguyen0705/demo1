@@ -16,9 +16,6 @@ export class QueryEmployer extends QueryPaginationDto {
     if (!value) {
       return null;
     }
-    if (value === 'all') {
-      return null;
-    }
     return value;
   })
   @ApiPropertyOptional({

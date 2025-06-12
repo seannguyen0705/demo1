@@ -15,7 +15,7 @@ const statusOptions = [
 
 export default function SearchAndFilter() {
   const [keyword, setKeyword] = useQueryState('keyword', { defaultValue: '' });
-  const [status, setStatus] = useQueryState('status', { defaultValue: '' });
+  const [status, setStatus] = useQueryState('status', { defaultValue: ApplyJobStatus.ALL });
   const [page, setPage] = useQueryState('page', parseAsInteger.withDefault(1));
   const handleSearch = (keyword: string) => {
     setKeyword(keyword);
@@ -23,8 +23,12 @@ export default function SearchAndFilter() {
   };
 
   const handleStatusChange = (status: string) => {
-    setStatus(status);
     setPage(1);
+    if (status !== ApplyJobStatus.ALL) {
+      setStatus(status);
+    } else {
+      setStatus('');
+    }
   };
 
   return (
@@ -38,7 +42,7 @@ export default function SearchAndFilter() {
         />
       </div>
       <div className="inline-flex gap-2">
-        <Select value={status} onValueChange={handleStatusChange}>
+        <Select value={status || ApplyJobStatus.ALL} onValueChange={handleStatusChange}>
           <SelectTrigger className="sm:w-auto w-full">
             <Filter className="w-4 h-4 mr-2" />
             <SelectValue placeholder="Lọc theo trạng thái" />
