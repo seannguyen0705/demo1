@@ -70,7 +70,7 @@ export default function InforCompany({ company }: IProps) {
             <Link href={`/company/${name}`} target="_blank">
               <Button variant="outline" className="w-full sm:w-auto">
                 <Info className="mr-2 h-4 w-4" />
-                Xem Chi Tiết
+                Xem Công Ty
               </Button>
             </Link>
           </CardFooter>

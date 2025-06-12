@@ -5,7 +5,7 @@ import { Filter } from 'lucide-react';
 import { parseAsInteger, useQueryState } from 'nuqs';
 
 const statusOptions = [
-  { value: 'Tất cả', label: 'Tất cả' },
+  { value: 'all', label: 'Tất cả' },
   { value: ApplyJobStatus.NEW, label: 'Mới' },
   { value: ApplyJobStatus.SEEN, label: 'Đã xem' },
   { value: ApplyJobStatus.INTERVIEWING, label: 'Phỏng vấn' },

@@ -2,10 +2,9 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Filter } from 'lucide-react';
 import { parseAsInteger, useQueryState } from 'nuqs';
-import { useEffect } from 'react';
 
 const statusOptions = [
-  { value: 'Tất cả', label: 'Tất cả' },
+  { value: 'all', label: 'Tất cả' },
   { value: 'inactive', label: 'Chưa kích hoạt' },
   { value: 'active', label: 'Đã kích hoạt' },
   { value: 'banned', label: 'Đã khóa' },

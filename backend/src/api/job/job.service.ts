@@ -2,7 +2,7 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 import { JobRepository } from './job.repository';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Job } from './entities/job.entity';
-import { JobLevel, JobStatus, JobType, SortJob } from '@/common/enums';
+import { JobLevel, JobStatus, JobType, OrderByJob, Order } from '@/common/enums';
 
 import { CompanyService } from '../company/company.service';
 import { CreateDraftJobDto } from './dto/create-draft-job.dto';
@@ -165,26 +165,14 @@ export class JobService {
     }
   }
 
-  private async orderJob(queryBuilder: SelectQueryBuilder<Job>, sort?: SortJob) {
-    if (sort) {
-      switch (sort) {
-        case SortJob.NEWEST:
-          queryBuilder.orderBy('job.createdAt', 'DESC');
-          break;
-        case SortJob.OLDEST:
-          queryBuilder.orderBy('job.createdAt', 'ASC');
-          break;
-        case SortJob.SALARY_ASC:
-          queryBuilder.orderBy('job.salaryMin', 'ASC', 'NULLS LAST');
-          break;
-        case SortJob.SALARY_DESC:
-          queryBuilder.orderBy('job.salaryMin', 'DESC', 'NULLS LAST');
-      }
+  private async orderJob(queryBuilder: SelectQueryBuilder<Job>, orderBy?: OrderByJob, order?: Order) {
+    if (orderBy) {
+      queryBuilder.orderBy(`job.${orderBy}`, order);
     }
   }
 
   async findJobs(query: QueryJobDto) {
-    const { keyword, provinceName, jobType, minSalary, maxSalary, sort, page, limit, jobLevel } = query;
+    const { keyword, provinceName, jobType, minSalary, maxSalary, orderBy, order, page, limit, jobLevel } = query;
 
     const queryBuilder = this.jobRepository
       .createQueryBuilder('job')
@@ -219,7 +207,7 @@ export class JobService {
       this.searchJobByJobType(queryBuilder, jobType),
       this.searchJobBySalary(queryBuilder, minSalary, maxSalary),
       this.searchJobByJobLevel(queryBuilder, jobLevel),
-      this.orderJob(queryBuilder, sort),
+      this.orderJob(queryBuilder, orderBy, order),
     ]);
 
     queryBuilder.skip(limit * (page - 1)).take(limit);
@@ -233,7 +221,8 @@ export class JobService {
   }
 
   public async employerFindJobs(employerId: string, query: EmployerQueryJobDto) {
-    const { keyword, provinceName, jobType, minSalary, maxSalary, sort, page, limit, jobLevel, status } = query;
+    const { keyword, provinceName, jobType, minSalary, maxSalary, orderBy, order, page, limit, jobLevel, status } =
+      query;
     const company = await this.companyService.findOneByEmployerId(employerId);
 
     const queryBuilder = this.jobRepository
@@ -277,7 +266,7 @@ export class JobService {
       this.searchJobBySalary(queryBuilder, minSalary, maxSalary),
       this.searchJobByJobLevel(queryBuilder, jobLevel),
       this.searchJobByStatus(queryBuilder, status),
-      this.orderJob(queryBuilder, sort),
+      this.orderJob(queryBuilder, orderBy, order),
     ]);
     const [jobs, total] = await queryBuilder.getManyAndCount();
     const numPage = Math.ceil(total / limit);
@@ -380,7 +369,7 @@ export class JobService {
   }
 
   public async candidateGetJobApply(candidateId: string, query: QueryJobApplyDto) {
-    const { page, limit, sort } = query;
+    const { page, limit, orderBy, order } = query;
     const queryBuilder = this.jobRepository
       .createQueryBuilder('job')
       .innerJoin('job.company', 'company')
@@ -411,7 +400,7 @@ export class JobService {
         'applyJobs.createdAt',
       ])
       .andWhere('job.status !=:status', { status: JobStatus.DRAFT });
-    await this.orderJob(queryBuilder, sort);
+    await this.orderJob(queryBuilder, orderBy, order);
 
     const [jobs, total] = await queryBuilder.getManyAndCount();
     const numPage = Math.ceil(total / limit);
@@ -422,7 +411,7 @@ export class JobService {
   }
 
   public async candidateGetJobSaved(candidateId: string, query: QueryJobApplyDto) {
-    const { page, limit, sort } = query;
+    const { page, limit, orderBy, order } = query;
     const queryBuilder = this.jobRepository
       .createQueryBuilder('job')
       .innerJoin('job.company', 'company')
@@ -452,7 +441,7 @@ export class JobService {
         'saveJobs.id',
       ])
       .andWhere('job.status !=:status', { status: JobStatus.DRAFT });
-    await this.orderJob(queryBuilder, sort);
+    await this.orderJob(queryBuilder, orderBy, order);
 
     const [jobs, total] = await queryBuilder.getManyAndCount();
     const numPage = Math.ceil(total / limit);

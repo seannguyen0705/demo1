@@ -1,9 +1,9 @@
 import { getJobs } from '@/api/job/query';
-import { SortJob } from '@/utils/enums';
+import { Order, OrderByJob } from '@/utils/enums';
 import JobCard from './JobCard';
 
 export default async function JobList() {
-  const query = { page: '1', limit: '10', sort: SortJob.NEWEST };
+  const query = { page: '1', limit: '10', orderBy: OrderByJob.CREATED_AT, order: Order.DESC };
   const queryString = new URLSearchParams(query).toString();
   const jobs = await getJobs(queryString);
   return (
