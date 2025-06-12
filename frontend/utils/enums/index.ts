@@ -14,6 +14,7 @@ enum UserStatus {
   BANNED = 'banned',
   ACTIVE = 'active',
   INACTIVE = 'inactive',
+  ALL = 'all',
 }
 
 enum AuthBy {
@@ -91,6 +92,7 @@ enum ApplyJobStatus {
   INTERVIEWING = 'interviewing',
   HIRED = 'hired',
   REJECTED = 'rejected',
+  ALL = 'all',
 }
 
 enum ApplyJobStatusDB {

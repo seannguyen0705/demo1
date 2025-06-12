@@ -1,13 +1,14 @@
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { UserStatus } from '@/utils/enums';
 import { Filter } from 'lucide-react';
 import { parseAsInteger, useQueryState } from 'nuqs';
 
 const statusOptions = [
-  { value: 'all', label: 'Tất cả' },
-  { value: 'inactive', label: 'Chưa kích hoạt' },
-  { value: 'active', label: 'Đã kích hoạt' },
-  { value: 'banned', label: 'Đã khóa' },
+  { value: UserStatus.ALL, label: 'Tất cả' },
+  { value: UserStatus.INACTIVE, label: 'Chưa kích hoạt' },
+  { value: UserStatus.ACTIVE, label: 'Đã kích hoạt' },
+  { value: UserStatus.BANNED, label: 'Đã khóa' },
 ];
 
 export default function SearchAndFilter() {

@@ -24,7 +24,7 @@
     "migration:run": "npm run typeorm migration:run -- -d ./src/config/ormconfig.ts",
     "migration:generate": "npm run typeorm -- -d ./src/config/ormconfig.ts migration:generate ./src/database/migrations/$NAME",
     "migration:create": "npm run typeorm -- migration:create ./src/database/migrations/$NAME",
-    "migration:revert": "npm run typeorm -- -d ./src/config/ormconfig.ts migration:revert",
+    "migration:revert": "npm run typeorm migration:revert -- -d ./src/config/ormconfig.ts",
     "db:seed": "ts-node -r tsconfig-paths/register src/database/seeds/index.ts    "
   },
   "dependencies": {

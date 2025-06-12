@@ -6,7 +6,6 @@ import { parseAsInteger, useQueryState } from 'nuqs';
 import { useMemo } from 'react';
 import useGetEmployer from '../hooks/useGetEmployer';
 import { Skeleton } from '@/components/ui/skeleton';
-import { mapEnumStatusUser } from '@/utils/helpers/mapEnumStatusUser';
 import ShowStatusUser from './ShowStatusUser';
 import ActionEmployer from './ActionEmployer';
 import ShowSort from '@/app/(private)/manage-candidates/components/ShowSort';
