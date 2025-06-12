@@ -12,9 +12,10 @@ import { Staticstics } from '@/components/Staticstics';
 import { useRouter } from 'next/navigation';
 import useDeleteJob from '../../edit-job/hooks/useDeleteJob';
 import ConfirmDelete from '@/components/ConfirmDelete';
-import isExpired from '@/utils/helpers/isExpired';
 import useUpdateJobStatus from '../hooks/useUpdateJobStatus';
 import ShowStatusJob from './ShowStatusJob';
+import getStringJobType from '@/utils/helpers/getStringJobType';
+import getStringJobLevel from '@/utils/helpers/getStringJobLevel';
 interface IProps {
   job: IJob;
 }
@@ -51,7 +52,7 @@ export default function ManageJobItem({ job }: IProps) {
               className="relative z-10 inline-flex gap-2 items-center px-1 hover:text-green"
             >
               <BsPersonWorkspace className="text-gray-500" />
-              <span className="text-sm">{job.jobType}</span>
+              <span className="text-sm">{getStringJobType(job.jobType)}</span>
             </Link>
           </div>
 
@@ -61,7 +62,7 @@ export default function ManageJobItem({ job }: IProps) {
               className="inline-flex gap-2 items-center relative z-10 hover:text-green"
             >
               <ChevronsUp className="text-gray-500" />
-              <span className="text-sm">{job.jobLevel}</span>
+              <span className="text-sm">{getStringJobLevel(job.jobLevel)}</span>
             </Link>
           </div>
         </div>

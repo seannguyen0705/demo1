@@ -52,7 +52,7 @@ export default function CreateJobInfo() {
                       field.onChange([...field.value, companyAddress.address.id]);
                     }
                   }}
-                  key={companyAddress.id}
+                  key={companyAddress.address.id}
                   className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-all duration-200 hover:bg-gray-50 dark:hover:bg-gray-800 ${
                     field.value.includes(companyAddress.address.id)
                       ? 'border-green-500 bg-green-50 dark:bg-gray-800 '

@@ -107,7 +107,7 @@ export class Job1749444615631 implements MigrationInterface {
             type: 'enum',
             enum: Object.values(JobStatus),
             enumName: 'job_status_enum',
-            default: `'Bản nháp'::job_status_enum`,
+            default: `'draft'::job_status_enum`,
           },
           {
             name: 'company_id',

@@ -166,8 +166,13 @@ export class JobService {
   }
 
   private async orderJob(queryBuilder: SelectQueryBuilder<Job>, orderBy?: OrderByJob, order?: Order) {
-    if (orderBy) {
-      queryBuilder.orderBy(`job.${orderBy}`, order);
+    if (!orderBy) {
+      return;
+    }
+    if (orderBy === OrderByJob.SALARY) {
+      queryBuilder.orderBy(`job.salaryMin`, order, 'NULLS LAST');
+    } else {
+      queryBuilder.orderBy(`job.${orderBy}`, order, 'NULLS LAST');
     }
   }
 

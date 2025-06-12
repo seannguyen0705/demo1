@@ -17,7 +17,7 @@ export class QueryApplyJobDto extends QueryPaginationDto {
     if (!value) {
       return null;
     }
-    if (value === 'Tất cả') {
+    if (value === 'all') {
       return null;
     }
     return value;

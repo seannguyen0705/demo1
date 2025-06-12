@@ -9,33 +9,33 @@ export default function ShowStatus({ status }: IProps) {
   if (status === ApplyJobStatus.NEW) {
     return (
       <Badge className="bg-green" variant="default">
-        {status}
+        Mới
       </Badge>
     );
   }
   if (status === ApplyJobStatus.SEEN) {
     return (
       <Badge className="bg-yellow-500" variant="default">
-        {status}
+        Đã xem
       </Badge>
     );
   }
   if (status === ApplyJobStatus.INTERVIEWING) {
     return (
       <Badge className="bg-blue-500" variant="default">
-        {status}
+        Đang phỏng vấn
       </Badge>
     );
   }
   if (status === ApplyJobStatus.HIRED) {
     return (
       <Badge className="bg-blue-500" variant="default">
-        {status}
+        Đã tuyển
       </Badge>
     );
   }
   if (status === ApplyJobStatus.REJECTED) {
-    return <Badge variant="destructive">{status}</Badge>;
+    return <Badge variant="destructive">Từ chối</Badge>;
   }
-  return <Badge variant="secondary">{status}</Badge>;
+  return <Badge variant="secondary">Đã xem</Badge>;
 }
