@@ -326,19 +326,11 @@ export class EmployerService {
     return queryBuilder.getOne();
   }
 
-  private async deleteFile(fileId: string, deleteKeys: string[], queryRunner: QueryRunner) {
-    const file = await queryRunner.manager.findOneBy(File, { id: fileId });
-    if (file) {
-      await queryRunner.manager.delete(File, file.id);
-      deleteKeys.push(file.key);
-    }
-  }
-
   public async deleteEmployer(id: string) {
     const queryRunner = this.dataSource.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
-    const deleteKeys = [];
+    const deleteFileIds = [];
 
     try {
       const employer = await queryRunner.manager.findOneBy(Employer, { id });
@@ -348,34 +340,42 @@ export class EmployerService {
       const company = await queryRunner.manager.findOneBy(Company, { employerId: id });
       const companyAddresses = await queryRunner.manager.findBy(CompanyAddress, { companyId: company.id });
       const addressIds = companyAddresses.map((address) => address.addressId);
+      await queryRunner.manager.delete(Address, addressIds);
       const companyImages = await queryRunner.manager.findBy(CompanyImage, { companyId: company.id });
       await Promise.all(
         companyImages.map(async (companyImage) => {
           if (companyImage.fileId) {
             await queryRunner.manager.delete(CompanyImage, companyImage.id);
-            await this.deleteFile(companyImage.fileId, deleteKeys, queryRunner);
+            deleteFileIds.push(companyImage.fileId);
           }
         }),
       );
-      await queryRunner.manager.delete(Address, addressIds);
       if (!company) {
         throw new NotFoundException('Company not found');
       }
       if (company.proofId) {
-        await this.deleteFile(company.proofId, deleteKeys, queryRunner);
+        deleteFileIds.push(company.proofId);
       }
       if (company.logoId) {
-        await this.deleteFile(company.logoId, deleteKeys, queryRunner);
+        deleteFileIds.push(company.logoId);
       }
       if (company.backgroundId) {
-        await this.deleteFile(company.backgroundId, deleteKeys, queryRunner);
+        deleteFileIds.push(company.backgroundId);
       }
       if (employer.avatarId) {
-        await this.deleteFile(employer.avatarId, deleteKeys, queryRunner);
+        deleteFileIds.push(employer.avatarId);
       }
       await queryRunner.manager.delete(Employer, id);
       await queryRunner.manager.delete(Company, company.id);
-      Promise.all(deleteKeys.map((key) => this.cloudinaryService.deleteFile(key))); // side effect
+      Promise.all(
+        deleteFileIds.map(async (id) => {
+          const file = await queryRunner.manager.findOneBy(File, { id });
+          if (file) {
+            await this.cloudinaryService.deleteFile(file.key);
+          }
+        }),
+      ); // delete file from cloudinary
+      await queryRunner.manager.delete(File, deleteFileIds); // delete file from database
       await queryRunner.commitTransaction();
       return { message: 'Xóa tài khoản doanh nghiệp thành công' };
     } catch (error) {

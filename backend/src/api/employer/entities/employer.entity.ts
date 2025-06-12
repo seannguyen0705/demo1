@@ -17,7 +17,7 @@ export class Employer extends BaseUserEntity {
   @Column({ nullable: true })
   personal_website: string;
 
-  @OneToOne(() => Company, (company) => company.employer)
+  @OneToOne(() => Company, (company) => company.employer, { cascade: true })
   company: Company;
 
   @BeforeInsert()

@@ -11,10 +11,10 @@ const seed = async () => {
   await queryRunner.startTransaction();
 
   try {
-    await seedProvinces(queryRunner);
-    await seedSkills(queryRunner);
-    await seedCandidates(queryRunner, 100);
-    await seedEmployers(queryRunner, 100);
+    // await seedProvinces(queryRunner);
+    // await seedSkills(queryRunner);
+    // await seedCandidates(queryRunner, 100);
+    await seedEmployers(queryRunner, 1);
     await queryRunner.commitTransaction();
   } catch (error) {
     await queryRunner.rollbackTransaction();

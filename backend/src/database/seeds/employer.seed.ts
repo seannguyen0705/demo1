@@ -15,10 +15,12 @@ const proof: CreateFileDto = {
   format: 'application/pdf',
 };
 
+const BATCH_SIZE = 100;
 export const seedEmployers = async (queryRunner: QueryRunner, count: number) => {
   const employerRepository = queryRunner.manager.getRepository(Employer);
   const companyRepository = queryRunner.manager.getRepository(Company);
   let email, phoneNumber, companyName;
+  let batch: Employer[] = [];
 
   for (const _ of Array.from({ length: count })) {
     email = faker.internet.email();
@@ -43,9 +45,19 @@ export const seedEmployers = async (queryRunner: QueryRunner, count: number) => 
     employer.title = faker.lorem.sentence();
     employer.personal_website = faker.internet.url();
 
-    const newEmployer = await employerRepository.save(employer);
+    const newEmployer = employerRepository.create(employer);
     const addresses = await createAddresses(queryRunner, Math.floor(Math.random() * 10) + 1);
-    await createCompany(queryRunner, newEmployer, addresses, companyName);
+    const company = await createCompany(queryRunner, newEmployer, addresses, companyName);
+
+    newEmployer.company = company;
+    batch.push(newEmployer);
+    if (batch.length === BATCH_SIZE) {
+      await employerRepository.save(batch);
+      batch = [];
+    }
+  }
+  if (batch.length > 0) {
+    await employerRepository.save(batch);
   }
   console.log(`${count} employers seeded`);
 };
@@ -58,19 +70,19 @@ const createCompany = async (
 ) => {
   const companyRepository = queryRunner.manager.getRepository(Company);
   const fileRepository = queryRunner.manager.getRepository(File);
-  const newFile = new File();
-  newFile.name = proof.name;
-  newFile.url = proof.url;
-  newFile.key = proof.key;
-  newFile.format = proof.format;
-  await fileRepository.save(newFile);
+  const file = new File();
+  file.name = proof.name;
+  file.url = proof.url;
+  file.key = proof.key;
+  file.format = proof.format;
+  const newFile = fileRepository.create(file);
   const company = new Company();
   company.name = companyName;
   company.employer = employer;
-  company.proofId = newFile.id;
+  company.proof = newFile;
   company.website = faker.internet.url();
   company.addresses = addresses;
-  await companyRepository.save(company);
+  return companyRepository.create(company);
 };
 
 const createAddresses = async (queryRunner: QueryRunner, number: number): Promise<Address[]> => {
@@ -84,5 +96,5 @@ const createAddresses = async (queryRunner: QueryRunner, number: number): Promis
     newAddress.provinceId = provinces[faker.number.int({ min: 0, max: provinces.length - 1 })].id;
     addresses.push(newAddress);
   }
-  return addressRepository.save(addresses);
+  return addressRepository.create(addresses);
 };

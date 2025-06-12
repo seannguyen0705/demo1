@@ -3,8 +3,11 @@ import { Candidate } from '@/api/candidate/entities/candidate.entity';
 import { faker } from '@faker-js/faker';
 import { Gender } from '@/common/enums';
 
+const BATCH_SIZE = 100;
+
 export const seedCandidates = async (queryRunner: QueryRunner, count: number = 10) => {
   const candidateRepository = queryRunner.manager.getRepository(Candidate);
+  let batch: Candidate[] = [];
 
   for (const _ of Array.from({ length: count })) {
     const candidate = new Candidate();
@@ -26,6 +29,13 @@ export const seedCandidates = async (queryRunner: QueryRunner, count: number = 1
     if (existingCandidate) {
       continue;
     }
-    await candidateRepository.save(candidate);
+    batch.push(candidate);
+    if (batch.length === BATCH_SIZE) {
+      await candidateRepository.save(batch);
+      batch = [];
+    }
+  }
+  if (batch.length > 0) {
+    await candidateRepository.save(batch);
   }
 };

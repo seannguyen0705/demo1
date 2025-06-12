@@ -32,7 +32,7 @@ export class Company extends BaseEntity {
   @Column({ type: 'text', nullable: true })
   benefits?: string;
 
-  @ManyToMany(() => Address)
+  @ManyToMany(() => Address, { cascade: true })
   @JoinTable({
     name: 'company_addresses',
     joinColumn: { name: 'company_id' },
@@ -57,7 +57,7 @@ export class Company extends BaseEntity {
   @JoinColumn({ name: 'logo_id' })
   logo?: File;
 
-  @OneToOne(() => File)
+  @OneToOne(() => File, { cascade: true })
   @JoinColumn({ name: 'proof_id' })
   proof: File;
 
