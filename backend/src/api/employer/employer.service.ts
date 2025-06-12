@@ -334,14 +334,8 @@ export class EmployerService {
       const addressIds = companyAddresses.map((address) => address.addressId);
       await queryRunner.manager.delete(Address, addressIds);
       const companyImages = await queryRunner.manager.findBy(CompanyImage, { companyId: company.id });
-      await Promise.all(
-        companyImages.map(async (companyImage) => {
-          if (companyImage.fileId) {
-            await queryRunner.manager.delete(CompanyImage, companyImage.id);
-            deleteFileIds.push(companyImage.fileId);
-          }
-        }),
-      );
+      deleteFileIds.push(...companyImages.map((item) => item.fileId));
+
       if (!company) {
         throw new NotFoundException('Company not found');
       }
@@ -358,7 +352,7 @@ export class EmployerService {
         deleteFileIds.push(employer.avatarId);
       }
       await queryRunner.manager.delete(Employer, id);
-      await queryRunner.manager.delete(Company, company.id);
+
       Promise.all(
         deleteFileIds.map(async (id) => {
           const file = await queryRunner.manager.findOneBy(File, { id });
@@ -367,7 +361,9 @@ export class EmployerService {
           }
         }),
       ); // delete file from cloudinary
-      await queryRunner.manager.delete(File, deleteFileIds); // delete file from database
+      if (deleteFileIds.length > 0) {
+        await queryRunner.manager.delete(File, deleteFileIds); // delete file from database
+      }
       await queryRunner.commitTransaction();
       return { message: 'Xóa tài khoản doanh nghiệp thành công' };
     } catch (error) {

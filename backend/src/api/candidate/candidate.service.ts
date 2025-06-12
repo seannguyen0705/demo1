@@ -18,6 +18,7 @@ import { CreateFileDto } from '../file/dto/create-file.dto';
 import { File } from '../file/entities/file.entity';
 import { QueryCandidate } from './dto/query-candidate.dto';
 import { UpdateStatusUserDto } from '@/common/dto/update-status-user.dto';
+import { Cv } from '../cv/entities/cv.entity';
 @Injectable()
 export class CandidateService {
   private readonly folder: string;
@@ -116,8 +117,41 @@ export class CandidateService {
     return updatedCandidate.toResponse();
   }
 
-  public async deleteById(id: string): Promise<DeleteResult> {
-    return this.candidateRepository.delete({ id });
+  public async deleteById(id: string) {
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+    const deleteFileIds = [];
+    try {
+      const candidate = await queryRunner.manager.findOneBy(Candidate, { id });
+      if (!candidate) {
+        throw new NotFoundException('Candidate not found');
+      }
+      if (candidate.avatarId) {
+        deleteFileIds.push(candidate.avatarId);
+      }
+      const cvs = await queryRunner.manager.findBy(Cv, { candidateId: id });
+      deleteFileIds.push(...cvs.map((item) => item.fileId));
+      await queryRunner.manager.delete(Candidate, id);
+      Promise.all(
+        deleteFileIds.map(async (id) => {
+          const file = await queryRunner.manager.findOneBy(File, { id });
+          if (file) {
+            await this.cloudinaryService.deleteFile(file.key);
+          }
+        }),
+      );
+      if (deleteFileIds.length > 0) {
+        await queryRunner.manager.delete(File, deleteFileIds);
+      }
+      await queryRunner.commitTransaction();
+      return { message: 'Xóa tài khoản thành công' };
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+      throw error;
+    } finally {
+      await queryRunner.release();
+    }
   }
 
   public async createThirdPartyUser(user: ThirdPartyUser) {

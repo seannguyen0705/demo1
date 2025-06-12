@@ -97,7 +97,7 @@ export default function Info({ user }: IProps) {
               <Loader2 className="w-4 h-4 animate-spin" />
             </div>
           )}
-          <input onChange={onChangeFile} type="file" className="hidden" />
+          <input onChange={onChangeFile} type="file" accept="image/*" className="hidden" />
         </label>
         <div>
           <h6 className="text-lg font-bold md:text-2xl">{user?.fullName}</h6>
