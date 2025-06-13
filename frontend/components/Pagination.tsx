@@ -1,10 +1,11 @@
 'use client';
 
 import Link from 'next/link';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { FaChevronLeft } from 'react-icons/fa';
 import { FaChevronRight } from 'react-icons/fa';
 import useQueryJob from '@/app/(root)/job/hooks/useQueryJob';
+import { useSearchParams } from 'next/navigation';
 interface IProps {
   totalPages: number;
   currentPage: number;
@@ -12,7 +13,25 @@ interface IProps {
 export default function Pagination({ totalPages, currentPage }: IProps) {
   const prevPage = currentPage - 1;
   const nextPage = currentPage + 1;
+  const searchParams = useSearchParams();
+  const job_selected = searchParams.get('job_selected');
   const { createQueryString } = useQueryJob();
+  const jobList = document.getElementById('job-list');
+  const jobDetail = document.getElementById('job-detail');
+  useEffect(() => {
+    if (jobList) {
+      jobList.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    if (jobDetail) {
+      jobDetail.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }, [currentPage]);
+
+  useEffect(() => {
+    if (jobDetail) {
+      jobDetail.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }, [job_selected]);
 
   return (
     <ul className=" flex items-center gap-x-2 justify-center">

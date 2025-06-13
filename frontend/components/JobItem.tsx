@@ -36,7 +36,7 @@ export default function JobItem({ job, navtoDetail, showStatus }: IProps) {
       </p>
       <div>
         <Link
-          replace={true}
+          replace={!navtoDetail}
           scroll={false}
           href={href}
           className="text-lg inline relative z-10 font-bold hover:text-green"
@@ -113,7 +113,7 @@ export default function JobItem({ job, navtoDetail, showStatus }: IProps) {
           ))}
         </ul>
       </div>
-      <Link scroll={false} replace={true} className="absolute inset-0" href={href}></Link>
+      <Link scroll={false} replace={!navtoDetail} className="absolute inset-0" href={href}></Link>
     </article>
   );
 }

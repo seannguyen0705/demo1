@@ -2,7 +2,7 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 import { JobRepository } from './job.repository';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Job } from './entities/job.entity';
-import { JobLevel, JobStatus, JobType, OrderByJob, Order } from '@/common/enums';
+import { JobLevel, JobStatus, JobType, OrderByJob, Order, UserStatus } from '@/common/enums';
 
 import { CompanyService } from '../company/company.service';
 import { CreateDraftJobDto } from './dto/create-draft-job.dto';
@@ -185,6 +185,7 @@ export class JobService {
       .leftJoin('company.logo', 'logo')
       .innerJoin('job.addresses', 'addresses')
       .innerJoin('addresses.province', 'province')
+      .innerJoin('company.employer', 'employer')
       .leftJoin('job.skills', 'skills')
       .select([
         'job.id',
@@ -202,9 +203,11 @@ export class JobService {
         'province.name',
         'skills.id',
         'skills.name',
+        'employer.status',
       ])
       .andWhere('job.status =:status', { status: JobStatus.PUBLISHED })
-      .andWhere('job.expiredAt >:now', { now: new Date() });
+      .andWhere('job.expiredAt >:now', { now: new Date() })
+      .andWhere('employer.status =:userStatus', { userStatus: UserStatus.ACTIVE });
 
     await Promise.all([
       this.searchJobByKeyword(queryBuilder, keyword),

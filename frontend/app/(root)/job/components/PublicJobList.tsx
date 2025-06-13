@@ -3,7 +3,6 @@ import { getJobById, getJobs } from '@/api/job/query';
 import JobItem from '@/components/JobItem';
 import Pagination from '@/components/Pagination';
 import JobDetail from './JobDetail';
-import NotFoundJob from './NotFoundJob';
 
 interface IProps {
   searchParams: SearchParams;
@@ -28,7 +27,7 @@ export default async function PublicJobList({ searchParams }: IProps) {
     <div className="flex gap-4 container mx-auto mt-[30px] px-2">
       <div className="w-full lg:w-[500px]">
         <h3 className="text-xl lg:text-2xl font-bold mb-3">Tìm thấy {total} việc làm</h3>
-        <ul className="h-auto max-h-[calc(100vh-150px)] overflow-auto space-y-4">
+        <ul id="job-list" className="h-auto max-h-[calc(100vh-150px)] overflow-auto space-y-4">
           {jobs.map((job) => (
             <li
               key={job.id}
