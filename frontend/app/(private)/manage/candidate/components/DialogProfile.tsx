@@ -32,7 +32,7 @@ export default function DialogProfile({ candidateId }: IProps) {
           <UserRound />
         </Button>
       </DialogTrigger>
-      <DialogContent className="overflow-auto h-auto max-h-full lg:max-h-[95vh] sm:max-w-[1000px] sm:p-6 p-2">
+      <DialogContent className="overflow-auto h-auto max-h-full lg:max-h-[95vh] sm:max-w-[800px] sm:p-6 p-2">
         <DialogHeader>
           <DialogTitle>Hồ sơ ứng viên</DialogTitle>
           <DialogDescription>Xem thông tin chi tiết hồ sơ ứng viên.</DialogDescription>

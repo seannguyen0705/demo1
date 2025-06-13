@@ -21,6 +21,10 @@ const nextConfig: NextConfig = {
       source: '/my-jobs',
       destination: '/my-jobs/applied',
     },
+    {
+      source: '/admin',
+      destination: '/admin/sign-in',
+    },
   ],
 };
 

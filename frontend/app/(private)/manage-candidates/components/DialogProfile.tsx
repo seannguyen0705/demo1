@@ -27,7 +27,7 @@ export default function DialogProfile({ candidateId }: IProps) {
       <DialogTrigger asChild>
         <button>Hồ sơ</button>
       </DialogTrigger>
-      <DialogContent className="overflow-auto h-auto max-h-full sm:max-w-[1000px] sm:p-6 p-2">
+      <DialogContent className="overflow-auto h-auto max-h-full sm:max-w-[800px] sm:p-6 p-2">
         <DialogHeader>
           <DialogTitle>Hồ sơ ứng viên</DialogTitle>
           <DialogDescription>Xem thông tin chi tiết hồ sơ ứng viên.</DialogDescription>
