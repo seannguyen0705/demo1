@@ -19,6 +19,7 @@ import { File } from '../file/entities/file.entity';
 import { QueryCandidate } from './dto/query-candidate.dto';
 import { UpdateStatusUserDto } from '@/common/dto/update-status-user.dto';
 import { Cv } from '../cv/entities/cv.entity';
+import { In } from 'typeorm';
 @Injectable()
 export class CandidateService {
   private readonly folder: string;
@@ -134,16 +135,10 @@ export class CandidateService {
       deleteFileIds.push(...cvs.map((item) => item.fileId));
       await queryRunner.manager.delete(Candidate, id);
       if (deleteFileIds.length > 0) {
+        const files = await queryRunner.manager.findBy(File, { id: In(deleteFileIds) });
         await queryRunner.manager.delete(File, deleteFileIds);
+        this.cloudinaryService.deleteFiles(files.map((item) => item.key));
       }
-      Promise.all(
-        deleteFileIds.map(async (id) => {
-          const file = await queryRunner.manager.findOneBy(File, { id });
-          if (file) {
-            await this.cloudinaryService.deleteFile(file.key);
-          }
-        }),
-      );
       await queryRunner.commitTransaction();
       return { message: 'Xóa tài khoản thành công' };
     } catch (error) {

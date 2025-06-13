@@ -7,7 +7,7 @@ import { TokenService } from '../token/token.service';
 import { UserAlreadyException } from '../auth/auth.exceptions';
 import { ResponseEmployerDetailDto, ResponseEmployerDto } from './dto/response-employer.dto';
 import { Order, OrderByUser, UserRole, UserStatus } from '@/common/enums';
-import { DataSource, SelectQueryBuilder } from 'typeorm';
+import { DataSource, In, SelectQueryBuilder } from 'typeorm';
 import { UpdateStatusUserDto } from '@/common/dto/update-status-user.dto';
 import generateSecurePassword from '@/utils/helpers/generateSecurePassword';
 import { EmailService } from '../email/email.service';
@@ -352,17 +352,10 @@ export class EmployerService {
         deleteFileIds.push(employer.avatarId);
       }
       await queryRunner.manager.delete(Employer, id);
-
-      Promise.all(
-        deleteFileIds.map(async (id) => {
-          const file = await queryRunner.manager.findOneBy(File, { id });
-          if (file) {
-            await this.cloudinaryService.deleteFile(file.key);
-          }
-        }),
-      ); // delete file from cloudinary
       if (deleteFileIds.length > 0) {
-        await queryRunner.manager.delete(File, deleteFileIds); // delete file from database
+        const files = await queryRunner.manager.findBy(File, { id: In(deleteFileIds) });
+        await queryRunner.manager.delete(File, deleteFileIds);
+        this.cloudinaryService.deleteFiles(files.map((item) => item.key));
       }
       await queryRunner.commitTransaction();
       return { message: 'Xóa tài khoản doanh nghiệp thành công' };
