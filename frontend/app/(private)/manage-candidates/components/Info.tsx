@@ -6,6 +6,7 @@ import Image from 'next/image';
 
 import { UserRole } from '@/utils/enums';
 import Link from 'next/link';
+import getStringGender from '@/utils/helpers/getStringGender';
 
 function SkeletonInfo() {
   return (
@@ -58,7 +59,7 @@ export default function Info({ user }: IProps) {
     {
       name: 'gender',
       icon: <VenusAndMars />,
-      value: user?.gender,
+      value: getStringGender(user?.gender),
     },
     {
       name: 'address',

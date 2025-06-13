@@ -7,6 +7,7 @@ import EditProfile from './EditProfile';
 import { UserRole } from '@/utils/enums';
 import useUpdateAvatar from '../hooks/useUpdateAvatar';
 import Link from 'next/link';
+import getStringGender from '@/utils/helpers/getStringGender';
 
 function SkeletonInfo() {
   return (
@@ -60,7 +61,7 @@ export default function Info({ user }: IProps) {
     {
       name: 'gender',
       icon: <VenusAndMars />,
-      value: user?.gender,
+      value: getStringGender(user?.gender),
     },
     {
       name: 'address',
@@ -96,7 +97,7 @@ export default function Info({ user }: IProps) {
               <Loader2 className="w-4 h-4 animate-spin" />
             </div>
           )}
-          <input onChange={onChangeFile} type="file" className="hidden" />
+          <input onChange={onChangeFile} type="file" accept="image/*" className="hidden" />
         </label>
         <div>
           <h6 className="text-lg font-bold md:text-2xl">{user?.fullName}</h6>

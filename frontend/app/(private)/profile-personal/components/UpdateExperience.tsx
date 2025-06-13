@@ -14,14 +14,7 @@ import { Input } from '@/components/ui/input';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { useState } from 'react';
 import { Select } from '@/components/ui/select';
 import { SelectItem } from '@/components/ui/select';
@@ -47,9 +40,7 @@ const formSchema = z.object({
 interface IUpdateExperienceProps {
   experience: IExperience;
 }
-export default function UpdateExperience({
-  experience,
-}: IUpdateExperienceProps) {
+export default function UpdateExperience({ experience }: IUpdateExperienceProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isCurrent, setIsCurrent] = useState(experience.endDate === 'Hiện tại');
 
@@ -66,8 +57,7 @@ export default function UpdateExperience({
     },
   });
 
-  const { mutate: updateExperience, isPending: isUpdating } =
-    useUpdateExperience();
+  const { mutate: updateExperience, isPending: isUpdating } = useUpdateExperience();
 
   const onSubmit = (data: z.infer<typeof formSchema>) => {
     if (isCurrent) {
@@ -126,9 +116,7 @@ export default function UpdateExperience({
       <DialogContent className="sm:max-w-[600px] h-full md:h-auto overflow-auto">
         <DialogHeader>
           <DialogTitle>Kinh nghiệm làm việc</DialogTitle>
-          <DialogDescription>
-            Cập nhật kinh nghiệm làm việc của bạn
-          </DialogDescription>
+          <DialogDescription>Cập nhật kinh nghiệm làm việc của bạn</DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -140,7 +128,7 @@ export default function UpdateExperience({
                   <FormItem>
                     <FormLabel>Tên công việc</FormLabel>
                     <FormControl>
-                      <Input {...field} />
+                      <Input className="selection:bg-green" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -154,7 +142,7 @@ export default function UpdateExperience({
                   <FormItem>
                     <FormLabel>Tên công ty</FormLabel>
                     <FormControl>
-                      <Input {...field} />
+                      <Input className="selection:bg-green" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -182,10 +170,7 @@ export default function UpdateExperience({
                 name="startMonth"
                 render={({ field }) => (
                   <FormItem>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
                         <SelectTrigger className=" w-full">
                           <SelectValue placeholder="Tháng" />
@@ -209,23 +194,18 @@ export default function UpdateExperience({
                 name="startYear"
                 render={({ field }) => (
                   <FormItem>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
                         <SelectTrigger className=" w-full">
                           <SelectValue placeholder="Năm" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {Array.from({ length: currentYear - 2000 + 1 }).map(
-                          (_, index) => (
-                            <SelectItem key={index} value={`${index + 2000}`}>
-                              {index + 2000}
-                            </SelectItem>
-                          ),
-                        )}
+                        {Array.from({ length: currentYear - 2000 + 1 }).map((_, index) => (
+                          <SelectItem key={index} value={`${index + 2000}`}>
+                            {index + 2000}
+                          </SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -240,11 +220,7 @@ export default function UpdateExperience({
                 name="endMonth"
                 render={({ field }) => (
                   <FormItem>
-                    <Select
-                      disabled={isCurrent}
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
+                    <Select disabled={isCurrent} onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
                         <SelectTrigger className=" w-full">
                           <SelectValue placeholder="Tháng" />
@@ -281,13 +257,11 @@ export default function UpdateExperience({
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {Array.from({ length: currentYear - 2000 + 1 }).map(
-                          (_, index) => (
-                            <SelectItem key={index} value={`${index + 2000}`}>
-                              {index + 2000}
-                            </SelectItem>
-                          ),
-                        )}
+                        {Array.from({ length: currentYear - 2000 + 1 }).map((_, index) => (
+                          <SelectItem key={index} value={`${index + 2000}`}>
+                            {index + 2000}
+                          </SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                     <FormMessage />

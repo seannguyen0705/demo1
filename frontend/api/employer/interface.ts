@@ -19,8 +19,4 @@ interface QueryEmployer {
   total: number;
 }
 
-interface IUpdateEmployerStatus {
-  status: UserStatus;
-}
-
-export type { UpdateEmployerDto, QueryEmployer, IUpdateEmployerStatus };
+export type { UpdateEmployerDto, QueryEmployer };

@@ -19,7 +19,7 @@ export class ApplyJob extends BaseEntity {
   @Column({ name: 'candidate_id' })
   candidateId: string;
 
-  @ManyToOne(() => Candidate)
+  @ManyToOne(() => Candidate, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'candidate_id' })
   candidate: Candidate;
 

@@ -133,6 +133,9 @@ export default function RegisterForm() {
                     )}
                     <span className="sr-only">{showPassword ? 'Hide password' : 'Show password'}</span>
                   </Button>
+                  <p className="text-xs mt-1 text-muted-foreground">
+                    *Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ cái viết hoa, chữ cái viết thường và số
+                  </p>
                 </div>
               </FormControl>
               <FormMessage />

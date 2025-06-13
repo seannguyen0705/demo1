@@ -122,7 +122,7 @@ export default function CreateExperience() {
                   <FormItem>
                     <FormLabel>Tên công việc</FormLabel>
                     <FormControl>
-                      <Input {...field} />
+                      <Input className="selection:bg-green" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -136,7 +136,7 @@ export default function CreateExperience() {
                   <FormItem>
                     <FormLabel>Tên công ty</FormLabel>
                     <FormControl>
-                      <Input {...field} />
+                      <Input className="selection:bg-green" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

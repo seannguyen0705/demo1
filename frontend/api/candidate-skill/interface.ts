@@ -1,10 +1,10 @@
 import { ISkill } from '../skill/interface';
-
+import { SkillYear } from '@/utils/enums';
 interface ICandidateSkill {
   id: string;
   candidateId: string;
   skillId: string;
-  skillYear: string;
+  skillYear: SkillYear;
   skill: ISkill;
 }
 

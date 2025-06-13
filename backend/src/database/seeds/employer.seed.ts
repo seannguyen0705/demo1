@@ -28,11 +28,14 @@ export const seedEmployers = async (queryRunner: QueryRunner, count: number) => 
     companyName = faker.company.name();
 
     const existingEmployer = await employerRepository.findOneBy([{ email }, { phoneNumber }]);
-    if (existingEmployer) {
+    if (
+      existingEmployer ||
+      batch.some((employer) => employer.email === email || employer.phoneNumber === phoneNumber)
+    ) {
       continue;
     }
     const existingCompany = await companyRepository.findOneBy({ name: companyName });
-    if (existingCompany) {
+    if (existingCompany || batch.some((employer) => employer.company?.name === companyName)) {
       continue;
     }
     const employer = new Employer();

@@ -10,6 +10,7 @@ import { UserAlreadyException } from '../auth/auth.exceptions';
 import { Employer } from './entities/employer.entity';
 import { plainToInstance } from 'class-transformer';
 import { QueryEmployer } from './dto/query-employer.dto';
+import { ImageValidatorPipe } from '@/pipes';
 
 @InjectController({ name: employerRoutes.index })
 export class EmployerController {
@@ -39,7 +40,10 @@ export class EmployerController {
   }
 
   @InjectRoute(employerRoutes.updateAvatar)
-  public async updateAvatar(@ReqUser() user: IJwtStrategy, @UploadedFile() file: Express.Multer.File) {
+  public async updateAvatar(
+    @ReqUser() user: IJwtStrategy,
+    @UploadedFile(new ImageValidatorPipe()) file: Express.Multer.File,
+  ) {
     return this.employerService.updateAvatar(user.element.id, file);
   }
 

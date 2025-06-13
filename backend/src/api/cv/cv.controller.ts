@@ -1,8 +1,6 @@
 import { CvService } from './cv.service';
 import { InjectController, InjectRoute, ReqUser } from '@/decorators';
 import CvRoutes from './cv.routes';
-import { InjectDataSource } from '@nestjs/typeorm';
-import { DataSource } from 'typeorm';
 import cvRoutes from './cv.routes';
 import { Param, Req, UploadedFile } from '@nestjs/common';
 import { RequestWithUser } from '@/common/interfaces';
@@ -10,13 +8,7 @@ import { DocValidatorPipe } from '@/pipes';
 import { IJwtStrategy } from '../auth/strategies';
 @InjectController({ name: CvRoutes.index, isCore: true })
 export class CvController {
-  private readonly folder: string;
-  constructor(
-    private readonly cvService: CvService,
-    @InjectDataSource() private readonly dataSource: DataSource,
-  ) {
-    this.folder = 'cv';
-  }
+  constructor(private readonly cvService: CvService) {}
 
   @InjectRoute(cvRoutes.create)
   async createCv(
@@ -44,6 +36,11 @@ export class CvController {
 
   @InjectRoute(cvRoutes.getMyCv)
   async getMyCv(@ReqUser() user: IJwtStrategy) {
-    return this.cvService.getMyCv(user.element.id);
+    return this.cvService.getCvByCandidateId(user.element.id);
+  }
+
+  @InjectRoute(cvRoutes.getCvByCandidateId)
+  async getCvByCandidateId(@Param('candidateId') candidateId: string) {
+    return this.cvService.getCvByCandidateId(candidateId);
   }
 }
