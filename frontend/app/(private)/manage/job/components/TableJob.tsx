@@ -1,15 +1,17 @@
-import { Button } from '@/components/ui/button';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { formatDate } from 'date-fns';
-import Pagination from '../../../manage-candidates/components/Pagination';
-import { parseAsInteger, useQueryState } from 'nuqs';
-import { useMemo } from 'react';
-import useGetEmployer from '../hooks/useGetEmployer';
 import { Skeleton } from '@/components/ui/skeleton';
-import ShowStatusUser from './ShowStatusUser';
-import ActionEmployer from './ActionEmployer';
+import { parseAsInteger } from 'nuqs';
+
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { useQueryState } from 'nuqs';
+import { useMemo } from 'react';
+
+import { Button } from '@/components/ui/button';
 import ShowSort from '@/app/(private)/manage-candidates/components/ShowSort';
-export default function TableEmployer() {
+import Pagination from '@/app/(private)/manage-candidates/components/Pagination';
+import useAdminGetJobs from '../hooks/useAdminGetJobs';
+import { formatDate } from 'date-fns';
+import ActionJob from './ActionJob';
+export default function TableJob() {
   const [status] = useQueryState('status', { defaultValue: '' });
   const [orderBy, setOrderBy] = useQueryState('orderBy', { defaultValue: '' });
   const [order, setOrder] = useQueryState('order', { defaultValue: '' });
@@ -27,9 +29,10 @@ export default function TableEmployer() {
     });
     return urlSearchParams.toString();
   }, [status, orderBy, order, keyword, page, limit]);
-  const { data } = useGetEmployer(queryString);
+  const { data, isLoading } = useAdminGetJobs(queryString);
+
   if (!data) return <Skeleton className="w-full h-[300px]" />;
-  const { employers, total } = data;
+  const { jobs, total } = data;
   const totalPages = total ? Math.ceil(total / limit) : 0;
 
   const handleSort = (orderBy: string) => {
@@ -42,9 +45,20 @@ export default function TableEmployer() {
         <TableHeader>
           <TableRow>
             <TableHead className="w-[60px]">STT</TableHead>
-            <TableHead>Họ Tên</TableHead>
-            <TableHead>SĐT</TableHead>
-            <TableHead>Tên Công ty</TableHead>
+            <TableHead>Tên việc làm</TableHead>
+            <TableHead>Tên công ty</TableHead>
+            <TableHead className="text-center">Số ứng viên</TableHead>
+            <TableHead className="text-center">
+              <Button
+                variant="ghost"
+                className="h-auto p-0 font-medium hover:bg-transparent"
+                onClick={() => handleSort('expiredAt')}
+              >
+                Ngày hạn
+                <ShowSort orderBy="expiredAt" />
+              </Button>
+            </TableHead>
+
             <TableHead className="flex justify-center items-center">
               <Button
                 variant="ghost"
@@ -55,35 +69,28 @@ export default function TableEmployer() {
                 <ShowSort orderBy="createdAt" />
               </Button>
             </TableHead>
-            <TableHead>
-              <Button variant="ghost" className="h-auto p-0 font-medium hover:bg-transparent">
-                Trạng thái
-              </Button>
-            </TableHead>
 
             <TableHead className="text-center">Hành động</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {employers.length === 0 ? (
+          {jobs.length === 0 ? (
             <TableRow>
               <TableCell colSpan={8} className="text-center py-8 text-muted-foreground">
-                Không tìm thấy nhà tuyển dụng nào
+                Không tìm thấy công việc nào
               </TableCell>
             </TableRow>
           ) : (
-            employers.map((employer, index) => (
-              <TableRow key={employer.id}>
+            jobs.map((job, index) => (
+              <TableRow key={job.id}>
                 <TableCell className="font-medium">{(page - 1) * limit + index + 1}</TableCell>
-                <TableCell className="font-medium">{employer.fullName}</TableCell>
-                <TableCell className="font-medium">{employer.phoneNumber}</TableCell>
-                <TableCell className="font-medium">{employer.company?.name}</TableCell>
-                <TableCell className="text-center">{formatDate(employer.createdAt, 'dd/MM/yyyy')}</TableCell>
-                <TableCell>
-                  <ShowStatusUser status={employer.status} />
-                </TableCell>
+                <TableCell className="font-medium truncate max-w-[300px]">{job.title}</TableCell>
+                <TableCell className="font-medium truncate max-w-[200px]">{job.company.name}</TableCell>
+                <TableCell className="font-medium text-center">{job.applyJobCount}</TableCell>
+                <TableCell className="text-center">{formatDate(job.expiredAt, 'dd/MM/yyyy')}</TableCell>
+                <TableCell className="text-center">{formatDate(job.createdAt, 'dd/MM/yyyy')}</TableCell>
                 <TableCell className="text-right">
-                  <ActionEmployer employerId={employer.id} status={employer.status} />
+                  <ActionJob jobId={job.id} />
                 </TableCell>
               </TableRow>
             ))

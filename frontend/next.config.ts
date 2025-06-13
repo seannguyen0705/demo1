@@ -16,6 +16,7 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+
   rewrites: async () => [
     {
       source: '/my-jobs',

@@ -50,6 +50,7 @@ enum JobStatus {
   PUBLISHED = 'published',
   DRAFT = 'draft',
   HIDDEN = 'hidden',
+  ALL = 'all',
 }
 
 enum OrderByReview {

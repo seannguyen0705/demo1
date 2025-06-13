@@ -58,6 +58,7 @@ enum OrderByReview {
 
 enum OrderByJob {
   CREATED_AT = 'createdAt',
+  EXPIRED_AT = 'expiredAt',
   SALARY = 'salary',
 }
 

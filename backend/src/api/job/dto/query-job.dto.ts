@@ -41,11 +41,23 @@ export class QueryJobDto extends QueryPaginationDto {
   @IsEnum(OrderByJob)
   @IsOptional()
   @ApiPropertyOptional({ example: OrderByJob.CREATED_AT, enum: OrderByJob })
+  @Transform(({ value }) => {
+    if (!value) {
+      return null;
+    }
+    return value;
+  })
   orderBy?: OrderByJob;
 
   @IsEnum(Order)
   @IsOptional()
   @ApiPropertyOptional({ example: Order.DESC, enum: Order })
+  @Transform(({ value }) => {
+    if (!value) {
+      return null;
+    }
+    return value;
+  })
   order?: Order = Order.DESC;
 
   @IsOptional()

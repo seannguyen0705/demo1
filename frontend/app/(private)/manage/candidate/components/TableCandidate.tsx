@@ -47,7 +47,7 @@ export default function TableCandidate() {
             <TableHead>Họ Tên</TableHead>
             <TableHead>Email</TableHead>
             <TableHead>SĐT</TableHead>
-            <TableHead>
+            <TableHead className="flex justify-center items-center">
               <Button
                 variant="ghost"
                 className="h-auto p-0 font-medium hover:bg-transparent"

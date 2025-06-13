@@ -106,6 +106,14 @@ export class JobService {
     return newJob;
   }
 
+  private async adminSearchJobByKeyword(queryBuilder: SelectQueryBuilder<Job>, keyword?: string) {
+    if (keyword) {
+      queryBuilder.andWhere('(job.title ILIKE :keyword OR company.name ILIKE :keyword)', {
+        keyword: `%${keyword}%`,
+      });
+    }
+  }
+
   private async searchJobByKeyword(queryBuilder: SelectQueryBuilder<Job>, keyword?: string) {
     if (keyword) {
       const company = await this.companyService.findOneByName(keyword);
@@ -484,7 +492,7 @@ export class JobService {
     await this.jobRepository.save(job);
   }
 
-  public async deleteJob(jobId: string, employerId: string) {
+  public async deleteByIdAndEmployerId(jobId: string, employerId: string) {
     const company = await this.companyService.findOneByEmployerId(employerId);
     if (!company) {
       throw new NotFoundException('Company not found');
@@ -494,7 +502,16 @@ export class JobService {
       throw new NotFoundException('Job not found');
     }
 
-    return this.jobRepository.remove(job);
+    return this.jobRepository.delete(jobId);
+  }
+
+  public async deleteById(jobId: string) {
+    console.log('jobId', jobId);
+    const job = await this.jobRepository.findOneBy({ id: jobId });
+    if (!job) {
+      throw new NotFoundException('Job not found');
+    }
+    return this.jobRepository.delete(jobId);
   }
 
   public async updatePublishedJob(jobId: string, employerId: string, data: UpdatePublishedJobDto) {
@@ -530,5 +547,30 @@ export class JobService {
     }
     job.status = status;
     return this.jobRepository.save(job);
+  }
+
+  public async adminFindJobs(query: QueryJobDto) {
+    const { page, limit, keyword, order, orderBy } = query;
+
+    const queryBuilder = this.jobRepository
+      .createQueryBuilder('job')
+      .skip(limit * (page - 1))
+      .take(limit)
+      .innerJoin('job.company', 'company')
+      .loadRelationCountAndMap('job.applyJobCount', 'job.applyJobs', 'applyJobs')
+      .select(['job.id', 'job.title', 'job.createdAt', 'job.expiredAt', 'company.name'])
+      .andWhere('job.status =:status', { status: JobStatus.PUBLISHED });
+
+    await Promise.all([
+      this.adminSearchJobByKeyword(queryBuilder, keyword),
+      this.orderJob(queryBuilder, orderBy, order),
+    ]);
+
+    const [jobs, total] = await queryBuilder.getManyAndCount();
+    const numPage = Math.ceil(total / limit);
+    if (page + 1 > numPage) {
+      return { jobs, currentPage: page, nextPage: null, total };
+    }
+    return { jobs, currentPage: page, nextPage: page + 1, total };
   }
 }

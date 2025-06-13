@@ -80,7 +80,7 @@ export default {
     method: RequestMethod.DELETE,
     code: HttpStatus.OK,
     jwtSecure: true,
-    roles: [UserRole.EMPLOYER],
+    roles: [UserRole.EMPLOYER, UserRole.ADMIN],
   },
 
   updatePublishedJob: <IRouteParams>{
@@ -96,5 +96,12 @@ export default {
     code: HttpStatus.OK,
     jwtSecure: true,
     roles: [UserRole.EMPLOYER],
+  },
+  adminFindJobs: <IRouteParams>{
+    path: 'admin/jobs',
+    method: RequestMethod.GET,
+    code: HttpStatus.OK,
+    jwtSecure: true,
+    roles: [UserRole.ADMIN],
   },
 };

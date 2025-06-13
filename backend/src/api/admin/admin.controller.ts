@@ -47,7 +47,6 @@ export class AdminController {
   @InjectRoute(adminRoutes.deleteById)
   public async deleteById(@Param('id') id: string): Promise<string> {
     await this.adminService.deleteById(id);
-
     return id;
   }
 }

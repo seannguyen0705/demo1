@@ -8,6 +8,7 @@ import { JobStatus } from '@/utils/enums';
 import Link from 'next/link';
 import useDeleteJob from '@/app/(private)/edit-job/hooks/useDeleteJob';
 import ConfirmDelete from '@/components/ConfirmDelete';
+import { useRouter } from 'next/navigation';
 
 interface IProps {
   job: IJob;
@@ -15,6 +16,7 @@ interface IProps {
 
 export default function ManageJobHeader({ job }: IProps) {
   const { mutate: deleteJob, isPending } = useDeleteJob();
+  const router = useRouter();
 
   return (
     <section className="border-b-2 pb-4 relative">
@@ -76,7 +78,13 @@ export default function ManageJobHeader({ job }: IProps) {
         <ConfirmDelete
           title="Xóa tin tuyển dụng"
           description="Bạn có chắc chắn muốn xóa tin tuyển dụng này không?"
-          action={() => deleteJob(job.id)}
+          action={() =>
+            deleteJob(job.id, {
+              onSuccess: () => {
+                router.replace('/manage-jobs');
+              },
+            })
+          }
           disabled={isPending}
           button={
             <Button variant={'outline'} className="text-red-500 hover:text-red-600">
