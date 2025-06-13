@@ -38,9 +38,11 @@ export default async function JobHeader({ job }: IProps) {
                   <Button className="w-full bg-green text-white hover:bg-green/80 hover:text-white">Ứng tuyển</Button>
                 </Link>
               )}
-              <Button className="" variant={'outline'}>
-                <Heart />
-              </Button>
+              <Link href={'/sign-in'}>
+                <Button className="" variant={'outline'}>
+                  <Heart />
+                </Button>
+              </Link>
             </div>
           )}
         </div>

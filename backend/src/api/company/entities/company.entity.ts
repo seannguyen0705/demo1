@@ -77,6 +77,6 @@ export class Company extends BaseEntity {
   @OneToMany(() => Review, (review) => review.company)
   reviews: Review[];
 
-  @OneToMany(() => Job, (job) => job.company)
+  @OneToMany(() => Job, (job) => job.company, { cascade: true })
   jobs: Job[];
 }

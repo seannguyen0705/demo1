@@ -24,9 +24,6 @@ export default async function PublicJobList({ searchParams }: IProps) {
     job = await getJobById(jobId);
   }
 
-  if (jobs.length === 0 || !job) {
-    return <NotFoundJob />;
-  }
   return (
     <div className="flex gap-4 container mx-auto mt-[30px] px-2">
       <div className="w-full lg:w-[500px]">

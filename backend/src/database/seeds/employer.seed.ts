@@ -1,12 +1,14 @@
 import { Employer } from '@/api/employer/entities/employer.entity';
 import { QueryRunner } from 'typeorm';
 import { faker } from '@faker-js/faker';
-import { Gender } from '@/common/enums';
+import { Gender, JobLevel, JobStatus, JobType, SalaryType } from '@/common/enums';
 import { CreateFileDto } from '@/api/file/dto/create-file.dto';
 import { Company } from '@/api/company/entities/company.entity';
 import { File } from '@/api/file/entities/file.entity';
 import { Address } from '@/api/address/entities/address.entity';
 import { Province } from '@/api/province/entities/province.entity';
+import { Job } from '@/api/job/entities/job.entity';
+import { Skill } from '@/api/skill/entities/skill.entity';
 
 const proof: CreateFileDto = {
   name: '1_Introduction to Software Testing.pdf',
@@ -51,6 +53,8 @@ export const seedEmployers = async (queryRunner: QueryRunner, count: number) => 
     const newEmployer = employerRepository.create(employer);
     const addresses = await createAddresses(queryRunner, Math.floor(Math.random() * 10) + 1);
     const company = await createCompany(queryRunner, newEmployer, addresses, companyName);
+    const jobs = await createJobs(company, addresses, queryRunner, Math.floor(Math.random() * 10) + 1);
+    company.jobs = jobs;
 
     newEmployer.company = company;
     batch.push(newEmployer);
@@ -100,4 +104,43 @@ const createAddresses = async (queryRunner: QueryRunner, number: number): Promis
     addresses.push(newAddress);
   }
   return addressRepository.create(addresses);
+};
+
+const createJobs = async (
+  company: Company,
+  addresses: Address[],
+  queryRunner: QueryRunner,
+  count: number,
+): Promise<Job[]> => {
+  const jobRepository = queryRunner.manager.getRepository(Job);
+  const skills = await queryRunner.manager.getRepository(Skill).find();
+  const jobs: Job[] = [];
+  for (const _ of Array.from({ length: count })) {
+    const job = new Job();
+    job.title = faker.lorem.sentence();
+    if (jobs.some((item) => item.title === job.title)) {
+      continue;
+    }
+    job.salaryType = faker.helpers.arrayElement(Object.values(SalaryType));
+    job.salaryMin = faker.number.int({ min: 5000000, max: 10000000 });
+    job.salaryMax = faker.number.int({ min: 10000000, max: 20000000 });
+    job.jobType = faker.helpers.arrayElement(Object.values(JobType));
+    job.jobLevel = faker.helpers.arrayElement(Object.values(JobLevel));
+    job.jobExpertise = faker.lorem.sentence({ min: 3, max: 5 });
+    job.jobDomain = faker.lorem.sentence({ min: 3, max: 5 });
+    job.description = faker.lorem.paragraph({ min: 30, max: 50 });
+    job.requirement = faker.lorem.paragraph({ min: 30, max: 50 });
+    job.benefit = faker.lorem.paragraph({ min: 30, max: 50 });
+    job.status = faker.helpers.arrayElement(Object.values(JobStatus));
+    job.companyId = company.id;
+    job.addresses = faker.helpers.arrayElements(addresses);
+    job.skills = faker.helpers.arrayElements(skills, { min: 1, max: 10 });
+    // job expired between yesterday and 60 days from now
+    job.expiredAt = faker.date.between({
+      from: new Date(Date.now() - 86400000),
+      to: new Date(Date.now() + 60 * 86400000),
+    });
+    jobs.push(job);
+  }
+  return jobRepository.create(jobs);
 };
