@@ -133,6 +133,9 @@ export class CandidateService {
       const cvs = await queryRunner.manager.findBy(Cv, { candidateId: id });
       deleteFileIds.push(...cvs.map((item) => item.fileId));
       await queryRunner.manager.delete(Candidate, id);
+      if (deleteFileIds.length > 0) {
+        await queryRunner.manager.delete(File, deleteFileIds);
+      }
       Promise.all(
         deleteFileIds.map(async (id) => {
           const file = await queryRunner.manager.findOneBy(File, { id });
@@ -141,9 +144,6 @@ export class CandidateService {
           }
         }),
       );
-      if (deleteFileIds.length > 0) {
-        await queryRunner.manager.delete(File, deleteFileIds);
-      }
       await queryRunner.commitTransaction();
       return { message: 'Xóa tài khoản thành công' };
     } catch (error) {

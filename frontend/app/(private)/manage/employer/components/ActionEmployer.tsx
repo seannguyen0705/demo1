@@ -3,7 +3,6 @@ import DialogProfile from './DialogProfile';
 import ActionStatus from './ActionStatus';
 import ConfirmAction from '@/app/(private)/manage-candidates/components/ConfirmAction';
 import useDeleteEmployer from '../hooks/useDeleteEmployer';
-import { Button } from '@/components/ui/button';
 import { Trash2 } from 'lucide-react';
 interface IProps {
   employerId: string;
@@ -20,9 +19,9 @@ export default function ActionEmployer({ employerId, status }: IProps) {
         description="Bạn có chắc chắn muốn xóa tài khoản này không?"
         action={() => deleteEmployer(employerId)}
         button={
-          <Button variant="outline" className="text-red-500 shadow-md" disabled={isPending}>
-            <Trash2 className="w-4 h-4" />
-          </Button>
+          <button className="text-red-500 p-2 rounded-md border shadow-md hover:bg-gray-100 dark:hover:bg-gray-800">
+            <Trash2 className="h-3 w-3" />
+          </button>
         }
         disabled={isPending}
       />

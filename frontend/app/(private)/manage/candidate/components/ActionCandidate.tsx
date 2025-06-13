@@ -21,9 +21,12 @@ export default function ActionCandidate({ candidateId, status }: IProps) {
         description="Bạn có chắc chắn muốn xóa tài khoản này không?"
         action={() => deleteCandidate(candidateId)}
         button={
-          <Button variant="outline" className="text-red-500 shadow-md" disabled={isPending}>
-            <Trash2 className="w-4 h-4" />
-          </Button>
+          <button
+            className="text-red-500 p-2 rounded-md border shadow-md hover:bg-gray-100 dark:hover:bg-gray-800"
+            disabled={isPending}
+          >
+            <Trash2 className="h-3 w-3" />
+          </button>
         }
       />
     </div>

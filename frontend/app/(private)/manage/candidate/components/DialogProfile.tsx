@@ -28,9 +28,9 @@ export default function DialogProfile({ candidateId }: IProps) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline" className="shadow-md">
-          <UserRound />
-        </Button>
+        <button className="shadow-md p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md border">
+          <UserRound className="h-3 w-3" />
+        </button>
       </DialogTrigger>
       <DialogContent className="overflow-auto h-auto max-h-full lg:max-h-[95vh] sm:max-w-[800px] sm:p-6 p-2">
         <DialogHeader>

@@ -15,7 +15,7 @@ export default function TableEmployer() {
   const [order, setOrder] = useQueryState('order', { defaultValue: '' });
   const [keyword] = useQueryState('keyword', { defaultValue: '' });
   const [page] = useQueryState('page', parseAsInteger.withDefault(1));
-  const [limit] = useQueryState('limit', parseAsInteger.withDefault(5));
+  const [limit] = useQueryState('limit', parseAsInteger.withDefault(10));
   const queryString = useMemo(() => {
     const urlSearchParams = new URLSearchParams({
       status: status,

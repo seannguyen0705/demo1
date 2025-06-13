@@ -10,7 +10,7 @@ interface IProps {
   totalPages: number;
 }
 export default function Pagination({ totalPages }: IProps) {
-  const [limit, setLimit] = useQueryState('limit', parseAsInteger.withDefault(5));
+  const [limit, setLimit] = useQueryState('limit', parseAsInteger.withDefault(10));
   const [page, setPage] = useQueryState('page', parseAsInteger.withDefault(1));
   const handlePageSizeChange = (size: string) => {
     setLimit(Number(size));
@@ -32,7 +32,7 @@ export default function Pagination({ totalPages }: IProps) {
             <ChevronDown className="w-4 h-4" />
           </SelectTrigger>
           <SelectContent side="top">
-            {[5, 10, 15, 20].map((size) => (
+            {[10, 15, 20].map((size) => (
               <SelectItem key={size} value={size.toString()}>
                 {size}
               </SelectItem>

@@ -19,9 +19,9 @@ export default function ActionStatus({ employerId, status }: IProps) {
         description="Bạn có chắc chắn muốn khóa tài khoản này không?"
         action={() => updateEmployerStatus({ status: UserStatus.BANNED })}
         button={
-          <Button variant="outline" className="text-red-500 shadow-md">
-            <CiLock />
-          </Button>
+          <button className="text-red-500 p-2 rounded-md border shadow-md hover:bg-gray-100 dark:hover:bg-gray-800">
+            <CiLock className="h-3 w-3" />
+          </button>
         }
       />
     );
@@ -34,9 +34,9 @@ export default function ActionStatus({ employerId, status }: IProps) {
         description="Bạn có chắc chắn muốn kích hoạt tài khoản này không?"
         action={() => updateEmployerStatus({ status: UserStatus.ACTIVE })}
         button={
-          <Button variant="outline" className="text-green-500 shadow-md">
-            <Check />
-          </Button>
+          <button className="text-green-500 p-2 rounded-md border shadow-md hover:bg-gray-100 dark:hover:bg-gray-800">
+            <Check className="h-3 w-3" />
+          </button>
         }
       />
     );
@@ -49,9 +49,9 @@ export default function ActionStatus({ employerId, status }: IProps) {
         description="Bạn có chắc chắn muốn mở khóa tài khoản này không?"
         action={() => updateEmployerStatus({ status: UserStatus.ACTIVE })}
         button={
-          <Button variant="outline" className="text-green-500 shadow-md">
-            <CiUnlock />
-          </Button>
+          <button className="text-green-500 p-2 rounded-md border shadow-md hover:bg-gray-100 dark:hover:bg-gray-800">
+            <CiUnlock className="h-3 w-3" />
+          </button>
         }
       />
     );

@@ -20,14 +20,13 @@ export default function ActionStatus({ candidateId, status }: IProps) {
         description="Bạn có chắc chắn muốn khóa tài khoản này không?"
         action={() => updateCandidateStatus({ status: UserStatus.BANNED })}
         button={
-          <Button variant="outline" className="text-red-500 shadow-md">
-            <CiLock />
-          </Button>
+          <button className="text-red-500 p-2 rounded-md border shadow-md hover:bg-gray-100 dark:hover:bg-gray-800">
+            <CiLock className="h-3 w-3" />
+          </button>
         }
       />
     );
-  }
-  if (status === UserStatus.INACTIVE) {
+  } else if (status === UserStatus.INACTIVE) {
     return (
       <ConfirmAction
         title="Xác nhận kích hoạt tài khoản"
@@ -35,14 +34,13 @@ export default function ActionStatus({ candidateId, status }: IProps) {
         description="Bạn có chắc chắn muốn kích hoạt tài khoản này không?"
         action={() => updateCandidateStatus({ status: UserStatus.ACTIVE })}
         button={
-          <Button variant="outline" className="text-green-500 shadow-md">
-            <Check />
-          </Button>
+          <button className="text-green-500 p-2 rounded-md border shadow-md hover:bg-gray-100 dark:hover:bg-gray-800">
+            <Check className="h-3 w-3" />
+          </button>
         }
       />
     );
-  }
-  if (status === UserStatus.BANNED) {
+  } else if (status === UserStatus.BANNED) {
     return (
       <ConfirmAction
         title="Xác nhận mở khóa tài khoản"
@@ -50,9 +48,9 @@ export default function ActionStatus({ candidateId, status }: IProps) {
         description="Bạn có chắc chắn muốn mở khóa tài khoản này không?"
         action={() => updateCandidateStatus({ status: UserStatus.ACTIVE })}
         button={
-          <Button variant="outline" className="text-green-500 shadow-md">
-            <CiUnlock />
-          </Button>
+          <button className="text-green-500 p-2 rounded-md border shadow-md hover:bg-gray-100 dark:hover:bg-gray-800">
+            <CiUnlock className="h-3 w-3" />
+          </button>
         }
       />
     );

@@ -40,7 +40,7 @@ export default function MyCv() {
     <div className="container mx-auto mb-[30px] px-4 lg:w-62 lg:px-0">
       <div>
         <h3 className="mb-2 text-2xl font-bold">Cv của tôi</h3>
-        <ul className="">
+        <ul>
           {myCvs?.map((cv) => <CvItem key={cv.id} cv={cv} />)}
           <CreateCv countCv={myCvs?.length || 0} />
         </ul>
