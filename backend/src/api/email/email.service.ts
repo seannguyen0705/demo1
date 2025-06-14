@@ -40,4 +40,17 @@ export class EmailService {
       },
     });
   }
+
+  async deleteJob(email: string, employerName: string, jobName: string, reason: string) {
+    this.mailerService.sendMail({
+      to: email,
+      subject: 'Job Portal - Thông báo xóa bài tuyển dụng',
+      template: 'deleteJob',
+      context: {
+        employerName,
+        jobName,
+        reason,
+      },
+    });
+  }
 }

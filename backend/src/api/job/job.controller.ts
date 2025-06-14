@@ -11,6 +11,7 @@ import { QueryJobApplyDto } from './dto/query-job-apply.dto';
 import { UpdatePublishedJobDto } from './dto/update-published-job.dto';
 import { UpdateJobStatusDto } from './dto/update-job-status.dto';
 import { UserRole } from '@/common/enums';
+import { DeleteJobDto } from './dto/delete-job.dto';
 @InjectController({ name: jobRoutes.index, isCore: true })
 export class JobController {
   constructor(private readonly jobService: JobService) {}
@@ -67,11 +68,7 @@ export class JobController {
 
   @InjectRoute(jobRoutes.deleteJob)
   async deleteJob(@Param('id') id: string, @ReqUser() user: IJwtStrategy) {
-    // admin & employer is allowed to delete job
-    if (user.role === UserRole.EMPLOYER) {
-      return this.jobService.deleteByIdAndEmployerId(id, user.element.id);
-    }
-    return this.jobService.deleteById(id);
+    return this.jobService.deleteByIdAndEmployerId(id, user.element.id);
   }
 
   @InjectRoute(jobRoutes.updatePublishedJob)
@@ -91,5 +88,10 @@ export class JobController {
   @InjectRoute(jobRoutes.adminFindJobs)
   async adminFindJobs(@Query() query: QueryJobDto) {
     return this.jobService.adminFindJobs(query);
+  }
+
+  @InjectRoute(jobRoutes.adminDeleteJob)
+  async adminDeleteJob(@Param('id') id: string, @Body() data: DeleteJobDto) {
+    return this.jobService.adminDeleteJob(id, data.reason);
   }
 }

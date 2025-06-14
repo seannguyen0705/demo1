@@ -90,7 +90,7 @@ export default function TableJob() {
                 <TableCell className="text-center">{formatDate(job.expiredAt, 'dd/MM/yyyy')}</TableCell>
                 <TableCell className="text-center">{formatDate(job.createdAt, 'dd/MM/yyyy')}</TableCell>
                 <TableCell className="text-right">
-                  <ActionJob jobId={job.id} />
+                  <ActionJob job={job} />
                 </TableCell>
               </TableRow>
             ))

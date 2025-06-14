@@ -68,6 +68,21 @@ export const deleteJob = async (id: string) => {
   return response;
 };
 
+export const adminDeleteJob = async (id: string, reason: string) => {
+  const response = await actionFetch<IJob>(`admin/jobs/${id}`, {
+    method: 'DELETE',
+    credentials: 'include',
+    body: JSON.stringify({ reason }),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  if (!isErrorResponse(response)) {
+    revalidateTag(`company/${response.data.companyId}/jobs`);
+  }
+  return response;
+};
+
 export const updateJobStatus = async (id: string, data: IUpdateJobStatus) => {
   const response = await actionFetch<IJob>(`jobs/${id}/status`, {
     method: 'PUT',

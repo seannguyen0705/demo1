@@ -10,7 +10,6 @@ export default function useDeleteJob() {
     onSuccess: () => {
       toast.success('Tin tuyển dụng đã được xóa');
       queryClient.invalidateQueries({ queryKey: ['manage-jobs'] });
-      queryClient.invalidateQueries({ queryKey: ['admin/jobs'] });
     },
   });
 }

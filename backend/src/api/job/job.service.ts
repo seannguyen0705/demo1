@@ -17,6 +17,7 @@ import { ApplyJobService } from '../apply-job/apply-job.service';
 import { AddressService } from '../address/address.service';
 import { UpdatePublishedJobDto } from './dto/update-published-job.dto';
 import { CompanyAddressService } from '../company-address/company-address.service';
+import { EmailService } from '../email/email.service';
 @Injectable()
 export class JobService {
   constructor(
@@ -26,6 +27,7 @@ export class JobService {
     private readonly applyJobService: ApplyJobService,
     private readonly addressService: AddressService,
     private readonly companyAddressService: CompanyAddressService,
+    private readonly emailService: EmailService,
   ) {}
 
   async findByCompanyId(companyId: string) {
@@ -506,7 +508,6 @@ export class JobService {
   }
 
   public async deleteById(jobId: string) {
-    console.log('jobId', jobId);
     const job = await this.jobRepository.findOneBy({ id: jobId });
     if (!job) {
       throw new NotFoundException('Job not found');
@@ -572,5 +573,22 @@ export class JobService {
       return { jobs, currentPage: page, nextPage: null, total };
     }
     return { jobs, currentPage: page, nextPage: page + 1, total };
+  }
+
+  public async adminDeleteJob(jobId: string, reason: string) {
+    const job = await this.jobRepository.findOne({
+      where: { id: jobId },
+      relations: {
+        company: {
+          employer: true,
+        },
+      },
+    });
+    if (!job) {
+      throw new NotFoundException('Job not found');
+    }
+    await this.jobRepository.delete(jobId);
+    await this.emailService.deleteJob(job.company.employer.email, job.company.employer.fullName, job.title, reason);
+    return job;
   }
 }

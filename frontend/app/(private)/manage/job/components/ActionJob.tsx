@@ -1,30 +1,21 @@
-import useDeleteJob from '@/app/(private)/edit-job/hooks/useDeleteJob';
-import ConfirmAction from '@/app/(private)/manage-candidates/components/ConfirmAction';
-import { BriefcaseBusiness, Trash2 } from 'lucide-react';
+import useAdminDeleteJob from '@/app/(private)/manage/job/hooks/useAdminDeleteJob';
+import ConfirmDeleteJob from '@/app/(private)/manage/job/components/ConfirmDeleteJob';
+import { BriefcaseBusiness } from 'lucide-react';
 import Link from 'next/link';
-
-export default function ActionJob({ jobId }: { jobId: string }) {
-  const { mutate: deleteJob, isPending } = useDeleteJob();
+import { IJob } from '@/api/job/interface';
+interface IProps {
+  job: IJob;
+}
+export default function ActionJob({ job }: IProps) {
+  const { mutate: deleteJob, isPending } = useAdminDeleteJob({ id: job.id });
   return (
     <div className="flex items-center gap-2">
-      <Link target="_blank" href={`/job/${jobId}`}>
+      <Link target="_blank" href={`/job/${job.id}`}>
         <button className="shadow-md p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md border">
           <BriefcaseBusiness className="h-3 w-3" />
         </button>
       </Link>
-      <ConfirmAction
-        title="Xóa việc làm"
-        description="Bạn có chắc chắn muốn xóa việc làm này không?"
-        action={() => deleteJob(jobId)}
-        button={
-          <button
-            className="shadow-md p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md border"
-            disabled={isPending}
-          >
-            <Trash2 className="h-3 w-3" />
-          </button>
-        }
-      />
+      <ConfirmDeleteJob job={job} />
     </div>
   );
 }
