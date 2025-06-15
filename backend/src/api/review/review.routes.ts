@@ -53,4 +53,11 @@ export default {
     jwtSecure: true,
     roles: [UserRole.ADMIN],
   },
+  deleteReviewById: <IRouteParams>{
+    path: 'reviews/:id',
+    method: RequestMethod.DELETE,
+    code: HttpStatus.OK,
+    jwtSecure: true,
+    roles: [UserRole.ADMIN],
+  },
 };

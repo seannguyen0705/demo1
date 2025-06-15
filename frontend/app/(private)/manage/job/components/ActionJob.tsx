@@ -1,4 +1,3 @@
-import useAdminDeleteJob from '@/app/(private)/manage/job/hooks/useAdminDeleteJob';
 import ConfirmDeleteJob from '@/app/(private)/manage/job/components/ConfirmDeleteJob';
 import { BriefcaseBusiness } from 'lucide-react';
 import Link from 'next/link';
@@ -7,7 +6,6 @@ interface IProps {
   job: IJob;
 }
 export default function ActionJob({ job }: IProps) {
-  const { mutate: deleteJob, isPending } = useAdminDeleteJob({ id: job.id });
   return (
     <div className="flex items-center gap-2">
       <Link target="_blank" href={`/job/${job.id}`}>

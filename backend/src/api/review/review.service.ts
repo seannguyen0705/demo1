@@ -72,6 +72,14 @@ export class ReviewService {
   public async deleteReview(reviewId: string, candidateId: string) {
     return this.reviewRepository.delete({ id: reviewId, candidateId });
   }
+  public async deleteById(id: string) {
+    const review = await this.reviewRepository.findOneBy({ id });
+    if (!review) {
+      throw new NotFoundException('Review not found');
+    }
+    return this.reviewRepository.remove(review);
+  }
+
   public async updateReview(reviewId: string, candidateId: string, updateReviewDto: UpdateReviewDto) {
     const review = await this.reviewRepository.findOneBy({ id: reviewId, candidateId });
     if (!review) {
@@ -103,6 +111,18 @@ export class ReviewService {
 
     const queryBuilder = this.reviewRepository
       .createQueryBuilder('review')
+      .innerJoin('review.company', 'company')
+      .innerJoin('review.candidate', 'candidate')
+      .select([
+        'review.id',
+        'review.rating',
+        'review.comment',
+        'review.createdAt',
+        'company.name',
+        'candidate.fullName',
+        'candidate.email',
+        'company.industry',
+      ])
       .skip((page - 1) * limit)
       .take(limit);
 

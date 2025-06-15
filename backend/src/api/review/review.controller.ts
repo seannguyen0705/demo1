@@ -51,4 +51,9 @@ export class ReviewController {
   getReviews(@Query() query: QueryReviewDto) {
     return this.reviewService.findAllReview(query);
   }
+
+  @InjectRoute(reviewRoutes.deleteReviewById)
+  deleteReviewById(@Param('id') id: string) {
+    return this.reviewService.deleteById(id);
+  }
 }

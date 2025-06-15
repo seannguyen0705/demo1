@@ -87,6 +87,7 @@ const createCompany = async (
   const company = new Company();
   company.name = companyName;
   company.employer = employer;
+  company.industry = faker.lorem.sentence({ min: 3, max: 5 });
   company.proof = newFile;
   company.website = faker.internet.url();
   company.addresses = addresses;
