@@ -1,4 +1,15 @@
-import { Briefcase, UserRound, Building, PencilLine, UserRoundPlus, Settings, Mail, UsersRound } from 'lucide-react';
+import {
+  Briefcase,
+  UserRound,
+  Building,
+  PencilLine,
+  UserRoundPlus,
+  Settings,
+  Mail,
+  UsersRound,
+  LayoutDashboard,
+  Star,
+} from 'lucide-react';
 
 import { JSX } from 'react';
 import { UserRole } from '../enums';
@@ -52,6 +63,7 @@ const getNavMenus = (user: IUser | undefined): NavItem[] => {
       { name: 'Nhà tuyển dụng', href: '/manage/employer', icon: <Building /> },
       { name: 'Ứng viên', href: '/manage/candidate', icon: <UsersRound /> },
       { name: 'Việc làm', href: '/manage/job', icon: <Briefcase /> },
+      { name: 'Đánh giá', href: '/manage/review', icon: <Star /> },
       { name: 'Cài đặt', href: '/settings', icon: <Settings /> },
     ],
   };

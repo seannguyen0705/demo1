@@ -6,7 +6,7 @@ import { Company } from './entities/company.entity';
 import { QueryRunner } from 'typeorm';
 import UpdateCompanyDto from './dtos/update-company.dto';
 import { ILike } from 'typeorm';
-import { JobStatus } from '@/common/enums';
+import { JobStatus, UserStatus } from '@/common/enums';
 @Injectable()
 export class CompanyService {
   constructor(
@@ -64,7 +64,13 @@ export class CompanyService {
   }
 
   public async countAllCompanies() {
-    return this.companyRepository.count();
+    return this.companyRepository.count({
+      where: {
+        employer: {
+          status: UserStatus.ACTIVE,
+        },
+      },
+    });
   }
 
   public async getTop10Companies() {

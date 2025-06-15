@@ -46,4 +46,9 @@ export class ReviewController {
   updateReview(@Param('reviewId') reviewId: string, @Body() data: UpdateReviewDto, @ReqUser() user: IJwtStrategy) {
     return this.reviewService.updateReview(reviewId, user.element.id, data);
   }
+
+  @InjectRoute(reviewRoutes.getReviews)
+  getReviews(@Query() query: QueryReviewDto) {
+    return this.reviewService.findAllReview(query);
+  }
 }

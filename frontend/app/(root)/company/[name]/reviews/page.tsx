@@ -26,7 +26,7 @@ export default async function CompanyReviewsPage({ params, searchParams }: IProp
   const numJobs = jobs.data.length;
 
   return (
-    <div className="container mx-auto flex gap-3 flex-col md:flex-row lg:p-2 mt-[20px]">
+    <div className="container mx-auto flex gap-3 flex-col lg:flex-row lg:p-2 mt-[20px]">
       <main className="flex-1 p-2 md:p-0 ">
         <HeaderCompany company={company} numJobs={numJobs} statistics={statistics} />
         <CompanyReview company={company} />

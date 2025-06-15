@@ -1,7 +1,7 @@
 import { Employer } from '@/api/employer/entities/employer.entity';
 import { QueryRunner } from 'typeorm';
 import { faker } from '@faker-js/faker';
-import { Gender, JobLevel, JobStatus, JobType, SalaryType } from '@/common/enums';
+import { Gender, JobLevel, JobStatus, JobType, SalaryType, UserStatus } from '@/common/enums';
 import { CreateFileDto } from '@/api/file/dto/create-file.dto';
 import { Company } from '@/api/company/entities/company.entity';
 import { File } from '@/api/file/entities/file.entity';
@@ -9,6 +9,7 @@ import { Address } from '@/api/address/entities/address.entity';
 import { Province } from '@/api/province/entities/province.entity';
 import { Job } from '@/api/job/entities/job.entity';
 import { Skill } from '@/api/skill/entities/skill.entity';
+import { BATCH_SIZE } from '@/utils/constants';
 
 const proof: CreateFileDto = {
   name: '1_Introduction to Software Testing.pdf',
@@ -17,7 +18,6 @@ const proof: CreateFileDto = {
   format: 'application/pdf',
 };
 
-const BATCH_SIZE = 100;
 export const seedEmployers = async (queryRunner: QueryRunner, count: number) => {
   const employerRepository = queryRunner.manager.getRepository(Employer);
   const companyRepository = queryRunner.manager.getRepository(Company);
@@ -49,9 +49,10 @@ export const seedEmployers = async (queryRunner: QueryRunner, count: number) => 
     employer.bod = faker.date.birthdate();
     employer.title = faker.lorem.sentence();
     employer.personal_website = faker.internet.url();
+    employer.status = UserStatus.ACTIVE;
 
     const newEmployer = employerRepository.create(employer);
-    const addresses = await createAddresses(queryRunner, Math.floor(Math.random() * 10) + 1);
+    const addresses = await createAddresses(queryRunner, Math.floor(Math.random() * 5) + 1);
     const company = await createCompany(queryRunner, newEmployer, addresses, companyName);
     const jobs = await createJobs(company, addresses, queryRunner, Math.floor(Math.random() * 10) + 1);
     company.jobs = jobs;

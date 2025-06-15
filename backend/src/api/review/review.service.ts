@@ -5,6 +5,9 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Review } from './entities/review.entity';
 import { QueryReviewDto } from './dto/query-review.dto';
 import { UpdateReviewDto } from './dto/update-review.dto';
+import { SelectQueryBuilder } from 'typeorm';
+import { Order } from '@/common/enums';
+import { OrderByReview } from '@/common/enums';
 @Injectable()
 export class ReviewService {
   constructor(
@@ -30,6 +33,7 @@ export class ReviewService {
       .createQueryBuilder('review')
       .skip((page - 1) * limit)
       .take(limit)
+      .select(['review.id', 'review.rating', 'review.comment', 'review.createdAt', 'review.updatedAt'])
       .orderBy('review.createdAt', 'DESC');
     if (companyId) {
       queryBuilder.where('review.companyId = :companyId', { companyId });
@@ -74,5 +78,44 @@ export class ReviewService {
       throw new NotFoundException('Review not found');
     }
     return this.reviewRepository.update({ id: reviewId }, updateReviewDto);
+  }
+
+  private async searchReviewByKeyword(queryBuilder: SelectQueryBuilder<Review>, keyword?: string) {
+    if (keyword) {
+      queryBuilder.andWhere(
+        '(company.name ILIKE :keyword OR candidate.fullName ILIKE :keyword OR review.comment ILIKE :keyword)',
+        {
+          keyword: `%${keyword}%`,
+        },
+      );
+    }
+  }
+
+  private async orderReview(queryBuilder: SelectQueryBuilder<Review>, orderBy?: OrderByReview, order?: Order) {
+    if (!orderBy) {
+      return;
+    }
+    queryBuilder.orderBy(`review.${orderBy}`, order);
+  }
+
+  public async findAllReview(query: QueryReviewDto) {
+    const { page, limit, keyword, orderBy, order } = query;
+
+    const queryBuilder = this.reviewRepository
+      .createQueryBuilder('review')
+      .skip((page - 1) * limit)
+      .take(limit);
+
+    await Promise.all([
+      this.searchReviewByKeyword(queryBuilder, keyword),
+      this.orderReview(queryBuilder, orderBy, order),
+    ]);
+
+    const [reviews, total] = await queryBuilder.getManyAndCount();
+    const numPage = Math.ceil(total / limit);
+    if (page + 1 > numPage) {
+      return { reviews, currentPage: page, nextPage: null, total };
+    }
+    return { reviews, currentPage: page, nextPage: page + 1, total };
   }
 }

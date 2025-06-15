@@ -1,9 +1,8 @@
 import { QueryRunner } from 'typeorm';
 import { Candidate } from '@/api/candidate/entities/candidate.entity';
 import { faker } from '@faker-js/faker';
-import { Gender } from '@/common/enums';
-
-const BATCH_SIZE = 100;
+import { Gender, UserStatus } from '@/common/enums';
+import { BATCH_SIZE } from '@/utils/constants';
 
 export const seedCandidates = async (queryRunner: QueryRunner, count: number = 10) => {
   const candidateRepository = queryRunner.manager.getRepository(Candidate);
@@ -21,6 +20,7 @@ export const seedCandidates = async (queryRunner: QueryRunner, count: number = 1
     candidate.address = faker.location.streetAddress();
     candidate.personal_website = faker.internet.url();
     candidate.introduction = faker.lorem.paragraph();
+    candidate.status = UserStatus.ACTIVE;
 
     const existingCandidate = await candidateRepository.findOneBy([
       { email: candidate.email },

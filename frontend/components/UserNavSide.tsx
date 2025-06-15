@@ -1,8 +1,6 @@
 import { IUser } from '@/api/interface';
-import getUserAvatar from '@/utils/helpers/getUserAvatar';
 import { LogOut } from 'lucide-react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { logout } from '@/api/auth/action';
 import getNavMenus from '@/utils/helpers/getNavMenus';
 
