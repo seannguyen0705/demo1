@@ -6,7 +6,7 @@ import { JobLevel, JobStatus, JobType, OrderByJob, Order, UserStatus } from '@/c
 
 import { CompanyService } from '../company/company.service';
 import { CreateDraftJobDto } from './dto/create-draft-job.dto';
-import { SelectQueryBuilder } from 'typeorm';
+import { LessThan, MoreThan, SelectQueryBuilder } from 'typeorm';
 import { CreatePublishedJobDto } from './dto/create-published-job.dto';
 import { JobAlreadyExistsException } from './job.exception';
 import { QueryJobDto } from './dto/query-job.dto';
@@ -601,5 +601,21 @@ export class JobService {
     await this.jobRepository.delete(jobId);
     await this.emailService.deleteJob(job.company.employer.email, job.company.employer.fullName, job.title, reason);
     return job;
+  }
+
+  public async countJobIn6MonthsAgo() {
+    const result: { date: Date; count: number }[] = [];
+    for (let i = 0; i < 6; i++) {
+      const sixMonthsAgo = new Date();
+      sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - i);
+      const count = await this.jobRepository.count({
+        where: {
+          createdAt: LessThan(sixMonthsAgo),
+          status: JobStatus.PUBLISHED,
+        },
+      });
+      result.push({ date: sixMonthsAgo, count });
+    }
+    return result;
   }
 }

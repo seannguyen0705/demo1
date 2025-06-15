@@ -19,7 +19,7 @@ import { File } from '../file/entities/file.entity';
 import { QueryCandidate } from './dto/query-candidate.dto';
 import { UpdateStatusUserDto } from '@/common/dto/update-status-user.dto';
 import { Cv } from '../cv/entities/cv.entity';
-import { In } from 'typeorm';
+import { In, LessThan } from 'typeorm';
 import { EmailService } from '../email/email.service';
 @Injectable()
 export class CandidateService {
@@ -328,5 +328,21 @@ export class CandidateService {
     candidate.status = status;
     await this.candidateRepository.save(candidate);
     return { message: 'Cập nhật trạng thái thành công' };
+  }
+
+  public async countCandidateIn6MonthsAgo() {
+    const result: { date: Date; count: number }[] = [];
+    for (let i = 0; i < 6; i++) {
+      const sixMonthsAgo = new Date();
+      sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - i);
+      const count = await this.candidateRepository.count({
+        where: {
+          createdAt: LessThan(sixMonthsAgo),
+          status: UserStatus.ACTIVE,
+        },
+      });
+      result.push({ date: sixMonthsAgo, count });
+    }
+    return result;
   }
 }
