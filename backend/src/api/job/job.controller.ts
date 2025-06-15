@@ -11,7 +11,7 @@ import { QueryJobApplyDto } from './dto/query-job-apply.dto';
 import { UpdatePublishedJobDto } from './dto/update-published-job.dto';
 import { UpdateJobStatusDto } from './dto/update-job-status.dto';
 import { UserRole } from '@/common/enums';
-import { DeleteJobDto } from './dto/delete-job.dto';
+import { ReasonDto } from '@/common/dto/reason.dto';
 @InjectController({ name: jobRoutes.index, isCore: true })
 export class JobController {
   constructor(private readonly jobService: JobService) {}
@@ -91,7 +91,7 @@ export class JobController {
   }
 
   @InjectRoute(jobRoutes.adminDeleteJob)
-  async adminDeleteJob(@Param('id') id: string, @Body() data: DeleteJobDto) {
+  async adminDeleteJob(@Param('id') id: string, @Body() data: ReasonDto) {
     return this.jobService.adminDeleteJob(id, data.reason);
   }
 }

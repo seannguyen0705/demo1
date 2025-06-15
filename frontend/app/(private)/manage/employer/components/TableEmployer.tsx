@@ -83,7 +83,7 @@ export default function TableEmployer() {
                   <ShowStatusUser status={employer.status} />
                 </TableCell>
                 <TableCell className="text-right">
-                  <ActionEmployer employerId={employer.id} status={employer.status} />
+                  <ActionEmployer employer={employer} />
                 </TableCell>
               </TableRow>
             ))

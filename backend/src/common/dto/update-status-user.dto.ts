@@ -1,8 +1,8 @@
 import { UserStatus } from '@/common/enums';
 import { IsEnum, IsNotEmpty } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-
-export class UpdateStatusUserDto {
+import { ReasonDto } from './reason.dto';
+export class UpdateStatusUserDto extends ReasonDto {
   @IsEnum(UserStatus)
   @IsNotEmpty()
   @ApiProperty({

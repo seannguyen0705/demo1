@@ -143,6 +143,10 @@ export class EmployerService {
         ...data,
       });
       return plainToInstance(ResponseEmployerDto, updatedEmployer);
+    } else if (status === UserStatus.BANNED) {
+      await this.emailService.banEmployer(employer.email, employer.fullName, data.reason);
+    } else if (status === UserStatus.ACTIVE) {
+      await this.emailService.unbanEmployer(employer.email, employer.fullName, data.reason);
     }
     const updatedEmployer = await this.updateEmployer(id, data);
     return plainToInstance(ResponseEmployerDto, updatedEmployer);
@@ -318,7 +322,7 @@ export class EmployerService {
     return queryBuilder.getOne();
   }
 
-  public async deleteEmployer(id: string) {
+  public async deleteEmployer(id: string, reason: string) {
     const queryRunner = this.dataSource.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
@@ -358,6 +362,7 @@ export class EmployerService {
         this.cloudinaryService.deleteFiles(files.map((item) => item.key));
       }
       await queryRunner.commitTransaction();
+      await this.emailService.deleteEmployer(employer.email, employer.fullName, reason);
       return { message: 'Xóa tài khoản doanh nghiệp thành công' };
     } catch (error) {
       await queryRunner.rollbackTransaction();

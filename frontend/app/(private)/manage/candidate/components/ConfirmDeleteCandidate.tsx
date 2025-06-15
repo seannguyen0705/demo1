@@ -8,17 +8,20 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import useAdminDeleteJob from '../hooks/useAdminDeleteJob';
+
 import { useState } from 'react';
 import { Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { IJob } from '@/api/job/interface';
+
+import { IUser } from '@/api/interface';
+import useDeleteCandidate from '../hooks/useDeleteCandidate';
+
 interface IProps {
-  job: IJob;
+  candidate: IUser;
 }
-export default function ConfirmDeleteJob({ job }: IProps) {
+export default function ConfirmDeleteCandidate({ candidate }: IProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const { mutate: deleteJob, isPending } = useAdminDeleteJob({ id: job.id });
+  const { mutate: deleteCandidate, isPending } = useDeleteCandidate({ id: candidate.id });
   const [reason, setReason] = useState('');
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -34,7 +37,7 @@ export default function ConfirmDeleteJob({ job }: IProps) {
         <DialogHeader>
           <DialogTitle>Xóa việc làm</DialogTitle>
           <DialogDescription>
-            Bạn có chắc chắn muốn xóa việc làm <span className="font-bold">{job.title}</span> không?
+            Bạn có chắc chắn muốn xóa tài khoản <span className="font-bold">{candidate.fullName}</span> không?
           </DialogDescription>
         </DialogHeader>
         <div className="mt-4">
@@ -55,7 +58,7 @@ export default function ConfirmDeleteJob({ job }: IProps) {
           <Button
             disabled={isPending}
             onClick={async () => {
-              deleteJob(reason);
+              deleteCandidate(reason);
               setIsOpen(false);
             }}
           >

@@ -85,7 +85,7 @@ export default function TableCandidate() {
                   <ShowStatusUser status={candidate.status} />
                 </TableCell>
                 <TableCell className="">
-                  <ActionCandidate candidateId={candidate.id} status={candidate.status} />
+                  <ActionCandidate candidate={candidate} />
                 </TableCell>
               </TableRow>
             ))

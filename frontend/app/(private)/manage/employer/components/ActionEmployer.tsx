@@ -1,30 +1,16 @@
-import { UserStatus } from '@/utils/enums';
 import DialogProfile from './DialogProfile';
 import ActionStatus from './ActionStatus';
-import ConfirmAction from '@/app/(private)/manage-candidates/components/ConfirmAction';
-import useDeleteEmployer from '../hooks/useDeleteEmployer';
-import { Trash2 } from 'lucide-react';
+import ConfirmDeleteEmployer from './ConfirmDeleteEmployer';
+import { IUser } from '@/api/interface';
 interface IProps {
-  employerId: string;
-  status: UserStatus;
+  employer: IUser;
 }
-export default function ActionEmployer({ employerId, status }: IProps) {
-  const { mutate: deleteEmployer, isPending } = useDeleteEmployer();
+export default function ActionEmployer({ employer }: IProps) {
   return (
     <div className="flex items-center gap-2 justify-end">
-      <DialogProfile employerId={employerId} />
-      <ActionStatus employerId={employerId} status={status} />
-      <ConfirmAction
-        title="Xóa tài khoản"
-        description="Bạn có chắc chắn muốn xóa tài khoản này không?"
-        action={() => deleteEmployer(employerId)}
-        button={
-          <button className="text-red-500 p-2 rounded-md border shadow-md hover:bg-gray-100 dark:hover:bg-gray-800">
-            <Trash2 className="h-3 w-3" />
-          </button>
-        }
-        disabled={isPending}
-      />
+      <DialogProfile employerId={employer.id} />
+      <ActionStatus employer={employer} />
+      <ConfirmDeleteEmployer employer={employer} />
     </div>
   );
 }

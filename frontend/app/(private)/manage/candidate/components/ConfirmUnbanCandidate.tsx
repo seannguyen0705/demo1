@@ -8,17 +8,21 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import useAdminDeleteJob from '../hooks/useAdminDeleteJob';
+
 import { useState } from 'react';
-import { Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { IJob } from '@/api/job/interface';
+
+import { IUser } from '@/api/interface';
+import useUpdateCandidateStatus from '../hooks/useUpdateCandidateStatus';
+import { UserStatus } from '@/utils/enums';
+import { CiUnlock } from 'react-icons/ci';
+
 interface IProps {
-  job: IJob;
+  candidate: IUser;
 }
-export default function ConfirmDeleteJob({ job }: IProps) {
+export default function ConfirmUnbanCandidate({ candidate }: IProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const { mutate: deleteJob, isPending } = useAdminDeleteJob({ id: job.id });
+  const { mutate: updateCandidateStatus, isPending } = useUpdateCandidateStatus({ id: candidate.id });
   const [reason, setReason] = useState('');
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -27,19 +31,19 @@ export default function ConfirmDeleteJob({ job }: IProps) {
           className="shadow-md p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md border"
           disabled={isPending}
         >
-          <Trash2 className="h-3 w-3" />
+          <CiUnlock className="h-3 w-3" />
         </button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Xóa việc làm</DialogTitle>
+          <DialogTitle>Khóa tài khoản</DialogTitle>
           <DialogDescription>
-            Bạn có chắc chắn muốn xóa việc làm <span className="font-bold">{job.title}</span> không?
+            Bạn có chắc chắn muốn mở khóa tài khoản <span className="font-bold">{candidate.fullName}</span> không?
           </DialogDescription>
         </DialogHeader>
         <div className="mt-4">
           <label htmlFor="reason" className="text-sm font-medium text-gray-700 dark:text-gray-300">
-            Lý do xóa (không bắt buộc)
+            Lý do mở khóa (không bắt buộc)
           </label>
           <textarea
             id="reason"
@@ -55,11 +59,11 @@ export default function ConfirmDeleteJob({ job }: IProps) {
           <Button
             disabled={isPending}
             onClick={async () => {
-              deleteJob(reason);
+              updateCandidateStatus({ status: UserStatus.ACTIVE, reason });
               setIsOpen(false);
             }}
           >
-            Xóa
+            Mở khóa
           </Button>
         </DialogFooter>
       </DialogContent>

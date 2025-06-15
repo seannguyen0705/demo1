@@ -41,6 +41,7 @@ interface IUser {
 
 interface IUpdateUserStatus {
   status: UserStatus;
+  reason?: string;
 }
 
 interface IQueryPagination {

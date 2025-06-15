@@ -53,4 +53,87 @@ export class EmailService {
       },
     });
   }
+
+  async deleteEmployer(email: string, fullName: string, reason: string) {
+    this.mailerService.sendMail({
+      to: email,
+      subject: 'Job Portal - Thông báo xóa tài khoản doanh nghiệp',
+      template: 'deleteEmployer',
+      context: {
+        fullName,
+        reason,
+      },
+    });
+  }
+
+  async banEmployer(email: string, fullName: string, reason: string) {
+    this.mailerService.sendMail({
+      to: email,
+      subject: 'Job Portal - Thông báo khóa tài khoản doanh nghiệp',
+      template: 'banEmployer',
+      context: {
+        fullName,
+        reason,
+      },
+    });
+  }
+
+  async unbanEmployer(email: string, fullName: string, reason: string) {
+    this.mailerService.sendMail({
+      to: email,
+      subject: 'Job Portal - Thông báo mở khóa tài khoản doanh nghiệp',
+      template: 'unbanEmployer',
+      context: {
+        fullName,
+        reason,
+      },
+    });
+  }
+
+  async adminActiveCandidate(email: string, fullName: string) {
+    this.mailerService.sendMail({
+      to: email,
+      subject: 'Job Portal - Kích hoạt tài khoản ứng viên',
+      template: 'adminActiveCandidate',
+      context: {
+        fullName,
+      },
+    });
+  }
+
+  async banCandidate(email: string, fullName: string, reason: string) {
+    this.mailerService.sendMail({
+      to: email,
+      subject: 'Job Portal - Thông báo khóa tài khoản ứng viên',
+      template: 'banCandidate',
+      context: {
+        fullName,
+        reason,
+      },
+    });
+  }
+
+  async unbanCandidate(email: string, fullName: string, reason: string) {
+    this.mailerService.sendMail({
+      to: email,
+      subject: 'Job Portal - Thông báo mở khóa tài khoản ứng viên',
+      template: 'unbanCandidate',
+      context: {
+        fullName,
+        reason,
+      },
+    });
+  }
+
+  async deleteCandidate(email: string, fullName: string, reason: string) {
+    this.mailerService.sendMail({
+      to: email,
+      subject: 'Job Portal - Thông báo xóa tài khoản ứng viên',
+      template: 'deleteCandidate',
+      context: {
+        fullName,
+        reason,
+      },
+    });
+  }
 }

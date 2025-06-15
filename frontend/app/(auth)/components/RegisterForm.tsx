@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -112,27 +112,29 @@ export default function RegisterForm() {
             <FormItem>
               <FormLabel>Mật khẩu</FormLabel>
               <FormControl>
-                <div className="relative">
-                  <Input
-                    className="selection:bg-green"
-                    type={showPassword ? 'text' : 'password'}
-                    placeholder=""
-                    {...field}
-                  />
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="sm"
-                    className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
-                    onClick={() => setShowPassword(!showPassword)}
-                  >
-                    {showPassword ? (
-                      <EyeOff className="h-4 w-4 text-muted-foreground" />
-                    ) : (
-                      <Eye className="h-4 w-4 text-muted-foreground" />
-                    )}
-                    <span className="sr-only">{showPassword ? 'Hide password' : 'Show password'}</span>
-                  </Button>
+                <div>
+                  <div className="relative flex items-center">
+                    <Input
+                      className="selection:bg-green"
+                      type={showPassword ? 'text' : 'password'}
+                      placeholder=""
+                      {...field}
+                    />
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                      onClick={() => setShowPassword(!showPassword)}
+                    >
+                      {showPassword ? (
+                        <EyeOff className="h-4 w-4 text-muted-foreground" />
+                      ) : (
+                        <Eye className="h-4 w-4 text-muted-foreground" />
+                      )}
+                      <span className="sr-only">{showPassword ? 'Hide password' : 'Show password'}</span>
+                    </Button>
+                  </div>
                   <p className="text-xs mt-1 text-muted-foreground">
                     *Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ cái viết hoa, chữ cái viết thường và số
                   </p>
@@ -150,7 +152,7 @@ export default function RegisterForm() {
             <FormItem>
               <FormLabel>Nhập lại mật khẩu</FormLabel>
               <FormControl>
-                <div className="relative">
+                <div className="relative flex items-center">
                   <Input
                     className="selection:bg-green"
                     type={showConfirmPassword ? 'text' : 'password'}

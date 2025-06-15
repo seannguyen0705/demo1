@@ -21,10 +21,12 @@
           <strong>"{{jobName}}"</strong>
           của bạn đã bị xóa bởi quản trị viên.</p>
 
-        <div style='margin: 24px 0; padding: 16px; background-color: #f8f8f8; border-left: 4px solid #309689;'>
-          <p style='margin: 0;'><strong>Lý do xóa:</strong></p>
-          <p style='margin: 8px 0 0 0;'>{{reason}}</p>
-        </div>
+        {{#if reason}}
+          <div style='margin: 24px 0; padding: 16px; background-color: #f8f8f8; border-left: 4px solid #309689;'>
+            <p style='margin: 0;'><strong>Lý do xóa:</strong></p>
+            <p style='margin: 8px 0 0 0;'>{{reason}}</p>
+          </div>
+        {{/if}}
 
         <p>Nếu bạn có bất kỳ thắc mắc nào về quyết định này, vui lòng liên hệ với chúng tôi để được hỗ trợ.</p>
       </div>
