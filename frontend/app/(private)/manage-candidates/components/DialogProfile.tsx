@@ -16,6 +16,7 @@ import Info from './Info';
 import Intro from './Intro';
 import Experience from './Experience';
 import Skill from './Skill';
+import { UserRound } from 'lucide-react';
 interface IProps {
   candidateId: string;
 }
@@ -25,7 +26,9 @@ export default function DialogProfile({ candidateId }: IProps) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <button>Hồ sơ</button>
+        <button className="shadow-md p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md border">
+          <UserRound className="w-4 h-4" />
+        </button>
       </DialogTrigger>
       <DialogContent className="overflow-auto h-auto max-h-full sm:max-w-[800px] sm:p-6 p-2">
         <DialogHeader>

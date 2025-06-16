@@ -177,9 +177,7 @@ export class ApplyJobService {
     if (!applyJob) {
       throw new NotFoundException('Không tìm thấy đơn ứng tuyển');
     }
-    if (applyJob.status === ApplyJobStatus.NEW) {
-      await this.applyJobRepository.update(id, { status: ApplyJobStatus.SEEN });
-    }
+
     return applyJob.toResponse();
   }
 

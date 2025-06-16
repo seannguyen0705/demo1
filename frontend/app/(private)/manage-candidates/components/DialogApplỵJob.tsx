@@ -17,20 +17,34 @@ import Link from 'next/link';
 import useGetApplyJobById from '../hooks/useGetApplyJobById';
 import InfoCandidate from './InfoCandidate';
 import StatusButton from './StatusButton';
-import { FaFilePdf } from 'react-icons/fa';
+import { FaFilePdf, FaRegFilePdf } from 'react-icons/fa';
+import useUpdateApplyJobStatus from '../hooks/useUpdateApplyJobStatus';
+import { ApplyJobStatus, ApplyJobStatusDB } from '@/utils/enums';
 
 interface IProps {
   applyJobId: string;
 }
 export default function DialogApplyJob({ applyJobId }: IProps) {
   const { applyJob } = useGetApplyJobById(applyJobId);
+  const { mutate: updateApplyJobStatus } = useUpdateApplyJobStatus({ id: applyJobId });
   if (!applyJob) {
     return;
   }
+
+  const handleSeeApplyJob = () => {
+    if (applyJob.status === ApplyJobStatus.NEW) {
+      updateApplyJobStatus({ status: ApplyJobStatusDB.SEEN });
+    }
+  };
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <button>Đơn ứng tuyển</button>
+        <button
+          onClick={handleSeeApplyJob}
+          className="shadow-md p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md border"
+        >
+          <FaRegFilePdf className="w-4 h-4" />
+        </button>
       </DialogTrigger>
       <DialogContent className="overflow-auto h-auto max-h-full sm:max-w-[950px] sm:p-6 p-2">
         <DialogHeader>

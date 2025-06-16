@@ -14,11 +14,11 @@ import { ChartColumn } from 'lucide-react';
 import useGetStaticsticByJobId from '@/app/hooks/useGetStaticsticByJobId';
 import { IJob } from '@/api/job/interface';
 import { Skeleton } from '@/components/ui/skeleton';
-import BarChartJob from './BarChartJob';
+import PieChartJob from './PieChartJob';
 interface IProps {
   job: IJob;
 }
-export function Staticstics({ job }: IProps) {
+export function StaticsticsJob({ job }: IProps) {
   const { statistics, isLoading } = useGetStaticsticByJobId(job.id);
   if (isLoading || !statistics) return <Skeleton className="w-10 h-10" />;
   return (
@@ -34,7 +34,7 @@ export function Staticstics({ job }: IProps) {
           <DialogDescription>Theo dõi hiệu quả tuyển dụng</DialogDescription>
         </DialogHeader>
 
-        <BarChartJob statistics={statistics} />
+        <PieChartJob jobStatistics={statistics} />
 
         <DialogFooter>
           <DialogClose asChild>

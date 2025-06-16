@@ -140,6 +140,7 @@ const createJobs = async (
     job.requirement = faker.lorem.paragraph({ min: 30, max: 50 });
     job.benefit = faker.lorem.paragraph({ min: 30, max: 50 });
     job.status = JobStatus.PUBLISHED;
+    job.viewCount = faker.number.int({ min: 0, max: 100 });
     job.companyId = company.id;
     job.createdAt = faker.date.between({
       from: new Date(Date.now() - 6 * 30 * 86400000),
