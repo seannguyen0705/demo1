@@ -4,7 +4,7 @@ import decodeUser from './utils/helpers/decodeUser';
 
 const employerPaths = ['/manage-jobs', '/manage-candidates', '/create-job', 'edit-job'];
 const candidatePaths = ['/my-jobs'];
-const adminPaths = ['/manage/employer', '/manage/candidate', '/manage/job'];
+const adminPaths = ['/manage/employer', '/manage/candidate', '/manage/job', '/manage/review', '/dashboard'];
 const privatePaths = [...employerPaths, ...candidatePaths, ...adminPaths, '/profile-personal'];
 const authPaths = ['/sign-in', '/sign-up', '/recruitment/sign-in', '/recruitment', '/admin/sign-in', 'create-job'];
 

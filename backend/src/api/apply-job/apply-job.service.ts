@@ -3,7 +3,7 @@ import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
 import { ApplyJob } from './entities/apply-job.entity';
 import { ApplyJobRepository } from './apply-job.repository';
 import { CreateApplyJobDto } from './dto/create-apply-job.dto';
-import { DataSource, SelectQueryBuilder } from 'typeorm';
+import { DataSource, LessThan, SelectQueryBuilder } from 'typeorm';
 import { SaveJob } from '../save-job/entities/save-job.entity';
 import { ApplyJobStatus, ApplyJobStatusQuery, JobStatus, Order, OrderByApplyJob } from '@/common/enums';
 import { QueryApplyJobDto } from './dto/query-apply-job.dto';
@@ -212,5 +212,21 @@ export class ApplyJobService {
       }
     }
     throw new BadRequestException('Không thể cập nhật trạng thái');
+  }
+
+  public async countApplyJobIn6MonthsAgo() {
+    const result = await Promise.all(
+      Array.from({ length: 6 }).map(async (_, i) => {
+        const sixMonthsAgo = new Date();
+        sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - i);
+        const count = await this.applyJobRepository.count({
+          where: {
+            createdAt: LessThan(sixMonthsAgo),
+          },
+        });
+        return { date: sixMonthsAgo, count };
+      }),
+    );
+    return result;
   }
 }

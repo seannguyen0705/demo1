@@ -17,7 +17,7 @@ interface IProps {
   employerId: string;
 }
 export default function DialogProfile({ employerId }: IProps) {
-  const { employer, isLoading } = useGetEmployerById({ employerId });
+  const { employer } = useGetEmployerById({ employerId });
   if (!employer) {
     return (
       <button className="shadow-md p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md border">

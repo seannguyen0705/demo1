@@ -40,6 +40,10 @@ export const seedEmployers = async (queryRunner: QueryRunner, count: number) => 
     if (existingCompany || batch.some((employer) => employer.company?.name === companyName)) {
       continue;
     }
+    const createdAt = faker.date.between({
+      from: new Date(Date.now() - 6 * 30 * 86400000),
+      to: new Date(Date.now()),
+    });
     const employer = new Employer();
     employer.email = email;
     employer.password = '@12345678';
@@ -50,10 +54,12 @@ export const seedEmployers = async (queryRunner: QueryRunner, count: number) => 
     employer.title = faker.lorem.sentence();
     employer.personal_website = faker.internet.url();
     employer.status = UserStatus.ACTIVE;
+    employer.createdAt = createdAt;
 
     const newEmployer = employerRepository.create(employer);
     const addresses = await createAddresses(queryRunner, Math.floor(Math.random() * 5) + 1);
     const company = await createCompany(queryRunner, newEmployer, addresses, companyName);
+    company.createdAt = createdAt;
     const jobs = await createJobs(company, addresses, queryRunner, Math.floor(Math.random() * 10) + 1);
     company.jobs = jobs;
 
@@ -133,8 +139,12 @@ const createJobs = async (
     job.description = faker.lorem.paragraph({ min: 30, max: 50 });
     job.requirement = faker.lorem.paragraph({ min: 30, max: 50 });
     job.benefit = faker.lorem.paragraph({ min: 30, max: 50 });
-    job.status = faker.helpers.arrayElement(Object.values(JobStatus));
+    job.status = JobStatus.PUBLISHED;
     job.companyId = company.id;
+    job.createdAt = faker.date.between({
+      from: new Date(Date.now() - 6 * 30 * 86400000),
+      to: new Date(Date.now()),
+    });
     job.addresses = faker.helpers.arrayElements(addresses);
     job.skills = faker.helpers.arrayElements(skills, { min: 1, max: 10 });
     // job expired between yesterday and 60 days from now

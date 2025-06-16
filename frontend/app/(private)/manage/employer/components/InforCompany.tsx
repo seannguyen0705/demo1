@@ -6,14 +6,6 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { ICompany } from '@/api/company/interface';
 
-interface CompanyInfoProps {
-  name: string;
-  address: string;
-  website: string;
-  onViewProof?: () => void;
-  onViewDetails?: () => void;
-}
-
 interface IProps {
   company: ICompany;
 }

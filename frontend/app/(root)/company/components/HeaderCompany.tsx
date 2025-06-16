@@ -35,7 +35,7 @@ export default async function HeaderCompany({ company, numJobs, statistics }: IP
       ) : (
         <Image
           src={company.logo?.url || '/default_logo.png'}
-          alt={company.name}
+          alt={name}
           width={128}
           height={128}
           className="relative -top-14 left-8 size-[128px] rounded-sm border-2 border-white bg-white object-cover"

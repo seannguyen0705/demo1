@@ -7,7 +7,7 @@ import { TokenService } from '../token/token.service';
 import { UserAlreadyException } from '../auth/auth.exceptions';
 import { ResponseEmployerDetailDto, ResponseEmployerDto } from './dto/response-employer.dto';
 import { Order, OrderByUser, UserRole, UserStatus } from '@/common/enums';
-import { DataSource, In, SelectQueryBuilder } from 'typeorm';
+import { DataSource, In, LessThan, SelectQueryBuilder } from 'typeorm';
 import { UpdateStatusUserDto } from '@/common/dto/update-status-user.dto';
 import generateSecurePassword from '@/utils/helpers/generateSecurePassword';
 import { EmailService } from '../email/email.service';
@@ -370,5 +370,22 @@ export class EmployerService {
     } finally {
       await queryRunner.release();
     }
+  }
+
+  public async countEmployerIn6MonthsAgo() {
+    const result = await Promise.all(
+      Array.from({ length: 6 }).map(async (_, i) => {
+        const sixMonthsAgo = new Date();
+        sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - i);
+        const count = await this.employerRepository.count({
+          where: {
+            createdAt: LessThan(sixMonthsAgo),
+            status: UserStatus.ACTIVE,
+          },
+        });
+        return { date: sixMonthsAgo, count };
+      }),
+    );
+    return result;
   }
 }
