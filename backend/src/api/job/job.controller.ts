@@ -10,7 +10,6 @@ import { EmployerQueryJobDto } from './dto/employer-query-job.dto';
 import { QueryJobApplyDto } from './dto/query-job-apply.dto';
 import { UpdatePublishedJobDto } from './dto/update-published-job.dto';
 import { UpdateJobStatusDto } from './dto/update-job-status.dto';
-import { UserRole } from '@/common/enums';
 import { ReasonDto } from '@/common/dto/reason.dto';
 @InjectController({ name: jobRoutes.index, isCore: true })
 export class JobController {

@@ -4,7 +4,7 @@ import { faker } from '@faker-js/faker';
 import { Gender, UserStatus } from '@/common/enums';
 import { BATCH_SIZE } from '@/utils/constants';
 
-export const seedCandidates = async (queryRunner: QueryRunner, count: number = 10) => {
+export const seedCandidates = async (queryRunner: QueryRunner, count = 10) => {
   const candidateRepository = queryRunner.manager.getRepository(Candidate);
   let batch: Candidate[] = [];
 

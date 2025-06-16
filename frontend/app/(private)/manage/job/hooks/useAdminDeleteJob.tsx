@@ -9,7 +9,7 @@ interface IProps {
 export default function useAdminDeleteJob({ id }: IProps) {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (reason: string) => adminDeleteJob(id, reason),
+    mutationFn: (reason?: string) => adminDeleteJob(id, reason),
     onSuccess: (data: object) => {
       if (isErrorResponse(data)) {
         toast.error(data.message);

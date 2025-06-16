@@ -15,6 +15,13 @@ import { Button } from '@/components/ui/button';
 
 import { IUser } from '@/api/interface';
 import useDeleteCandidate from '../hooks/useDeleteCandidate';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+
+const formSchema = z.object({
+  reason: z.string().optional(),
+});
 
 interface IProps {
   candidate: IUser;
@@ -22,7 +29,12 @@ interface IProps {
 export default function ConfirmDeleteCandidate({ candidate }: IProps) {
   const [isOpen, setIsOpen] = useState(false);
   const { mutate: deleteCandidate, isPending } = useDeleteCandidate({ id: candidate.id });
-  const [reason, setReason] = useState('');
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      reason: '',
+    },
+  });
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
@@ -47,8 +59,7 @@ export default function ConfirmDeleteCandidate({ candidate }: IProps) {
           <textarea
             id="reason"
             className="min-h-[120px] w-full rounded-md border p-3 dark:bg-gray-800 dark:text-white"
-            value={reason}
-            onChange={(e) => setReason(e.target.value)}
+            {...form.register('reason')}
           />
         </div>
         <DialogFooter>
@@ -57,10 +68,10 @@ export default function ConfirmDeleteCandidate({ candidate }: IProps) {
           </Button>
           <Button
             disabled={isPending}
-            onClick={async () => {
-              deleteCandidate(reason);
+            onClick={form.handleSubmit((data) => {
+              deleteCandidate(data.reason);
               setIsOpen(false);
-            }}
+            })}
           >
             Xóa
           </Button>
