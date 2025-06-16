@@ -6,7 +6,7 @@ const candidateGetJobById = async (jobId: string) => {
   try {
     const response = await axiosInstance.get<{ data: IJob }>(`candidate/jobs/${jobId}`);
     return response.data.data;
-  } catch (error) {
+  } catch {
     return null;
   }
 };
