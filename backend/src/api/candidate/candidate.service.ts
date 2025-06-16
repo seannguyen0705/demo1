@@ -331,18 +331,19 @@ export class CandidateService {
   }
 
   public async countCandidateIn6MonthsAgo() {
-    const result: { date: Date; count: number }[] = [];
-    for (let i = 0; i < 6; i++) {
-      const sixMonthsAgo = new Date();
-      sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - i);
-      const count = await this.candidateRepository.count({
-        where: {
-          createdAt: LessThan(sixMonthsAgo),
-          status: UserStatus.ACTIVE,
-        },
-      });
-      result.push({ date: sixMonthsAgo, count });
-    }
+    const result = await Promise.all(
+      Array.from({ length: 6 }).map(async (_, i) => {
+        const sixMonthsAgo = new Date();
+        sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - i);
+        const count = await this.candidateRepository.count({
+          where: {
+            createdAt: LessThan(sixMonthsAgo),
+            status: UserStatus.ACTIVE,
+          },
+        });
+        return { date: sixMonthsAgo, count };
+      }),
+    );
     return result;
   }
 }
