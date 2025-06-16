@@ -58,8 +58,8 @@ export class EmployerController {
     return this.employerService.findEmployerById(id);
   }
 
-  @InjectRoute(employerRoutes.deleteEmployer)
-  public async deleteEmployer(@Param('id') id: string, @Body() data: ReasonDto) {
-    return this.employerService.deleteEmployer(id, data.reason);
+  @InjectRoute(employerRoutes.adminDeleteById)
+  public async adminDeleteById(@Param('id') id: string, @Body() data: ReasonDto) {
+    return this.employerService.adminDeleteById(id, data.reason);
   }
 }

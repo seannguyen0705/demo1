@@ -23,6 +23,8 @@ import { UpdateEmployerDto } from './dto/update-employer.dto';
 import { QueryEmployer } from './dto/query-employer.dto';
 import { CompanyAddress } from '../company-address/entities/company-address.entity';
 import { CompanyImage } from '../company-image/entities/companyImage.entity';
+import { ChangePasswordDto } from '@/common/dto/change-password.dto';
+import { compareSync } from 'bcrypt';
 @Injectable()
 export class EmployerService {
   private readonly folder: string;
@@ -322,7 +324,17 @@ export class EmployerService {
     return queryBuilder.getOne();
   }
 
-  public async deleteEmployer(id: string, reason: string) {
+  public async adminDeleteById(id: string, reason: string) {
+    const employer = await this.employerRepository.findOneBy({ id });
+    if (!employer) {
+      throw new NotFoundException('Employer not found');
+    }
+    await this.deleteById(id);
+    await this.emailService.deleteEmployer(employer.email, employer.fullName, reason);
+    return { message: 'Xóa tài khoản doanh nghiệp thành công' };
+  }
+
+  public async deleteById(id: string) {
     const queryRunner = this.dataSource.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
@@ -362,7 +374,6 @@ export class EmployerService {
         this.cloudinaryService.deleteFiles(files.map((item) => item.key));
       }
       await queryRunner.commitTransaction();
-      await this.emailService.deleteEmployer(employer.email, employer.fullName, reason);
       return { message: 'Xóa tài khoản doanh nghiệp thành công' };
     } catch (error) {
       await queryRunner.rollbackTransaction();
@@ -387,5 +398,22 @@ export class EmployerService {
       }),
     );
     return result;
+  }
+
+  public async changePassword(id: string, data: ChangePasswordDto) {
+    const employer = await this.findOneById(id);
+    if (!employer) {
+      throw new NotFoundException('Employer not found');
+    }
+    const { currentPassword, newPassword } = data;
+    if (!compareSync(currentPassword, employer.password)) {
+      throw new BadRequestException('Mật khẩu hiện tại không chính xác');
+    }
+    const hashedPassword = await hash.generateWithBcrypt({
+      source: newPassword,
+      salt: 10,
+    });
+    await this.employerRepository.update(id, { password: hashedPassword });
+    return { message: 'Đổi mật khẩu thành công' };
   }
 }

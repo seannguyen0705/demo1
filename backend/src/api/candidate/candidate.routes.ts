@@ -55,7 +55,7 @@ export default {
       responses: [{ status: HttpStatus.OK, type: ResponseCandidateDetailDto }],
     },
   },
-  deleteById: <IRouteParams>{
+  adminDeleteById: <IRouteParams>{
     path: '/:id',
     method: RequestMethod.DELETE,
     roles: [UserRole.ADMIN],

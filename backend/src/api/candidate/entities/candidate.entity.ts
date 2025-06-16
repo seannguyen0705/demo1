@@ -38,6 +38,9 @@ export class Candidate extends BaseUserEntity {
   @OneToMany(() => CandidateSkill, (candidateSkill) => candidateSkill.candidate)
   candidateSkills: CandidateSkill[];
 
+  @Column({ default: false, name: 'allow_notify' })
+  allowNotify: boolean;
+
   @BeforeInsert()
   private async setInsertingData(): Promise<void> {
     const saltRounds = 10;

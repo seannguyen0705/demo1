@@ -59,7 +59,7 @@ export default {
     roles: [UserRole.ADMIN],
     jwtSecure: true,
   },
-  deleteEmployer: <IRouteParams>{
+  adminDeleteById: <IRouteParams>{
     path: '/:id',
     method: RequestMethod.DELETE,
     roles: [UserRole.ADMIN],

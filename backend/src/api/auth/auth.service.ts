@@ -23,6 +23,7 @@ import { ThirdPartyUser } from './dto/thirPartyUser';
 import { EmailService } from '../email/email.service';
 import { ResetPasswordDto } from './dto/reset-password.dto';
 import { hash } from '@/utils/helpers';
+import { ChangePasswordDto } from '@/common/dto/change-password.dto';
 
 export type TUser = Admin | Candidate | Employer;
 
@@ -165,9 +166,7 @@ export class AuthService {
 
   public async getUserDetailById(id: string, role: UserRole) {
     const userService = this.services[role];
-
     const user = await userService.getDetailById(id);
-
     return user;
   }
 
@@ -250,5 +249,15 @@ export class AuthService {
       throw new BadRequestException('Tài khoản đã được kích hoạt');
     }
     return this.candidateService.updateById(candidate.id, { status: UserStatus.ACTIVE, accountToken: null });
+  }
+
+  public async changePassword(id: string, role: UserRole, data: ChangePasswordDto) {
+    const userService = this.services[role];
+    return userService.changePassword(id, data);
+  }
+
+  public async deleteById(id: string, role: UserRole) {
+    const userService = this.services[role];
+    return userService.deleteById(id);
   }
 }
