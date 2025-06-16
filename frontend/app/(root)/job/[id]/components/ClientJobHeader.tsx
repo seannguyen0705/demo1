@@ -3,9 +3,7 @@
 import { IJob } from '@/api/job/interface';
 import getStringSalary from '@/utils/helpers/getStringSalary';
 import { CircleCheckBig, CircleDollarSign } from 'lucide-react';
-import Application from '@/app/(root)/job/components/Application';
 import { format } from 'date-fns';
-import Save from '../../components/Save';
 import StatusJob from './StatusJob';
 interface IProps {
   job: IJob;

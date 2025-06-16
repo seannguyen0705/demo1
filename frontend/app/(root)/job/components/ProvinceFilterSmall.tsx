@@ -1,7 +1,6 @@
 import useGetProvince from '@/app/hooks/useGetProvince';
 import CheckBox from '@/components/Checkbox';
 import { Input } from '@/components/ui/input';
-import { Search } from 'lucide-react';
 import { useState } from 'react';
 
 interface IProps {

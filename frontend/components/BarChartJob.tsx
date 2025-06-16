@@ -2,7 +2,6 @@
 
 import { Bar, BarChart, CartesianGrid, LabelList, XAxis } from 'recharts';
 
-import { Card, CardContent } from '@/components/ui/card';
 import { ChartConfig, ChartContainer } from '@/components/ui/chart';
 import { JobStatistics } from '@/api/job/interface';
 

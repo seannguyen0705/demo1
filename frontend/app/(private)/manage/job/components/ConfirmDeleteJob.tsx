@@ -13,13 +13,27 @@ import { useState } from 'react';
 import { Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { IJob } from '@/api/job/interface';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+
+const formSchema = z.object({
+  reason: z.string().optional(),
+});
+
 interface IProps {
   job: IJob;
 }
 export default function ConfirmDeleteJob({ job }: IProps) {
   const [isOpen, setIsOpen] = useState(false);
   const { mutate: deleteJob, isPending } = useAdminDeleteJob({ id: job.id });
-  const [reason, setReason] = useState('');
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      reason: '',
+    },
+  });
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
@@ -44,8 +58,7 @@ export default function ConfirmDeleteJob({ job }: IProps) {
           <textarea
             id="reason"
             className="min-h-[120px] w-full rounded-md border p-3 dark:bg-gray-800 dark:text-white"
-            value={reason}
-            onChange={(e) => setReason(e.target.value)}
+            {...form.register('reason')}
           />
         </div>
         <DialogFooter>
@@ -54,10 +67,10 @@ export default function ConfirmDeleteJob({ job }: IProps) {
           </Button>
           <Button
             disabled={isPending}
-            onClick={async () => {
-              deleteJob(reason);
+            onClick={form.handleSubmit((data) => {
+              deleteJob(data.reason);
               setIsOpen(false);
-            }}
+            })}
           >
             Xóa
           </Button>

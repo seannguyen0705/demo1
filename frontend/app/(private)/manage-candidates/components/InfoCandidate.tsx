@@ -1,7 +1,7 @@
 import { IApplyJob } from '@/api/apply-job/interface';
 import { formatDate } from 'date-fns';
 import { vi } from 'date-fns/locale';
-import { Calendar, ExternalLink, Mail, Phone, User } from 'lucide-react';
+import { Calendar, Mail, Phone, User } from 'lucide-react';
 import ShowStatus from './ShowStatus';
 import Link from 'next/link';
 
