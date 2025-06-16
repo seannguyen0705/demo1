@@ -1,14 +1,4 @@
-import {
-  Briefcase,
-  UserRound,
-  Building,
-  UserRoundPlus,
-  Settings,
-  Mail,
-  UsersRound,
-  Star,
-  LayoutDashboard,
-} from 'lucide-react';
+import { Briefcase, UserRound, Building, Settings, Mail, UsersRound, LayoutDashboard } from 'lucide-react';
 
 import { JSX } from 'react';
 import { UserRole } from '../enums';
@@ -30,13 +20,13 @@ const getNavHeader = (user: IUser | undefined): NavItem[] => {
         href: `/company/${decodeURIComponent(user?.company?.name || '')}`,
         icon: <Building />,
       },
-      { name: 'Cài đặt', href: '/settings', icon: <Settings /> },
+      { name: 'Cài đặt', href: '/setting', icon: <Settings /> },
     ],
     [UserRole.CANDIDATE]: [
       { name: 'Hồ sơ cá nhân', href: '/profile-personal', icon: <UserRound /> },
       { name: 'Việc làm của tôi', href: '/my-jobs', icon: <Briefcase /> },
       { name: 'Đăng kí nhận email', href: '/subscription', icon: <Mail /> },
-      { name: 'Cài đặt', href: '/settings', icon: <Settings /> },
+      { name: 'Cài đặt', href: '/setting', icon: <Settings /> },
     ],
     [UserRole.ADMIN]: [
       {
@@ -47,7 +37,7 @@ const getNavHeader = (user: IUser | undefined): NavItem[] => {
       { name: 'Nhà tuyển dụng', href: '/manage/employer', icon: <Building /> },
       { name: 'Ứng viên', href: '/manage/candidate', icon: <UsersRound /> },
       { name: 'Việc làm', href: '/manage/job', icon: <Briefcase /> },
-      { name: 'Cài đặt', href: '/settings', icon: <Settings /> },
+      { name: 'Cài đặt', href: '/setting', icon: <Settings /> },
     ],
   };
   return navs[user?.role || UserRole.CANDIDATE];
