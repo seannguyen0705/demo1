@@ -8,10 +8,7 @@ import { RequestWithThirdPartyUser } from '@/common/interfaces';
 
 @InjectController({ name: googleRoutes.index })
 export class GoogleController {
-  constructor(
-    private readonly authService: AuthService,
-    private readonly configService: ConfigService,
-  ) {}
+  constructor(private readonly authService: AuthService, private readonly configService: ConfigService) {}
 
   @InjectRoute(googleRoutes.login)
   public async login() {}

@@ -8,10 +8,7 @@ import { RequestWithThirdPartyUser } from '@/common/interfaces';
 
 @InjectController({ name: githubRoutes.index })
 export class GithubController {
-  constructor(
-    private readonly authService: AuthService,
-    private readonly configService: ConfigService,
-  ) {}
+  constructor(private readonly authService: AuthService, private readonly configService: ConfigService) {}
 
   @InjectRoute(githubRoutes.login)
   public async login() {}
