@@ -1,6 +1,6 @@
 'use client';
 
-import { JobStatus, SalaryType } from '@/utils/enums';
+import { SalaryType } from '@/utils/enums';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';

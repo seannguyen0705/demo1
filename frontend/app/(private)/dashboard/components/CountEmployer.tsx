@@ -1,6 +1,6 @@
 import { CountDate } from '@/api/staticstics/interface';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Briefcase, Building2 } from 'lucide-react';
+import { Building2 } from 'lucide-react';
 import CompareFigure from './CompareFigure';
 import CountUp from 'react-countup';
 interface IProps {
