@@ -16,6 +16,13 @@ import { IUser } from '@/api/interface';
 import useUpdateCandidateStatus from '../hooks/useUpdateCandidateStatus';
 import { UserStatus } from '@/utils/enums';
 import { CiUnlock } from 'react-icons/ci';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+
+const formSchema = z.object({
+  reason: z.string().optional(),
+});
 
 interface IProps {
   candidate: IUser;
@@ -23,7 +30,12 @@ interface IProps {
 export default function ConfirmUnbanCandidate({ candidate }: IProps) {
   const [isOpen, setIsOpen] = useState(false);
   const { mutate: updateCandidateStatus, isPending } = useUpdateCandidateStatus({ id: candidate.id });
-  const [reason, setReason] = useState('');
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      reason: '',
+    },
+  });
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
@@ -48,8 +60,7 @@ export default function ConfirmUnbanCandidate({ candidate }: IProps) {
           <textarea
             id="reason"
             className="min-h-[120px] w-full rounded-md border p-3 dark:bg-gray-800 dark:text-white"
-            value={reason}
-            onChange={(e) => setReason(e.target.value)}
+            {...form.register('reason')}
           />
         </div>
         <DialogFooter>
@@ -58,10 +69,10 @@ export default function ConfirmUnbanCandidate({ candidate }: IProps) {
           </Button>
           <Button
             disabled={isPending}
-            onClick={async () => {
-              updateCandidateStatus({ status: UserStatus.ACTIVE, reason });
+            onClick={form.handleSubmit((data) => {
+              updateCandidateStatus({ status: UserStatus.ACTIVE, reason: data.reason });
               setIsOpen(false);
-            }}
+            })}
           >
             Mở khóa
           </Button>

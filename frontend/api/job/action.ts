@@ -68,7 +68,7 @@ export const deleteJob = async (id: string) => {
   return response;
 };
 
-export const adminDeleteJob = async (id: string, reason: string) => {
+export const adminDeleteJob = async (id: string, reason?: string) => {
   const response = await actionFetch<IJob>(`admin/jobs/${id}`, {
     method: 'DELETE',
     credentials: 'include',
