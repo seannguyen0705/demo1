@@ -12,7 +12,7 @@ export class QuerySkillDto extends QueryPaginationDto {
     type: String,
     description: 'Keyword',
   })
-  keyword: string = '';
+  keyword = '';
 
   @IsArray()
   @IsString({ each: true })

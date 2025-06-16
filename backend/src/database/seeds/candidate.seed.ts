@@ -5,7 +5,7 @@ import { Gender } from '@/common/enums';
 
 const BATCH_SIZE = 100;
 
-export const seedCandidates = async (queryRunner: QueryRunner, count: number = 10) => {
+export const seedCandidates = async (queryRunner: QueryRunner, count = 10) => {
   const candidateRepository = queryRunner.manager.getRepository(Candidate);
   let batch: Candidate[] = [];
 
