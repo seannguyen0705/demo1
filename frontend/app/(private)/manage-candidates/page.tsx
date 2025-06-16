@@ -1,7 +1,7 @@
 'use client';
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import SearchAndFilter from './components/SearchAndFIlter';
+import SearchAndFilter from './components/SearchAndFilter';
 import TableCandidate from './components/TableCandidate';
 
 export default function ManageCandidates() {
