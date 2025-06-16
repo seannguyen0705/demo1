@@ -1,32 +1,20 @@
 import { UserStatus } from '@/utils/enums';
 
 import ConfirmAction from '@/app/(private)/manage-candidates/components/ConfirmAction';
-import { Button } from '@/components/ui/button';
-import { CiLock, CiUnlock } from 'react-icons/ci';
 import { Check } from 'lucide-react';
-import useUpdateCandidateStatus from '../hooks/useUpdateEmployerStatus';
+import useUpdateCandidateStatus from '../hooks/useUpdateCandidateStatus';
+import ConfirmBanCandidate from './ConfirmBanCandidate';
+import { IUser } from '@/api/interface';
+import ConfirmUnbanCandidate from './ConfirmUnbanCandidate';
 interface IProps {
-  candidateId: string;
-  status: UserStatus;
+  candidate: IUser;
 }
 
-export default function ActionStatus({ candidateId, status }: IProps) {
-  const { mutate: updateCandidateStatus, isPending } = useUpdateCandidateStatus({ id: candidateId });
-  if (status === UserStatus.ACTIVE) {
-    return (
-      <ConfirmAction
-        title="Xác nhận khóa tài khoản"
-        disabled={isPending}
-        description="Bạn có chắc chắn muốn khóa tài khoản này không?"
-        action={() => updateCandidateStatus({ status: UserStatus.BANNED })}
-        button={
-          <button className="text-red-500 p-2 rounded-md border shadow-md hover:bg-gray-100 dark:hover:bg-gray-800">
-            <CiLock className="h-3 w-3" />
-          </button>
-        }
-      />
-    );
-  } else if (status === UserStatus.INACTIVE) {
+export default function ActionStatus({ candidate }: IProps) {
+  const { mutate: updateCandidateStatus, isPending } = useUpdateCandidateStatus({ id: candidate.id });
+  if (candidate.status === UserStatus.ACTIVE) {
+    return <ConfirmBanCandidate candidate={candidate} />;
+  } else if (candidate.status === UserStatus.INACTIVE) {
     return (
       <ConfirmAction
         title="Xác nhận kích hoạt tài khoản"
@@ -40,19 +28,7 @@ export default function ActionStatus({ candidateId, status }: IProps) {
         }
       />
     );
-  } else if (status === UserStatus.BANNED) {
-    return (
-      <ConfirmAction
-        title="Xác nhận mở khóa tài khoản"
-        disabled={isPending}
-        description="Bạn có chắc chắn muốn mở khóa tài khoản này không?"
-        action={() => updateCandidateStatus({ status: UserStatus.ACTIVE })}
-        button={
-          <button className="text-green-500 p-2 rounded-md border shadow-md hover:bg-gray-100 dark:hover:bg-gray-800">
-            <CiUnlock className="h-3 w-3" />
-          </button>
-        }
-      />
-    );
+  } else if (candidate.status === UserStatus.BANNED) {
+    return <ConfirmUnbanCandidate candidate={candidate} />;
   }
 }

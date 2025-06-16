@@ -86,7 +86,7 @@ export class Job extends BaseEntity {
   @JoinColumn({ name: 'company_id' })
   company: Company;
 
-  @ManyToMany(() => Address)
+  @ManyToMany(() => Address, { cascade: true })
   @JoinTable({
     name: 'job_addresses',
     joinColumn: { name: 'job_id' },
@@ -94,7 +94,7 @@ export class Job extends BaseEntity {
   })
   addresses: Address[];
 
-  @ManyToMany(() => Skill)
+  @ManyToMany(() => Skill, { cascade: true })
   @JoinTable({
     name: 'job_skills',
     joinColumn: { name: 'job_id' },

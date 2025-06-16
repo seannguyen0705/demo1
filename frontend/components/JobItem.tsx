@@ -35,7 +35,12 @@ export default function JobItem({ job, navtoDetail, showStatus }: IProps) {
         {formatDistanceToNow(new Date(job.createdAt), { addSuffix: true, locale: vi })}
       </p>
       <div>
-        <Link href={href} className="text-lg inline relative z-10 font-bold hover:text-green">
+        <Link
+          replace={!navtoDetail}
+          scroll={false}
+          href={href}
+          className="text-lg inline relative z-10 font-bold hover:text-green"
+        >
           {job.title}
         </Link>
       </div>
@@ -67,14 +72,24 @@ export default function JobItem({ job, navtoDetail, showStatus }: IProps) {
         </Link>
 
         <div className="flex flex-col">
-          {Array.from(setProvinceNames).map((provinceName) => (
-            <Link href={`/job?provinceName=${provinceName}`} key={provinceName} className="">
-              <div className="inline-flex gap-1 relative z-10  items-center hover:text-green">
-                <MapPin className="text-gray-500" />
-                <span className="text-sm">{provinceName}</span>
-              </div>
-            </Link>
-          ))}
+          {Array.from(setProvinceNames)
+            .slice(0, 2)
+            .map((provinceName) => (
+              <Link href={`/job?provinceName=${provinceName}`} key={provinceName} className="">
+                <div className="inline-flex gap-1 relative z-10  items-center hover:text-green">
+                  <MapPin className="text-gray-500" />
+                  <span className="text-sm">{provinceName}</span>
+                </div>
+              </Link>
+            ))}
+          {setProvinceNames.size > 2 && (
+            <div className="inline-flex gap-1 relative z-10  items-center">
+              <MapPin className="text-gray-500" />
+              <span className="text-sm border rounded-full px-2 bg-light-green dark:bg-gray-800">
+                + {setProvinceNames.size - 2}
+              </span>
+            </div>
+          )}
         </div>
 
         <Link
@@ -98,7 +113,7 @@ export default function JobItem({ job, navtoDetail, showStatus }: IProps) {
           ))}
         </ul>
       </div>
-      <Link className="absolute inset-0" href={href}></Link>
+      <Link scroll={false} replace={!navtoDetail} className="absolute inset-0" href={href}></Link>
     </article>
   );
 }

@@ -43,16 +43,14 @@ export default function JobHeader({ job }: IProps) {
           <p className="text-red-500">Đã hết hạn</p>
         </div>
       ) : (
-        <div className="flex justify-center items-center gap-2">
+        <Link href={'/sign-in'} className="flex justify-center items-center gap-2">
           <div className="flex-1">
-            <Link href={'/sign-in'} className="w-full">
-              <Button className="w-full bg-green text-white hover:bg-green/80 hover:text-white">Ứng tuyển</Button>
-            </Link>
+            <Button className="w-full bg-green text-white hover:bg-green/80 hover:text-white">Ứng tuyển</Button>
           </div>
           <Button variant={'outline'}>
             <Heart />
           </Button>
-        </div>
+        </Link>
       )}
     </section>
   );

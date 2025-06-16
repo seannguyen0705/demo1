@@ -47,7 +47,7 @@ export default function TableCandidate() {
             <TableHead>Họ Tên</TableHead>
             <TableHead>Email</TableHead>
             <TableHead>SĐT</TableHead>
-            <TableHead>
+            <TableHead className="flex justify-center items-center">
               <Button
                 variant="ghost"
                 className="h-auto p-0 font-medium hover:bg-transparent"
@@ -85,7 +85,7 @@ export default function TableCandidate() {
                   <ShowStatusUser status={candidate.status} />
                 </TableCell>
                 <TableCell className="">
-                  <ActionCandidate candidateId={candidate.id} status={candidate.status} />
+                  <ActionCandidate candidate={candidate} />
                 </TableCell>
               </TableRow>
             ))

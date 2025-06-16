@@ -28,6 +28,7 @@ interface IJob {
   createdAt: string;
   applyJobs: IApplyJob[];
   saveJobs: ISaveJob[];
+  applyJobCount: number;
 }
 
 interface ICreatePublishedJob {

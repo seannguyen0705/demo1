@@ -12,6 +12,7 @@ import { hash } from '@/utils/helpers';
 import { ImageValidatorPipe } from '@/pipes';
 import { QueryCandidate } from './dto/query-candidate.dto';
 import { UpdateStatusUserDto } from '@/common/dto/update-status-user.dto';
+import { ReasonDto } from '@/common/dto/reason.dto';
 
 @InjectController({ name: candidateRoutes.index })
 export class CandidateController {
@@ -53,8 +54,8 @@ export class CandidateController {
   }
 
   @InjectRoute(candidateRoutes.deleteById)
-  public async deleteById(@Param('id') id: string) {
-    return this.candidateService.deleteById(id);
+  public async deleteById(@Param('id') id: string, @Body() data: ReasonDto) {
+    return this.candidateService.deleteById(id, data.reason);
   }
 
   @InjectRoute(candidateRoutes.getById)

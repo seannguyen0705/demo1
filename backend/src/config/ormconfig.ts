@@ -15,7 +15,7 @@ export const AppDataSource = new DataSource({
   password: configService.get('DB_PASSWORD'),
   database: configService.get('DB_NAME'),
   ssl: configService.get('DB_SSL') === 'true' ? { rejectUnauthorized: false } : false,
-  logging: true,
+  logging: false,
   synchronize: false,
   entities: ['src/api/**/*.entity.ts'],
   migrations: ['src/database/migrations/*.ts'],

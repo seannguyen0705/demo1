@@ -9,7 +9,7 @@ export default async function TopCompany() {
       <h3 className="text-center text-xl md:text-3xl my-4 md:my-10">Top 10 công ty tốt nhất</h3>
       <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {companies.map((company, index) => (
-          <li key={company.id} className={`${index === 9 && 'lg:hidden'}`}>
+          <li key={company.id} className={`${index === 9 && 'lg:hidden'} h-full`}>
             <CompanyCard company={company} />
           </li>
         ))}

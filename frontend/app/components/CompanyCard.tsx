@@ -13,9 +13,9 @@ export default function CompanyCard({ company }: IProps) {
   const setProvinceNames = new Set(provinceNames);
 
   return (
-    <article>
+    <article className="h-full">
       <Link href={`/company/${company.name}`}>
-        <Card className="p-0 pt-6 overflow-hidden">
+        <Card className="p-0 pt-6 overflow-hidden flex flex-col justify-between h-full">
           <div className="flex flex-col gap-4 justify-center items-center">
             <Image
               src={company.logo?.url || '/default_logo.png'}

@@ -27,7 +27,7 @@ export default function ClientJobList() {
       ) : (
         <div className="w-full lg:w-[500px]">
           <h3 className="text-xl lg:text-2xl fobdont-bold mb-3">Tìm thấy {total} việc làm</h3>
-          <ul className="h-auto max-h-[calc(100vh-150px)] overflow-auto space-y-4">
+          <ul id="job-list" className="h-auto max-h-[calc(100vh-150px)] overflow-auto space-y-4">
             {jobs.map((job) => (
               <li
                 key={job.id}

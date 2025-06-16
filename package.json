@@ -1,42 +1,14 @@
 {
   "name": "job-portal-app",
   "private": true,
-  "workspaces": [
-    "backend",
-    "frontend"
-  ],
   "scripts": {
     "prepare": "husky",
-    "dev:fe": "yarn workspace frontend dev",
-    "build:fe": "yarn workspace frontend build",
-    "start:fe": "yarn workspace frontend start",
-    "build:be": "yarn workspace backend build",
-    "start:be": "yarn workspace backend start:prod",
-    "dev:be": "yarn workspace backend start:dev",
-    "dev": "concurrently --kill-others-on-fail \"yarn dev:fe\" \"yarn dev:be\"",
-    "build": "concurrently --kill-others-on-fail \"yarn build:fe\" \"yarn build:be\"",
-    "start": "concurrently --kill-others-on-fail \"yarn start:fe\" \"yarn start:be\"",
-    "lint": "concurrently --kill-others-on-fail \"yarn lint:fe\" \"yarn lint:be\"",
-    "migration:generate": "NAME=$NAME yarn workspace backend migration:generate",
-    "migration:create": "NAME=$NAME yarn workspace backend migration:create",
-    "migration:run": "yarn workspace backend migration:run",
-    "migration:revert": "yarn workspace backend migration:revert",
-    "db:seed": "yarn workspace backend db:seed"
+    "lint-staged": "yarn --cwd frontend lint && yarn --cwd backend lint"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^6.20.0",
-    "@typescript-eslint/parser": "^6.20.0",
-    "eslint": "^8.56.0",
-    "eslint-config-next": "^15.3.2",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-prettier": "^5.1.3",
     "husky": "^9.0.0",
     "lint-staged": "^15.0.0",
     "prettier": "^3.5.3"
-  },
-  "lint-staged": {
-    "frontend/**/*.{js,jsx,ts,tsx}": "yarn workspace frontend lint ",
-    "backend/**/*.{ts,js}": "yarn workspace backend lint "
   },
   "dependencies": {
     "@commitlint/cli": "^19.8.1",

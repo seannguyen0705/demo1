@@ -2,7 +2,7 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 import { JobRepository } from './job.repository';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Job } from './entities/job.entity';
-import { JobLevel, JobStatus, JobType, OrderByJob, Order } from '@/common/enums';
+import { JobLevel, JobStatus, JobType, OrderByJob, Order, UserStatus } from '@/common/enums';
 
 import { CompanyService } from '../company/company.service';
 import { CreateDraftJobDto } from './dto/create-draft-job.dto';
@@ -17,6 +17,7 @@ import { ApplyJobService } from '../apply-job/apply-job.service';
 import { AddressService } from '../address/address.service';
 import { UpdatePublishedJobDto } from './dto/update-published-job.dto';
 import { CompanyAddressService } from '../company-address/company-address.service';
+import { EmailService } from '../email/email.service';
 @Injectable()
 export class JobService {
   constructor(
@@ -26,6 +27,7 @@ export class JobService {
     private readonly applyJobService: ApplyJobService,
     private readonly addressService: AddressService,
     private readonly companyAddressService: CompanyAddressService,
+    private readonly emailService: EmailService,
   ) {}
 
   async findByCompanyId(companyId: string) {
@@ -104,6 +106,14 @@ export class JobService {
       skills,
     });
     return newJob;
+  }
+
+  private async adminSearchJobByKeyword(queryBuilder: SelectQueryBuilder<Job>, keyword?: string) {
+    if (keyword) {
+      queryBuilder.andWhere('(job.title ILIKE :keyword OR company.name ILIKE :keyword)', {
+        keyword: `%${keyword}%`,
+      });
+    }
   }
 
   private async searchJobByKeyword(queryBuilder: SelectQueryBuilder<Job>, keyword?: string) {
@@ -185,6 +195,7 @@ export class JobService {
       .leftJoin('company.logo', 'logo')
       .innerJoin('job.addresses', 'addresses')
       .innerJoin('addresses.province', 'province')
+      .innerJoin('company.employer', 'employer')
       .leftJoin('job.skills', 'skills')
       .select([
         'job.id',
@@ -202,9 +213,11 @@ export class JobService {
         'province.name',
         'skills.id',
         'skills.name',
+        'employer.status',
       ])
       .andWhere('job.status =:status', { status: JobStatus.PUBLISHED })
-      .andWhere('job.expiredAt >:now', { now: new Date() });
+      .andWhere('job.expiredAt >:now', { now: new Date() })
+      .andWhere('employer.status =:userStatus', { userStatus: UserStatus.ACTIVE });
 
     await Promise.all([
       this.searchJobByKeyword(queryBuilder, keyword),
@@ -481,7 +494,7 @@ export class JobService {
     await this.jobRepository.save(job);
   }
 
-  public async deleteJob(jobId: string, employerId: string) {
+  public async deleteByIdAndEmployerId(jobId: string, employerId: string) {
     const company = await this.companyService.findOneByEmployerId(employerId);
     if (!company) {
       throw new NotFoundException('Company not found');
@@ -491,7 +504,15 @@ export class JobService {
       throw new NotFoundException('Job not found');
     }
 
-    return this.jobRepository.remove(job);
+    return this.jobRepository.delete(jobId);
+  }
+
+  public async deleteById(jobId: string) {
+    const job = await this.jobRepository.findOneBy({ id: jobId });
+    if (!job) {
+      throw new NotFoundException('Job not found');
+    }
+    return this.jobRepository.delete(jobId);
   }
 
   public async updatePublishedJob(jobId: string, employerId: string, data: UpdatePublishedJobDto) {
@@ -527,5 +548,47 @@ export class JobService {
     }
     job.status = status;
     return this.jobRepository.save(job);
+  }
+
+  public async adminFindJobs(query: QueryJobDto) {
+    const { page, limit, keyword, order, orderBy } = query;
+
+    const queryBuilder = this.jobRepository
+      .createQueryBuilder('job')
+      .skip(limit * (page - 1))
+      .take(limit)
+      .innerJoin('job.company', 'company')
+      .loadRelationCountAndMap('job.applyJobCount', 'job.applyJobs', 'applyJobs')
+      .select(['job.id', 'job.title', 'job.createdAt', 'job.expiredAt', 'company.name'])
+      .andWhere('job.status =:status', { status: JobStatus.PUBLISHED });
+
+    await Promise.all([
+      this.adminSearchJobByKeyword(queryBuilder, keyword),
+      this.orderJob(queryBuilder, orderBy, order),
+    ]);
+
+    const [jobs, total] = await queryBuilder.getManyAndCount();
+    const numPage = Math.ceil(total / limit);
+    if (page + 1 > numPage) {
+      return { jobs, currentPage: page, nextPage: null, total };
+    }
+    return { jobs, currentPage: page, nextPage: page + 1, total };
+  }
+
+  public async adminDeleteJob(jobId: string, reason: string) {
+    const job = await this.jobRepository.findOne({
+      where: { id: jobId },
+      relations: {
+        company: {
+          employer: true,
+        },
+      },
+    });
+    if (!job) {
+      throw new NotFoundException('Job not found');
+    }
+    await this.jobRepository.delete(jobId);
+    await this.emailService.deleteJob(job.company.employer.email, job.company.employer.fullName, job.title, reason);
+    return job;
   }
 }

@@ -10,6 +10,7 @@ import { EmployerQueryJobDto } from './dto/employer-query-job.dto';
 import { QueryJobApplyDto } from './dto/query-job-apply.dto';
 import { UpdatePublishedJobDto } from './dto/update-published-job.dto';
 import { UpdateJobStatusDto } from './dto/update-job-status.dto';
+import { ReasonDto } from '@/common/dto/reason.dto';
 @InjectController({ name: jobRoutes.index, isCore: true })
 export class JobController {
   constructor(private readonly jobService: JobService) {}
@@ -66,7 +67,7 @@ export class JobController {
 
   @InjectRoute(jobRoutes.deleteJob)
   async deleteJob(@Param('id') id: string, @ReqUser() user: IJwtStrategy) {
-    return this.jobService.deleteJob(id, user.element.id);
+    return this.jobService.deleteByIdAndEmployerId(id, user.element.id);
   }
 
   @InjectRoute(jobRoutes.updatePublishedJob)
@@ -81,5 +82,15 @@ export class JobController {
   @InjectRoute(jobRoutes.updateStatus)
   async updateStatus(@Param('id') id: string, @ReqUser() user: IJwtStrategy, @Body() data: UpdateJobStatusDto) {
     return this.jobService.updateStatus(id, user.element.id, data.status);
+  }
+
+  @InjectRoute(jobRoutes.adminFindJobs)
+  async adminFindJobs(@Query() query: QueryJobDto) {
+    return this.jobService.adminFindJobs(query);
+  }
+
+  @InjectRoute(jobRoutes.adminDeleteJob)
+  async adminDeleteJob(@Param('id') id: string, @Body() data: ReasonDto) {
+    return this.jobService.adminDeleteJob(id, data.reason);
   }
 }

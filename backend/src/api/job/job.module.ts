@@ -8,6 +8,7 @@ import { SkillModule } from '../skill/skill.module';
 import { ApplyJobModule } from '../apply-job/apply-job.module';
 import { AddressModule } from '../address/address.module';
 import { CompanyAddressModule } from '../company-address/company-address.module';
+import { EmailModule } from '../email/email.module';
 @Module({
   imports: [
     TypeOrmModule.forFeature([Job]),
@@ -16,6 +17,7 @@ import { CompanyAddressModule } from '../company-address/company-address.module'
     ApplyJobModule,
     AddressModule,
     CompanyAddressModule,
+    EmailModule,
   ],
   controllers: [JobController],
   providers: [JobService],

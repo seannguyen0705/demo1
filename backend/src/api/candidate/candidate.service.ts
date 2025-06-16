@@ -20,6 +20,7 @@ import { QueryCandidate } from './dto/query-candidate.dto';
 import { UpdateStatusUserDto } from '@/common/dto/update-status-user.dto';
 import { Cv } from '../cv/entities/cv.entity';
 import { In } from 'typeorm';
+import { EmailService } from '../email/email.service';
 @Injectable()
 export class CandidateService {
   private readonly folder: string;
@@ -29,6 +30,7 @@ export class CandidateService {
     private tokenService: TokenService,
     @InjectDataSource() private readonly dataSource: DataSource,
     private readonly cloudinaryService: CloudinaryService,
+    private readonly emailService: EmailService,
   ) {
     this.folder = 'candidate/avatar';
   }
@@ -118,7 +120,7 @@ export class CandidateService {
     return updatedCandidate.toResponse();
   }
 
-  public async deleteById(id: string) {
+  public async deleteById(id: string, reason: string) {
     const queryRunner = this.dataSource.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
@@ -140,6 +142,7 @@ export class CandidateService {
         this.cloudinaryService.deleteFiles(files.map((item) => item.key));
       }
       await queryRunner.commitTransaction();
+      await this.emailService.deleteCandidate(candidate.email, candidate.fullName, reason);
       return { message: 'Xóa tài khoản thành công' };
     } catch (error) {
       await queryRunner.rollbackTransaction();
@@ -302,14 +305,21 @@ export class CandidateService {
   }
 
   public async updateStatus(id: string, data: UpdateStatusUserDto) {
+    const { status } = data;
     const candidate = await this.candidateRepository.findOneBy({ id });
     if (!candidate) {
       throw new NotFoundException('Candidate not found');
     }
-
-    const { status } = data;
     if (status === UserStatus.INACTIVE) {
       throw new BadRequestException('Không được phép chuyển về inactive');
+    }
+
+    if (candidate.status === UserStatus.INACTIVE && status === UserStatus.ACTIVE) {
+      await this.emailService.adminActiveCandidate(candidate.email, candidate.fullName);
+    } else if (status === UserStatus.BANNED) {
+      await this.emailService.banCandidate(candidate.email, candidate.fullName, data.reason);
+    } else if (status === UserStatus.ACTIVE) {
+      await this.emailService.unbanCandidate(candidate.email, candidate.fullName, data.reason);
     }
     candidate.status = status;
     await this.candidateRepository.save(candidate);

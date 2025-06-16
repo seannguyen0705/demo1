@@ -45,7 +45,7 @@ export default function TableEmployer() {
             <TableHead>Họ Tên</TableHead>
             <TableHead>SĐT</TableHead>
             <TableHead>Tên Công ty</TableHead>
-            <TableHead>
+            <TableHead className="flex justify-center items-center">
               <Button
                 variant="ghost"
                 className="h-auto p-0 font-medium hover:bg-transparent"
@@ -83,7 +83,7 @@ export default function TableEmployer() {
                   <ShowStatusUser status={employer.status} />
                 </TableCell>
                 <TableCell className="text-right">
-                  <ActionEmployer employerId={employer.id} status={employer.status} />
+                  <ActionEmployer employer={employer} />
                 </TableCell>
               </TableRow>
             ))

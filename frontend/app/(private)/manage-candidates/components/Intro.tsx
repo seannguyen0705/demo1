@@ -1,8 +1,6 @@
 import { IUser } from '@/api/interface';
 import { Skeleton } from '@/components/ui/skeleton';
 
-import { UserRole } from '@/utils/enums';
-
 function SkeletonIntro() {
   return (
     <section className="relative rounded-[20px] bg-[#EBF5F4] p-6 dark:bg-gray-900">

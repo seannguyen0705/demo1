@@ -11,6 +11,7 @@ import { Employer } from './entities/employer.entity';
 import { plainToInstance } from 'class-transformer';
 import { QueryEmployer } from './dto/query-employer.dto';
 import { ImageValidatorPipe } from '@/pipes';
+import { ReasonDto } from '@/common/dto/reason.dto';
 
 @InjectController({ name: employerRoutes.index })
 export class EmployerController {
@@ -58,7 +59,7 @@ export class EmployerController {
   }
 
   @InjectRoute(employerRoutes.deleteEmployer)
-  public async deleteEmployer(@Param('id') id: string) {
-    return this.employerService.deleteEmployer(id);
+  public async deleteEmployer(@Param('id') id: string, @Body() data: ReasonDto) {
+    return this.employerService.deleteEmployer(id, data.reason);
   }
 }

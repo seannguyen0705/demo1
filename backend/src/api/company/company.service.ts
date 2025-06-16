@@ -6,6 +6,7 @@ import { Company } from './entities/company.entity';
 import { QueryRunner } from 'typeorm';
 import UpdateCompanyDto from './dtos/update-company.dto';
 import { ILike } from 'typeorm';
+import { JobStatus } from '@/common/enums';
 @Injectable()
 export class CompanyService {
   constructor(
@@ -74,16 +75,17 @@ export class CompanyService {
       .leftJoin('company.jobs', 'jobs')
       .leftJoin('company.addresses', 'addresses')
       .leftJoin('addresses.province', 'province')
-      .loadRelationCountAndMap('company.jobCount', 'company.jobs')
+      .loadRelationCountAndMap('company.jobCount', 'company.jobs', 'jobs', (qb) =>
+        qb.where('jobs.status = :status', { status: JobStatus.PUBLISHED }),
+      )
       .select(['company.id', 'company.name', 'logo.url', 'addresses.id', 'province.name'])
-
+      .addSelect('AVG(reviews.rating)', 'avg_rating')
+      .orderBy('avg_rating', 'DESC')
       .groupBy('company.id')
       .addGroupBy('logo.id')
       .addGroupBy('addresses.id')
       .addGroupBy('province.id')
-      .orderBy('AVG(reviews.rating)', 'DESC')
-      .addOrderBy('COUNT(reviews.id)', 'DESC')
-      .limit(10);
+      .take(10);
     const companies = await queryBuilder.getMany();
     return companies;
   }

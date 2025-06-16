@@ -8,7 +8,7 @@ import { Company } from '@/api/company/entities/company.entity';
 @Check('rating >= 0 AND rating <= 5')
 export class Review extends BaseEntity {
   @Column()
-  @Column({ type: 'decimal', precision: 2, scale: 1, default: 5 })
+  @Column({ type: 'decimal', precision: 2, scale: 1, default: 5, select: false })
   rating: number;
 
   @Column({ type: 'text' })
