@@ -380,6 +380,7 @@ export class EmployerService {
       const count = await this.employerRepository.count({
         where: {
           createdAt: LessThan(sixMonthsAgo),
+          status: UserStatus.ACTIVE,
         },
       });
       result.push({ date: sixMonthsAgo, count });

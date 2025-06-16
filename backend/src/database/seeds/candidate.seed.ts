@@ -21,6 +21,10 @@ export const seedCandidates = async (queryRunner: QueryRunner, count: number = 1
     candidate.personal_website = faker.internet.url();
     candidate.introduction = faker.lorem.paragraph();
     candidate.status = UserStatus.ACTIVE;
+    candidate.createdAt = faker.date.between({
+      from: new Date(Date.now() - 6 * 30 * 86400000),
+      to: new Date(Date.now()),
+    });
 
     const existingCandidate = await candidateRepository.findOneBy([
       { email: candidate.email },

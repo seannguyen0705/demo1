@@ -4,6 +4,7 @@ import { seedSkills } from './skill.seed';
 import { seedCandidates } from './candidate.seed';
 import { seedEmployers } from './employer.seed';
 import { seedReviews } from './review.seed';
+import { seedApplyJobs } from './apply-job.seed';
 const seed = async () => {
   await AppDataSource.initialize();
   const queryRunner = AppDataSource.createQueryRunner();
@@ -16,6 +17,7 @@ const seed = async () => {
     await seedCandidates(queryRunner, 100);
     await seedEmployers(queryRunner, 100);
     await seedReviews(queryRunner, 100);
+    await seedApplyJobs(queryRunner, 500);
     await queryRunner.commitTransaction();
   } catch (error) {
     await queryRunner.rollbackTransaction();

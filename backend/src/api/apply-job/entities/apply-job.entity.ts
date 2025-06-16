@@ -26,7 +26,7 @@ export class ApplyJob extends BaseEntity {
   @Column({ name: 'file_id' })
   fileId: string;
 
-  @ManyToOne(() => File)
+  @ManyToOne(() => File, { cascade: true })
   @JoinColumn({ name: 'file_id' })
   file: File;
 

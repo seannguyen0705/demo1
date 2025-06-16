@@ -226,5 +226,6 @@ export class ApplyJobService {
       });
       result.push({ date: sixMonthsAgo, count });
     }
+    return result;
   }
 }
