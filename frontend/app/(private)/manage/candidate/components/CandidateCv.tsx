@@ -5,7 +5,7 @@ interface IProps {
   candidateId: string;
 }
 export default function CandidateCv({ candidateId }: IProps) {
-  const { cvs, isLoading } = useGetCvByCandidateId(candidateId);
+  const { cvs } = useGetCvByCandidateId(candidateId);
   return (
     <section className="">
       <h3 className="text-lg font-bold mb-3">Cv của ứng viên</h3>

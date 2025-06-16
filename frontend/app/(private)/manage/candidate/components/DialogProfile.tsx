@@ -23,7 +23,7 @@ interface IProps {
   candidateId: string;
 }
 export default function DialogProfile({ candidateId }: IProps) {
-  const { candidate, isLoading } = useGetCandidateById({ candidateId });
+  const { candidate } = useGetCandidateById({ candidateId });
 
   return (
     <Dialog>
