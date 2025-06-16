@@ -1,6 +1,6 @@
 import { CardContent } from '@/components/ui/card';
 import { Card } from '@/components/ui/card';
-import { Brain, Briefcase, Filter, TrendingUp, Users } from 'lucide-react';
+import { Briefcase, Filter, TrendingUp, Users } from 'lucide-react';
 
 type Intro = {
   title: string;
@@ -12,20 +12,17 @@ export default function IntroCards() {
   const intros = [
     {
       title: 'Tiếp cận ứng viên chất lượng',
-      description:
-        'Kết nối với hàng nghìn ứng viên đã được sàng lọc phù hợp với nhu cầu của doanh nghiệp.',
+      description: 'Kết nối với hàng nghìn ứng viên đã được sàng lọc phù hợp với nhu cầu của doanh nghiệp.',
       icon: <Users className="h-12 w-12 text-primary" />,
     },
     {
       title: 'Đăng tin tuyển dụng dễ dàng',
-      description:
-        'Tạo và quản lý tin tuyển dụng chỉ trong vài phút với giao diện thân thiện.',
+      description: 'Tạo và quản lý tin tuyển dụng chỉ trong vài phút với giao diện thân thiện.',
       icon: <Briefcase className="h-12 w-12 text-primary" />,
     },
     {
       title: 'Phân tích hiệu quả',
-      description:
-        'Theo dõi hiệu suất tin tuyển dụng và tối ưu hóa chiến lược tuyển dụng của bạn.',
+      description: 'Theo dõi hiệu suất tin tuyển dụng và tối ưu hóa chiến lược tuyển dụng của bạn.',
       icon: <TrendingUp className="h-12 w-12 text-primary" />,
     },
     {

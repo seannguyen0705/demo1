@@ -7,48 +7,6 @@ import Link from 'next/link';
 import useGetMe from '@/app/hooks/useGetMe';
 import getCenterNav from '@/utils/helpers/getCenterNav';
 
-const defaultNavs = [
-  {
-    name: 'Trang chủ',
-    href: '/',
-  },
-  {
-    name: 'Việc làm',
-    href: '/job',
-  },
-  {
-    name: 'Về chúng tôi',
-    href: '/about',
-  },
-  {
-    name: 'Liên hệ',
-    href: '/contact',
-  },
-  {
-    name: 'Tuyển dụng',
-    href: '/recruitment',
-  },
-];
-
-const authNavs = [
-  {
-    name: 'Trang chủ',
-    href: '/',
-  },
-  {
-    name: 'Việc làm',
-    href: '/job',
-  },
-  {
-    name: 'Về chúng tôi',
-    href: '/about',
-  },
-  {
-    name: 'Liên hệ',
-    href: '/contact',
-  },
-];
-
 export default function AuthMenuSide() {
   const [isOpen, setIsOpen] = useState(false);
   const { user } = useGetMe();

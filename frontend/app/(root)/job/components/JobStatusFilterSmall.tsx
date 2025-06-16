@@ -1,6 +1,5 @@
-import useGetMe from '@/app/hooks/useGetMe';
 import CheckBox from '@/components/Checkbox';
-import { JobStatus, UserRole } from '@/utils/enums';
+import { JobStatus } from '@/utils/enums';
 
 interface IProps {
   jobStatus: string;

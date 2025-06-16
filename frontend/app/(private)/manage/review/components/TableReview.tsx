@@ -31,7 +31,7 @@ export default function TableReview() {
     });
     return urlSearchParams.toString();
   }, [status, orderBy, order, keyword, page, limit]);
-  const { data, isLoading } = useGetReviews(queryString);
+  const { data } = useGetReviews(queryString);
 
   if (!data) return <Skeleton className="w-full h-[300px]" />;
   const { reviews, total } = data;

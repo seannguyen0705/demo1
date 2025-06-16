@@ -1,7 +1,6 @@
 'use client';
 import { ICv } from '@/api/cv/interface';
 import Link from 'next/link';
-import { FileText } from 'lucide-react';
 import { format } from 'date-fns';
 import UpdateCv from './UpdateCv';
 import useDeleteCv from '../hooks/useDeleteCv';

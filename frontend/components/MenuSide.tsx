@@ -6,48 +6,6 @@ import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import getCenterNav from '@/utils/helpers/getCenterNav';
 
-const defaultNavs = [
-  {
-    name: 'Trang chủ',
-    href: '/',
-  },
-  {
-    name: 'Việc làm',
-    href: '/job',
-  },
-  {
-    name: 'Về chúng tôi',
-    href: '/about',
-  },
-  {
-    name: 'Liên hệ',
-    href: '/contact',
-  },
-  {
-    name: 'Tuyển dụng',
-    href: '/recruitment',
-  },
-];
-
-const authNavs = [
-  {
-    name: 'Trang chủ',
-    href: '/',
-  },
-  {
-    name: 'Việc làm',
-    href: '/job',
-  },
-  {
-    name: 'Về chúng tôi',
-    href: '/about',
-  },
-  {
-    name: 'Liên hệ',
-    href: '/contact',
-  },
-];
-
 export default function MenuSide() {
   const [isOpen, setIsOpen] = useState(false);
 
