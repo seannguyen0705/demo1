@@ -337,7 +337,16 @@ export class JobService {
   }
 
   public async countAllJobs() {
-    return this.jobRepository.count({ where: { status: JobStatus.PUBLISHED } });
+    return this.jobRepository.count({
+      where: {
+        status: JobStatus.PUBLISHED,
+        company: {
+          employer: {
+            status: UserStatus.ACTIVE,
+          },
+        },
+      },
+    });
   }
 
   public async candidateGetJobById(id: string, candidateId: string) {
@@ -558,9 +567,11 @@ export class JobService {
       .skip(limit * (page - 1))
       .take(limit)
       .innerJoin('job.company', 'company')
+      .innerJoin('company.employer', 'employer')
       .loadRelationCountAndMap('job.applyJobCount', 'job.applyJobs', 'applyJobs')
       .select(['job.id', 'job.title', 'job.createdAt', 'job.expiredAt', 'company.name'])
-      .andWhere('job.status =:status', { status: JobStatus.PUBLISHED });
+      .andWhere('job.status =:status', { status: JobStatus.PUBLISHED })
+      .andWhere('employer.status =:userStatus', { userStatus: UserStatus.ACTIVE });
 
     await Promise.all([
       this.adminSearchJobByKeyword(queryBuilder, keyword),

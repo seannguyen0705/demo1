@@ -30,7 +30,7 @@ export default function CompanyCard({ company }: IProps) {
 
           <div className="flex flex-col gap-2 bg-light-green dark:bg-gray-800 py-4">
             <div className="flex justify-between px-4 gap-2">
-              <p className="text-sm">{Array.from(setProvinceNames).join('-')}</p>
+              <p className="text-sm">{Array.from(setProvinceNames).slice(0, 2).join(' -  ')}</p>
               <div className="text-sm inline-flex items-center gap-2">
                 <div className="w-4 h-4 rounded-full bg-green-500 animate-pulse" />
                 {company.jobCount} việc làm

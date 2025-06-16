@@ -1,4 +1,4 @@
-import { Briefcase, UserRound, Building, UserRoundPlus, Settings, Mail, UsersRound } from 'lucide-react';
+import { Briefcase, UserRound, Building, UserRoundPlus, Settings, Mail, UsersRound, Star } from 'lucide-react';
 
 import { JSX } from 'react';
 import { UserRole } from '../enums';

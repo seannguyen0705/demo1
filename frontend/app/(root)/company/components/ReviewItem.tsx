@@ -20,6 +20,7 @@ export default function ReviewItem({ review, isOwner = false }: IProps) {
   if (isEdit) {
     return <EditReview companyId={review.companyId} review={review} setIsEdit={setIsEdit} />;
   }
+
   return (
     <article className="flex flex-col bg-slate-50 dark:bg-gray-700 p-4 rounded-lg">
       <div className="flex items-center justify-between">

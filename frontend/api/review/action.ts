@@ -35,6 +35,18 @@ export const deleteReview = async (reviewId: string, companyId: string) => {
   return response;
 };
 
+export const adminDeleteReview = async (reviewId: string) => {
+  const response = await actionFetch<IReview>(`reviews/${reviewId}`, {
+    method: 'DELETE',
+    credentials: 'include',
+  });
+  if (!isErrorResponse(response)) {
+    revalidateTag(`company/${response.data.companyId}/reviews`);
+    revalidateTag(`company/${response.data.companyId}/reviews/statistics`);
+  }
+  return response;
+};
+
 export const updateReview = async (data: UpdateReview, reviewId: string, companyId: string) => {
   const response = await actionFetch(`candidate/review/${reviewId}`, {
     method: 'PUT',

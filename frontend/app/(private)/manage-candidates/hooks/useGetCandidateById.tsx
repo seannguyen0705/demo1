@@ -6,7 +6,7 @@ const getCandidateById = async (candidateId: string) => {
   try {
     const response = await axiosInstance.get<{ data: IUser }>(`/candidates/${candidateId}`);
     return response.data.data;
-  } catch (error) {
+  } catch {
     return undefined;
   }
 };

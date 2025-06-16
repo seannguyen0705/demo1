@@ -23,7 +23,7 @@ export default function NavCompany({ pathName, companyName }: IProps) {
             className={`border-b-2 px-2 ${pathName === nav.href ? 'border-green' : 'border-transparent hover:border-gray-300 '}`}
             key={nav.href}
           >
-            <Link className="" href={nav.href}>
+            <Link scroll={false} href={nav.href}>
               {nav.name}
             </Link>
           </li>

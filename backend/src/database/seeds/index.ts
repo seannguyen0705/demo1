@@ -3,7 +3,7 @@ import { seedProvinces } from './province.seed';
 import { seedSkills } from './skill.seed';
 import { seedCandidates } from './candidate.seed';
 import { seedEmployers } from './employer.seed';
-
+import { seedReviews } from './review.seed';
 const seed = async () => {
   await AppDataSource.initialize();
   const queryRunner = AppDataSource.createQueryRunner();
@@ -15,6 +15,7 @@ const seed = async () => {
     await seedSkills(queryRunner);
     await seedCandidates(queryRunner, 100);
     await seedEmployers(queryRunner, 100);
+    await seedReviews(queryRunner, 100);
     await queryRunner.commitTransaction();
   } catch (error) {
     await queryRunner.rollbackTransaction();

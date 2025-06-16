@@ -6,8 +6,7 @@ const getJobs = async (queryString: string) => {
   try {
     const response = await axiosInstance.get<{ data: QueryJob }>(`/jobs?${queryString}`);
     return response.data.data;
-  } catch (error) {
-    console.log(error);
+  } catch {
     return {
       jobs: [],
       currentPage: 1,

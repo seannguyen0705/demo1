@@ -2,7 +2,6 @@ import EditSkill from './EditSkill';
 import MySkill from './MySkill';
 import useGetCandidateSkill from '../hooks/useGetCandidateSkill';
 import { Skeleton } from '@/components/ui/skeleton';
-import { UserRole } from '@/utils/enums';
 
 function SkeletonSkillItem() {
   return (

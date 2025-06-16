@@ -1,4 +1,5 @@
-import { IQueryPagination } from '../interface';
+import { ICompany } from '../company/interface';
+import { IQueryPagination, IUser } from '../interface';
 import { Order, OrderByReview } from '@/utils/enums';
 interface IReview {
   id: string;
@@ -6,6 +7,9 @@ interface IReview {
   comment: string;
   createdAt: Date;
   companyId: string;
+  candidateId: string;
+  candidate: IUser;
+  company: ICompany;
 }
 
 interface QueryReview {

@@ -14,7 +14,7 @@ interface IProps {
 }
 
 export default function SelectProvince({ provinceId, onChange }: IProps) {
-  const { data: provinces, isLoading } = useGetProvince();
+  const { data: provinces } = useGetProvince();
   const [open, setOpen] = useState(false);
 
   return (

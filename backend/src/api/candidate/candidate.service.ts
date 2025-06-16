@@ -198,7 +198,11 @@ export class CandidateService {
   }
 
   public async countAllCandidates() {
-    return this.candidateRepository.count({});
+    return this.candidateRepository.count({
+      where: {
+        status: UserStatus.ACTIVE,
+      },
+    });
   }
 
   public async findOneById(id: string): Promise<Candidate> {
