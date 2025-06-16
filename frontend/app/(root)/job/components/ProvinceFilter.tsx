@@ -15,7 +15,7 @@ import useQueryJob from '../hooks/useQueryJob';
 export default function ProvinceFilter() {
   const provinceName = useSearchParams().get('provinceName');
   const { createQueryString } = useQueryJob();
-  const { data: provinces, isLoading } = useGetProvince();
+  const { data: provinces } = useGetProvince();
   const [open, setOpen] = useState(false);
   const router = useRouter();
 

@@ -29,7 +29,7 @@ export default function TableJob() {
     });
     return urlSearchParams.toString();
   }, [status, orderBy, order, keyword, page, limit]);
-  const { data, isLoading } = useAdminGetJobs(queryString);
+  const { data } = useAdminGetJobs(queryString);
 
   if (!data) return <Skeleton className="w-full h-[300px]" />;
   const { jobs, total } = data;

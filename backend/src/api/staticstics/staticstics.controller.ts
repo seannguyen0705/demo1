@@ -22,10 +22,12 @@ export class StaticsticsController {
 
   @InjectRoute(staticsticsRoutes.staticsticsCountIn6MonthsAgo)
   public async staticsticsCountIn6MonthsAgo() {
-    const jobs = await this.jobService.countJobIn6MonthsAgo();
-    const employers = await this.employerService.countEmployerIn6MonthsAgo();
-    const candidates = await this.candidateService.countCandidateIn6MonthsAgo();
-    const applyJobs = await this.applyJobService.countApplyJobIn6MonthsAgo();
+    const [jobs, employers, candidates, applyJobs] = await Promise.all([
+      this.jobService.countJobIn6MonthsAgo(),
+      this.employerService.countEmployerIn6MonthsAgo(),
+      this.candidateService.countCandidateIn6MonthsAgo(),
+      this.applyJobService.countApplyJobIn6MonthsAgo(),
+    ]);
     return { jobs, employers, candidates, applyJobs };
   }
 }

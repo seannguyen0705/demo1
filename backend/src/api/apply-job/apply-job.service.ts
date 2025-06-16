@@ -215,17 +215,18 @@ export class ApplyJobService {
   }
 
   public async countApplyJobIn6MonthsAgo() {
-    const result: { date: Date; count: number }[] = [];
-    for (let i = 0; i < 6; i++) {
-      const sixMonthsAgo = new Date();
-      sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - i);
-      const count = await this.applyJobRepository.count({
-        where: {
-          createdAt: LessThan(sixMonthsAgo),
-        },
-      });
-      result.push({ date: sixMonthsAgo, count });
-    }
+    const result = await Promise.all(
+      Array.from({ length: 6 }).map(async (_, i) => {
+        const sixMonthsAgo = new Date();
+        sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - i);
+        const count = await this.applyJobRepository.count({
+          where: {
+            createdAt: LessThan(sixMonthsAgo),
+          },
+        });
+        return { date: sixMonthsAgo, count };
+      }),
+    );
     return result;
   }
 }
