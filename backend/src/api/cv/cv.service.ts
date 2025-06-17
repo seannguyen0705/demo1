@@ -6,7 +6,6 @@ import { Cv } from './entities/cv.entity';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
-import { FileService } from '../file/file.service';
 import { CreateFileDto } from '../file/dto/create-file.dto';
 import { File } from '../file/entities/file.entity';
 
@@ -18,7 +17,6 @@ export class CvService {
     @InjectRepository(Cv) private readonly cvRepository: CvExpository,
     @InjectDataSource() private readonly dataSource: DataSource,
     private readonly cloudinaryService: CloudinaryService,
-    private readonly fileService: FileService,
   ) {
     this.maxNumCv = 3;
     this.folder = 'candidate/cv';
@@ -45,8 +43,6 @@ export class CvService {
           order: { createdAt: 'ASC' },
         });
         await queryRunner.manager.delete(Cv, { id: oldestCv.id });
-        // await queryRunner.manager.delete(File, { id: oldestCv.file.id });
-        // await this.cloudinaryService.deleteFile(oldestCv.file.key);
       }
       const newFile = await queryRunner.manager.save(File, data);
       const cv = await queryRunner.manager.save(Cv, {
@@ -100,29 +96,6 @@ export class CvService {
   }
 
   async deleteCv(id: string, candidateId: string) {
-    // const queryRunner = this.dataSource.createQueryRunner();
-    // await queryRunner.connect();
-    // await queryRunner.startTransaction();
-
-    // try {
-    //   const cv = await queryRunner.manager.findOne(Cv, {
-    //     where: { id, candidateId },
-    //   });
-    //   if (!cv) {
-    //     throw new NotFoundException('CV not found');
-    //   }
-
-    //   await queryRunner.manager.delete(Cv, { id, candidateId });
-    //   await queryRunner.manager.delete(File, { id: cv.file.id });
-    //   await this.cloudinaryService.deleteFile(cv.file.key);
-    //   await queryRunner.commitTransaction();
-    //   return { message: 'CV deleted successfully' };
-    // } catch (error) {
-    //   await queryRunner.rollbackTransaction();
-    //   throw error;
-    // } finally {
-    //   await queryRunner.release();
-    // }
     const cv = await this.cvRepository.findOne({ where: { id, candidateId } });
     if (!cv) {
       throw new NotFoundException('CV not found');

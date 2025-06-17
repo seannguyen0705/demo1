@@ -13,7 +13,7 @@ export class CloudinaryService {
   }
 
   async uploadFile(file: Express.Multer.File, folder: string) {
-    const uploadResult = await new Promise((resolve) => {
+    const uploadResult = await new Promise((resolve, reject) => {
       cloudinary.uploader
         .upload_stream(
           {
@@ -22,6 +22,9 @@ export class CloudinaryService {
             filename_override: file.originalname,
           },
           (error, uploadResult) => {
+            if (error) {
+              return reject(error);
+            }
             return resolve(uploadResult);
           },
         )

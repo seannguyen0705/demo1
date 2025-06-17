@@ -4,6 +4,6 @@ import { SubscribeSkillController } from './subscribe-skill.controller';
 
 @Module({
   controllers: [SubscribeSkillController],
-  providers: [SubscribeSkillService]
+  providers: [SubscribeSkillService],
 })
 export class SubscribeSkillModule {}

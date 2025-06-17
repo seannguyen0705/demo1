@@ -10,7 +10,8 @@
     "build:fe": "yarn --cwd frontend build",
     "build:be": "yarn --cwd backend build",
     "start:fe": "yarn --cwd frontend start",
-    "start:be": "yarn --cwd backend start:prod"
+    "start:be": "yarn --cwd backend start:prod",
+    "test:be": "yarn --cwd backend test"
   },
   "devDependencies": {
     "husky": "^9.0.0",
