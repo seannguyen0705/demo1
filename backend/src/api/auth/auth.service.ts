@@ -174,7 +174,7 @@ export class AuthService {
     const userService = this.services[role];
     const user = await userService.findOneByEmail(email);
     if (!user) {
-      throw new WrongCredentialsException();
+      throw new NotFoundException('Tài khoản không tồn tại');
     }
     const payload: ITokenPayload = {
       email: user.email,

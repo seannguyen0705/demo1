@@ -14,7 +14,7 @@ export default function useForgotPassword() {
   return useMutation({
     mutationFn: forgotPassword,
     onError: () => {
-      toast.error('Có lỗi xảy ra vui lòng gửi lại sau');
+      toast.error('Người dùng không tồn tại');
     },
   });
 }
