@@ -37,6 +37,7 @@ interface IUser {
   company: ICompany;
   candidateSkills?: ICandidateSkill[];
   createdAt: string;
+  allowNotify: boolean;
 }
 
 interface IUpdateUserStatus {

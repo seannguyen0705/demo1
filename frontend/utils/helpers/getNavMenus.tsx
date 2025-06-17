@@ -3,7 +3,6 @@ import {
   UserRound,
   Building,
   PencilLine,
-  UserRoundPlus,
   Settings,
   Mail,
   UsersRound,
@@ -46,7 +45,7 @@ const getNavMenus = (user: IUser | undefined): NavItem[] => {
         href: '/manage-candidates',
         icon: <UsersRound />,
       },
-      { name: 'Cài đặt', href: '/settings', icon: <Settings /> },
+      { name: 'Cài đặt', href: '/setting', icon: <Settings /> },
     ],
     [UserRole.CANDIDATE]: [
       // {
@@ -57,7 +56,7 @@ const getNavMenus = (user: IUser | undefined): NavItem[] => {
       { name: 'Hồ sơ cá nhân', href: '/profile-personal', icon: <UserRound /> },
       { name: 'Việc làm của tôi', href: '/my-jobs', icon: <Briefcase /> },
       { name: 'Đăng kí nhận email', href: '/subscription', icon: <Mail /> },
-      { name: 'Cài đặt', href: '/settings', icon: <Settings /> },
+      { name: 'Cài đặt', href: '/setting', icon: <Settings /> },
     ],
     [UserRole.ADMIN]: [
       {
@@ -69,7 +68,7 @@ const getNavMenus = (user: IUser | undefined): NavItem[] => {
       { name: 'Ứng viên', href: '/manage/candidate', icon: <UsersRound /> },
       { name: 'Việc làm', href: '/manage/job', icon: <Briefcase /> },
       { name: 'Đánh giá', href: '/manage/review', icon: <Star /> },
-      { name: 'Cài đặt', href: '/settings', icon: <Settings /> },
+      { name: 'Cài đặt', href: '/setting', icon: <Settings /> },
     ],
   };
   return navs[user?.role || UserRole.CANDIDATE];

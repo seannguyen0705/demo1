@@ -22,16 +22,14 @@ import { IJwtStrategy } from './strategies/jwt.strategy';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
 import { ActiveCandidateDto } from './dto/active-candidate.dto';
+import { ChangePasswordDto } from '@/common/dto/change-password.dto';
 
 @InjectController({ name: authRoutes.index, isCore: true })
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
     private readonly tokenService: TokenService,
-    private readonly companyService: CompanyService,
     private readonly employerService: EmployerService,
-    private readonly cloudinaryService: CloudinaryService,
-    @InjectDataSource() private readonly dataSource: DataSource,
   ) {}
 
   @InjectRoute(authRoutes.registerCandidate)
@@ -120,5 +118,15 @@ export class AuthController {
   @InjectRoute(authRoutes.activeCandidate)
   public async activeCandidate(@Body() data: ActiveCandidateDto) {
     return this.authService.activeCandidate(data.accountToken);
+  }
+
+  @InjectRoute(authRoutes.changePassword)
+  public async changePassword(@Body() data: ChangePasswordDto, @ReqUser() user: IJwtStrategy) {
+    return this.authService.changePassword(user.element.id, user.role, data);
+  }
+
+  @InjectRoute(authRoutes.deleteMe)
+  public async deleteMe(@ReqUser() user: IJwtStrategy) {
+    return this.authService.deleteById(user.element.id, user.role);
   }
 }

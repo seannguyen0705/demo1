@@ -8,6 +8,7 @@ import { LoginDto, ResponseLoginDto, TokenCookie } from './interface';
 import { CreateCandidateDto } from '../candidate/interface';
 import { redirect } from 'next/navigation';
 import { UserRole } from '@/utils/enums';
+import { deleteAuthCookie } from '@/utils/helpers/deleteAuthCookie';
 
 export const registerCandidate = async (data: CreateCandidateDto) => {
   const response = await actionFetch('candidate/register', {
@@ -99,4 +100,16 @@ export const logout = async () => {
   cookieStore.delete('Authentication');
   cookieStore.delete('Refresh');
   redirect('/sign-in');
+};
+
+export const deleteMe = async () => {
+  const response = await actionFetch('me', {
+    method: 'DELETE',
+    credentials: 'include',
+  });
+  if (isErrorResponse(response)) {
+    return response;
+  }
+  await deleteAuthCookie();
+  return response;
 };

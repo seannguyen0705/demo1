@@ -53,9 +53,9 @@ export class CandidateController {
     return updatedCandidate;
   }
 
-  @InjectRoute(candidateRoutes.deleteById)
-  public async deleteById(@Param('id') id: string, @Body() data: ReasonDto) {
-    return this.candidateService.deleteById(id, data.reason);
+  @InjectRoute(candidateRoutes.adminDeleteById)
+  public async adminDeleteById(@Param('id') id: string, @Body() data: ReasonDto) {
+    return this.candidateService.adminDeleteById(id, data.reason);
   }
 
   @InjectRoute(candidateRoutes.getById)

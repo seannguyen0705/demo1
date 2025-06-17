@@ -93,4 +93,18 @@ export default {
     code: HttpStatus.OK,
     method: RequestMethod.POST,
   },
+
+  changePassword: <IRouteParams>{
+    path: '/change-password',
+    jwtSecure: true,
+    code: HttpStatus.OK,
+    method: RequestMethod.POST,
+  },
+
+  deleteMe: <IRouteParams>{
+    path: '/me',
+    jwtSecure: true,
+    code: HttpStatus.OK,
+    method: RequestMethod.DELETE,
+  },
 };

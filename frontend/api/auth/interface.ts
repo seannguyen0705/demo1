@@ -32,4 +32,17 @@ interface ActiveCandidateDto {
   accountToken: string;
 }
 
-export type { LoginDto, TokenCookie, ResponseLoginDto, ForgotPasswordDto, ResetPasswordDto, ActiveCandidateDto };
+interface ChangePasswordDto {
+  currentPassword: string;
+  newPassword: string;
+}
+
+export type {
+  LoginDto,
+  TokenCookie,
+  ResponseLoginDto,
+  ForgotPasswordDto,
+  ResetPasswordDto,
+  ActiveCandidateDto,
+  ChangePasswordDto,
+};

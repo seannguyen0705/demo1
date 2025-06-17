@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 
-import { Bar, Label, LabelList, Pie, PieChart } from 'recharts';
+import { Label, Pie, PieChart } from 'recharts';
 
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';

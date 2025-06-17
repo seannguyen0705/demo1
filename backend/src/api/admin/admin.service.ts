@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import type { DeleteResult } from 'typeorm';
@@ -13,6 +13,9 @@ import { UserRole } from '@/common/enums';
 import { TokenService } from '../token/token.service';
 import { ResponseAdminDetailDto, ResponseAdminDto } from './dto/response-admin.dto';
 import { plainToInstance } from 'class-transformer';
+import { ChangePasswordDto } from '@/common/dto/change-password.dto';
+import { compareSync } from 'bcrypt';
+import { hash } from '@/utils/helpers';
 @Injectable()
 export class AdminService {
   constructor(
@@ -122,5 +125,22 @@ export class AdminService {
       throw new NotFoundException('Admin not found');
     }
     return this.adminRepository.save({ ...admin, accountToken });
+  }
+
+  public async changePassword(id: string, data: ChangePasswordDto) {
+    const admin = await this.findOneById(id);
+    if (!admin) {
+      throw new NotFoundException('Admin not found');
+    }
+    const { currentPassword, newPassword } = data;
+    if (!compareSync(currentPassword, admin.password)) {
+      throw new BadRequestException('Mật khẩu hiện tại không chính xác');
+    }
+    const hashedPassword = await hash.generateWithBcrypt({
+      source: newPassword,
+      salt: 10,
+    });
+    await this.adminRepository.update(id, { password: hashedPassword });
+    return { message: 'Đổi mật khẩu thành công' };
   }
 }

@@ -21,6 +21,9 @@ import { UpdateStatusUserDto } from '@/common/dto/update-status-user.dto';
 import { Cv } from '../cv/entities/cv.entity';
 import { In, LessThan } from 'typeorm';
 import { EmailService } from '../email/email.service';
+import { ChangePasswordDto } from '@/common/dto/change-password.dto';
+import { hash } from '@/utils/helpers';
+import { compareSync } from 'bcrypt';
 @Injectable()
 export class CandidateService {
   private readonly folder: string;
@@ -120,7 +123,17 @@ export class CandidateService {
     return updatedCandidate.toResponse();
   }
 
-  public async deleteById(id: string, reason: string) {
+  public async adminDeleteById(id: string, reason: string) {
+    const candidate = await this.candidateRepository.findOneBy({ id });
+    if (!candidate) {
+      throw new NotFoundException('Candidate not found');
+    }
+    await this.deleteById(id);
+    await this.emailService.deleteCandidate(candidate.email, candidate.fullName, reason);
+    return { message: 'Xóa tài khoản thành công' };
+  }
+
+  public async deleteById(id: string) {
     const queryRunner = this.dataSource.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
@@ -142,7 +155,6 @@ export class CandidateService {
         this.cloudinaryService.deleteFiles(files.map((item) => item.key));
       }
       await queryRunner.commitTransaction();
-      await this.emailService.deleteCandidate(candidate.email, candidate.fullName, reason);
       return { message: 'Xóa tài khoản thành công' };
     } catch (error) {
       await queryRunner.rollbackTransaction();
@@ -345,5 +357,23 @@ export class CandidateService {
       }),
     );
     return result;
+  }
+
+  public async changePassword(id: string, data: ChangePasswordDto) {
+    const candidate = await this.candidateRepository.findOneBy({ id });
+    if (!candidate) {
+      throw new NotFoundException('Candidate not found');
+    }
+    const { currentPassword, newPassword } = data;
+
+    if (!compareSync(currentPassword, candidate.password || '')) {
+      throw new BadRequestException('Mật khẩu hiện tại không chính xác');
+    }
+    const hashedPassword = await hash.generateWithBcrypt({
+      source: newPassword,
+      salt: 10,
+    });
+    await this.candidateRepository.update(id, { password: hashedPassword });
+    return { message: 'Đổi mật khẩu thành công' };
   }
 }

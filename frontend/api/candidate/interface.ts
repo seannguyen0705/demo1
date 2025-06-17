@@ -12,6 +12,7 @@ interface UpdateCandidateDto {
   address?: string;
   title?: string;
   introduction?: string;
+  allowNotify?: boolean;
 }
 
 interface IQueryCandidate {
