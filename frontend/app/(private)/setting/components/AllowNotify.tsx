@@ -7,7 +7,7 @@ interface IProps {
 }
 export default function AllowNotify({ user }: IProps) {
   const { role, allowNotify } = user;
-  const { mutate: updateUser } = useUpdateUser({ role });
+  const { mutate: updateUser } = useUpdateUser({ role, showToast: false });
   return (
     <section className="bg-light-green space-y-4 rounded-[20px] dark:bg-gray-900 p-4">
       <h2 className="text-2xl font-bold">Thông báo khi có công việc mới</h2>

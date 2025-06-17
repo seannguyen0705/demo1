@@ -1,4 +1,3 @@
-import { IUser } from '@/api/interface';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -18,7 +17,6 @@ import { EyeOff } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import z from 'zod';
-import useUpdateUser from '../../profile-personal/hooks/useUpdateUser';
 import { useChangePassword } from '../hooks/useChangePassword';
 
 const formSchema = z

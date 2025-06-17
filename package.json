@@ -3,12 +3,20 @@
   "private": true,
   "scripts": {
     "prepare": "husky",
-    "lint-staged": "yarn --cwd frontend lint && yarn --cwd backend lint"
+    "lint-staged": "concurrently \"yarn --cwd frontend lint\" \"yarn --cwd backend lint\"",
+    "dev:fe": "yarn --cwd frontend dev",
+    "dev:be": "yarn --cwd backend start:dev",
+    "dev": "concurrently \"yarn dev:fe\" \"yarn dev:be\"",
+    "build:fe": "yarn --cwd frontend build",
+    "build:be": "yarn --cwd backend build",
+    "start:fe": "yarn --cwd frontend start",
+    "start:be": "yarn --cwd backend start:prod"
   },
   "devDependencies": {
     "husky": "^9.0.0",
     "lint-staged": "^15.0.0",
-    "prettier": "^3.5.3"
+    "prettier": "^3.5.3",
+    "concurrently": "^9.1.2"
   },
   "dependencies": {
     "@commitlint/cli": "^19.8.1",

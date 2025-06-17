@@ -10,8 +10,9 @@ import { AxiosError } from 'axios';
 
 interface IProps {
   role: UserRole;
+  showToast?: boolean;
 }
-export default function useUpdateUser({ role }: IProps) {
+export default function useUpdateUser({ role, showToast = true }: IProps) {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (data: UpdateCandidateDto | UpdateEmployerDto) => {
@@ -21,11 +22,15 @@ export default function useUpdateUser({ role }: IProps) {
       return updateEmployer(data);
     },
     onSuccess: () => {
-      toast.success('Cập nhật thông tin thành công');
+      if (showToast) {
+        toast.success('Cập nhật thông tin thành công');
+      }
       queryClient.invalidateQueries({ queryKey: ['me'] });
     },
     onError: (error: AxiosError<ErrorReponse>) => {
-      toast.error(error.response?.data.message || 'Lỗi cập nhật thông tin');
+      if (showToast) {
+        toast.error(error.response?.data.message || 'Lỗi cập nhật thông tin');
+      }
     },
   });
 }
