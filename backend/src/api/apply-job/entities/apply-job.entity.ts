@@ -42,7 +42,7 @@ export class ApplyJob extends BaseEntity {
   @Column({ name: 'message', type: 'text', nullable: true })
   message: string;
 
-  @Column({ name: 'status', default: ApplyJobStatus['Mới'] })
+  @Column({ name: 'status', default: ApplyJobStatus.NEW })
   status: ApplyJobStatus;
 
   public toResponse() {
