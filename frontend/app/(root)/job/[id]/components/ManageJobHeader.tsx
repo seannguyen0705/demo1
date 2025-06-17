@@ -5,11 +5,13 @@ import { Button } from '@/components/ui/button';
 import { JobStatus } from '@/utils/enums';
 import useDeleteJob from '@/app/(private)/edit-job/hooks/useDeleteJob';
 import ConfirmDelete from '@/components/ConfirmDelete';
-import { Staticstics } from '@/components/Staticstics';
+
 import { useRouter } from 'next/navigation';
 import useUpdateJobStatus from '@/app/(private)/manage-jobs/hooks/useUpdateJobStatus';
 import ShowStatusJob from '@/app/(private)/manage-jobs/components/ShowStatusJob';
 import useGetMe from '@/app/hooks/useGetMe';
+import { isErrorResponse } from '@/utils/helpers/isErrorResponse';
+import { StaticsticsJob } from '@/components/StaticsticsJob';
 
 interface IProps {
   job: IJob;
@@ -36,7 +38,7 @@ export default function ManageJobHeader({ job }: IProps) {
 
         {user?.company?.id === job.company.id && (
           <div className="flex justify-start flex-wrap mt-2 items-center gap-2">
-            <Staticstics job={job} />
+            <StaticsticsJob job={job} />
             <Button variant={'outline'} onClick={() => router.push(`/edit-job/${job.id}`)}>
               <Pencil /> Sửa
             </Button>
@@ -57,7 +59,15 @@ export default function ManageJobHeader({ job }: IProps) {
             <ConfirmDelete
               title="Xóa tin tuyển dụng"
               description="Bạn có chắc chắn muốn xóa tin tuyển dụng này không?"
-              action={() => deleteJob(job.id)}
+              action={() =>
+                deleteJob(job.id, {
+                  onSuccess: (data: object) => {
+                    if (!isErrorResponse(data)) {
+                      router.replace('/manage-jobs');
+                    }
+                  },
+                })
+              }
               disabled={isPending}
               button={
                 <Button variant={'outline'} className="text-red-500 hover:text-red-600">

@@ -6,7 +6,7 @@ import { JobLevel, JobStatus, JobType, OrderByJob, Order, UserStatus } from '@/c
 
 import { CompanyService } from '../company/company.service';
 import { CreateDraftJobDto } from './dto/create-draft-job.dto';
-import { LessThan, MoreThan, SelectQueryBuilder } from 'typeorm';
+import { LessThan, SelectQueryBuilder } from 'typeorm';
 import { CreatePublishedJobDto } from './dto/create-published-job.dto';
 import { JobAlreadyExistsException } from './job.exception';
 import { QueryJobDto } from './dto/query-job.dto';

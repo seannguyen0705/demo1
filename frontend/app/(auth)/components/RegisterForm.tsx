@@ -136,7 +136,8 @@ export default function RegisterForm() {
                     </Button>
                   </div>
                   <p className="text-xs mt-1 text-muted-foreground">
-                    *Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ cái viết hoa, chữ cái viết thường và số
+                    *Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ cái viết hoa, ký tự đặc biệt, chữ cái viết thường và
+                    số
                   </p>
                 </div>
               </FormControl>

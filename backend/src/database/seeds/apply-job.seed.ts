@@ -54,7 +54,13 @@ export const seedApplyJobs = async (queryRunner: QueryRunner, count: number) => 
     applyJob.phoneNumber = faker.helpers.fromRegExp(/0[0-9]{9}/);
     applyJob.expectedAddress = faker.location.streetAddress();
     applyJob.message = faker.lorem.paragraph();
-
+    applyJob.status = faker.helpers.arrayElement([
+      ApplyJobStatus.NEW,
+      ApplyJobStatus.REJECTED,
+      ApplyJobStatus.SEEN,
+      ApplyJobStatus.INTERVIEWING,
+      ApplyJobStatus.HIRED,
+    ]);
     batch.push(applyJob);
     if (batch.length === BATCH_SIZE) {
       await applyJobRepository.save(batch);

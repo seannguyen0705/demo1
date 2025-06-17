@@ -8,6 +8,7 @@ import CompanyImage from '@/app/(root)/company/components/CompanyImage';
 import JobInfo from '../../components/JobInfo';
 import ManageJobHeader from './ManageJobHeader';
 import useGetJobById from '../../hooks/useGetJobById';
+
 interface IProps {
   jobId: string;
   companyImages: ICompanyImage[];

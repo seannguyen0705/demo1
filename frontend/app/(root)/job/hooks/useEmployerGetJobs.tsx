@@ -1,6 +1,6 @@
 import { QueryJob } from '@/api/job/interface';
 import axiosInstance from '@/config/axios-config';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, keepPreviousData } from '@tanstack/react-query';
 
 const getEmployerJobs = async (queryString: string) => {
   try {
@@ -20,6 +20,7 @@ export default function useEmployerGetJobs(queryString: string) {
   const { data, isLoading } = useQuery({
     queryKey: ['manage-jobs', queryString],
     queryFn: () => getEmployerJobs(queryString),
+    placeholderData: keepPreviousData,
   });
   return { data, isLoading };
 }

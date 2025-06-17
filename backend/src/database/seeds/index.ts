@@ -17,7 +17,7 @@ const seed = async () => {
     await seedCandidates(queryRunner, 100);
     await seedEmployers(queryRunner, 100);
     await seedReviews(queryRunner, 100);
-    await seedApplyJobs(queryRunner, 500);
+    await seedApplyJobs(queryRunner, 3000);
     await queryRunner.commitTransaction();
   } catch (error) {
     await queryRunner.rollbackTransaction();

@@ -47,7 +47,7 @@ export class QueryJobDto extends QueryPaginationDto {
     }
     return value;
   })
-  orderBy?: OrderByJob;
+  orderBy?: OrderByJob = OrderByJob.CREATED_AT;
 
   @IsEnum(Order)
   @IsOptional()

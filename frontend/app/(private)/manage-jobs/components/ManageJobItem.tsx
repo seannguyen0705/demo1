@@ -8,7 +8,7 @@ import Link from 'next/link';
 import { BsPersonWorkspace } from 'react-icons/bs';
 import { JobStatus } from '@/utils/enums';
 import { Button } from '@/components/ui/button';
-import { Staticstics } from '@/components/Staticstics';
+import { StaticsticsJob } from '@/components/StaticsticsJob';
 import { useRouter } from 'next/navigation';
 import useDeleteJob from '../../edit-job/hooks/useDeleteJob';
 import ConfirmDelete from '@/components/ConfirmDelete';
@@ -94,7 +94,7 @@ export default function ManageJobItem({ job }: IProps) {
       </div>
 
       <div className="flex flex-wrap relative z-10 justify-end mt-2 items-center gap-2">
-        <Staticstics job={job} />
+        <StaticsticsJob job={job} />
         <Button variant={'outline'} onClick={() => router.push(`/edit-job/${job.id}`)}>
           <Pencil /> Sửa
         </Button>

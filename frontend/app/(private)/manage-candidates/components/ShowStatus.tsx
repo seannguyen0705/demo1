@@ -23,14 +23,14 @@ export default function ShowStatus({ status }: IProps) {
   if (status === ApplyJobStatus.INTERVIEWING) {
     return (
       <Badge className="bg-blue-500" variant="default">
-        Đang phỏng vấn
+        Phỏng vấn
       </Badge>
     );
   }
   if (status === ApplyJobStatus.HIRED) {
     return (
       <Badge className="bg-blue-500" variant="default">
-        Đã tuyển
+        Đã nhận
       </Badge>
     );
   }

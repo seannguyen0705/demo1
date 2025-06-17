@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import SelectSkill from '../../profile-personal/components/SelectSkill';
 import { Button } from '@/components/ui/button';
 import { X } from 'lucide-react';

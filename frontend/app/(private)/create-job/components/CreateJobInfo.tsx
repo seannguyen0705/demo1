@@ -97,7 +97,7 @@ export default function CreateJobInfo() {
         name="salaryMin"
         render={({ field }) => (
           <FormItem className="">
-            <FormLabel className={`${disabledSalaryMin && 'text-gray-400'}`}>Mức lương tối thiểu</FormLabel>
+            <FormLabel className={`${disabledSalaryMin && 'text-gray-400'}`}>Mức lương tối thiểu (VND)</FormLabel>
             <FormControl>
               <Input type="number" className="selection:bg-green" placeholder="Ex: 10.000.000" {...field} />
             </FormControl>
@@ -112,7 +112,7 @@ export default function CreateJobInfo() {
         name="salaryMax"
         render={({ field }) => (
           <FormItem className="">
-            <FormLabel className={`${disabledSalaryMax && 'text-gray-400'}`}>Mức lương tối đa</FormLabel>
+            <FormLabel className={`${disabledSalaryMax && 'text-gray-400'}`}>Mức lương tối đa (VND)</FormLabel>
             <FormControl>
               <Input type="number" className="selection:bg-green" placeholder="Ex: 10.000.000" {...field} />
             </FormControl>

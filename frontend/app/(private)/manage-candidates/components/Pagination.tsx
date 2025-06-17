@@ -49,7 +49,7 @@ export default function Pagination({ totalPages }: IProps) {
         </Button>
         <div className="flex items-center gap-1">
           {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => {
-            let pageNumber;
+            let pageNumber: number;
             if (totalPages <= 5) {
               pageNumber = i + 1;
             } else if (page <= 3) {

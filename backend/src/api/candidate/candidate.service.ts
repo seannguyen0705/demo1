@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
 
-import type { DataSource, DeleteResult, SelectQueryBuilder } from 'typeorm';
+import type { DataSource, SelectQueryBuilder } from 'typeorm';
 
 import { Order, OrderByUser, UserRole, UserStatus } from '@/common/enums';
 import { UserAlreadyException } from '@/api/auth/auth.exceptions';

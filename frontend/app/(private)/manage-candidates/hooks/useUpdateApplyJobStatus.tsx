@@ -16,6 +16,7 @@ export default function useUpdateApplyJobStatus({ id }: IProps) {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['manage-candidates'] });
       queryClient.invalidateQueries({ queryKey: ['apply-job', id] });
+      queryClient.invalidateQueries({ queryKey: ['apply-job-statistics', id] });
     },
   });
 }
