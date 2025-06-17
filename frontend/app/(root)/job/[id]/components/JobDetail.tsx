@@ -6,7 +6,6 @@ import CompanyImage from '@/app/(root)/company/components/CompanyImage';
 import JobRequirement from '../../components/JobRequirement.';
 import { getJobById } from '@/api/job/query';
 import { getCompanyImage } from '@/api/company-image/query';
-import { notFound } from 'next/navigation';
 
 interface IProps {
   jobId: string;
@@ -15,8 +14,9 @@ interface IProps {
 export default async function JobDetail({ jobId }: IProps) {
   const job = await getJobById(jobId);
   if (!job) {
-    notFound();
+    return <div className="flex-1"></div>;
   }
+
   const companyImages = await getCompanyImage(job.company.id);
   return (
     <div className="flex-1">
