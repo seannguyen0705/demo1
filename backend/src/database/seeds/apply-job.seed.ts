@@ -8,7 +8,6 @@ import { faker } from '@faker-js/faker';
 import { File } from '@/api/file/entities/file.entity';
 import { ApplyJobStatus } from '@/common/enums';
 import { BATCH_SIZE } from '@/utils/constants';
-import { enumh } from '@/utils/helpers';
 
 const createFile: CreateFileDto = {
   name: '1_Introduction to Software Testing.pdf',

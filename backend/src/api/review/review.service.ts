@@ -57,7 +57,7 @@ export class ReviewService {
 
     const result = await queryBuilder.getRawOne();
     return {
-      avg: isNaN(parseFloat(result.avg)) ? 5.0 : parseFloat(result.avg.toFixed(1)),
+      avg: isNaN(parseFloat(result.avg)) ? 5.0 : +parseFloat(result.avg).toFixed(1),
       count: parseInt(result.count),
     };
   }
