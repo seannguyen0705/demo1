@@ -12,7 +12,9 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 
 const login = async (data: LoginDto) => {
-  const response = await axios.post<{ data: ResponseLoginDto }>(`${process.env.BACKEND_URL}/api/v1/login`, data);
+  const response = await axios.post<{ data: ResponseLoginDto }>(`${process.env.BACKEND_URL}/api/v1/login`, data, {
+    withCredentials: true,
+  });
   return response.data;
 };
 
