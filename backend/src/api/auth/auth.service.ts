@@ -56,7 +56,9 @@ export class AuthService {
   public async getCookieWithJwtAccessToken(payload: ITokenPayload) {
     const ttl = this.configService.get('token.authentication.lifetime') / 1000;
     const token = this.jwtService.sign(payload);
-    const cookie = `Authentication=${token}; HttpOnly; Path=/; Max-Age=${ttl}`;
+    const cookie = `Authentication=${token}; HttpOnly; Path=/; Max-Age=${ttl}; Secure; SameSite=None; Domain=${this.configService.get(
+      'domain',
+    )}`;
     return {
       token,
       cookie,
@@ -74,7 +76,9 @@ export class AuthService {
       expiresIn: ttl,
     });
 
-    const cookie = `Refresh=${token}; HttpOnly; Path=/; Max-Age=${ttl}`;
+    const cookie = `Refresh=${token}; HttpOnly; Path=/; Max-Age=${ttl}; Secure; SameSite=None; Domain=${this.configService.get(
+      'domain',
+    )}`;
 
     return {
       token,
@@ -161,7 +165,10 @@ export class AuthService {
   }
 
   public getCookieForLogOut() {
-    return ['Authentication=; HttpOnly; Path=/; Max-Age=0', 'Refresh=; HttpOnly; Path=/; Max-Age=0'];
+    return [
+      'Authentication=; HttpOnly; Path=/; Max-Age=0; Secure; SameSite=None; Domain=' + this.configService.get('domain'),
+      'Refresh=; HttpOnly; Path=/; Max-Age=0; Secure; SameSite=None; Domain=' + this.configService.get('domain'),
+    ];
   }
 
   public async getUserDetailById(id: string, role: UserRole) {
