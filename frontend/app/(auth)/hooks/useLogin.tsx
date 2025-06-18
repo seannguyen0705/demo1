@@ -39,7 +39,7 @@ export default function useLogin() {
       queryClient.invalidateQueries({ queryKey: ['candidateGetJobById'] });
     },
     onError: (error: AxiosError<ErrorReponse>) => {
-      toast.error(error.response?.data.message);
+      toast.error(error.response?.data.message || 'Đăng nhập thất bại');
     },
   });
 }
