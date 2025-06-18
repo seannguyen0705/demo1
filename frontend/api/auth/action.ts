@@ -52,11 +52,17 @@ export const login = async (data: LoginDto) => {
     httpOnly: true,
     path: '/',
     maxAge: accessTokenCookie.ttl,
+    secure: true,
+    sameSite: 'none',
+    domain: process.env.DOMAIN,
   });
   cookieStore.set('Refresh', refreshTokenCookie.token, {
     httpOnly: true,
     path: '/',
     maxAge: refreshTokenCookie.ttl,
+    secure: true,
+    sameSite: 'none',
+    domain: process.env.DOMAIN,
   });
   return response;
 };
@@ -65,8 +71,7 @@ export const refreshToken = async () => {
   const cookieStore = await cookies();
   const refresh = cookieStore.get('Refresh');
   if (!refresh) {
-    cookieStore.delete('Authentication');
-    cookieStore.delete('Refresh');
+    await deleteAuthCookie();
     redirect('/sign-in');
   }
   const refreshCookie = `${refresh?.name}=${refresh?.value}`;
@@ -85,20 +90,17 @@ export const refreshToken = async () => {
       maxAge: accessTokenCookie.ttl,
     });
   } else {
-    cookieStore.delete('Authentication');
-    cookieStore.delete('Refresh');
+    await deleteAuthCookie();
     redirect('/sign-in');
   }
 };
 
 export const logout = async () => {
-  const cookieStore = await cookies();
   await actionFetch('logout', {
     method: 'POST',
     credentials: 'include',
   });
-  cookieStore.delete('Authentication');
-  cookieStore.delete('Refresh');
+  await deleteAuthCookie();
   redirect('/sign-in');
 };
 
