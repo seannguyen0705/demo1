@@ -7,7 +7,7 @@ import { cookies } from 'next/headers';
 import { LoginDto, ResponseLoginDto, TokenCookie } from './interface';
 import { CreateCandidateDto } from '../candidate/interface';
 import { redirect } from 'next/navigation';
-import { UserRole } from '@/utils/enums';
+
 import { deleteAuthCookie } from '@/utils/helpers/deleteAuthCookie';
 
 export const registerCandidate = async (data: CreateCandidateDto) => {
