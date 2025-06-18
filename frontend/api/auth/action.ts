@@ -88,6 +88,9 @@ export const refreshToken = async () => {
       httpOnly: true,
       path: '/',
       maxAge: accessTokenCookie.ttl,
+      secure: true,
+      sameSite: 'none',
+      domain: process.env.DOMAIN,
     });
   } else {
     await deleteAuthCookie();
