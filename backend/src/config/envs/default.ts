@@ -39,7 +39,7 @@ export const config = {
         user: process.env.MAIL_USERNAME || 'username',
         pass: process.env.MAIL_PASSWORD || 'password',
       },
-      secure: true,
+      secure: false,
       ignoreTLS: true,
     },
     defaults: {
