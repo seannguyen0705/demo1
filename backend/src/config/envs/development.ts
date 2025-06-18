@@ -22,4 +22,5 @@ export const config = {
       renewedTimes: 4,
     },
   },
+  domain: 'localhost',
 };

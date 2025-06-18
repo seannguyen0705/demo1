@@ -7,7 +7,7 @@ import { cookies } from 'next/headers';
 import { LoginDto, ResponseLoginDto, TokenCookie } from './interface';
 import { CreateCandidateDto } from '../candidate/interface';
 import { redirect } from 'next/navigation';
-import { UserRole } from '@/utils/enums';
+
 import { deleteAuthCookie } from '@/utils/helpers/deleteAuthCookie';
 
 export const registerCandidate = async (data: CreateCandidateDto) => {
@@ -52,11 +52,17 @@ export const login = async (data: LoginDto) => {
     httpOnly: true,
     path: '/',
     maxAge: accessTokenCookie.ttl,
+    secure: true,
+    sameSite: 'none',
+    domain: process.env.DOMAIN,
   });
   cookieStore.set('Refresh', refreshTokenCookie.token, {
     httpOnly: true,
     path: '/',
     maxAge: refreshTokenCookie.ttl,
+    secure: true,
+    sameSite: 'none',
+    domain: process.env.DOMAIN,
   });
   return response;
 };
@@ -65,8 +71,7 @@ export const refreshToken = async () => {
   const cookieStore = await cookies();
   const refresh = cookieStore.get('Refresh');
   if (!refresh) {
-    cookieStore.delete('Authentication');
-    cookieStore.delete('Refresh');
+    await deleteAuthCookie();
     redirect('/sign-in');
   }
   const refreshCookie = `${refresh?.name}=${refresh?.value}`;
@@ -83,22 +88,22 @@ export const refreshToken = async () => {
       httpOnly: true,
       path: '/',
       maxAge: accessTokenCookie.ttl,
+      secure: true,
+      sameSite: 'none',
+      domain: process.env.DOMAIN,
     });
   } else {
-    cookieStore.delete('Authentication');
-    cookieStore.delete('Refresh');
+    await deleteAuthCookie();
     redirect('/sign-in');
   }
 };
 
 export const logout = async () => {
-  const cookieStore = await cookies();
   await actionFetch('logout', {
     method: 'POST',
     credentials: 'include',
   });
-  cookieStore.delete('Authentication');
-  cookieStore.delete('Refresh');
+  await deleteAuthCookie();
   redirect('/sign-in');
 };
 
