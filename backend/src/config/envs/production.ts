@@ -22,4 +22,5 @@ export const config = {
       renewedTimes: 10,
     },
   },
+  domain: process.env.DOMAIN || 'localhost',
 };
