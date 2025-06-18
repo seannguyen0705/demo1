@@ -30,8 +30,6 @@ export class AdvancedExceptionFilter implements ExceptionFilter {
       message: 'Something went wrong!',
     };
 
-    console.error(exception);
-
     try {
       const status = exception?.getStatus?.() || HttpStatus.INTERNAL_SERVER_ERROR;
 

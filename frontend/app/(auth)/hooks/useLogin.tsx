@@ -4,15 +4,15 @@ import { LoginDto, ResponseLoginDto } from '@/api/auth/interface';
 import { ErrorReponse } from '@/api/interface';
 import axiosInstance from '@/config/axios-config';
 import { UserRole } from '@/utils/enums';
-import { isErrorResponse } from '@/utils/helpers/isErrorResponse';
+
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { AxiosError } from 'axios';
+import axios, { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
 
 import { toast } from 'sonner';
 
 const login = async (data: LoginDto) => {
-  const response = await axiosInstance.post<{ data: ResponseLoginDto }>('/login', data);
+  const response = await axios.post<{ data: ResponseLoginDto }>(`${process.env.BACKEND_URL}/api/v1/login`, data);
   return response.data;
 };
 
@@ -39,6 +39,7 @@ export default function useLogin() {
       queryClient.invalidateQueries({ queryKey: ['candidateGetJobById'] });
     },
     onError: (error: AxiosError<ErrorReponse>) => {
+      console.log(error);
       toast.error(error.response?.data.message || 'Đăng nhập thất bại');
     },
   });
