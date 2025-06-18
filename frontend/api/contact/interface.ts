@@ -6,7 +6,7 @@ interface ICreateContact {
   email: string;
   title: string;
   content: string;
-  fileId: string;
+  fileId?: string;
 }
 
 interface IContact {

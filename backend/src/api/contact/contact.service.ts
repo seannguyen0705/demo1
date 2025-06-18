@@ -4,9 +4,13 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Contact } from './entities/contact.entity';
 import { CreateContactDto } from './dto/create-contact.dto';
 import { QueryContactDto } from './dto/query-contact.dto';
+import { CloudinaryService } from '../cloudinary/cloudinary.service';
 @Injectable()
 export class ContactService {
-  constructor(@InjectRepository(Contact) private readonly contactRepository: ContactRepository) {}
+  constructor(
+    @InjectRepository(Contact) private readonly contactRepository: ContactRepository,
+    private readonly cloudinaryService: CloudinaryService,
+  ) {}
 
   async createContact(createContactDto: CreateContactDto) {
     const contact = this.contactRepository.create(createContactDto);
@@ -14,15 +18,18 @@ export class ContactService {
   }
 
   async deleteContact(id: string) {
-    const contact = await this.contactRepository.findOneBy({ id });
+    const contact = await this.contactRepository.findOne({ where: { id }, relations: ['file'] });
     if (!contact) {
       throw new NotFoundException('Contact not found');
     }
-    return this.contactRepository.delete(id);
+    await this.contactRepository.delete(id);
+    if (contact.file) {
+      await this.cloudinaryService.deleteFile(contact.file.key);
+    }
   }
 
   async getContactById(id: string) {
-    const contact = await this.contactRepository.findOneBy({ id });
+    const contact = await this.contactRepository.findOne({ where: { id }, relations: ['file'] });
     if (!contact) {
       throw new NotFoundException('Contact not found');
     }

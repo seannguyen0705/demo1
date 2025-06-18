@@ -1,36 +1,9 @@
-'use client';
-
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
-import { useEffect, useState } from 'react';
-import useUploadFile from '@/app/hooks/useUploadFile';
-import useDeleteFile from '@/app/hooks/useDeleteFile';
-import { Clock, Mail, MapPin, Phone } from 'lucide-react';
+import { Clock, MapPin } from 'lucide-react';
+import { Mail } from 'lucide-react';
+import { Phone } from 'lucide-react';
 import ContactItem from '../recruitment/components/ContactItem';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { toast } from 'sonner';
-import { Textarea } from '@/components/ui/textarea';
-
-const contactSchema = z.object({
-  fullName: z.string().min(2, 'Họ và tên phải có ít nhất 2 ký tự'),
-  email: z.string().email('Email không hợp lệ'),
-  subject: z.string().min(5, 'Tiêu đề phải có ít nhất 5 ký tự'),
-  content: z.string().min(10, 'Nội dung phải có ít nhất 10 ký tự'),
-  fileId: z.string().optional(),
-});
-
-type ContactFormData = z.infer<typeof contactSchema>;
-
+import FormReport from './components/FormReport';
 export default function Contact() {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const { fileId, mutate: uploadFile, isPending: isUploading } = useUploadFile();
-  const { mutate: deleteFile, isPending: isDeleting } = useDeleteFile();
-
   const contacts = [
     {
       icon: <Phone color="#309689" />,
@@ -53,36 +26,6 @@ export default function Contact() {
       description: 'Golden Owl, 123 Đường ABC, Quận 1, TP.HCM',
     },
   ];
-
-  const form = useForm<ContactFormData>({
-    resolver: zodResolver(contactSchema),
-    defaultValues: {
-      fullName: '',
-      email: '',
-      subject: '',
-      content: '',
-      fileId: '',
-    },
-  });
-
-  const onSubmit = async (data: ContactFormData) => {
-    setIsSubmitting(true);
-    try {
-      // TODO: Implement API call here
-      console.log('Form data:', data);
-      toast.success('Cảm ơn bạn đã liên hệ! Chúng tôi sẽ phản hồi sớm nhất có thể.');
-      form.reset();
-    } catch (error) {
-      console.error('Error submitting form:', error);
-      toast.error('Có lỗi xảy ra. Vui lòng thử lại sau.');
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  useEffect(() => {
-    form.setValue('fileId', fileId);
-  }, [fileId, form]);
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -111,111 +54,7 @@ export default function Contact() {
         </div>
 
         {/* Right Column - Contact Form */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Gửi Tin Nhắn</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                <FormField
-                  control={form.control}
-                  name="fullName"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Họ và tên</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Nhập họ và tên của bạn" {...field} className="selection:bg-green" />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="email"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Email</FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="Nhập email của bạn"
-                          type="email"
-                          {...field}
-                          className="selection:bg-green"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="subject"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Tiêu đề</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Nhập tiêu đề tin nhắn" {...field} className="selection:bg-green" />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="content"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Nội dung</FormLabel>
-                      <FormControl>
-                        <Textarea
-                          placeholder="Nhập nội dung tin nhắn của bạn"
-                          className="min-h-[120px] selection:bg-green"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="fileId"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>File đính kèm (tùy chọn)</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="file"
-                          onChange={(e) => {
-                            const file = e.target.files?.[0];
-                            if (!file) {
-                              return;
-                            }
-                            if (fileId) {
-                              deleteFile(fileId);
-                            }
-                            uploadFile({ file, folder: 'contact' });
-                          }}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <Button type="submit" className="w-full" disabled={isSubmitting}>
-                  {isSubmitting ? 'Đang gửi...' : 'Gửi liên hệ'}
-                </Button>
-              </form>
-            </Form>
-          </CardContent>
-        </Card>
+        <FormReport />
       </div>
     </div>
   );
