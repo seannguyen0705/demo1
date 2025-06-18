@@ -111,7 +111,7 @@ export default function Contact() {
         </div>
 
         {/* Right Column - Contact Form */}
-        <Card className="">
+        <Card>
           <CardHeader>
             <CardTitle>Gửi Tin Nhắn</CardTitle>
           </CardHeader>
