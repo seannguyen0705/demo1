@@ -6,6 +6,7 @@ import { seedEmployers } from './employer.seed';
 import { seedReviews } from './review.seed';
 import { seedApplyJobs } from './apply-job.seed';
 import { seedContacts } from './contact.seed';
+
 const seed = async () => {
   await AppDataSource.initialize();
   const queryRunner = AppDataSource.createQueryRunner();
