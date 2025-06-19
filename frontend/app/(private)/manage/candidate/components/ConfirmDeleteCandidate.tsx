@@ -68,9 +68,13 @@ export default function ConfirmDeleteCandidate({ candidate }: IProps) {
           </Button>
           <Button
             disabled={isPending}
+            className="disabled:opacity-50"
             onClick={form.handleSubmit((data) => {
-              deleteCandidate(data.reason);
-              setIsOpen(false);
+              deleteCandidate(data.reason, {
+                onSuccess: () => {
+                  setIsOpen(false);
+                },
+              });
             })}
           >
             Xóa

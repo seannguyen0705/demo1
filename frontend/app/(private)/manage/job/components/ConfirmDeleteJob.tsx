@@ -67,9 +67,13 @@ export default function ConfirmDeleteJob({ job }: IProps) {
           </Button>
           <Button
             disabled={isPending}
+            className="disabled:opacity-50"
             onClick={form.handleSubmit((data) => {
-              deleteJob(data.reason);
-              setIsOpen(false);
+              deleteJob(data.reason, {
+                onSuccess: () => {
+                  setIsOpen(false);
+                },
+              });
             })}
           >
             Xóa

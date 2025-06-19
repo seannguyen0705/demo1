@@ -69,9 +69,16 @@ export default function ConfirmUnbanCandidate({ candidate }: IProps) {
           </Button>
           <Button
             disabled={isPending}
+            className="disabled:opacity-50"
             onClick={form.handleSubmit((data) => {
-              updateCandidateStatus({ status: UserStatus.ACTIVE, reason: data.reason });
-              setIsOpen(false);
+              updateCandidateStatus(
+                { status: UserStatus.ACTIVE, reason: data.reason },
+                {
+                  onSuccess: () => {
+                    setIsOpen(false);
+                  },
+                },
+              );
             })}
           >
             Mở khóa

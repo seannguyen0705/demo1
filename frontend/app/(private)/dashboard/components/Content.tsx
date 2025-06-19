@@ -1,3 +1,4 @@
+'use client';
 import useGetStaticstic6MonthsAgo from '../hooks/useGetStaticstic6MonthsAgo';
 import CountApplication from './CountApplication';
 import CountCandidate from './CountCandidate';

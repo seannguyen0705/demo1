@@ -69,9 +69,16 @@ export default function ConfirmUnbanEmployer({ employer }: IProps) {
           </Button>
           <Button
             disabled={isPending}
+            className="disabled:opacity-50"
             onClick={form.handleSubmit((data) => {
-              updateEmployerStatus({ status: UserStatus.ACTIVE, reason: data.reason });
-              setIsOpen(false);
+              updateEmployerStatus(
+                { status: UserStatus.ACTIVE, reason: data.reason },
+                {
+                  onSuccess: () => {
+                    setIsOpen(false);
+                  },
+                },
+              );
             })}
           >
             Mở khóa

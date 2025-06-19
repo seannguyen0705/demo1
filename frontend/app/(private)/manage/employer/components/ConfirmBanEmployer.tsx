@@ -70,10 +70,17 @@ export default function ConfirmBanEmployer({ employer }: IProps) {
             Hủy
           </Button>
           <Button
+            className="disabled:opacity-50"
             disabled={isPending}
             onClick={form.handleSubmit((data) => {
-              updateEmployerStatus({ status: UserStatus.BANNED, reason: data.reason });
-              setIsOpen(false);
+              updateEmployerStatus(
+                { status: UserStatus.BANNED, reason: data.reason },
+                {
+                  onSuccess: () => {
+                    setIsOpen(false);
+                  },
+                },
+              );
             })}
           >
             Khóa

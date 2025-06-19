@@ -22,7 +22,10 @@ export default function ActionStatus({ employer }: IProps) {
         description="Bạn có chắc chắn muốn kích hoạt tài khoản này không?"
         action={() => updateEmployerStatus({ status: UserStatus.ACTIVE })}
         button={
-          <button className="text-green-500 p-2 rounded-md border shadow-md hover:bg-gray-100 dark:hover:bg-gray-800">
+          <button
+            disabled={isPending}
+            className="text-green-500 p-2 rounded-md border shadow-md hover:bg-gray-100 dark:hover:bg-gray-800"
+          >
             <Check className="h-3 w-3" />
           </button>
         }

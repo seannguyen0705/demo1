@@ -68,9 +68,13 @@ export default function ConfirmDeleteEmployer({ employer }: IProps) {
           </Button>
           <Button
             disabled={isPending}
+            className="disabled:opacity-50"
             onClick={form.handleSubmit((data) => {
-              deleteEmployer(data.reason);
-              setIsOpen(false);
+              deleteEmployer(data.reason, {
+                onSuccess: () => {
+                  setIsOpen(false);
+                },
+              });
             })}
           >
             Xóa
