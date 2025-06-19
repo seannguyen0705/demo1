@@ -17,7 +17,7 @@ export default async function CompanyIntro({ company }: IProps) {
         {isAuth && <EditCompanyIntro company={company} />}
       </div>
       {overview && overview !== '<p></p>' ? (
-        <p dangerouslySetInnerHTML={{ __html: overview || '' }} className="" />
+        <div dangerouslySetInnerHTML={{ __html: overview || '' }} className="" />
       ) : (
         <p className="text-gray-500">Chưa cập nhật</p>
       )}

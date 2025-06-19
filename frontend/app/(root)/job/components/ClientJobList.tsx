@@ -31,7 +31,7 @@ export default function ClientJobList() {
             {jobs.map((job) => (
               <li
                 key={job.id}
-                className={`rounded-lg ${jobId === job.id ? 'bg-light-green dark:bg-gray-900 dark:border-gray-800 border-green border' : ''}`}
+                className={`rounded-lg ${jobId === job.id ? 'lg:bg-light-green lg:dark:bg-gray-900 lg:dark:border-gray-800 lg:border-green border' : ''}`}
               >
                 <div className="hidden lg:block">
                   <JobItem job={job} navtoDetail={false} showStatus={false} />

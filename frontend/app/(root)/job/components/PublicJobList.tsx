@@ -3,6 +3,7 @@ import { getJobById, getJobs } from '@/api/job/query';
 import JobItem from '@/components/JobItem';
 import Pagination from '@/components/Pagination';
 import JobDetail from './JobDetail';
+import NotFoundJob from './NotFoundJob';
 
 interface IProps {
   searchParams: SearchParams;
@@ -22,6 +23,13 @@ export default async function PublicJobList({ searchParams }: IProps) {
   if (jobId && typeof jobId === 'string') {
     job = await getJobById(jobId);
   }
+  if (jobs.length === 0) {
+    return (
+      <main className="container mx-auto mt-[30px] px-2">
+        <NotFoundJob title="Không tìm thấy việc làm" />
+      </main>
+    );
+  }
 
   return (
     <div className="flex gap-4 container mx-auto mt-[30px] px-2">
@@ -31,7 +39,7 @@ export default async function PublicJobList({ searchParams }: IProps) {
           {jobs.map((job) => (
             <li
               key={job.id}
-              className={`rounded-lg ${jobId === job.id ? 'bg-light-green dark:bg-gray-900 dark:border-gray-800 border-green border' : ''}`}
+              className={`rounded-lg ${jobId === job.id ? 'lg:bg-light-green lg:dark:bg-gray-900 lg:dark:border-gray-800 lg:border-green border' : ''}`}
             >
               <div className="hidden lg:block">
                 <JobItem job={job} navtoDetail={false} showStatus={false} />

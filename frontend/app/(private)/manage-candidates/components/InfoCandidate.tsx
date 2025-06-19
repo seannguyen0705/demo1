@@ -47,13 +47,17 @@ export default function InfoCandidate({ applyJob }: IProps) {
             <h3 className="text-lg font-semibold mb-3">Thông tin ứng tuyển</h3>
             <div className="space-y-3">
               <div className="flex items-center gap-2">
-                <span className="font-medium">Vị trí ứng tuyển:</span>
+                <span className="font-medium min-w-[120px] sm:min-w-[160px]">Nơi làm mong muốn:</span>
+                <span>{applyJob.expectedAddress}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="font-medium min-w-[120px] sm:min-w-[160px]">Vị trí ứng tuyển:</span>
                 <Link target="_blank" href={`/job/${applyJob.job.id}`} className="text-blue-500 hover:underline">
                   {applyJob.job.title || 'Frontend Developer'}
                 </Link>
               </div>
               <div className="flex items-center gap-2">
-                <span className="font-medium">Trạng thái:</span>
+                <span className="font-medium min-w-[120px] sm:min-w-[160px]">Trạng thái:</span>
                 <ShowStatus status={applyJob.status} />
               </div>
             </div>

@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, keepPreviousData } from '@tanstack/react-query';
 
 import { IQuerySkill, ISkillResponse } from '@/api/skill/interface';
 import axiosInstance from '@/config/axios-config';
@@ -22,6 +22,7 @@ export default function useGetSkill({ page, limit, keyword, excludeSkillIds }: I
   const { data, isLoading } = useQuery({
     queryKey: ['skills', page, limit, keyword, excludeSkillIds],
     queryFn: () => getSkills({ page, limit, keyword, excludeSkillIds }),
+    placeholderData: keepPreviousData,
   });
   return { data, isLoading };
 }
