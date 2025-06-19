@@ -26,6 +26,9 @@ export class ContactService {
     if (contact.file) {
       await this.cloudinaryService.deleteFile(contact.file.key);
     }
+    return {
+      message: 'report deleted successfully',
+    };
   }
 
   async getContactById(id: string) {
