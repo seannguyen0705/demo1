@@ -9,6 +9,7 @@ import { ValidatorException } from '@/exceptions';
 import { isDevelopmentEnv } from '@/utils/helpers';
 
 import type { IBaseExceptionResponse } from '@/exceptions';
+import { SentryExceptionCaptured } from '@sentry/nestjs';
 
 export interface IValidatorExceptionResponse extends IBaseExceptionResponse {
   detail?: Record<string, string[]>;
@@ -16,6 +17,7 @@ export interface IValidatorExceptionResponse extends IBaseExceptionResponse {
 
 @Catch(ValidatorException)
 export class ValidatorExceptionFilter implements ExceptionFilter {
+  @SentryExceptionCaptured()
   catch(exception: ValidatorException, host: ArgumentsHost): Response<IBaseExceptionResponse> {
     const isDevelopment = isDevelopmentEnv();
 
