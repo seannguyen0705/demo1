@@ -3,7 +3,7 @@ import { isErrorResponse } from '@/utils/helpers/isErrorResponse';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { UseFormReturn } from 'react-hook-form';
-import { CreateJobFormSchema } from '../page';
+import { CreateJobFormSchema } from '../components/FormCreateJob';
 import EXCEPTION_CODE from '@/utils/constants/exception';
 import { useRouter } from 'next/navigation';
 interface IProps {

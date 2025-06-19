@@ -4,7 +4,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import EXCEPTION_CODE from '@/utils/constants/exception';
 import { UseFormReturn } from 'react-hook-form';
-import { CreateJobFormSchema } from '../page';
+import { CreateJobFormSchema } from '../components/FormCreateJob';
 
 interface IProps {
   form: UseFormReturn<CreateJobFormSchema>;
