@@ -34,6 +34,7 @@ export class File1749439076733 implements MigrationInterface {
           {
             name: 'key',
             type: 'varchar',
+            isNullable: true,
           },
           {
             name: 'format',

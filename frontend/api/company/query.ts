@@ -5,7 +5,7 @@ export const findCompanyByName = async (name: string) => {
   const response = await queryFetch<ICompany>(`companies/${name}`, {
     method: 'GET',
     next: {
-      tags: [`company/${name}`],
+      tags: [`company/${decodeURIComponent(name)}`],
     },
   });
   return response.data;

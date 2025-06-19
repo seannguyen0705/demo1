@@ -1,12 +1,12 @@
 import queryFetch from '@/utils/helpers/queryFetch';
 import { IJob, QueryJob } from './interface';
 
-export const getJobByCompanyId = async (companyId: string) => {
+export const getJobByCompanyId = async (companyId: string, companyName: string) => {
   try {
     const response = queryFetch<IJob[]>(`company/${companyId}/jobs`, {
       method: 'GET',
       next: {
-        tags: [`company/${companyId}/jobs`],
+        tags: [`company/${companyName}/jobs`],
       },
     });
     return response;

@@ -16,13 +16,15 @@ export default function JobHeader({ job }: IProps) {
     <section className="border-b-2 pb-4 relative">
       <div className="flex items-center gap-4 mb-3">
         <Link href={`/company/${job?.company?.name}`}>
-          <Image
-            className="border-2 border-gray-300 rounded-md"
-            src={job?.company?.logo?.url || '/default_logo.png'}
-            alt={job?.company?.name}
-            width={100}
-            height={100}
-          />
+          <div className="w-[100px] h-[100px]">
+            <Image
+              className="border-2 border-gray-300 rounded-md h-[100px] w-[100px] object-cover"
+              src={job?.company?.logo?.url || '/default_logo.png'}
+              alt={job?.company?.name}
+              width={100}
+              height={100}
+            />
+          </div>
         </Link>
         <div className="flex flex-col space-y-2">
           <Link href={`/job/${job.id}`} className="text-2xl font-bold hover:text-green">

@@ -10,6 +10,7 @@ import { Province } from '@/api/province/entities/province.entity';
 import { Job } from '@/api/job/entities/job.entity';
 import { Skill } from '@/api/skill/entities/skill.entity';
 import { BATCH_SIZE } from '@/utils/constants';
+import axios from 'axios';
 
 const proof: CreateFileDto = {
   name: '1_Introduction to Software Testing.pdf',
@@ -23,6 +24,10 @@ export const seedEmployers = async (queryRunner: QueryRunner, count: number) => 
   const companyRepository = queryRunner.manager.getRepository(Company);
   let email, phoneNumber, companyName;
   let batch: Employer[] = [];
+
+  const listLogos = await axios.get(
+    `https://api.unsplash.com/photos?client_id=${process.env.IMAGE_API_KEY}&page=1&per_page=30`,
+  );
 
   for (const _ of Array.from({ length: count })) {
     email = faker.internet.email();
@@ -63,6 +68,14 @@ export const seedEmployers = async (queryRunner: QueryRunner, count: number) => 
     const jobs = await createJobs(company, addresses, queryRunner, Math.floor(Math.random() * 10) + 1);
     company.jobs = jobs;
 
+    const logoUrl = listLogos.data[faker.number.int({ min: 0, max: listLogos.data.length - 1 })].urls.small;
+    const logo = new File();
+    logo.name = 'logo.png';
+    logo.url = logoUrl;
+    logo.format = 'image/png';
+    const newLogo = queryRunner.manager.create(File, logo);
+    company.logo = newLogo;
+
     newEmployer.company = company;
     batch.push(newEmployer);
     if (batch.length === BATCH_SIZE) {
@@ -90,6 +103,7 @@ const createCompany = async (
   file.key = proof.key;
   file.format = proof.format;
   const newFile = fileRepository.create(file);
+
   const company = new Company();
   company.name = companyName;
   company.employer = employer;

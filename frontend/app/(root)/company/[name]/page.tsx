@@ -27,7 +27,10 @@ interface IProps {
 export default async function CompanyPage({ params }: IProps) {
   const { name } = await params;
   const company = await findCompanyByName(name);
-  const [jobs, statistics] = await Promise.all([getJobByCompanyId(company.id), getStatisticsReviewCompany(company.id)]);
+  const [jobs, statistics] = await Promise.all([
+    getJobByCompanyId(company.id, company.name),
+    getStatisticsReviewCompany(company.id),
+  ]);
   const numJobs = jobs.data.length;
 
   return (

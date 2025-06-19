@@ -39,4 +39,5 @@ export const seedContacts = async (queryRunner: QueryRunner, count: number) => {
   if (batch.length > 0) {
     await contactRepository.save(batch);
   }
+  console.log('Contacts seeded successfully');
 };

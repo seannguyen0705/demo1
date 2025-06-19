@@ -37,6 +37,9 @@ export class CloudinaryService {
   }
 
   async deleteFile(key: string) {
+    if (!key) {
+      return;
+    }
     const result = await cloudinary.uploader.destroy(key);
     return result;
   }

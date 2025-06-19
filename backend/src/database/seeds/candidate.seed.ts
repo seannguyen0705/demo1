@@ -42,4 +42,5 @@ export const seedCandidates = async (queryRunner: QueryRunner, count = 10) => {
   if (batch.length > 0) {
     await candidateRepository.save(batch);
   }
+  console.log('Candidates seeded successfully');
 };

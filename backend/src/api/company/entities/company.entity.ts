@@ -53,7 +53,7 @@ export class Company extends BaseEntity {
   @Column({ name: 'logo_id', nullable: true })
   logoId?: string;
 
-  @OneToOne(() => File)
+  @OneToOne(() => File, { cascade: true })
   @JoinColumn({ name: 'logo_id' })
   logo?: File;
 
