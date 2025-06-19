@@ -1,22 +1,11 @@
-'use client';
-import Info from './components/Info';
-import MyCv from './components/MyCv';
-import Intro from './components/Intro';
-import Experience from './components/Experience';
-import Skill from './components/Skill';
-import { UserRole } from '@/utils/enums';
-import useGetMe from '@/app/hooks/useGetMe';
+import ProfilePage from './components/ProfilePage';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Hồ sơ cá nhân',
+  description: 'Hồ sơ cá nhân của bạn',
+};
+
 export default function ProfilePersonal() {
-  const { user } = useGetMe();
-  return (
-    <main className="flex flex-col lg:flex-row">
-      <div className="flex-1 space-y-4 px-4">
-        <Info user={user} />
-        <Intro user={user} />
-        {user?.role === UserRole.CANDIDATE && <Experience />}
-        {user?.role === UserRole.CANDIDATE && <Skill />}
-      </div>
-      {user?.role === UserRole.CANDIDATE && <MyCv />}
-    </main>
-  );
+  return <ProfilePage />;
 }

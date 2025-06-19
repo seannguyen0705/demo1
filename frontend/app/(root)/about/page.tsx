@@ -1,4 +1,11 @@
+import { Metadata } from 'next';
 import StaticsticsCount from '../../components/StaticsticsCount';
+
+export const metadata: Metadata = {
+  title: 'Về Golden Owl Solutions',
+  description:
+    'Chúng tôi là công ty công nghệ hàng đầu, chuyên kết nối những chuyên gia tài năng với những cơ hội tuyệt vời.',
+};
 
 export default function About() {
   return (

@@ -104,6 +104,10 @@ enum ApplyJobStatusDB {
   REJECTED = 4,
 }
 
+enum OrderByContact {
+  CREATED_AT = 'createdAt',
+}
+
 export {
   Gender,
   UserRole,
@@ -120,4 +124,5 @@ export {
   OrderByApplyJob,
   ApplyJobStatusDB,
   OrderByJob,
+  OrderByContact,
 };

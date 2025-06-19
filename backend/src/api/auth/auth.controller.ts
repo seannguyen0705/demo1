@@ -1,22 +1,13 @@
 import { Body, Req } from '@nestjs/common';
-
 import { InjectRoute, InjectController, ReqUser } from '@/decorators';
-
 import authRoutes from './auth.routes';
-
 import { AuthService } from './auth.service';
-
 import { RegisterCandidateDto } from './dto/registerCandidate.dto';
 import { ResponseCandidateDto } from '../candidate/dto';
 import { TokenService } from '../token/token.service';
 import { ITokenPayload } from './auth.interface';
-
-import { CompanyService } from '../company/company.service';
 import { EmployerService } from '../employer/employer.service';
-import { CloudinaryService } from '../cloudinary/cloudinary.service';
 import { CreateBusinessDto } from './dto/create-business.dto';
-import { InjectDataSource } from '@nestjs/typeorm';
-import { DataSource } from 'typeorm';
 import { RequestWithUser } from '@/common/interfaces';
 import { IJwtStrategy } from './strategies/jwt.strategy';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';

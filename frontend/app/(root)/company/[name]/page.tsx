@@ -6,6 +6,21 @@ import CompanyInfo from '../components/CompanyInfo';
 import CompanyIntro from '../components/CompanyIntro';
 import CompanyBenefit from '../components/CompanyBenefit';
 import JobList from '../components/JobList';
+
+export async function generateMetadata({ params }: IProps) {
+  const { name } = await params;
+  const company = await findCompanyByName(name);
+  return {
+    title: company.name,
+    description: company.overview,
+    openGraph: {
+      title: company.name,
+      description: company.overview,
+      images: company.logo?.url || '/default_logo.png',
+    },
+  };
+}
+
 interface IProps {
   params: Promise<{ name: string }>;
 }

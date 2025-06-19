@@ -6,6 +6,12 @@ import OrderBy from './components/OrderBy';
 import FilterSmallScreen from './components/FilterSmallScreen';
 import PublicJobList from './components/PublicJobList';
 import { SearchParams } from '@/api/interface';
+import { Metadata } from 'next';
+export const metadata: Metadata = {
+  title: 'Tìm việc làm',
+  description: 'Tìm việc làm dễ dàng với Job Portal',
+};
+
 interface IProps {
   searchParams: Promise<SearchParams>;
 }

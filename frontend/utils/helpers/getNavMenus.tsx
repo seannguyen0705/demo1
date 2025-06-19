@@ -8,6 +8,7 @@ import {
   UsersRound,
   LayoutDashboard,
   Star,
+  MessageSquareWarning,
 } from 'lucide-react';
 
 import { JSX } from 'react';
@@ -68,6 +69,7 @@ const getNavMenus = (user: IUser | undefined): NavItem[] => {
       { name: 'Ứng viên', href: '/manage/candidate', icon: <UsersRound /> },
       { name: 'Việc làm', href: '/manage/job', icon: <Briefcase /> },
       { name: 'Đánh giá', href: '/manage/review', icon: <Star /> },
+      { name: 'Báo cáo', href: '/manage/report', icon: <MessageSquareWarning /> },
       { name: 'Cài đặt', href: '/setting', icon: <Settings /> },
     ],
   };

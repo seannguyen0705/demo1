@@ -2,8 +2,17 @@ import LoginForm from '@/app/(auth)/components/LoginForm';
 import IntroCards from '../components/IntroCards';
 import TopCompany from '../components/TopCompany';
 import SpecialWeb from '../components/SpecialWeb';
+import { getStaticsticsCount } from '@/api/staticstics/query';
+import { Metadata } from 'next';
 
-export default function SignInPage() {
+export const metadata: Metadata = {
+  title: 'Đăng nhập | Xin chào nhà tuyển dụng',
+  description: 'Tìm kiếm ứng viên tài năng và chất lượng tại Job Portal',
+};
+
+export default async function SignInPage() {
+  const { data } = await getStaticsticsCount();
+
   return (
     <main>
       <section className="w-full py-12 md:py-24 bg-gradient-to-b dark:from-black dark:to-gray-900 from-white to-gray-50">
@@ -12,12 +21,8 @@ export default function SignInPage() {
             {/* form */}
             <div className="space-y-6 ">
               <div className="space-y-2">
-                <h1 className="text-3xl font-bold">
-                  Chào mừng bạn quay trở lại
-                </h1>
-                <p className="text-muted-foreground">
-                  Tìm kiếm ứng viên tài năng và chất lượng
-                </p>
+                <h1 className="text-3xl font-bold">Chào mừng bạn quay trở lại</h1>
+                <p className="text-muted-foreground">Tìm kiếm ứng viên tài năng và chất lượng</p>
               </div>
 
               <LoginForm />
@@ -30,7 +35,7 @@ export default function SignInPage() {
       </section>
 
       <TopCompany />
-      <SpecialWeb />
+      <SpecialWeb staticsticsCount={data} />
     </main>
   );
 }

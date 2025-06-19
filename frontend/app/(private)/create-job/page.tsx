@@ -16,6 +16,13 @@ import useGetMe from '@/app/hooks/useGetMe';
 import useCreatePublishedJob from './hooks/useCreatePublishedJob';
 import useCreateDraftJob from './hooks/useCreateDraftJob';
 import removeFalsyValues from '@/utils/helpers/removeFalsyValues';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Tạo tin tuyển dụng',
+  description: 'Tạo tin tuyển dụng chi tiết và chuyên nghiệp',
+};
+
 const formSchema = z
   .object({
     title: z.string().min(1, {

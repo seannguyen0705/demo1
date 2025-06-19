@@ -2,6 +2,12 @@ import AuthThirdParty from '../components/AuthThirdParty';
 import Benefits from '../components/Benefits';
 import LoginForm from '../components/LoginForm';
 import Exception from '../components/Exception';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Đăng nhập',
+  description: 'Đăng nhập vào hệ thống',
+};
 
 interface IProps {
   searchParams: Promise<{

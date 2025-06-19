@@ -6,6 +6,18 @@ import CompanyReview from '../../components/CompanyReview';
 import ListReview from '../../components/ListReview';
 import { Order, OrderByReview } from '@/utils/enums';
 import JobList from '../../components/JobList';
+import { notFound } from 'next/navigation';
+export async function generateMetadata({ params }: IProps) {
+  const { name } = await params;
+  const company = await findCompanyByName(name);
+  if (!company) {
+    notFound();
+  }
+  return {
+    title: `Đánh giá công ty ${company.name}`,
+    description: `Các đánh giá của nhân viên về công ty ${company.name}`,
+  };
+}
 interface IProps {
   params: Promise<{ name: string }>;
   searchParams: Promise<{ orderBy: string; order: string; page: number }>;
