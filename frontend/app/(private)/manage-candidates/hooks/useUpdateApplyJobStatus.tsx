@@ -8,15 +8,18 @@ const updateApplyJobStatus = async (id: string, data: IUpdateApplyJobStatus) => 
 
 interface IProps {
   id: string;
+  revalidate: boolean;
 }
-export default function useUpdateApplyJobStatus({ id }: IProps) {
+export default function useUpdateApplyJobStatus({ id, revalidate }: IProps) {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (data: IUpdateApplyJobStatus) => updateApplyJobStatus(id, data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['manage-candidates'] });
-      queryClient.invalidateQueries({ queryKey: ['apply-job', id] });
-      queryClient.invalidateQueries({ queryKey: ['apply-job-statistics', id] });
+      if (revalidate) {
+        queryClient.invalidateQueries({ queryKey: ['manage-candidates'] });
+        queryClient.invalidateQueries({ queryKey: ['apply-job', id] });
+        queryClient.invalidateQueries({ queryKey: ['apply-job-statistics', id] });
+      }
     },
   });
 }

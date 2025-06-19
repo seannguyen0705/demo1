@@ -7,7 +7,7 @@ import AllowNotify from './AllowNotify';
 import DeleteAccount from './DeleteAccount';
 import { UserRole } from '@/utils/enums';
 
-export default function SettingPage() {
+export default function Setting() {
   const { user } = useGetMe();
   if (!user) {
     return;

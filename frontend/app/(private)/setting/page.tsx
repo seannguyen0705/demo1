@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import Setting from './components/Setting';
 
 export const metadata: Metadata = {
   title: 'Cài đặt',
@@ -6,5 +7,5 @@ export const metadata: Metadata = {
 };
 
 export default function SettingPage() {
-  return <SettingPage />;
+  return <Setting />;
 }

@@ -26,7 +26,11 @@ interface IProps {
 }
 export default function DialogApplyJob({ applyJobId }: IProps) {
   const { applyJob } = useGetApplyJobById(applyJobId);
-  const { mutate: updateApplyJobStatus } = useUpdateApplyJobStatus({ id: applyJobId });
+  const { mutate: updateApplyJobStatus } = useUpdateApplyJobStatus({
+    id: applyJobId,
+    revalidate: false,
+  });
+
   if (!applyJob) {
     return;
   }

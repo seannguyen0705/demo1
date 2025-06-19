@@ -9,7 +9,10 @@ interface IProps {
 }
 
 export default function StatusButton({ status, applyJobId }: IProps) {
-  const { mutate: updateApplyJobStatus } = useUpdateApplyJobStatus({ id: applyJobId });
+  const { mutate: updateApplyJobStatus } = useUpdateApplyJobStatus({
+    id: applyJobId,
+    revalidate: true,
+  });
   if (status === ApplyJobStatus.NEW || status === ApplyJobStatus.SEEN) {
     // show button phong van and reject
     return (

@@ -1,6 +1,6 @@
 import { Rocket } from 'lucide-react';
 import { Metadata } from 'next';
-
+import FormCreateJob from './components/FormCreateJob';
 export const metadata: Metadata = {
   title: 'Tạo tin tuyển dụng',
   description: 'Tạo tin tuyển dụng chi tiết và chuyên nghiệp',
@@ -16,6 +16,8 @@ export default function CreateJob() {
         </div>
         <p className="text-muted-foreground dark:text-gray-200">Tạo tin tuyển dụng chi tiết và chuyên nghiệp</p>
       </div>
+
+      <FormCreateJob />
     </main>
   );
 }
