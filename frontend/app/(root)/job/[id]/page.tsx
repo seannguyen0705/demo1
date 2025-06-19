@@ -6,6 +6,31 @@ import { getJobById } from '@/api/job/query';
 import { getCompanyImage } from '@/api/company-image/query';
 import { notFound } from 'next/navigation';
 
+export async function generateMetadata({ params }: IProps) {
+  const { id } = await params;
+  const job = await getJobById(id);
+  if (!job) {
+    return notFound();
+  }
+
+  return {
+    title: job.title,
+    description: `Tuyển dụng ${job.title} tại ${job.company.name}`,
+    openGraph: {
+      title: job.title,
+      description: `Tuyển dụng ${job.title} tại ${job.company.name}`,
+      images: [
+        {
+          url: job.company.logo?.url || '/default_logo.png',
+          width: 1200,
+          height: 630,
+          alt: job.title,
+        },
+      ],
+    },
+  };
+}
+
 interface IProps {
   params: Promise<{ id: string }>;
 }

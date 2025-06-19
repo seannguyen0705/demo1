@@ -1,4 +1,9 @@
-'use client';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Quản lý việc làm',
+  description: 'Quản lý danh sách việc làm đã gửi lên hệ thống.',
+};
 
 import TableJob from './components/TableJob';
 import SearchJob from './components/SearchJob';

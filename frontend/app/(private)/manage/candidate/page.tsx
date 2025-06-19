@@ -1,7 +1,12 @@
-'use client';
-
 import TableCandidate from './components/TableCandidate';
 import SearchAndFilter from './components/SearchAndFilter';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Quản lý ứng viên',
+  description: 'Quản lý danh sách ứng viên đã đăng ký vào hệ thống.',
+};
+
 export default function ManageCandidate() {
   return (
     <main className="sm:px-4 px-2 w-full">
@@ -12,8 +17,6 @@ export default function ManageCandidate() {
 
       {/* Table */}
       <TableCandidate />
-      {/* </CardContent>
-      </Card> */}
     </main>
   );
 }

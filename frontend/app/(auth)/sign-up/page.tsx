@@ -1,6 +1,20 @@
 import RegisterForm from '../components/RegisterForm';
 import AuthThirdParty from '../components/AuthThirdParty';
 import Benefits from '../components/Benefits';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Tạo tài khoản',
+  description: 'Tạo tài khoản để bắt đầu hành trình tìm việc làm của bạn',
+  openGraph: {
+    images: [
+      {
+        url: `${process.env.FRONTEND_URL}/og_images/sign-up.png`,
+        alt: 'Tạo tài khoản',
+      },
+    ],
+  },
+};
 
 export default async function SignUpPage() {
   return (

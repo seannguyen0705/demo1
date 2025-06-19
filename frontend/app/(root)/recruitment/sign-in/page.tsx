@@ -3,6 +3,20 @@ import IntroCards from '../components/IntroCards';
 import TopCompany from '../components/TopCompany';
 import SpecialWeb from '../components/SpecialWeb';
 import { getStaticsticsCount } from '@/api/staticstics/query';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Đăng nhập | Xin chào nhà tuyển dụng',
+  description: 'Tìm kiếm ứng viên tài năng và chất lượng tại Job Portal',
+  openGraph: {
+    images: [
+      {
+        url: `${process.env.FRONTEND_URL}/og_images/recruitment-sign-in.png`,
+        alt: 'Đăng nhập | Xin chào nhà tuyển dụng',
+      },
+    ],
+  },
+};
 
 export default async function SignInPage() {
   const { data } = await getStaticsticsCount();

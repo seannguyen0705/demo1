@@ -1,3 +1,4 @@
+'use client';
 import { parseAsInteger } from 'nuqs';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { useQueryState } from 'nuqs';

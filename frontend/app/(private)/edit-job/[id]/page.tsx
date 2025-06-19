@@ -2,6 +2,18 @@ import { getJobById } from '@/api/job/query';
 import EditJob from './EditJobForm';
 import { notFound } from 'next/navigation';
 
+export async function generateMetadata({ params }: IProps) {
+  const { id } = await params;
+  const job = await getJobById(id);
+  if (!job) {
+    notFound();
+  }
+
+  return {
+    title: `Chỉnh sửa việc làm ${job.title}`,
+  };
+}
+
 interface IProps {
   params: Promise<{ id: string }>;
 }

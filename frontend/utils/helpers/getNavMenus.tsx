@@ -8,7 +8,6 @@ import {
   UsersRound,
   LayoutDashboard,
   Star,
-  BarChart,
   MessageSquareWarning,
 } from 'lucide-react';
 

@@ -3,6 +3,13 @@ import { Mail } from 'lucide-react';
 import { Phone } from 'lucide-react';
 import ContactItem from '../recruitment/components/ContactItem';
 import FormReport from './components/FormReport';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Liên hệ | Job Portal',
+  description: 'Liên hệ với chúng tôi để được hỗ trợ',
+};
+
 export default function Contact() {
   const contacts = [
     {

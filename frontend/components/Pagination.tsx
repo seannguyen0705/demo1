@@ -16,9 +16,9 @@ export default function Pagination({ totalPages, currentPage }: IProps) {
   const searchParams = useSearchParams();
   const job_selected = searchParams.get('job_selected');
   const { createQueryString } = useQueryJob();
-  const jobList = document.getElementById('job-list');
-  const jobDetail = document.getElementById('job-detail');
   useEffect(() => {
+    const jobList = document.getElementById('job-list');
+    const jobDetail = document.getElementById('job-detail');
     if (jobList) {
       jobList.scrollTo({ top: 0, behavior: 'smooth' });
     }
@@ -28,6 +28,7 @@ export default function Pagination({ totalPages, currentPage }: IProps) {
   }, [currentPage]);
 
   useEffect(() => {
+    const jobDetail = document.getElementById('job-detail');
     if (jobDetail) {
       jobDetail.scrollTo({ top: 0, behavior: 'smooth' });
     }

@@ -1,5 +1,5 @@
 import { useFormContext } from 'react-hook-form';
-import { CreateJobFormSchema } from '../page';
+import { CreateJobFormSchema } from './FormCreateJob';
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { SalaryType } from '@/utils/enums';

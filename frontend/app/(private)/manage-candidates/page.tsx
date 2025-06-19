@@ -1,8 +1,11 @@
-'use client';
-
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import SearchAndFilter from './components/SearchAndFilter';
 import TableCandidate from './components/TableCandidate';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Quản lý ứng viên đã ứng tuyển vào công ty của bạn',
+};
 
 export default function ManageCandidates() {
   // All hooks must be inside the component function

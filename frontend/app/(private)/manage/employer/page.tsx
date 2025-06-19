@@ -1,7 +1,11 @@
-'use client';
-
 import SearchAndFilter from './components/SearchAndFilter';
 import TableEmployer from './components/TableEmployer';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Quản lý nhà tuyển dụng',
+  description: 'Quản lý danh sách nhà tuyển dụng đã đăng ký vào hệ thống.',
+};
 
 export default function ManageEmployer() {
   return (

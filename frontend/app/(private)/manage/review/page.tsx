@@ -1,4 +1,9 @@
-'use client';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Quản lý đánh giá',
+  description: 'Quản lý danh sách đánh giá về công ty.',
+};
 
 import SearchReview from './components/SearchReview';
 import TableReview from './components/TableReview';
