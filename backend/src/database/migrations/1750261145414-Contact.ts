@@ -42,6 +42,7 @@ export class Contact1750261145414 implements MigrationInterface {
           {
             name: 'file_id',
             type: 'uuid',
+            isNullable: true,
           },
         ],
         foreignKeys: [

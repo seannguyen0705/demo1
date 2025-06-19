@@ -1,5 +1,6 @@
 import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { Transform } from 'class-transformer';
 export class CreateContactDto {
   @IsString()
   @IsNotEmpty()
@@ -23,6 +24,12 @@ export class CreateContactDto {
 
   @IsString()
   @IsOptional()
+  @Transform(({ value }) => {
+    if (!value) {
+      return null;
+    }
+    return value;
+  })
   @ApiPropertyOptional({ description: 'File ID of the contact', example: '123e4567-e89b-12d3-a456-426614174000' })
   fileId: string;
 }

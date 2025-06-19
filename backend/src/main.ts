@@ -1,3 +1,4 @@
+import './instrument';
 import { initApplication } from '@/app';
 import { Env } from './utils/constants';
 

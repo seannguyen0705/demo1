@@ -44,7 +44,7 @@ export const config = {
       ignoreTLS: true,
     },
     defaults: {
-      from: '"No Reply" <no-reply@localhost>',
+      from: '"No Reply" <no-reply@job-portal.com>',
     },
     template: {
       dir: 'src/api/email/templates/',

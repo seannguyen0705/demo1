@@ -227,4 +227,8 @@ export class ApplyJobService {
     );
     return result;
   }
+
+  public async countApplyJobs() {
+    return await this.applyJobRepository.count();
+  }
 }

@@ -2,7 +2,7 @@ import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
 import { Base as BaseEntity } from '@/common/entities';
 import { File } from '@/api/file/entities/file.entity';
 
-@Entity('contacts')
+@Entity({ name: 'contacts' })
 export class Contact extends BaseEntity {
   @Column({ name: 'full_name' })
   fullName: string;
@@ -16,7 +16,7 @@ export class Contact extends BaseEntity {
   @Column({ name: 'content', type: 'text' })
   content: string;
 
-  @Column({ name: 'file_id' })
+  @Column({ name: 'file_id', nullable: true })
   fileId: string;
 
   @OneToOne(() => File, { onDelete: 'CASCADE', cascade: true })

@@ -11,7 +11,7 @@ import {
 import type { Response } from 'express';
 import type { HttpException } from '@nestjs/common';
 import type { ArgumentsHost, ExceptionFilter } from '@nestjs/common';
-
+import { SentryExceptionCaptured } from '@sentry/nestjs';
 import { BaseException } from '@/exceptions';
 import { Exception } from '@/utils/constants';
 import { isDevelopmentEnv } from '@/utils/helpers';
@@ -20,6 +20,7 @@ import type { IBaseExceptionResponse } from '@/exceptions';
 
 @Catch()
 export class AdvancedExceptionFilter implements ExceptionFilter {
+  @SentryExceptionCaptured()
   catch(exception: HttpException, host: ArgumentsHost): Response<IBaseExceptionResponse> {
     const isDevelopment = isDevelopmentEnv();
     const response = host.switchToHttp().getResponse<Response>();

@@ -41,13 +41,11 @@ export default function FormReport() {
   const { mutate: createReport, isPending: isCreating } = useCreateReport();
 
   const onSubmit = async (data: ContactFormData) => {
-    if (data.fileId) {
-      createReport(data, {
-        onSuccess: () => {
-          form.reset();
-        },
-      });
-    }
+    createReport(data, {
+      onSuccess: () => {
+        form.reset();
+      },
+    });
   };
 
   useEffect(() => {

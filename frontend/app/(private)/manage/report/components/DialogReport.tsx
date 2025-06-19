@@ -62,14 +62,16 @@ export default function DialogReport({ id }: IProps) {
             </p>
           </div>
 
-          <div className="sm:col-span-2">
-            <label className="text-sm font-medium">File đính kèm:</label>
+          {file && (
+            <div className="sm:col-span-2">
+              <label className="text-sm font-medium">File đính kèm:</label>
 
-            <Link href={file.url} target="_blank" className="text-sm text-blue-500 flex items-center gap-2">
-              {file.name}
-              <ExternalLink className="h-3 w-3" />
-            </Link>
-          </div>
+              <Link href={file.url} target="_blank" className="text-sm text-blue-500 flex items-center gap-2">
+                {file.name}
+                <ExternalLink className="h-3 w-3" />
+              </Link>
+            </div>
+          )}
         </div>
 
         <DialogFooter>

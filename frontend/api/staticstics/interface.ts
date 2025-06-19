@@ -2,6 +2,7 @@ interface IStaticsticsCount {
   countJobs: number;
   countCompanies: number;
   countCandidates: number;
+  countApplyJobs: number;
 }
 
 interface CountDate {
