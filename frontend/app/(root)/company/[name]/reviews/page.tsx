@@ -27,7 +27,7 @@ export default async function CompanyReviewsPage({ params, searchParams }: IProp
   const { orderBy = OrderByReview.CREATED_AT, order = Order.DESC, page = 1 } = await searchParams;
   const company = await findCompanyByName(name);
   const [jobs, statistics, reviews] = await Promise.all([
-    getJobByCompanyId(company.id),
+    getJobByCompanyId(company.id, company.name),
     getStatisticsReviewCompany(company.id),
     getReviewByCompanyId(company.id, {
       orderBy: orderBy as OrderByReview,
