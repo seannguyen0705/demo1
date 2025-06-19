@@ -31,9 +31,8 @@ export const uploadLogo = async (file: Blob, name: string) => {
     credentials: 'include',
   });
   const check = !isErrorResponse(response);
-  console.log(response, check);
+
   if (check) {
-    console.log(name, 'revalidateTag');
     revalidateTag(`company/${name}`);
     revalidateTag(`company/${name}/jobs`);
   }
