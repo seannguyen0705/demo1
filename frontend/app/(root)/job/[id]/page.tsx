@@ -15,10 +15,10 @@ export async function generateMetadata({ params }: IProps) {
 
   return {
     title: job.title,
-    description: job.description,
+    description: `Tuyển dụng ${job.title} tại ${job.company.name}`,
     openGraph: {
       title: job.title,
-      description: job.description,
+      description: `Tuyển dụng ${job.title} tại ${job.company.name}`,
       images: [
         {
           url: job.company.logo?.url || '/default_logo.png',

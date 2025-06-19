@@ -15,10 +15,10 @@ const seed = async () => {
   try {
     await seedProvinces(queryRunner);
     await seedSkills(queryRunner);
-    await seedCandidates(queryRunner, 500);
-    await seedEmployers(queryRunner, 500);
+    await seedCandidates(queryRunner, 100);
+    await seedEmployers(queryRunner, 100);
     await seedReviews(queryRunner, 500);
-    await seedApplyJobs(queryRunner, 5000);
+    await seedApplyJobs(queryRunner, 500);
     await seedContacts(queryRunner, 500);
     await queryRunner.commitTransaction();
   } catch (error) {
