@@ -1,6 +1,6 @@
 import { CountDate } from '@/api/staticstics/interface';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Briefcase } from 'lucide-react';
+import { UserRound } from 'lucide-react';
 import CompareFigure from './CompareFigure';
 import CountUp from 'react-countup';
 interface IProps {
@@ -12,7 +12,7 @@ export default function CountCandidate({ dataCandidates }: IProps) {
     <Card className="">
       <CardHeader className="flex flex-row items-center justify-between space-y-0">
         <CardTitle className="text-sm font-medium">Tổng số Ứng viên</CardTitle>
-        <Briefcase className="h-4 w-4 text-muted-foreground" />
+        <UserRound className="h-4 w-4 text-muted-foreground" />
       </CardHeader>
       <CardContent>
         <div className="text-2xl font-bold">

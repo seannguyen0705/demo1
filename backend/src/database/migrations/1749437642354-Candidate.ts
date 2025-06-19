@@ -106,6 +106,11 @@ export class Candidate1749437642354 implements MigrationInterface {
             type: 'text',
             isNullable: true,
           },
+          {
+            name: 'allow_notify',
+            type: 'boolean',
+            default: false,
+          },
         ],
       }),
       true,

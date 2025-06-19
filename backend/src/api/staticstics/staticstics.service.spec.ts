@@ -3,12 +3,13 @@ import { CandidateService } from '../candidate/candidate.service';
 import { CompanyService } from '../company/company.service';
 import { JobService } from '../job/job.service';
 import { StaticsticsService } from './staticstics.service';
-
+import { ApplyJobService } from '../apply-job/apply-job.service';
 describe('StaticsticsService', () => {
   let service: StaticsticsService;
   let jobService: JobService;
   let companyService: CompanyService;
   let candidateService: CandidateService;
+  let applyJobService: ApplyJobService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -32,6 +33,12 @@ describe('StaticsticsService', () => {
             countAllCandidates: jest.fn(),
           },
         },
+        {
+          provide: ApplyJobService,
+          useValue: {
+            countApplyJobs: jest.fn(),
+          },
+        },
       ],
     }).compile();
 
@@ -39,6 +46,7 @@ describe('StaticsticsService', () => {
     jobService = module.get<JobService>(JobService);
     companyService = module.get<CompanyService>(CompanyService);
     candidateService = module.get<CandidateService>(CandidateService);
+    applyJobService = module.get<ApplyJobService>(ApplyJobService);
   });
 
   it('should be defined', () => {

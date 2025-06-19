@@ -107,6 +107,10 @@ enum OrderByUser {
   CREATED_AT = 'createdAt',
 }
 
+enum OrderByContact {
+  CREATED_AT = 'createdAt',
+}
+
 export {
   Gender,
   UserRole,
@@ -124,4 +128,5 @@ export {
   OrderByApplyJob,
   ApplyJobStatusQuery,
   OrderByUser,
+  OrderByContact,
 };
