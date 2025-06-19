@@ -6,6 +6,14 @@ import { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Tạo tài khoản',
   description: 'Tạo tài khoản để bắt đầu hành trình tìm việc làm của bạn',
+  openGraph: {
+    images: [
+      {
+        url: `https://${process.env.FRONTEND_DOMAIN}/og_images/sign-up.png`,
+        alt: 'Tạo tài khoản',
+      },
+    ],
+  },
 };
 
 export default async function SignUpPage() {

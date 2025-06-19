@@ -7,6 +7,14 @@ export const metadata: Metadata = {
   title: 'Trang Chủ | Tìm Việc Làm Mơ Ước',
   description: 'Tìm kiếm công việc mơ ước của bạn ngay hôm nay tại nền tảng tuyển dụng hàng đầu Việt Nam.',
   keywords: ['việc làm', 'tuyển dụng', 'công việc mơ ước', 'tìm việc', 'việc làm IT', 'việc làm mới'],
+  openGraph: {
+    images: [
+      {
+        url: `https://${process.env.FRONTEND_DOMAIN}/og_images/home.png`,
+        alt: 'Trang Chủ | Tìm Việc Làm Mơ Ước',
+      },
+    ],
+  },
 };
 
 export default function Home() {

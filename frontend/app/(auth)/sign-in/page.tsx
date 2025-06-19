@@ -7,6 +7,14 @@ import { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Đăng nhập',
   description: 'Đăng nhập vào hệ thống',
+  openGraph: {
+    images: [
+      {
+        url: `https://${process.env.FRONTEND_DOMAIN}/og_images/sign-in.png`,
+        alt: 'Đăng nhập',
+      },
+    ],
+  },
 };
 
 interface IProps {

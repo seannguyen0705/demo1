@@ -5,6 +5,13 @@ export const metadata: Metadata = {
   title: 'Về Golden Owl Solutions',
   description:
     'Chúng tôi là công ty công nghệ hàng đầu, chuyên kết nối những chuyên gia tài năng với những cơ hội tuyệt vời.',
+  openGraph: {
+    images: [
+      {
+        url: `https://${process.env.FRONTEND_DOMAIN}/og_images/about.png`,
+      },
+    ],
+  },
 };
 
 export default function About() {

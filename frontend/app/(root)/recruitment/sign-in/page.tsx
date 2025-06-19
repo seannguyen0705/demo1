@@ -8,6 +8,14 @@ import { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Đăng nhập | Xin chào nhà tuyển dụng',
   description: 'Tìm kiếm ứng viên tài năng và chất lượng tại Job Portal',
+  openGraph: {
+    images: [
+      {
+        url: `https://${process.env.FRONTEND_DOMAIN}/og_images/recruitment-sign-in.png`,
+        alt: 'Đăng nhập | Xin chào nhà tuyển dụng',
+      },
+    ],
+  },
 };
 
 export default async function SignInPage() {
