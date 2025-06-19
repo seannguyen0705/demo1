@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Search } from 'lucide-react';
+import { Search, X } from 'lucide-react';
+import Link from 'next/link';
 
 interface IProps {
   keyword: string;
@@ -19,6 +20,12 @@ export default function SearchJob({ keyword }: IProps) {
           placeholder="Nhập từ khóa theo kĩ năng, chức vụ, công ty..."
           defaultValue={keyword}
         />
+        {keyword && (
+          <Link href={'/job'} className="h-full bg-white px-2 flex items-center rounded-none">
+            <X className="size-5" />
+          </Link>
+        )}
+
         <Button className="h-full bg-green hover:bg-green/80 rounded-none" type="submit">
           <Search className="size-5" /> <span className="hidden md:block">Tìm kiếm</span>
         </Button>

@@ -55,7 +55,7 @@ export default function JobInfo({ job, isCandidate }: IProps) {
                 className="dark:bg-gray-800 bg-[#309689] text-center text-sm sm:text-base rounded-2xl border text-white border-gray-200 px-2 py-1"
               >
                 {isCandidate ? (
-                  <Link href={`job/?keyword=${skill.name}`}>{skill.name}</Link>
+                  <Link href={`/job/?keyword=${skill.name}`}>{skill.name}</Link>
                 ) : (
                   <span>{skill.name}</span>
                 )}
