@@ -1,28 +1,30 @@
 import { TestingModule, Test } from '@nestjs/testing';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { EmailService } from './email.service';
-import { MailerService } from '@nestjs-modules/mailer';
+import * as sgMail from '@sendgrid/mail';
+
+// Mock SendGrid
+jest.mock('@sendgrid/mail');
 
 describe('EmailService', () => {
   let emailService: EmailService;
-  let mailerService: MailerService;
+  let configService: ConfigService;
+  let mockSendGridSend: jest.MockedFunction<typeof sgMail.send>;
 
   beforeEach(async () => {
+    // Clear all mocks before each test
+    jest.clearAllMocks();
+
     const module: TestingModule = await Test.createTestingModule({
-      providers: [
-        EmailService,
-        {
-          provide: MailerService,
-          useValue: {
-            sendMail: jest.fn(),
-          },
-        },
-      ],
-      imports: [ConfigModule],
+      providers: [EmailService],
+      imports: [ConfigModule.forRoot()],
     }).compile();
 
     emailService = module.get<EmailService>(EmailService);
-    mailerService = module.get<MailerService>(MailerService);
+    configService = module.get<ConfigService>(ConfigService);
+
+    // Get the mocked send function
+    mockSendGridSend = sgMail.send as jest.MockedFunction<typeof sgMail.send>;
   });
 
   it('should be defined', () => {
@@ -35,17 +37,33 @@ describe('EmailService', () => {
       const name = 'Test Employer';
       const password = 'test123';
 
+      // Mock the send function to resolve successfully
+      mockSendGridSend.mockResolvedValue([{} as any, {}]);
+
       await emailService.activeEmployer(email, name, password);
 
-      expect(mailerService.sendMail).toHaveBeenCalledWith({
+      expect(mockSendGridSend).toHaveBeenCalledWith({
+        from: expect.any(String),
         to: email,
         subject: 'Job Portal - Kích hoạt tài khoản doanh nghiệp',
-        template: 'activeEmployer',
-        context: {
-          name,
-          password,
-        },
+        html: expect.stringContaining(name),
       });
+
+      // Verify the HTML contains the password
+      const callArgs = mockSendGridSend.mock.calls[0][0] as any;
+      expect(callArgs.html).toContain(password);
+    });
+
+    it('should handle SendGrid errors', async () => {
+      const email = 'test@example.com';
+      const name = 'Test Employer';
+      const password = 'test123';
+
+      // Mock the send function to reject
+      const error = new Error('SendGrid error');
+      mockSendGridSend.mockRejectedValue(error);
+
+      await expect(emailService.activeEmployer(email, name, password)).rejects.toThrow('SendGrid error');
     });
   });
 
@@ -55,17 +73,20 @@ describe('EmailService', () => {
       const name = 'Test User';
       const link_reset = 'https://example.com/reset';
 
+      mockSendGridSend.mockResolvedValue([{} as any, {}]);
+
       await emailService.resetPassword(email, name, link_reset);
 
-      expect(mailerService.sendMail).toHaveBeenCalledWith({
+      expect(mockSendGridSend).toHaveBeenCalledWith({
+        from: expect.any(String),
         to: email,
         subject: 'Job Portal - Đặt lại mật khẩu',
-        template: 'resetPassword',
-        context: {
-          name,
-          link_reset,
-        },
+        html: expect.stringContaining(link_reset),
       });
+
+      // Verify the HTML contains the reset link
+      const callArgs = mockSendGridSend.mock.calls[0][0] as any;
+      expect(callArgs.html).toContain(link_reset);
     });
   });
 
@@ -75,17 +96,20 @@ describe('EmailService', () => {
       const name = 'Test Candidate';
       const link_active = 'https://example.com/activate';
 
+      mockSendGridSend.mockResolvedValue([{} as any, {}]);
+
       await emailService.activeCandidate(email, name, link_active);
 
-      expect(mailerService.sendMail).toHaveBeenCalledWith({
+      expect(mockSendGridSend).toHaveBeenCalledWith({
+        from: expect.any(String),
         to: email,
         subject: 'Job Portal - Kích hoạt tài khoản ứng viên',
-        template: 'activeCandidate',
-        context: {
-          name,
-          link_active,
-        },
+        html: expect.stringContaining(link_active),
       });
+
+      // Verify the HTML contains the activation link
+      const callArgs = mockSendGridSend.mock.calls[0][0] as any;
+      expect(callArgs.html).toContain(link_active);
     });
   });
 
@@ -96,18 +120,43 @@ describe('EmailService', () => {
       const jobName = 'Test Job';
       const reason = 'Violation of terms';
 
+      mockSendGridSend.mockResolvedValue([{} as any, {}]);
+
       await emailService.deleteJob(email, employerName, jobName, reason);
 
-      expect(mailerService.sendMail).toHaveBeenCalledWith({
+      expect(mockSendGridSend).toHaveBeenCalledWith({
+        from: expect.any(String),
         to: email,
         subject: 'Job Portal - Thông báo xóa bài tuyển dụng',
-        template: 'deleteJob',
-        context: {
-          employerName,
-          jobName,
-          reason,
-        },
+        html: expect.stringContaining(jobName),
       });
+
+      // Verify the HTML contains the job name and reason
+      const callArgs = mockSendGridSend.mock.calls[0][0] as any;
+      expect(callArgs.html).toContain(jobName);
+      expect(callArgs.html).toContain(reason);
+    });
+
+    it('should send job deletion notification without reason', async () => {
+      const email = 'test@example.com';
+      const employerName = 'Test Employer';
+      const jobName = 'Test Job';
+      const reason = '';
+
+      mockSendGridSend.mockResolvedValue([{} as any, {}]);
+
+      await emailService.deleteJob(email, employerName, jobName, reason);
+
+      expect(mockSendGridSend).toHaveBeenCalledWith({
+        from: expect.any(String),
+        to: email,
+        subject: 'Job Portal - Thông báo xóa bài tuyển dụng',
+        html: expect.stringContaining(jobName),
+      });
+
+      // Verify the HTML doesn't contain the reason section when reason is empty
+      const callArgs = mockSendGridSend.mock.calls[0][0] as any;
+      expect(callArgs.html).not.toContain('Lý do xóa:');
     });
   });
 
@@ -117,17 +166,20 @@ describe('EmailService', () => {
       const fullName = 'Test Employer';
       const reason = 'Violation of terms';
 
+      mockSendGridSend.mockResolvedValue([{} as any, {}]);
+
       await emailService.deleteEmployer(email, fullName, reason);
 
-      expect(mailerService.sendMail).toHaveBeenCalledWith({
+      expect(mockSendGridSend).toHaveBeenCalledWith({
+        from: expect.any(String),
         to: email,
         subject: 'Job Portal - Thông báo xóa tài khoản doanh nghiệp',
-        template: 'deleteEmployer',
-        context: {
-          fullName,
-          reason,
-        },
+        html: expect.stringContaining(fullName),
       });
+
+      // Verify the HTML contains the reason
+      const callArgs = mockSendGridSend.mock.calls[0][0] as any;
+      expect(callArgs.html).toContain(reason);
     });
   });
 
@@ -137,17 +189,20 @@ describe('EmailService', () => {
       const fullName = 'Test Employer';
       const reason = 'Violation of terms';
 
+      mockSendGridSend.mockResolvedValue([{} as any, {}]);
+
       await emailService.banEmployer(email, fullName, reason);
 
-      expect(mailerService.sendMail).toHaveBeenCalledWith({
+      expect(mockSendGridSend).toHaveBeenCalledWith({
+        from: expect.any(String),
         to: email,
         subject: 'Job Portal - Thông báo khóa tài khoản doanh nghiệp',
-        template: 'banEmployer',
-        context: {
-          fullName,
-          reason,
-        },
+        html: expect.stringContaining(fullName),
       });
+
+      // Verify the HTML contains the reason
+      const callArgs = mockSendGridSend.mock.calls[0][0] as any;
+      expect(callArgs.html).toContain(reason);
     });
   });
 
@@ -157,17 +212,20 @@ describe('EmailService', () => {
       const fullName = 'Test Employer';
       const reason = 'Terms compliance';
 
+      mockSendGridSend.mockResolvedValue([{} as any, {}]);
+
       await emailService.unbanEmployer(email, fullName, reason);
 
-      expect(mailerService.sendMail).toHaveBeenCalledWith({
+      expect(mockSendGridSend).toHaveBeenCalledWith({
+        from: expect.any(String),
         to: email,
         subject: 'Job Portal - Thông báo mở khóa tài khoản doanh nghiệp',
-        template: 'unbanEmployer',
-        context: {
-          fullName,
-          reason,
-        },
+        html: expect.stringContaining(fullName),
       });
+
+      // Verify the HTML contains the reason
+      const callArgs = mockSendGridSend.mock.calls[0][0] as any;
+      expect(callArgs.html).toContain(reason);
     });
   });
 
@@ -176,15 +234,15 @@ describe('EmailService', () => {
       const email = 'test@example.com';
       const fullName = 'Test Candidate';
 
+      mockSendGridSend.mockResolvedValue([{} as any, {}]);
+
       await emailService.adminActiveCandidate(email, fullName);
 
-      expect(mailerService.sendMail).toHaveBeenCalledWith({
+      expect(mockSendGridSend).toHaveBeenCalledWith({
+        from: expect.any(String),
         to: email,
         subject: 'Job Portal - Kích hoạt tài khoản ứng viên',
-        template: 'adminActiveCandidate',
-        context: {
-          fullName,
-        },
+        html: expect.stringContaining(fullName),
       });
     });
   });
@@ -195,17 +253,20 @@ describe('EmailService', () => {
       const fullName = 'Test Candidate';
       const reason = 'Violation of terms';
 
+      mockSendGridSend.mockResolvedValue([{} as any, {}]);
+
       await emailService.banCandidate(email, fullName, reason);
 
-      expect(mailerService.sendMail).toHaveBeenCalledWith({
+      expect(mockSendGridSend).toHaveBeenCalledWith({
+        from: expect.any(String),
         to: email,
         subject: 'Job Portal - Thông báo khóa tài khoản ứng viên',
-        template: 'banCandidate',
-        context: {
-          fullName,
-          reason,
-        },
+        html: expect.stringContaining(fullName),
       });
+
+      // Verify the HTML contains the reason
+      const callArgs = mockSendGridSend.mock.calls[0][0] as any;
+      expect(callArgs.html).toContain(reason);
     });
   });
 
@@ -215,17 +276,20 @@ describe('EmailService', () => {
       const fullName = 'Test Candidate';
       const reason = 'Terms compliance';
 
+      mockSendGridSend.mockResolvedValue([{} as any, {}]);
+
       await emailService.unbanCandidate(email, fullName, reason);
 
-      expect(mailerService.sendMail).toHaveBeenCalledWith({
+      expect(mockSendGridSend).toHaveBeenCalledWith({
+        from: expect.any(String),
         to: email,
         subject: 'Job Portal - Thông báo mở khóa tài khoản ứng viên',
-        template: 'unbanCandidate',
-        context: {
-          fullName,
-          reason,
-        },
+        html: expect.stringContaining(fullName),
       });
+
+      // Verify the HTML contains the reason
+      const callArgs = mockSendGridSend.mock.calls[0][0] as any;
+      expect(callArgs.html).toContain(reason);
     });
   });
 
@@ -235,17 +299,40 @@ describe('EmailService', () => {
       const fullName = 'Test Candidate';
       const reason = 'Violation of terms';
 
+      mockSendGridSend.mockResolvedValue([{} as any, {}]);
+
       await emailService.deleteCandidate(email, fullName, reason);
 
-      expect(mailerService.sendMail).toHaveBeenCalledWith({
+      expect(mockSendGridSend).toHaveBeenCalledWith({
+        from: expect.any(String),
         to: email,
         subject: 'Job Portal - Thông báo xóa tài khoản ứng viên',
-        template: 'deleteCandidate',
-        context: {
-          fullName,
-          reason,
-        },
+        html: expect.stringContaining(fullName),
       });
+
+      // Verify the HTML contains the reason
+      const callArgs = mockSendGridSend.mock.calls[0][0] as any;
+      expect(callArgs.html).toContain(reason);
+    });
+  });
+
+  describe('Email content validation', () => {
+    it('should include responsive design elements', async () => {
+      const email = 'test@example.com';
+      const name = 'Test User';
+      const link = 'https://example.com/test';
+
+      mockSendGridSend.mockResolvedValue([{} as any, {}]);
+
+      await emailService.resetPassword(email, name, link);
+
+      const callArgs = mockSendGridSend.mock.calls[0][0] as any;
+      const html = callArgs.html;
+
+      // Verify responsive design elements
+      expect(html).toContain('max-width: 600px');
+      expect(html).toContain('width=device-width');
+      expect(html).toContain('initial-scale=1.0');
     });
   });
 });

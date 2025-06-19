@@ -36,6 +36,7 @@ import { StaticsticsModule } from '@/api/staticstics/staticstics.module';
 import { ApplyJobModule } from '@/api/apply-job/apply-job.module';
 import { SaveJobModule } from '@/api/save-job/save-job.module';
 import { SubscribeSkillModule } from '@/api/subscribe-skill/subscribe-skill.module';
+
 const EnvSchema = {
   PORT: Joi.number(),
   NODE_ENV: Joi.string(),
