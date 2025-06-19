@@ -8,7 +8,8 @@ export const metadata: Metadata = {
   openGraph: {
     images: [
       {
-        url: `https://${process.env.FRONTEND_DOMAIN}/og_images/about.png`,
+        url: `${process.env.FRONTEND_URL}/og_images/about.png`,
+        alt: 'Về Golden Owl Solutions',
       },
     ],
   },

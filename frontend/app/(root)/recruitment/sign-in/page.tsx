@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   openGraph: {
     images: [
       {
-        url: `https://${process.env.FRONTEND_DOMAIN}/og_images/recruitment-sign-in.png`,
+        url: `${process.env.FRONTEND_URL}/og_images/recruitment-sign-in.png`,
         alt: 'Đăng nhập | Xin chào nhà tuyển dụng',
       },
     ],
