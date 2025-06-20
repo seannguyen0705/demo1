@@ -8,6 +8,7 @@ import { vi } from 'date-fns/locale';
 import getShortStringSalary from '@/utils/helpers/getShortStringSalary';
 import Link from 'next/link';
 import { formatDistanceToNow } from 'date-fns';
+import getStringJobType from '@/utils/helpers/getStringJobType';
 
 interface IProps {
   job: IJob;
@@ -67,7 +68,7 @@ export default function JobCard({ job }: IProps) {
             className="flex items-center gap-2 text-gray-600 dark:text-white hover:underline relative z-10"
           >
             <Briefcase className="h-4 w-4 text-gray-400" />
-            <span>{job.jobType}</span>
+            <span>{getStringJobType(job.jobType)}</span>
           </Link>
           <div className="flex items-center gap-2 text-gray-600 dark:text-white">
             <DollarSign className="h-4 w-4 text-gray-400" />
