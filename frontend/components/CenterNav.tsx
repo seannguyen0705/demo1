@@ -1,37 +1,18 @@
 'use client';
-
+import getCenterNav from '@/utils/helpers/getCenterNav';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 export default function CenterNav() {
-  const navs = [
-    {
-      name: 'Home',
-      href: '/',
-    },
-    {
-      name: 'Jobs',
-      href: '/jobs',
-    },
-    {
-      name: 'About',
-      href: '/about',
-    },
-    {
-      name: 'Contact us',
-      href: '/contact',
-    },
-  ];
   const currentPath = usePathname();
-  const pathWithoutLang = currentPath.split('/').slice(2).join('/') || '/';
-
+  const navs = getCenterNav();
   return (
-    <div className=" text-[#999] flex flex-row gap-x-[20px]">
+    <div className="hidden lg:flex flex-row gap-x-[20px]">
       {navs.map((nav) => (
         <Link
           className={`${
-            pathWithoutLang === nav.href && 'text-white font-semibold'
-          }`}
+            currentPath === nav.href || currentPath.startsWith(nav.href + '/') ? 'underline font-semibold' : ''
+          } `}
           href={nav.href}
           key={nav.name}
         >

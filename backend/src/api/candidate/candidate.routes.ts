@@ -4,11 +4,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { UserRole } from '@/common/enums';
 import { IRouteParams } from '@/decorators';
 
-import {
-  ResponseCandidateDto,
-  ResponseCandidateDetailDto,
-  UpdateCandidateDto,
-} from './dto';
+import { ResponseCandidateDto, ResponseCandidateDetailDto, UpdateCandidateDto } from './dto';
 
 export default {
   index: 'candidates',
@@ -20,24 +16,7 @@ export default {
       responses: [{ status: HttpStatus.OK, type: ResponseCandidateDto }],
     },
   },
-  getAll: <IRouteParams>{
-    path: '/',
-    method: RequestMethod.GET,
-    roles: [UserRole.ADMIN],
-    swaggerInfo: {
-      responses: [
-        { status: HttpStatus.OK, type: ResponseCandidateDto, isArray: true },
-      ],
-    },
-  },
-  getMe: <IRouteParams>{
-    path: '/me',
-    method: RequestMethod.GET,
-    roles: [UserRole.CANDIDATE],
-    swaggerInfo: {
-      responses: [{ status: HttpStatus.OK, type: ResponseCandidateDetailDto }],
-    },
-  },
+
   updateMe: <IRouteParams>{
     path: '/me',
     method: RequestMethod.PUT,
@@ -71,20 +50,12 @@ export default {
   getById: <IRouteParams>{
     path: '/:id',
     method: RequestMethod.GET,
-    roles: [UserRole.ADMIN],
+    roles: [UserRole.ADMIN, UserRole.EMPLOYER],
     swaggerInfo: {
       responses: [{ status: HttpStatus.OK, type: ResponseCandidateDetailDto }],
     },
   },
-  updateById: <IRouteParams>{
-    path: '/:id',
-    method: RequestMethod.PUT,
-    roles: [UserRole.ADMIN],
-    swaggerInfo: {
-      responses: [{ status: HttpStatus.OK, type: ResponseCandidateDto }],
-    },
-  },
-  deleteById: <IRouteParams>{
+  adminDeleteById: <IRouteParams>{
     path: '/:id',
     method: RequestMethod.DELETE,
     roles: [UserRole.ADMIN],
@@ -99,5 +70,18 @@ export default {
         },
       ],
     },
+  },
+
+  getCandidates: <IRouteParams>{
+    path: '/',
+    method: RequestMethod.GET,
+    roles: [UserRole.ADMIN],
+    jwtSecure: true,
+  },
+  updateStatus: <IRouteParams>{
+    path: '/:id/status',
+    method: RequestMethod.PUT,
+    roles: [UserRole.ADMIN],
+    jwtSecure: true,
   },
 };

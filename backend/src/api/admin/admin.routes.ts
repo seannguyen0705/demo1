@@ -1,12 +1,7 @@
 import { UserRole } from '@/common/enums';
 import { IRouteParams } from '@/decorators';
 import { HttpStatus, RequestMethod, UseGuards } from '@nestjs/common';
-import {
-  ResponseAdminDto,
-  ResponseAdminDetailDto,
-  CreateAdminDto,
-  UpdateAdminDto,
-} from './dto';
+import { ResponseAdminDto, ResponseAdminDetailDto, CreateAdminDto, UpdateAdminDto } from './dto';
 import { SelfGuard } from '../auth/guards';
 
 export default {
@@ -14,7 +9,7 @@ export default {
   create: <IRouteParams>{
     path: '/',
     method: RequestMethod.POST,
-    roles: [UserRole.ADMIN],
+    jwtSecure: false,
     swaggerInfo: {
       responses: [{ status: HttpStatus.OK, type: CreateAdminDto }],
     },
@@ -24,19 +19,10 @@ export default {
     method: RequestMethod.GET,
     roles: [UserRole.ADMIN],
     swaggerInfo: {
-      responses: [
-        { status: HttpStatus.OK, type: ResponseAdminDto, isArray: true },
-      ],
+      responses: [{ status: HttpStatus.OK, type: ResponseAdminDto, isArray: true }],
     },
   },
-  getMe: <IRouteParams>{
-    path: '/me',
-    method: RequestMethod.GET,
-    roles: [UserRole.ADMIN],
-    swaggerInfo: {
-      responses: [{ status: HttpStatus.OK, type: ResponseAdminDetailDto }],
-    },
-  },
+
   updateMe: <IRouteParams>{
     path: '/me',
     method: RequestMethod.PUT,

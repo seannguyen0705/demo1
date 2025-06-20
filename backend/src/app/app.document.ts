@@ -1,9 +1,4 @@
-import {
-  SwaggerModule,
-  DocumentBuilder,
-  SwaggerCustomOptions,
-  SwaggerDocumentOptions,
-} from '@nestjs/swagger';
+import { SwaggerModule, DocumentBuilder, SwaggerCustomOptions, SwaggerDocumentOptions } from '@nestjs/swagger';
 
 import type { INestApplication } from '@nestjs/common';
 import type { SecuritySchemeObject } from '@nestjs/swagger/dist/interfaces/open-api-spec.interface';
@@ -30,11 +25,7 @@ export const genAPIDocument = async (app: INestApplication): Promise<void> => {
     deepScanRoutes: true,
   };
 
-  const document = SwaggerModule.createDocument(
-    app,
-    documentConfig,
-    documentOptions,
-  );
+  const document = SwaggerModule.createDocument(app, documentConfig, documentOptions);
 
   const customOptions: SwaggerCustomOptions = {
     customSiteTitle: config.swagger.siteTitle,

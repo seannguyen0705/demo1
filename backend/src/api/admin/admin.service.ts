@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import type { DeleteResult } from 'typeorm';
@@ -11,10 +11,11 @@ import { AdminRepository } from './admin.repository';
 import type { CreateAdminDto, UpdateAdminDto } from './dto';
 import { UserRole } from '@/common/enums';
 import { TokenService } from '../token/token.service';
-import {
-  ResponseAdminDetailDto,
-  ResponseAdminDto,
-} from './dto/response-admin.dto';
+import { ResponseAdminDetailDto, ResponseAdminDto } from './dto/response-admin.dto';
+import { plainToInstance } from 'class-transformer';
+import { ChangePasswordDto } from '@/common/dto/change-password.dto';
+import { compareSync } from 'bcrypt';
+import { hash } from '@/utils/helpers';
 @Injectable()
 export class AdminService {
   constructor(
@@ -24,12 +25,9 @@ export class AdminService {
   ) {}
 
   public async create(data: CreateAdminDto): Promise<Admin> {
-    const { email, phoneNumber } = data;
+    const { email } = data;
 
-    const admin = await this.findOneByEmailOrPhoneNumber({
-      email,
-      phoneNumber,
-    });
+    const admin = await this.findOneByEmail(email);
     if (admin) {
       throw new UserAlreadyException();
     }
@@ -69,16 +67,11 @@ export class AdminService {
       role: UserRole.ADMIN,
     });
 
-    return admin.toResponseHavingSessions(sessions);
+    const gotAdmin = admin.toResponseHavingSessions(sessions);
+    return plainToInstance(ResponseAdminDetailDto, gotAdmin);
   }
 
-  private async handleUpdateAdmin({
-    admin,
-    data,
-  }: {
-    admin: Admin;
-    data: UpdateAdminDto;
-  }): Promise<Admin> {
+  private async handleUpdateAdmin({ admin, data }: { admin: Admin; data: UpdateAdminDto }): Promise<Admin> {
     const { phoneNumber } = data;
 
     if (phoneNumber && phoneNumber !== admin?.phoneNumber) {
@@ -101,33 +94,53 @@ export class AdminService {
     return updatedAdmin;
   }
 
-  public async updateById({
-    id,
-    data,
-  }: {
-    id: string;
-    data: UpdateAdminDto;
-  }): Promise<ResponseAdminDto> {
+  public async findOneById(id: string): Promise<Admin> {
     const admin = await this.adminRepository.findOneBy({ id });
-
-    const updatedAdmin = await this.handleUpdateAdmin({ admin, data });
-
-    return updatedAdmin.toResponse();
+    if (!admin) {
+      throw new NotFoundException('Admin not found');
+    }
+    return admin;
   }
 
-  public async updateByAdmin({
-    admin,
-    data,
-  }: {
-    admin: Admin;
-    data: UpdateAdminDto;
-  }): Promise<ResponseAdminDto> {
-    const updatedAdmin = await this.handleUpdateAdmin({ admin, data });
+  public async updateById(id: string, data: UpdateAdminDto) {
+    const admin = await this.findOneById(id);
+    if (!admin) {
+      throw new NotFoundException('Admin not found');
+    }
+    return this.handleUpdateAdmin({ admin, data });
+  }
 
+  public async updateByAdmin({ admin, data }: { admin: Admin; data: UpdateAdminDto }): Promise<ResponseAdminDto> {
+    const updatedAdmin = await this.handleUpdateAdmin({ admin, data });
     return updatedAdmin.toResponse();
   }
 
   public async deleteById(id: string): Promise<DeleteResult> {
     return this.adminRepository.delete({ id });
+  }
+
+  public async updateAccountToken(id: string, accountToken: string) {
+    const admin = await this.adminRepository.findOneBy({ id });
+    if (!admin) {
+      throw new NotFoundException('Admin not found');
+    }
+    return this.adminRepository.save({ ...admin, accountToken });
+  }
+
+  public async changePassword(id: string, data: ChangePasswordDto) {
+    const admin = await this.findOneById(id);
+    if (!admin) {
+      throw new NotFoundException('Admin not found');
+    }
+    const { currentPassword, newPassword } = data;
+    if (!compareSync(currentPassword, admin.password)) {
+      throw new BadRequestException('Mật khẩu hiện tại không chính xác');
+    }
+    const hashedPassword = await hash.generateWithBcrypt({
+      source: newPassword,
+      salt: 10,
+    });
+    await this.adminRepository.update(id, { password: hashedPassword });
+    return { message: 'Đổi mật khẩu thành công' };
   }
 }

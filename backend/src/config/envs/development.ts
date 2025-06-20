@@ -12,8 +12,8 @@ export const config = {
 
     // entities: [`${__dirname}/../../api/**/*.entity.{js,ts}`],
 
-    logging: true,
-    synchronize: true,
+    logging: false,
+    synchronize: false,
     // autoLoadEntities: true,
   },
   token: {
@@ -22,4 +22,5 @@ export const config = {
       renewedTimes: 4,
     },
   },
+  domain: 'localhost',
 };

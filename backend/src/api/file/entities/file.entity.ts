@@ -8,7 +8,7 @@ export class File extends BaseEntity {
   @Column()
   url: string;
 
-  @Column()
+  @Column({ nullable: true })
   key: string;
 
   @Column()

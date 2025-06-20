@@ -1,47 +1,43 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { UserRole } from './utils/enums';
+import decodeUser from './utils/helpers/decodeUser';
 
-const locales = ['en', 'vi'];
+const employerPaths = ['/manage-jobs', '/manage-candidates', '/create-job', 'edit-job'];
+const candidatePaths = ['/my-jobs'];
+const adminPaths = ['/manage/employer', '/manage/candidate', '/manage/job', '/manage/review', '/dashboard'];
+const privatePaths = [...employerPaths, ...candidatePaths, ...adminPaths, '/profile-personal', '/setting'];
+const authPaths = ['/sign-in', '/sign-up', '/recruitment/sign-in', '/recruitment', '/admin/sign-in', 'create-job'];
 
-// Get the preferred locale, similar to the above or using a library
-function getLocale(request: NextRequest) {
-  const { cookies } = request;
-  const locale = cookies.get('NEXT_LOCALE')?.value || 'en';
+export async function middleware(request: NextRequest) {
+  const token = request.cookies.get('Authentication')?.value || request.cookies.get('Refresh')?.value;
+  const user = token ? decodeUser(token) : null;
 
-  return locale;
-}
+  const currentPath = request.nextUrl.pathname;
+  if (user) {
+    if (authPaths.some((path) => currentPath.startsWith(path))) {
+      return NextResponse.redirect(new URL('/', request.url));
+    }
+    if (employerPaths.some((path) => currentPath.startsWith(path)) && user.role !== UserRole.EMPLOYER) {
+      return NextResponse.redirect(new URL('/', request.url));
+    }
+    if (currentPath === '/job' && user.role !== UserRole.CANDIDATE) {
+      return NextResponse.redirect(new URL('/', request.url));
+    }
+    if (candidatePaths.some((path) => currentPath.startsWith(path)) && user.role !== UserRole.CANDIDATE) {
+      return NextResponse.redirect(new URL('/', request.url));
+    }
+    if (adminPaths.some((path) => currentPath.startsWith(path)) && user.role !== UserRole.ADMIN) {
+      return NextResponse.redirect(new URL('/', request.url));
+    }
+  } else {
+    if (privatePaths.some((path) => currentPath.startsWith(path))) {
+      return NextResponse.redirect(new URL('/sign-in', request.url));
+    }
+  }
 
-export function middleware(request: NextRequest) {
-  // Check if there is any supported locale in the pathname
-  const { pathname } = request.nextUrl;
-  const pathnameHasLocale = locales.some(
-    (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`,
-  );
-
-  if (pathnameHasLocale) return;
-
-  // Redirect if there is no locale
-  const locale = getLocale(request);
-  request.nextUrl.pathname = `/${locale}${pathname}`;
-  // e.g. incoming request is /products
-  // The new URL is now /en-US/products
-  return NextResponse.redirect(request.nextUrl, {
-    headers: {
-      'Set-Cookie': `NEXT_LOCALE=${locale}; Path=/; HttpOnly`,
-    },
-  });
+  return NextResponse.next();
 }
 
 export const config = {
-  matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - api (API routes)
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico, sitemap.xml, robots.txt (metadata files)
-     */
-
-    '/',
-    '/sign-up',
-  ],
+  matcher: ['/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)'],
 };

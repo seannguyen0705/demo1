@@ -1,22 +1,45 @@
-import { BeforeInsert, Column, Entity } from 'typeorm';
+import { BeforeInsert, Column, Entity, OneToMany } from 'typeorm';
 
 import { hash } from '@/utils/helpers';
-import { AuthBy, UserRole } from '@/common/enums';
+import { AuthBy, UserRole, UserStatus } from '@/common/enums';
 
 import type { Token } from '@/api/token/entities';
 import { BaseUserEntity } from '@/common/entities/baseUser.entity';
-import {
-  ResponseCandidateDetailDto,
-  ResponseCandidateDto,
-} from '../dto/response-candidate.dto';
+import { ResponseCandidateDetailDto, ResponseCandidateDto } from '../dto/response-candidate.dto';
+import { Experience } from '@/api/experience/entities/experience.entity';
+import { CandidateSkill } from '@/api/candidate-skill/entities/candidate_skill.entity';
 
 @Entity({ name: 'candidates' })
 export class Candidate extends BaseUserEntity {
-  @Column({ type: 'enum', enum: AuthBy, default: AuthBy.LOCAL })
+  @Column({ type: 'enum', enum: AuthBy, default: AuthBy.LOCAL, name: 'auth_by' })
   authBy: AuthBy;
 
-  @Column({ nullable: true })
+  @Column({ type: 'enum', enum: UserStatus, default: UserStatus.INACTIVE })
+  status: UserStatus;
+
+  @Column({ nullable: true, name: 'avatar_url' })
   avatar_url: string;
+
+  @Column({ nullable: true })
+  title: string;
+
+  @Column({ nullable: true })
+  address: string;
+
+  @Column({ nullable: true, name: 'personal_website' })
+  personal_website: string;
+
+  @Column({ nullable: true })
+  introduction: string;
+
+  @OneToMany(() => Experience, (experience) => experience.candidate)
+  experiences: Experience[];
+
+  @OneToMany(() => CandidateSkill, (candidateSkill) => candidateSkill.candidate)
+  candidateSkills: CandidateSkill[];
+
+  @Column({ default: false, name: 'allow_notify' })
+  allowNotify: boolean;
 
   @BeforeInsert()
   private async setInsertingData(): Promise<void> {
@@ -39,9 +62,7 @@ export class Candidate extends BaseUserEntity {
     };
   }
 
-  public toResponseHavingSessions(
-    sessions: Token[],
-  ): ResponseCandidateDetailDto {
+  public toResponseHavingSessions(sessions: Token[]): ResponseCandidateDetailDto {
     return {
       ...this,
       role: UserRole.CANDIDATE,

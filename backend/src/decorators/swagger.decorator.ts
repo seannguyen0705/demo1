@@ -1,12 +1,5 @@
 import { applyDecorators } from '@nestjs/common';
-import {
-  ApiBody,
-  ApiTags,
-  ApiConsumes,
-  ApiResponse,
-  ApiBearerAuth,
-  ApiResponseOptions,
-} from '@nestjs/swagger';
+import { ApiBody, ApiTags, ApiConsumes, ApiResponse, ApiBearerAuth, ApiResponseOptions } from '@nestjs/swagger';
 
 import type { ApiBodyOptions } from '@nestjs/swagger';
 
@@ -20,16 +13,8 @@ export function SwaggerController(name: string) {
   return applyDecorators(ApiTags(name));
 }
 
-export function SwaggerApi({
-  secure = false,
-  body = {},
-  responses = [],
-}: ISwaggerParams) {
-  const consumeTypes = [
-    'application/json',
-    'application/x-www-form-urlencoded',
-    'multipart/form-data',
-  ];
+export function SwaggerApi({ secure = false, body = {}, responses = [] }: ISwaggerParams) {
+  const consumeTypes = ['application/json', 'application/x-www-form-urlencoded', 'multipart/form-data'];
 
   const decorators = [];
 

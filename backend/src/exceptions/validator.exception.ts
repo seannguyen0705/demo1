@@ -19,10 +19,10 @@ export class ValidatorException extends BaseException {
     errors = [],
     message = 'Unprocessable Entity',
     status = HttpStatus.UNPROCESSABLE_ENTITY,
-    code = Exception.UNPROCESSABLE_ENTITY_CODE,
+    errorCode = Exception.UNPROCESSABLE_ENTITY_CODE,
   }: IBaseValidatorException) {
     super({
-      code,
+      errorCode,
       status,
       message,
     });

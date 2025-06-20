@@ -1,73 +1,120 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# Job Portal - Guideline run backend
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## TechStack:
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+- NestJs
+- JWT (Authen)
+- Sentry (Error handle service)
+- TypeORM
+- Nodemailer (Email service)
+- PostgreSQL
+- Cloudinary (store file)
 
-## Description
+## Table of Contents
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+- [Link API document](#link-api-document)
+- [Project Structure](#project-structure)
+- [Precondition](#precondition)
+- [Running the Application](#running-the-application)
+- [Contributor](#contributor)
+- [Contact](#contact)
 
-## Installation
+---
+
+## [Link API document](https://intern-assignment-cyan.vercel.app)
+
+## Project Structure
+
+          backend/
+          ├── src/
+          │   ├── api
+          │   ├── app
+          │   ├── database/
+          │   │   ├── migrations
+          │   │   └── seeds/
+          │   │       └── index.js
+          │   └── main.js
+          ├── tsconfig.json
+          └── package.json
+
+## Precondition
+
+- Node.js >= 18.x (I use version 22.15.0)
+- yarn
+- Docker
+
+## Running the Backend
+
+### Step 1: Run containers (Postgres)
 
 ```bash
-$ npm install
+docker compose up -d
 ```
 
-## Running the app
+### Step 2: Create file .env in folder backend
+
+demo1/backend/.env
 
 ```bash
-# development
-$ npm run start
+DB_PORT= 5432
+DB_NAME= demo1
+DB_USERNAME= root
+DB_PASSWORD= root
+DB_SSL = false
 
-# watch mode
-$ npm run start:dev
+PORT= 8080
 
-# production mode
-$ npm run start:prod
+JWT_SECRET= catch me if you can
+JWT_REFRESH_SECRET= catch me if you can
+JWT_RESET_PASSWORD_SECRET= catch me if you can
+JWT_ACTIVE_ACCOUNT_SECRET= catch me if you can
+
+GITHUB_CALLBACK_URL = http://localhost:8080/api/v1/github/callback
+GITHUB_CLIENT_ID =
+GITHUB_CLIENT_SECRET =
+
+GOOGLE_CALLBACK_URL = http://localhost:8080/api/v1/google/callback
+GOOGLE_CLIENT_ID =
+GOOGLE_CLIENT_SECRET =
+
+LINKEDIN_CLIENT_ID =
+LINKEDIN_CLIENT_SECRET =
+LINKEDIN_CALLBACK_URL = http://localhost:8080/api/v1/linkedin/callback
+
+FRONTEND_URL =http://localhost:3000
+
+CLOUDINARY_API_KEY =
+CLOUDINARY_API_SECRET =
+CLOUDINARY_CLOUD_NAME =
+
+MAIL_PASSWORD =
+MAIL_USERNAME =
 ```
 
-## Test
+### Step 3: Run migration (at backend folder)
 
 ```bash
-# unit tests
-$ npm run test
+yarn
+yarn migration:run
 
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
 ```
 
-## Support
+### Step 4: Seed data
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+```bash
+yarn db:seed
+```
 
-## Stay in touch
+### Step 5: Open API document
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+```bash
+http://localhost:8080/api/document
+```
 
-## License
+# Contributor
 
-Nest is [MIT licensed](LICENSE).
+- Nguyen Nhat Phap (GOS)
+
+# Contact
+
+- ✉️ sean.nguyen.goldenowl@gmail.com

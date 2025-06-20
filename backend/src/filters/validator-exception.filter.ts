@@ -9,6 +9,7 @@ import { ValidatorException } from '@/exceptions';
 import { isDevelopmentEnv } from '@/utils/helpers';
 
 import type { IBaseExceptionResponse } from '@/exceptions';
+import { SentryExceptionCaptured } from '@sentry/nestjs';
 
 export interface IValidatorExceptionResponse extends IBaseExceptionResponse {
   detail?: Record<string, string[]>;
@@ -16,10 +17,8 @@ export interface IValidatorExceptionResponse extends IBaseExceptionResponse {
 
 @Catch(ValidatorException)
 export class ValidatorExceptionFilter implements ExceptionFilter {
-  catch(
-    exception: ValidatorException,
-    host: ArgumentsHost,
-  ): Response<IBaseExceptionResponse> {
+  @SentryExceptionCaptured()
+  catch(exception: ValidatorException, host: ArgumentsHost): Response<IBaseExceptionResponse> {
     const isDevelopment = isDevelopmentEnv();
 
     const response = host.switchToHttp().getResponse<Response>();
@@ -28,8 +27,6 @@ export class ValidatorExceptionFilter implements ExceptionFilter {
       const { errors } = exception as unknown as {
         errors: ValidationError[];
       };
-      const firstMessage = errors[0];
-      const dto = firstMessage.target.constructor.name;
 
       const detail = errors?.reduce((result, { property, constraints }) => {
         result[property] = Object.values(constraints);
@@ -37,12 +34,10 @@ export class ValidatorExceptionFilter implements ExceptionFilter {
         return result;
       }, {});
 
-      const firstError = Object.values(
-        Object.values(detail || {})?.[0] || [] || {},
-      );
+      const firstError = Object.values(Object.values(detail || {})?.[0] || [] || {});
 
       let resBody = <IValidatorExceptionResponse>{
-        code: Exception.UNPROCESSABLE_ENTITY_CODE,
+        errorCode: Exception.UNPROCESSABLE_ENTITY_CODE,
         status: HttpStatus.UNPROCESSABLE_ENTITY,
         message: firstError?.[0] || 'Invalid Information',
       };
@@ -50,7 +45,7 @@ export class ValidatorExceptionFilter implements ExceptionFilter {
       if (isDevelopment) {
         resBody = {
           ...resBody,
-          message: `${firstError?.[0]} Invalid Attribute(s) in ${dto}`,
+          message: firstError?.[0],
           detail,
         };
       }
@@ -58,7 +53,7 @@ export class ValidatorExceptionFilter implements ExceptionFilter {
       return response.status(422).send(resBody);
     } catch (error) {
       const resBody = <IBaseExceptionResponse>{
-        code: Exception.INTERNAL_ERROR_CODE,
+        errorCode: Exception.INTERNAL_ERROR_CODE,
         status: HttpStatus.INTERNAL_SERVER_ERROR,
         message: 'Something went wrong!',
       };

@@ -7,9 +7,9 @@ import adminRoutes from './admin.routes';
 import { AdminService } from './admin.service';
 import { CreateAdminDto, UpdateAdminDto } from './dto';
 
-import type { ResponseAdminDetailDto, ResponseAdminDto } from './dto';
+import { ResponseAdminDetailDto, ResponseAdminDto } from './dto';
 import type { Admin } from './entities/admin.entity';
-
+import { plainToInstance } from 'class-transformer';
 @InjectController({ name: adminRoutes.index })
 export class AdminController {
   constructor(private readonly adminService: AdminService) {}
@@ -17,8 +17,7 @@ export class AdminController {
   @InjectRoute(adminRoutes.create)
   public async create(@Body() data: CreateAdminDto): Promise<ResponseAdminDto> {
     const createdAdmin = await this.adminService.create(data);
-
-    return createdAdmin.toResponse();
+    return plainToInstance(ResponseAdminDto, createdAdmin);
   }
 
   @InjectRoute(adminRoutes.getAll)
@@ -28,18 +27,8 @@ export class AdminController {
     return gotAdmins;
   }
 
-  @InjectRoute(adminRoutes.getMe)
-  public async getMe(@ReqUser() user: Admin): Promise<ResponseAdminDetailDto> {
-    const gotAdmin = await this.adminService.getDetailById(user?.id);
-
-    return gotAdmin;
-  }
-
   @InjectRoute(adminRoutes.updateMe)
-  public async updateMe(
-    @ReqUser() user: IJwtStrategy,
-    @Body() data: UpdateAdminDto,
-  ): Promise<ResponseAdminDto> {
+  public async updateMe(@ReqUser() user: IJwtStrategy, @Body() data: UpdateAdminDto): Promise<ResponseAdminDto> {
     const updatedAdmin = await this.adminService.updateByAdmin({
       admin: <Admin>user.element,
       data,
@@ -49,31 +38,15 @@ export class AdminController {
   }
 
   @InjectRoute(adminRoutes.getById)
-  public async getById(
-    @Param('id') id: string,
-  ): Promise<ResponseAdminDetailDto> {
+  public async getById(@Param('id') id: string): Promise<ResponseAdminDetailDto> {
     const gotAdmin = await this.adminService.getDetailById(id);
 
     return gotAdmin;
   }
 
-  @InjectRoute(adminRoutes.updateById)
-  public async updateById(
-    @Param('id') id: string,
-    @Body() data: UpdateAdminDto,
-  ): Promise<ResponseAdminDto> {
-    const updatedAdmin = await this.adminService.updateById({
-      id,
-      data,
-    });
-
-    return updatedAdmin;
-  }
-
   @InjectRoute(adminRoutes.deleteById)
   public async deleteById(@Param('id') id: string): Promise<string> {
     await this.adminService.deleteById(id);
-
     return id;
   }
 }

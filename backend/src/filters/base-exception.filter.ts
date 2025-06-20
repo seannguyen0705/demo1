@@ -11,7 +11,7 @@ import {
 import type { Response } from 'express';
 import type { HttpException } from '@nestjs/common';
 import type { ArgumentsHost, ExceptionFilter } from '@nestjs/common';
-
+import { SentryExceptionCaptured } from '@sentry/nestjs';
 import { BaseException } from '@/exceptions';
 import { Exception } from '@/utils/constants';
 import { isDevelopmentEnv } from '@/utils/helpers';
@@ -20,28 +20,27 @@ import type { IBaseExceptionResponse } from '@/exceptions';
 
 @Catch()
 export class AdvancedExceptionFilter implements ExceptionFilter {
-  catch(
-    exception: HttpException,
-    host: ArgumentsHost,
-  ): Response<IBaseExceptionResponse> {
+  @SentryExceptionCaptured()
+  catch(exception: HttpException, host: ArgumentsHost): Response<IBaseExceptionResponse> {
     const isDevelopment = isDevelopmentEnv();
     const response = host.switchToHttp().getResponse<Response>();
 
     let data = <IBaseExceptionResponse>{
-      code: Exception.INTERNAL_ERROR_CODE,
+      errorCode: Exception.INTERNAL_ERROR_CODE,
       status: HttpStatus.INTERNAL_SERVER_ERROR,
       message: 'Something went wrong!',
     };
 
+    console.error(exception);
+
     try {
-      const status =
-        exception?.getStatus?.() || HttpStatus.INTERNAL_SERVER_ERROR;
+      const status = exception?.getStatus?.() || HttpStatus.INTERNAL_SERVER_ERROR;
 
       if (exception instanceof BaseException) {
-        const { code, message } = exception;
+        const { errorCode, message } = exception;
 
         data = {
-          code,
+          errorCode,
           status,
           message,
         };
@@ -50,37 +49,35 @@ export class AdvancedExceptionFilter implements ExceptionFilter {
 
         if (exception instanceof BadRequestException) {
           data = {
-            code: Exception.BAD_REQUEST_CODE,
+            errorCode: Exception.BAD_REQUEST_CODE,
             status,
             message,
           };
         } else if (exception instanceof ForbiddenException) {
           data = {
-            code: Exception.FORBIDDEN_CODE,
+            errorCode: Exception.FORBIDDEN_CODE,
             status,
             message,
           };
         } else if (exception instanceof UnauthorizedException) {
           data = {
-            code: Exception.UNAUTHORIZED_CODE,
+            errorCode: Exception.UNAUTHORIZED_CODE,
             status,
             message,
           };
         } else if (exception instanceof NotFoundException) {
           data = {
-            code: Exception.NOT_FOUND_CODE,
+            errorCode: Exception.NOT_FOUND_CODE,
             status,
             message,
           };
         } else {
           if (isDevelopment) {
             data = {
-              code: Exception.NOT_FOUND_CODE,
+              errorCode: Exception.NOT_FOUND_CODE,
               status,
               message,
-              stack: exception?.cause
-                ? (exception?.cause as any).stack
-                : undefined,
+              stack: exception?.cause ? (exception?.cause as any).stack : undefined,
             };
 
             console.log("Exception Filter's Exception");

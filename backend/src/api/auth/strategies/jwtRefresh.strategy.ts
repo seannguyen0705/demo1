@@ -1,5 +1,5 @@
 import { PassportStrategy } from '@nestjs/passport';
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JWT_REFRESH_TOKEN } from '@/utils/constants';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { ConfigService } from '@nestjs/config';
@@ -9,10 +9,7 @@ import { Request } from 'express';
 import { ITokenPayload } from '../auth.interface';
 
 @Injectable()
-export class JwtRefreshTokenStrategy extends PassportStrategy(
-  Strategy,
-  JWT_REFRESH_TOKEN,
-) {
+export class JwtRefreshTokenStrategy extends PassportStrategy(Strategy, JWT_REFRESH_TOKEN) {
   constructor(
     configService: ConfigService,
     private readonly authService: AuthService,
@@ -22,7 +19,7 @@ export class JwtRefreshTokenStrategy extends PassportStrategy(
       ignoreExpiration: false,
       jwtFromRequest: ExtractJwt.fromExtractors([
         (req) => {
-          return req?.cookies?.Authentication;
+          return req?.cookies?.Refresh;
         },
       ]),
       secretOrKey: configService.get('jwt.refreshSecret'),
@@ -38,7 +35,11 @@ export class JwtRefreshTokenStrategy extends PassportStrategy(
     });
 
     const refreshToken = req.cookies?.Refresh;
-    await this.tokenService.getByRefreshToken(refreshToken);
+    const token = await this.tokenService.getByRefreshToken(refreshToken);
+
+    if (!token) {
+      throw new UnauthorizedException('Token is expired');
+    }
 
     return {
       role,

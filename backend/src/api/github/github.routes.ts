@@ -11,6 +11,9 @@ export default {
     method: RequestMethod.GET,
     jwtSecure: false,
     extraDecorators: [UseGuards(GithubGuard)],
+    swaggerInfo: {
+      secure: false,
+    },
   },
 
   callback: <IRouteParams>{
@@ -18,5 +21,8 @@ export default {
     method: RequestMethod.GET,
     jwtSecure: false,
     extraDecorators: [UseGuards(GithubGuard)],
+    swaggerInfo: {
+      secure: false,
+    },
   },
 };

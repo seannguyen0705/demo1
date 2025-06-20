@@ -5,6 +5,7 @@ import Exception from './exception';
 const ROLES_KEY = 'roles';
 const IS_PUBLIC_KEY = 'isPublic';
 export const JWT_REFRESH_TOKEN = 'jwt-refresh-token';
+const BATCH_SIZE = 100;
 
 const Env = {
   STAGING: 'staging',
@@ -12,4 +13,4 @@ const Env = {
   DEVELOPMENT: 'development',
 };
 
-export { ROLES_KEY, IS_PUBLIC_KEY, Env, Time, Regex, Exception };
+export { ROLES_KEY, IS_PUBLIC_KEY, Env, Time, Regex, Exception, BATCH_SIZE };

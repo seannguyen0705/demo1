@@ -12,7 +12,10 @@ import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { JwtStrategy, LocalStrategy } from './strategies';
 import { JwtRefreshTokenStrategy } from './strategies/jwtRefresh.strategy';
-
+import { CompanyModule } from '../company/company.module';
+import { CloudinaryModule } from '../cloudinary/cloudinary.module';
+import { FileModule } from '../file/file.module';
+import { EmailModule } from '../email/email.module';
 @Module({
   imports: [
     AdminModule,
@@ -21,6 +24,10 @@ import { JwtRefreshTokenStrategy } from './strategies/jwtRefresh.strategy';
     PassportModule,
     CandidateModule,
     EmployerModule,
+    CompanyModule,
+    CloudinaryModule,
+    FileModule,
+    EmailModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],

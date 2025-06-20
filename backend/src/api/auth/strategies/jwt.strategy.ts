@@ -17,10 +17,7 @@ export interface IJwtStrategy {
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor(
-    configService: ConfigService,
-    private readonly authService: AuthService,
-  ) {
+  constructor(configService: ConfigService, private readonly authService: AuthService) {
     super({
       ignoreExpiration: false,
       jwtFromRequest: ExtractJwt.fromExtractors([

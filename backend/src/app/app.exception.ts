@@ -10,17 +10,13 @@ export const loadErrorHandling = (app: INestApplication): void => {
   app.useGlobalPipes(
     new ValidationPipe({
       skipMissingProperties: false,
-      forbidUnknownValues: false,
+      forbidUnknownValues: true,
       whitelist: true,
-      transform: true,
       exceptionFactory: (validationErrors: ValidationError[] = []) => {
         return new ValidatorException({ errors: validationErrors });
       },
     }),
   );
 
-  app.useGlobalFilters(
-    new AdvancedExceptionFilter(),
-    new ValidatorExceptionFilter(),
-  );
+  app.useGlobalFilters(new AdvancedExceptionFilter(), new ValidatorExceptionFilter());
 };

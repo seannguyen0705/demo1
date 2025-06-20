@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiPropertyOptional } from '@nestjs/swagger';
 import { IsEnum, IsOptional, IsPhoneNumber, IsString } from 'class-validator';
 import { Gender } from '../enums';
 import { IsOnlyDate } from '@/decorators/validate.decorator';
@@ -6,30 +6,35 @@ import { IsOnlyDate } from '@/decorators/validate.decorator';
 export class UpdateUserDto {
   @IsOptional()
   @IsString()
-  @ApiProperty({ required: false, example: '1234567890' })
+  @ApiPropertyOptional({ required: false, example: '1234567890' })
   password?: string;
 
   @IsOptional()
   @IsString()
-  @ApiProperty({ required: false, example: 'John Doe' })
+  @ApiPropertyOptional({ required: false, example: 'John Doe' })
   fullName?: string;
 
   @IsOptional()
   @IsPhoneNumber('VN')
-  @ApiProperty({ required: false, example: '0909090909' })
+  @ApiPropertyOptional({ required: false, example: '0909090909' })
   phoneNumber?: string;
 
   @IsOptional()
   @IsEnum(Gender)
-  @ApiProperty({ required: false, example: Gender.MALE })
+  @ApiPropertyOptional({ required: false, example: Gender.MALE })
   gender?: Gender;
 
   @IsOptional()
   @IsOnlyDate()
-  @ApiProperty({
+  @ApiPropertyOptional({
     format: 'date',
     required: false,
     example: '2021-01-01',
   })
   bod?: Date;
+
+  @IsOptional()
+  @IsString()
+  @ApiPropertyOptional({ required: false, example: '1234567890' })
+  accountToken?: string;
 }
