@@ -109,8 +109,15 @@ const createCompany = async (
   company.employer = employer;
   company.industry = faker.lorem.sentence({ min: 3, max: 5 });
   company.proof = newFile;
+  company.size = faker.number.int({ min: 1, max: 1000 }).toString();
+  company.type = faker.lorem.sentence({ min: 3, max: 5 });
+  company.workingDay = 'Thứ 2 - Thứ 7';
+  company.workingTime = '8:00 - 17:00';
+  company.overview = faker.lorem.paragraph({ min: 30, max: 50 });
+  company.benefits = faker.lorem.paragraph({ min: 30, max: 50 });
   company.website = faker.internet.url();
   company.addresses = addresses;
+  company.country = faker.location.country();
   return companyRepository.create(company);
 };
 

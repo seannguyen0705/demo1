@@ -19,7 +19,7 @@ const seed = async () => {
     // await seedCandidates(queryRunner, 500);
     // await seedEmployers(queryRunner, 500);
     await seedReviews(queryRunner, 2000);
-    // await seedApplyJobs(queryRunner, 1000);
+    await seedApplyJobs(queryRunner, 1000);
     // await seedContacts(queryRunner, 1000);
     await queryRunner.commitTransaction();
   } catch (error) {
