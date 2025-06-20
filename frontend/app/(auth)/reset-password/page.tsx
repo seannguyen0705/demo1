@@ -1,6 +1,9 @@
-'use client';
-
+import { Metadata } from 'next';
 import FormResetPassword from './components/FormResetPassword';
+
+export const metadata: Metadata = {
+  title: 'Đặt lại mật khẩu',
+};
 
 export default function ResetPasswordPage() {
   return (

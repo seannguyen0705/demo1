@@ -1,9 +1,8 @@
-import FormForgetPassword from './components/FormForgetPassword';
 import { Metadata } from 'next';
-
+import FormForgetPassword from './components/FormForgetPassword';
 export const metadata: Metadata = {
-  title: 'Quên mật khẩu | Xin chào ứng viên',
-  description: 'Quên mật khẩu hệ thống ứng viên',
+  title: 'Quên mật khẩu | Xin chào Admin',
+  description: 'Quên mật khẩu hệ thống quản trị',
 };
 
 export default function ForgetPasswordPage() {
