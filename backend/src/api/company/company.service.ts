@@ -86,7 +86,9 @@ export class CompanyService {
       )
       .select(['company.id', 'company.name', 'logo.url', 'addresses.id', 'province.name'])
       .addSelect('AVG(reviews.rating)', 'avg_rating')
-      .orderBy('avg_rating', 'DESC')
+      .addSelect('COUNT(reviews.id)', 'review_count')
+      .orderBy('avg_rating', 'DESC', 'NULLS LAST')
+
       .groupBy('company.id')
       .addGroupBy('logo.id')
       .addGroupBy('addresses.id')
