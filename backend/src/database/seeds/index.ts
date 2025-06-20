@@ -14,8 +14,8 @@ const seed = async () => {
   await queryRunner.startTransaction();
 
   try {
-    await seedProvinces(queryRunner);
-    await seedSkills(queryRunner);
+    // await seedProvinces(queryRunner);
+    // await seedSkills(queryRunner);
     await seedCandidates(queryRunner, 100);
     await seedEmployers(queryRunner, 100);
     await seedReviews(queryRunner, 1000);
