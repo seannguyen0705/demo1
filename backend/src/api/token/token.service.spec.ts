@@ -3,14 +3,11 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { ConfigService } from '@nestjs/config';
 import { TokenService } from './token.service';
 import { Token } from './entities';
-import { TokenRepository } from './token.repository';
 import { UserRole } from '@/common/enums';
 import { DeleteResult } from 'typeorm';
 
 describe('TokenService', () => {
   let service: TokenService;
-  let repository: TokenRepository;
-  let configService: ConfigService;
 
   const mockTokenRepository = {
     create: jest.fn(),
@@ -46,8 +43,6 @@ describe('TokenService', () => {
     }).compile();
 
     service = module.get<TokenService>(TokenService);
-    repository = module.get<TokenRepository>(getRepositoryToken(Token));
-    configService = module.get<ConfigService>(ConfigService);
   });
 
   afterEach(() => {

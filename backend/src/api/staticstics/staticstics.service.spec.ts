@@ -9,7 +9,6 @@ describe('StaticsticsService', () => {
   let jobService: JobService;
   let companyService: CompanyService;
   let candidateService: CandidateService;
-  let applyJobService: ApplyJobService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -46,7 +45,6 @@ describe('StaticsticsService', () => {
     jobService = module.get<JobService>(JobService);
     companyService = module.get<CompanyService>(CompanyService);
     candidateService = module.get<CandidateService>(CandidateService);
-    applyJobService = module.get<ApplyJobService>(ApplyJobService);
   });
 
   it('should be defined', () => {

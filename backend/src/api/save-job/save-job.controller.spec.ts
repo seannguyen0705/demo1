@@ -8,7 +8,6 @@ import { Candidate } from '../candidate/entities';
 
 describe('SaveJobController', () => {
   let controller: SaveJobController;
-  let service: SaveJobService;
 
   const mockSaveJobService = {
     createSaveJob: jest.fn(),
@@ -53,7 +52,6 @@ describe('SaveJobController', () => {
     }).compile();
 
     controller = module.get<SaveJobController>(SaveJobController);
-    service = module.get<SaveJobService>(SaveJobService);
   });
 
   afterEach(() => {

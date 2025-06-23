@@ -1,5 +1,5 @@
 import { TestingModule, Test } from '@nestjs/testing';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 import { EmailService } from './email.service';
 import * as sgMail from '@sendgrid/mail';
 
@@ -8,7 +8,6 @@ jest.mock('@sendgrid/mail');
 
 describe('EmailService', () => {
   let emailService: EmailService;
-  let configService: ConfigService;
   let mockSendGridSend: jest.MockedFunction<typeof sgMail.send>;
 
   beforeEach(async () => {
@@ -21,7 +20,6 @@ describe('EmailService', () => {
     }).compile();
 
     emailService = module.get<EmailService>(EmailService);
-    configService = module.get<ConfigService>(ConfigService);
 
     // Get the mocked send function
     mockSendGridSend = sgMail.send as jest.MockedFunction<typeof sgMail.send>;

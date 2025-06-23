@@ -18,12 +18,6 @@ jest.mock('bcrypt', () => ({
 describe('AuthService', () => {
   let service: AuthService;
   let candidateService: CandidateService;
-  let adminService: AdminService;
-  let employerService: EmployerService;
-  let tokenService: TokenService;
-  let emailService: EmailService;
-  let jwtService: JwtService;
-  let configService: ConfigService;
 
   const mockCandidateService = {
     create: jest.fn(),
@@ -73,12 +67,6 @@ describe('AuthService', () => {
     }).compile();
     service = module.get<AuthService>(AuthService);
     candidateService = module.get<CandidateService>(CandidateService);
-    adminService = module.get<AdminService>(AdminService);
-    employerService = module.get<EmployerService>(EmployerService);
-    tokenService = module.get<TokenService>(TokenService);
-    emailService = module.get<EmailService>(EmailService);
-    jwtService = module.get<JwtService>(JwtService);
-    configService = module.get<ConfigService>(ConfigService);
   });
 
   afterEach(() => {

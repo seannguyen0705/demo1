@@ -13,7 +13,7 @@ import { CvExpository } from './cv.repository';
 describe('CvService', () => {
   let cvService: CvService;
   let cloudinaryService: CloudinaryService;
-  let dataSource: DataSource;
+
   let queryRunner: Partial<QueryRunner>;
   let cvRepository: CvExpository;
 
@@ -92,7 +92,7 @@ describe('CvService', () => {
 
     cvService = module.get<CvService>(CvService);
     cloudinaryService = module.get<CloudinaryService>(CloudinaryService);
-    dataSource = module.get<DataSource>(DataSource);
+
     cvRepository = module.get<CvExpository>(getRepositoryToken(Cv));
   });
 
@@ -105,7 +105,7 @@ describe('CvService', () => {
       const candidateId = uuidv4();
       (queryRunner.manager.count as jest.Mock).mockResolvedValue(2);
       (cloudinaryService.uploadFile as jest.Mock).mockResolvedValue(mockUploadedFile);
-      (queryRunner.manager.save as jest.Mock).mockImplementation((entity, data) => {
+      (queryRunner.manager.save as jest.Mock).mockImplementation((entity) => {
         if (entity === File) {
           return Promise.resolve(mockFileEntity);
         }
@@ -126,7 +126,7 @@ describe('CvService', () => {
       (queryRunner.manager.count as jest.Mock).mockResolvedValue(3);
       (queryRunner.manager.findOne as jest.Mock).mockResolvedValue(oldestCv);
       (cloudinaryService.uploadFile as jest.Mock).mockResolvedValue(mockUploadedFile);
-      (queryRunner.manager.save as jest.Mock).mockImplementation((entity, data) => {
+      (queryRunner.manager.save as jest.Mock).mockImplementation((entity) => {
         if (entity === File) {
           return Promise.resolve(mockFileEntity);
         }

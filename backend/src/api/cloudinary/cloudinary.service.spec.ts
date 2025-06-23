@@ -1,7 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { ConfigService } from '@nestjs/config';
+
 import { CloudinaryService } from './cloudinary.service';
 import { v2 as cloudinary } from 'cloudinary';
+import { ConfigService } from '@nestjs/config';
 
 jest.mock('cloudinary', () => ({
   v2: {
@@ -18,7 +19,6 @@ jest.mock('cloudinary', () => ({
 
 describe('CloudinaryService', () => {
   let service: CloudinaryService;
-  let configService: ConfigService;
 
   const mockConfigService = {
     get: jest.fn((key: string) => {
@@ -43,7 +43,6 @@ describe('CloudinaryService', () => {
     }).compile();
 
     service = module.get<CloudinaryService>(CloudinaryService);
-    configService = module.get<ConfigService>(ConfigService);
   });
 
   afterEach(() => {

@@ -115,7 +115,7 @@ export class EmailService {
   }
 
   async activeCandidate(email: string, name: string, link_active: string) {
-    const res = await sgMail.send({
+    await sgMail.send({
       from: this.from,
       to: email,
       subject: 'Job Portal - Kích hoạt tài khoản ứng viên',

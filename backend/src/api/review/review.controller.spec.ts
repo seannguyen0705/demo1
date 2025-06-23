@@ -10,7 +10,6 @@ import { Candidate } from '../candidate/entities';
 
 describe('ReviewController', () => {
   let controller: ReviewController;
-  let service: ReviewService;
 
   const mockReviewService = {
     createReview: jest.fn(),
@@ -61,7 +60,6 @@ describe('ReviewController', () => {
     }).compile();
 
     controller = module.get<ReviewController>(ReviewController);
-    service = module.get<ReviewService>(ReviewService);
   });
 
   afterEach(() => {

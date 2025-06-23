@@ -11,7 +11,7 @@ describe('FileController', () => {
   let controller: FileController;
   let fileService: FileService;
   let cloudinaryService: CloudinaryService;
-  let dataSource: DataSource;
+
   let mockQueryRunner: Partial<QueryRunner>;
 
   const mockFile = {
@@ -67,7 +67,6 @@ describe('FileController', () => {
     controller = module.get<FileController>(FileController);
     fileService = module.get<FileService>(FileService);
     cloudinaryService = module.get<CloudinaryService>(CloudinaryService);
-    dataSource = module.get<DataSource>(DataSource);
   });
 
   it('should be defined', () => {

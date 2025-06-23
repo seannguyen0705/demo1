@@ -21,7 +21,7 @@
 
 ---
 
-## [Link API document](https://intern-assignment-cyan.vercel.app)
+## [Link API document](https://be.smartserve.click/api/documentation)
 
 ## Project Structure
 
@@ -56,26 +56,29 @@ docker compose up -d
 demo1/backend/.env
 
 ```bash
+DB_TYPE= postgres
+DB_HOST= localhost
 DB_PORT= 5432
 DB_NAME= demo1
 DB_USERNAME= root
 DB_PASSWORD= root
 DB_SSL = false
 
+
 PORT= 8080
 
-JWT_SECRET= catch me if you can
-JWT_REFRESH_SECRET= catch me if you can
-JWT_RESET_PASSWORD_SECRET= catch me if you can
-JWT_ACTIVE_ACCOUNT_SECRET= catch me if you can
+JWT_SECRET=
+JWT_REFRESH_SECRET=
+JWT_RESET_PASSWORD_SECRET=
+JWT_ACTIVE_ACCOUNT_SECRET=
 
 GITHUB_CALLBACK_URL = http://localhost:8080/api/v1/github/callback
 GITHUB_CLIENT_ID =
 GITHUB_CLIENT_SECRET =
 
-GOOGLE_CALLBACK_URL = http://localhost:8080/api/v1/google/callback
 GOOGLE_CLIENT_ID =
 GOOGLE_CLIENT_SECRET =
+GOOGLE_CALLBACK_URL = http://localhost:8080/api/v1/google/callback
 
 LINKEDIN_CLIENT_ID =
 LINKEDIN_CLIENT_SECRET =
@@ -89,13 +92,20 @@ CLOUDINARY_CLOUD_NAME =
 
 MAIL_PASSWORD =
 MAIL_USERNAME =
+
+DOMAIN = localhost
+
+SENDGRID_FROM_NOREPLY_EMAIL =
+SENDGRID_API_KEY=
+SENDGRID_FROM_EMAIL=
+
 ```
 
-### Step 3: Run migration (at backend folder)
+### Step 3: Install packages & Run migration (at backend folder)
 
 ```bash
-yarn
-yarn migration:run
+yarn  # install packages
+yarn migration:run # run migration
 
 ```
 
@@ -105,7 +115,19 @@ yarn migration:run
 yarn db:seed
 ```
 
-### Step 5: Open API document
+### Step 5: Build backend
+
+```
+  yarn build
+```
+
+### Step 6: Start backend
+
+```
+  yarn start
+```
+
+### Step 7: Open API document
 
 ```bash
 http://localhost:8080/api/document
@@ -113,7 +135,7 @@ http://localhost:8080/api/document
 
 # Contributor
 
-- Nguyen Nhat Phap (GOS)
+- Sean Nguyen (GOS)
 
 # Contact
 

@@ -10,7 +10,7 @@ describe('StaticsticsController', () => {
   let controller: StaticsticsController;
   let staticsticsService: StaticsticsService;
   let jobService: JobService;
-  let companyService: CompanyService;
+
   let candidateService: CandidateService;
   let applyJobService: ApplyJobService;
   let employerService: EmployerService;
@@ -64,7 +64,6 @@ describe('StaticsticsController', () => {
     controller = module.get<StaticsticsController>(StaticsticsController);
     staticsticsService = module.get<StaticsticsService>(StaticsticsService);
     jobService = module.get<JobService>(JobService);
-    companyService = module.get<CompanyService>(CompanyService);
     candidateService = module.get<CandidateService>(CandidateService);
     applyJobService = module.get<ApplyJobService>(ApplyJobService);
     employerService = module.get<EmployerService>(EmployerService);

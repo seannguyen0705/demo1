@@ -2,13 +2,11 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { ReviewService } from './review.service';
 import { Review } from './entities/review.entity';
-import { ReviewRepository } from './review.repository';
 import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { Order, OrderByReview } from '@/common/enums';
 
 describe('ReviewService', () => {
   let service: ReviewService;
-  let repository: ReviewRepository;
 
   const mockQueryBuilder = {
     skip: jest.fn().mockReturnThis(),
@@ -45,7 +43,6 @@ describe('ReviewService', () => {
     }).compile();
 
     service = module.get<ReviewService>(ReviewService);
-    repository = module.get<ReviewRepository>(getRepositoryToken(Review));
   });
 
   afterEach(() => {

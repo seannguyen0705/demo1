@@ -2,12 +2,10 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { SaveJobService } from './save-job.service';
 import { SaveJob } from './entities/save-job.entity';
-import { SaveJobRepository } from './save-job.repository';
 import { NotFoundException } from '@nestjs/common';
 
 describe('SaveJobService', () => {
   let service: SaveJobService;
-  let repository: SaveJobRepository;
 
   const mockSaveJobRepository = {
     create: jest.fn(),
@@ -28,7 +26,6 @@ describe('SaveJobService', () => {
     }).compile();
 
     service = module.get<SaveJobService>(SaveJobService);
-    repository = module.get<SaveJobRepository>(getRepositoryToken(SaveJob));
   });
 
   afterEach(() => {

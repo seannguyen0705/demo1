@@ -1,6 +1,6 @@
 import { ApplyJob } from '@/api/apply-job/entities/apply-job.entity';
 import { Candidate } from '@/api/candidate/entities/candidate.entity';
-import { Company } from '@/api/company/entities/company.entity';
+
 import { CreateFileDto } from '@/api/file/dto/create-file.dto';
 import { Job } from '@/api/job/entities/job.entity';
 import { QueryRunner } from 'typeorm';

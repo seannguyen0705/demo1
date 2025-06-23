@@ -2,7 +2,6 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { ApplyJobService } from './apply-job.service';
 import { ApplyJob } from './entities/apply-job.entity';
-import { ApplyJobRepository } from './apply-job.repository';
 import { DataSource, QueryRunner } from 'typeorm';
 import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { JobStatus, ApplyJobStatus } from '@/common/enums';
@@ -19,8 +18,7 @@ const mockDataSource = {
 
 describe('ApplyJobService', () => {
   let service: ApplyJobService;
-  let repository: ApplyJobRepository;
-  let dataSource: DataSource;
+
   let queryRunner: QueryRunner;
 
   beforeEach(async () => {
@@ -46,8 +44,6 @@ describe('ApplyJobService', () => {
       ],
     }).compile();
     service = module.get<ApplyJobService>(ApplyJobService);
-    repository = module.get<ApplyJobRepository>(getRepositoryToken(ApplyJob));
-    dataSource = module.get<DataSource>(DataSource);
   });
 
   afterEach(() => {

@@ -8,7 +8,7 @@ import { CloudinaryService } from '../cloudinary/cloudinary.service';
 import { EmailService } from '../email/email.service';
 import { UserAlreadyException } from '@/api/auth/auth.exceptions';
 import { NotFoundException } from '@nestjs/common';
-import { UserStatus, UserRole } from '@/common/enums';
+import { UserStatus } from '@/common/enums';
 import { DataSource } from 'typeorm';
 
 const mockTokenService = {
