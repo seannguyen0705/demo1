@@ -20,36 +20,35 @@ export default async function CompanyCard({ companyName }: IProps) {
         />
         <h3 className="text-lg font-bold">{company.name}</h3>
       </Link>
-      <h3 className="font-light">{company.name}</h3>
 
       <div className="flex justify-between ">
         <span className="text-gray-700 dark:text-gray-200">Mô hình công ty</span>
-        <span>{company.type}</span>
+        <span className="text-right">{company.type}</span>
       </div>
 
-      <div className="flexob justify-between ">
+      <div className="flex justify-between ">
         <span className="text-gray-700 dark:text-gray-200">Lĩnh vực công ty</span>
-        <span>{company.industry}</span>
+        <span className="text-right">{company.industry}</span>
       </div>
 
       <div className="flex justify-between ">
         <span className="text-gray-700 dark:text-gray-200">Quy mô công ty</span>
-        <span>{company.size} nhân viên</span>
+        <span className="text-right">{company.size} nhân viên</span>
       </div>
 
       <div className="flex justify-between ">
         <span className="text-gray-700 dark:text-gray-200">Quốc gia</span>
-        <span>{company.country}</span>
+        <span className="text-right">{company.country}</span>
       </div>
 
       <div className="flex justify-between ">
         <span className="text-gray-700 dark:text-gray-200">Ngày làm việc</span>
-        <span>{company.workingDay}</span>
+        <span className="text-right">{company.workingDay}</span>
       </div>
 
       <div className="flex justify-between ">
         <span className="text-gray-700 dark:text-gray-200">Giờ làm việc</span>
-        <span>{company.workingTime}</span>
+        <span className="text-right">{company.workingTime}</span>
       </div>
     </article>
   );

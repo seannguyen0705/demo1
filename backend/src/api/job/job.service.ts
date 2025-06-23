@@ -2,7 +2,16 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 import { JobRepository } from './job.repository';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Job } from './entities/job.entity';
-import { JobLevel, JobStatus, JobType, OrderByJob, Order, UserStatus } from '@/common/enums';
+import {
+  JobLevel,
+  JobStatus,
+  JobType,
+  OrderByJob,
+  Order,
+  UserStatus,
+  OrderByApplyJob,
+  OrderByJobSaved,
+} from '@/common/enums';
 
 import { CompanyService } from '../company/company.service';
 import { CreateDraftJobDto } from './dto/create-draft-job.dto';
@@ -18,6 +27,7 @@ import { AddressService } from '../address/address.service';
 import { UpdatePublishedJobDto } from './dto/update-published-job.dto';
 import { CompanyAddressService } from '../company-address/company-address.service';
 import { EmailService } from '../email/email.service';
+import { QueryJobSaveDto } from './dto/query-job-save.dto';
 @Injectable()
 export class JobService {
   constructor(
@@ -183,6 +193,28 @@ export class JobService {
       queryBuilder.orderBy(`job.salaryMin`, order, 'NULLS LAST');
     } else {
       queryBuilder.orderBy(`job.${orderBy}`, order, 'NULLS LAST');
+    }
+  }
+
+  private orderApplyJob(queryBuilder: SelectQueryBuilder<Job>, orderBy?: OrderByApplyJob, order?: Order) {
+    if (!orderBy) {
+      return;
+    }
+    if (orderBy === OrderByApplyJob.SALARY) {
+      queryBuilder.orderBy(`job.salaryMin`, order, 'NULLS LAST');
+    } else {
+      queryBuilder.orderBy(`applyJobs.${orderBy}`, order);
+    }
+  }
+
+  private orderJobSaved(queryBuilder: SelectQueryBuilder<Job>, orderBy?: OrderByJobSaved, order?: Order) {
+    if (!orderBy) {
+      return;
+    }
+    if (orderBy === OrderByJobSaved.SALARY) {
+      queryBuilder.orderBy(`job.salaryMin`, order, 'NULLS LAST');
+    } else {
+      queryBuilder.orderBy(`saveJobs.${orderBy}`, order);
     }
   }
 
@@ -427,7 +459,7 @@ export class JobService {
         'applyJobs.createdAt',
       ])
       .andWhere('job.status !=:status', { status: JobStatus.DRAFT });
-    await this.orderJob(queryBuilder, orderBy, order);
+    await this.orderApplyJob(queryBuilder, orderBy, order);
 
     const [jobs, total] = await queryBuilder.getManyAndCount();
     const numPage = Math.ceil(total / limit);
@@ -437,7 +469,7 @@ export class JobService {
     return { jobs, currentPage: page, nextPage: page + 1, total };
   }
 
-  public async candidateGetJobSaved(candidateId: string, query: QueryJobApplyDto) {
+  public async candidateGetJobSaved(candidateId: string, query: QueryJobSaveDto) {
     const { page, limit, orderBy, order } = query;
     const queryBuilder = this.jobRepository
       .createQueryBuilder('job')
@@ -466,9 +498,10 @@ export class JobService {
         'job.salaryMax',
         'job.jobLevel',
         'saveJobs.id',
+        'saveJobs.createdAt',
       ])
       .andWhere('job.status !=:status', { status: JobStatus.DRAFT });
-    await this.orderJob(queryBuilder, orderBy, order);
+    this.orderJobSaved(queryBuilder, orderBy, order);
 
     const [jobs, total] = await queryBuilder.getManyAndCount();
     const numPage = Math.ceil(total / limit);

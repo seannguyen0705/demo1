@@ -1,10 +1,10 @@
 import { QueryPaginationDto } from '@/common/dto/query-pagination.dto';
 import { IsEnum, IsOptional } from 'class-validator';
-import { Order, OrderByApplyJob } from '@/common/enums';
+import { Order, OrderByJobSaved } from '@/common/enums';
 import { Transform } from 'class-transformer';
 
-export class QueryJobApplyDto extends QueryPaginationDto {
-  @IsEnum(OrderByApplyJob)
+export class QueryJobSaveDto extends QueryPaginationDto {
+  @IsEnum(OrderByJobSaved)
   @IsOptional()
   @Transform(({ value }) => {
     if (!value) {
@@ -12,7 +12,7 @@ export class QueryJobApplyDto extends QueryPaginationDto {
     }
     return value;
   })
-  orderBy?: OrderByApplyJob;
+  orderBy?: OrderByJobSaved;
 
   @IsEnum(Order)
   @IsOptional()

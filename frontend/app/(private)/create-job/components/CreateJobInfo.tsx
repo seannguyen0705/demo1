@@ -211,7 +211,7 @@ export default function CreateJobInfo() {
         name="expiredAt"
         render={({ field }) => (
           <FormItem className="">
-            <FormLabel>Hạn ứng tuyển</FormLabel>
+            <FormLabel>Hạn ứng tuyển (tối đa 60 ngày) </FormLabel>
             <FormControl>
               <Input type="date" className="selection:bg-green w-fit" placeholder="Ex: 2025-01-01" {...field} />
             </FormControl>

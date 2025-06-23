@@ -1,7 +1,6 @@
 import { QueryRunner } from 'typeorm';
 import { Skill } from '@/api/skill/entities/skill.entity';
 
-
 export const seedSkills = async (queryRunner: QueryRunner) => {
   const skillRepository = queryRunner.manager.getRepository(Skill);
   const skills = [
