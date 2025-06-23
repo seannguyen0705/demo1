@@ -17,7 +17,7 @@ const statusOptions = [
 export default function SearchAndFilter() {
   const [keyword, setKeyword] = useQueryState('keyword', { defaultValue: '' });
   const [status, setStatus] = useQueryState('status', { defaultValue: ApplyJobStatus.ALL });
-  const [page, setPage] = useQueryState('page', parseAsInteger.withDefault(1));
+  const [, setPage] = useQueryState('page', parseAsInteger.withDefault(1));
   const handleSearch = (keyword: string) => {
     setKeyword(keyword);
     setPage(1);

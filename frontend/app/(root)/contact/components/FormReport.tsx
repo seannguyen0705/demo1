@@ -120,7 +120,7 @@ export default function FormReport() {
             <FormField
               control={form.control}
               name="fileId"
-              render={({ field }) => (
+              render={({}) => (
                 <FormItem>
                   <FormLabel>File đính kèm (tùy chọn)</FormLabel>
                   <FormControl>

@@ -230,7 +230,7 @@ export default function BusinessForm() {
                 <FormField
                   control={form.control}
                   name="proofId"
-                  render={({ field: { value, onChange, ...field } }) => (
+                  render={({ field }) => (
                     <FormItem>
                       <FormLabel>
                         File minh chứng <span className=" text-muted-foreground text-xs">*5MB (PDF, Word)</span>
@@ -253,7 +253,8 @@ export default function BusinessForm() {
                               uploadFile({ file, folder: 'proof' });
                               form.setValue('proofId', fileId);
                             }}
-                            {...field}
+                            name={field.name}
+                            ref={field.ref}
                           />
                           {(isUploading || isDeleting) && (
                             <div className="absolute top-0 right-0 translate-y-1/2">

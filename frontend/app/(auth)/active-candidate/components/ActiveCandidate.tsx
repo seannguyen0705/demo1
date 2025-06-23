@@ -23,7 +23,7 @@ export default function ActiveCandidatePage() {
         },
       );
     }
-  }, [token]);
+  }, [token, activeCandidate]);
 
   if (isPending) {
     return (

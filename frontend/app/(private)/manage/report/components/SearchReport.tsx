@@ -5,7 +5,7 @@ import { useQueryState } from 'nuqs';
 
 export default function SearchReport() {
   const [keyword, setKeyword] = useQueryState('keyword', { defaultValue: '' });
-  const [page, setPage] = useQueryState('page', parseAsInteger.withDefault(1));
+  const [, setPage] = useQueryState('page', parseAsInteger.withDefault(1));
 
   const handleSearch = (keyword: string) => {
     setPage(1);
