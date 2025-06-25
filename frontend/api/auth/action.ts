@@ -54,6 +54,7 @@ export const login = async (data: LoginDto) => {
     maxAge: accessTokenCookie.ttl,
     secure: true,
     sameSite: 'none',
+    domain: process.env.DOMAIN,
   });
   cookieStore.set('Refresh', refreshTokenCookie.token, {
     httpOnly: true,
@@ -61,6 +62,7 @@ export const login = async (data: LoginDto) => {
     maxAge: refreshTokenCookie.ttl,
     secure: true,
     sameSite: 'none',
+    domain: process.env.DOMAIN,
   });
   return response;
 };
