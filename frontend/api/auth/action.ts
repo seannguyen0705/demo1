@@ -34,37 +34,6 @@ export const registerBusiness = async (data: BusinessFormSchema) => {
   return response;
 };
 
-export const login = async (data: LoginDto) => {
-  const response = await actionFetch<ResponseLoginDto>('login', {
-    method: 'POST',
-    body: JSON.stringify(data),
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
-  if (isErrorResponse(response)) {
-    return response;
-  }
-
-  const cookieStore = await cookies();
-  const { accessTokenCookie, refreshTokenCookie } = response.data;
-  cookieStore.set('Authentication', accessTokenCookie.token, {
-    httpOnly: true,
-    path: '/',
-    maxAge: accessTokenCookie.ttl,
-    secure: true,
-    sameSite: 'none',
-  });
-  cookieStore.set('Refresh', refreshTokenCookie.token, {
-    httpOnly: true,
-    path: '/',
-    maxAge: refreshTokenCookie.ttl,
-    secure: true,
-    sameSite: 'none',
-  });
-  return response;
-};
-
 export const refreshToken = async () => {
   const cookieStore = await cookies();
   const refresh = cookieStore.get('Refresh');
