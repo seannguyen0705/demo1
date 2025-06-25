@@ -1,4 +1,4 @@
-import { ICompany } from '@/api/company/interface';
+import { ICompany } from '@/apiService/company/interface';
 import NavCompany from './NavCompany';
 import EditCompanyInfo from './EditCompanyInfo';
 import { cookies } from 'next/headers';
@@ -7,8 +7,7 @@ interface IProps {
 }
 export default async function CompanyInfo({ company }: IProps) {
   const cookieStore = await cookies();
-  const isAuth =
-    cookieStore.has('Authentication') || cookieStore.has('Refresh');
+  const isAuth = cookieStore.has('Authentication') || cookieStore.has('Refresh');
   const info = [
     {
       label: 'Mô hình công ty',
@@ -37,10 +36,7 @@ export default async function CompanyInfo({ company }: IProps) {
   ];
   return (
     <section className="bg-light-green mb-2 overflow-hidden rounded-lg p-6 dark:bg-gray-900">
-      <NavCompany
-        pathName={`/company/${company.name}`}
-        companyName={company.name}
-      />
+      <NavCompany pathName={`/company/${company.name}`} companyName={company.name} />
 
       <div className="mb-4 flex items-center justify-between">
         <h3 className="text-lg font-medium ">Thông tin chung</h3>

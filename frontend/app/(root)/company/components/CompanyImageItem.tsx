@@ -1,4 +1,4 @@
-import { ICompanyImage } from '@/api/company-image/interface';
+import { ICompanyImage } from '@/apiService/company-image/interface';
 import Image from 'next/image';
 import useDeleteCompanyImage from '../hooks/useDeleteCompanyImage';
 import { Loader2, X } from 'lucide-react';

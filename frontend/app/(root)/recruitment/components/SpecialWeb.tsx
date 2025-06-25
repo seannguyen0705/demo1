@@ -1,7 +1,7 @@
 'use client';
 import { Mail, UserRound, Building2 } from 'lucide-react';
 import useCounter from '../hooks/useCounter';
-import { IStaticsticsCount } from '@/api/staticstics/interface';
+import { IStaticsticsCount } from '@/apiService/staticstics/interface';
 interface StatisticItemProps {
   number: number;
   description: string;

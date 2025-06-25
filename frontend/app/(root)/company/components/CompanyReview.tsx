@@ -1,4 +1,4 @@
-import { ICompany } from '@/api/company/interface';
+import { ICompany } from '@/apiService/company/interface';
 import NavCompany from './NavCompany';
 import { cookies } from 'next/headers';
 import MyReview from './MyReview';

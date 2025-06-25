@@ -1,4 +1,4 @@
-import { IUpdateUserStatus } from '@/api/interface';
+import { IUpdateUserStatus } from '@/apiService/interface';
 import axiosInstance from '@/config/axios-config';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 

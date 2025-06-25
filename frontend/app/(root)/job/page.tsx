@@ -5,7 +5,7 @@ import SearchJob from './components/SearchJob';
 import OrderBy from './components/OrderBy';
 import FilterSmallScreen from './components/FilterSmallScreen';
 import PublicJobList from './components/PublicJobList';
-import { SearchParams } from '@/api/interface';
+import { SearchParams } from '@/apiService/interface';
 import { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Tìm việc làm',

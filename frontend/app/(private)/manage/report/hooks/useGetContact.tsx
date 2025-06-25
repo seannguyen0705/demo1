@@ -1,4 +1,4 @@
-import { QueryContact } from '@/api/contact/interface';
+import { QueryContact } from '@/apiService/contact/interface';
 import axiosInstance from '@/config/axios-config';
 import { useQuery } from '@tanstack/react-query';
 import { keepPreviousData } from '@tanstack/react-query';

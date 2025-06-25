@@ -1,4 +1,4 @@
-import { getTop10Companies } from '@/api/company/query';
+import { getTop10Companies } from '@/apiService/company/query';
 import CompanyCard from './CompanyCard';
 
 export default async function TopCompany() {

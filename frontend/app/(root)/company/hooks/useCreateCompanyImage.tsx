@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import { createCompanyImage } from '@/api/company-image/action';
+import { createCompanyImage } from '@/apiService/company-image/action';
 import { isErrorResponse } from '@/utils/helpers/isErrorResponse';
 import { toast } from 'sonner';
 

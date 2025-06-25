@@ -1,7 +1,7 @@
 import axiosInstance from '@/config/axios-config';
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'sonner';
-import { ForgotPasswordDto } from '@/api/auth/interface';
+import { ForgotPasswordDto } from '@/apiService/auth/interface';
 const forgotPassword = async ({ email, role }: ForgotPasswordDto) => {
   const reponse = await axiosInstance.post('forgot-password', {
     email,

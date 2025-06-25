@@ -1,6 +1,6 @@
 'use client';
 
-import { IExperience } from '@/api/experience/interface';
+import { IExperience } from '@/apiService/experience/interface';
 
 interface IProps {
   experience: IExperience;

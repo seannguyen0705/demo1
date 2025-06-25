@@ -1,7 +1,7 @@
-import { IUser } from '@/api/interface';
+import { IUser } from '@/apiService/interface';
 import { LogOut } from 'lucide-react';
 import Link from 'next/link';
-import { logout } from '@/api/auth/action';
+import { logout } from '@/apiService/auth/action';
 import getNavMenus from '@/utils/helpers/getNavMenus';
 
 interface IProps {

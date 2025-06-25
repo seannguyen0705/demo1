@@ -1,5 +1,5 @@
-import { logout } from '@/api/auth/action';
-import { IUser } from '@/api/interface';
+import { logout } from '@/apiService/auth/action';
+import { IUser } from '@/apiService/interface';
 import getNavHeader from '@/utils/helpers/getNavHeader';
 
 import { LogOut } from 'lucide-react';

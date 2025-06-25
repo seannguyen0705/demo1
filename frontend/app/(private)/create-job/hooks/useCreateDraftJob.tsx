@@ -1,4 +1,4 @@
-import { createDraftJob } from '@/api/job/action';
+import { createDraftJob } from '@/apiService/job/action';
 import { isErrorResponse } from '@/utils/helpers/isErrorResponse';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';

@@ -1,6 +1,6 @@
 'use client';
 
-import { IExperience } from '@/api/experience/interface';
+import { IExperience } from '@/apiService/experience/interface';
 import UpdateExperience from './UpdateExperience';
 import ConfirmDelete from '@/components/ConfirmDelete';
 import useDeleteExperience from '../hooks/useDeleteExperience';

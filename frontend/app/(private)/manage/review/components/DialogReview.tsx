@@ -1,4 +1,4 @@
-import { IReview } from '@/api/review/interface';
+import { IReview } from '@/apiService/review/interface';
 import StarRating from '@/app/(root)/company/components/StarRating';
 import { Button } from '@/components/ui/button';
 import {

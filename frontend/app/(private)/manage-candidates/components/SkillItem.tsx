@@ -1,4 +1,4 @@
-import { ICandidateSkill } from '@/api/candidate-skill/interface';
+import { ICandidateSkill } from '@/apiService/candidate-skill/interface';
 import getStringSkillYear from '@/utils/helpers/getStringSkillYear';
 interface IProps {
   candidateSkill: ICandidateSkill;

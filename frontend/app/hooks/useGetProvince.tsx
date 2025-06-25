@@ -1,6 +1,6 @@
 import axiosInstance from '@/config/axios-config';
 import { useQuery } from '@tanstack/react-query';
-import { IProvince } from '@/api/province/interface';
+import { IProvince } from '@/apiService/province/interface';
 
 const getProvince = async () => {
   const response = await axiosInstance.get<{ data: IProvince[] }>('/provinces');

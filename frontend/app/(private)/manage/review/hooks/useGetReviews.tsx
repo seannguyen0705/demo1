@@ -1,4 +1,4 @@
-import { QueryReview } from '@/api/review/interface';
+import { QueryReview } from '@/apiService/review/interface';
 import axiosInstance from '@/config/axios-config';
 import { useQuery } from '@tanstack/react-query';
 import { keepPreviousData } from '@tanstack/react-query';

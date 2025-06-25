@@ -1,4 +1,4 @@
-import { ICompany } from '@/api/company/interface';
+import { ICompany } from '@/apiService/company/interface';
 import EditCompanyIntro from './EditCompanyIntro';
 import Link from 'next/link';
 import { Globe } from 'lucide-react';

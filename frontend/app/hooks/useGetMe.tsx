@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import axiosInstance from '@/config/axios-config';
-import { IUser } from '@/api/interface';
+import { IUser } from '@/apiService/interface';
 
 const getMe = async () => {
   const response = await axiosInstance.get<{ data: IUser }>('me');

@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 
 import axiosInstance from '@/config/axios-config';
-import { QueryJob } from '@/api/job/interface';
+import { QueryJob } from '@/apiService/job/interface';
 
 const candidateGetJobApply = async (queryString: string) => {
   const response = await axiosInstance.get<{ data: QueryJob }>(`candidate/job/applications?${queryString}`);

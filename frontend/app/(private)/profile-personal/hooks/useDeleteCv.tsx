@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import axiosInstance from '@/config/axios-config';
-import { ErrorReponse } from '@/api/interface';
+import { ErrorReponse } from '@/apiService/interface';
 import { AxiosError } from 'axios';
 
 const deleteCv = async (id: string) => {

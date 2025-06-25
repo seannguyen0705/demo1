@@ -1,11 +1,9 @@
 import axiosInstance from '@/config/axios-config';
-import { IExperience } from '@/api/experience/interface';
+import { IExperience } from '@/apiService/experience/interface';
 import { useQuery } from '@tanstack/react-query';
 
 const getMyExperiences = async () => {
-  const response = await axiosInstance.get<{ data: IExperience[] }>(
-    '/experiences',
-  );
+  const response = await axiosInstance.get<{ data: IExperience[] }>('/experiences');
   return response.data;
 };
 

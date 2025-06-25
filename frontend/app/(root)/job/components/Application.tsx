@@ -11,7 +11,7 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
-import { IJob } from '@/api/job/interface';
+import { IJob } from '@/apiService/job/interface';
 import { z } from 'zod';
 import useGetMe from '@/app/hooks/useGetMe';
 import { zodResolver } from '@hookform/resolvers/zod';

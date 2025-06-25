@@ -1,5 +1,5 @@
 'use client';
-import { IUser } from '@/api/interface';
+import { IUser } from '@/apiService/interface';
 import { SquarePen } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {

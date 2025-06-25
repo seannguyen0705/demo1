@@ -1,4 +1,4 @@
-import { IJob } from '@/api/job/interface';
+import { IJob } from '@/apiService/job/interface';
 import Application from '@/app/(root)/job/components/Application';
 import Save from '@/app/(root)/job/components/Save';
 import getStringSalary from '@/utils/helpers/getStringSalary';

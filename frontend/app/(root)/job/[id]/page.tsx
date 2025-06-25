@@ -2,8 +2,8 @@ import { cookies } from 'next/headers';
 import AuthJobDetail from './components/AuthJobDetail';
 import JobDetail from './components/JobDetail';
 import CompanyCard from './components/CompanyCard';
-import { getJobById } from '@/api/job/query';
-import { getCompanyImage } from '@/api/company-image/query';
+import { getJobById } from '@/apiService/job/query';
+import { getCompanyImage } from '@/apiService/company-image/query';
 import { notFound } from 'next/navigation';
 
 export async function generateMetadata({ params }: IProps) {

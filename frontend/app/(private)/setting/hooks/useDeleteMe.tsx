@@ -1,4 +1,4 @@
-import { deleteMe } from '@/api/auth/action';
+import { deleteMe } from '@/apiService/auth/action';
 import { isErrorResponse } from '@/utils/helpers/isErrorResponse';
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';

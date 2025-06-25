@@ -1,6 +1,6 @@
 'use client';
 
-import { IReview } from '@/api/review/interface';
+import { IReview } from '@/apiService/review/interface';
 import { EllipsisVertical } from 'lucide-react';
 import { SetStateAction, Dispatch, useState } from 'react';
 import { useDeleteMyReview } from '../hooks/useDeleteMyReview';

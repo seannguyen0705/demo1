@@ -2,7 +2,7 @@
 
 import useGetMe from '@/app/hooks/useGetMe';
 import useUpdateBackground from '../hooks/useUpdateBackground';
-import { ICompany } from '@/api/company/interface';
+import { ICompany } from '@/apiService/company/interface';
 import Image from 'next/image';
 import { Loader2 } from 'lucide-react';
 interface IProps {

@@ -1,6 +1,6 @@
-import { findCompanyByName } from '@/api/company/query';
-import { getJobByCompanyId } from '@/api/job/query';
-import { getReviewByCompanyId, getStatisticsReviewCompany } from '@/api/review/query';
+import { findCompanyByName } from '@/apiService/company/query';
+import { getJobByCompanyId } from '@/apiService/job/query';
+import { getReviewByCompanyId, getStatisticsReviewCompany } from '@/apiService/review/query';
 import HeaderCompany from '../../components/HeaderCompany';
 import CompanyReview from '../../components/CompanyReview';
 import ListReview from '../../components/ListReview';

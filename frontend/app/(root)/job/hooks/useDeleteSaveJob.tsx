@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axiosInstance from '@/config/axios-config';
 import { AxiosError } from 'axios';
-import { ErrorReponse } from '@/api/interface';
+import { ErrorReponse } from '@/apiService/interface';
 import { toast } from 'sonner';
 
 const deleteSaveJob = async (jobId: string) => {

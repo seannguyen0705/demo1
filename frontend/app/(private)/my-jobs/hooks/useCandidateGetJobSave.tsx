@@ -1,4 +1,4 @@
-import { QueryJob } from '@/api/job/interface';
+import { QueryJob } from '@/apiService/job/interface';
 import axiosInstance from '@/config/axios-config';
 import { useQuery } from '@tanstack/react-query';
 

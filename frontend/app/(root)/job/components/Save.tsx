@@ -1,6 +1,6 @@
 'use client';
 
-import { IJob } from '@/api/job/interface';
+import { IJob } from '@/apiService/job/interface';
 import { Button } from '@/components/ui/button';
 import useDeleteSaveJob from '../hooks/useDeleteSaveJob';
 import useCreateSaveJob from '../hooks/useCreateSaveJob';

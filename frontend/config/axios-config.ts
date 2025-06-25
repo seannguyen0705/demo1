@@ -1,7 +1,7 @@
 // only use for client side
 // use for request get
 import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
-import { refreshToken } from '@/api/auth/action';
+import { refreshToken } from '@/apiService/auth/action';
 const axiosInstance = axios.create({
   baseURL: `${process.env.BACKEND_URL}/api/v1`,
   timeout: 40 * 1000, // Thời gian chờ tối đa (40 giây)

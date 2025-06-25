@@ -12,7 +12,7 @@ import useAdminDeleteJob from '../hooks/useAdminDeleteJob';
 import { useState } from 'react';
 import { Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { IJob } from '@/api/job/interface';
+import { IJob } from '@/apiService/job/interface';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';

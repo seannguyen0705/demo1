@@ -10,13 +10,13 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { ICompany } from '@/api/company/interface';
+import { ICompany } from '@/apiService/company/interface';
 import { useState } from 'react';
 import useUpdateCompanyInfo from '../hooks/useUpdateCompanyInfo';
 import { isErrorResponse } from '@/utils/helpers/isErrorResponse';
 import Editor from '@/components/Editor';
 import useGetMe from '@/app/hooks/useGetMe';
-import { ICompanyImage } from '@/api/company-image/interface';
+import { ICompanyImage } from '@/apiService/company-image/interface';
 import CreateCompanyImage from './CreateCompanyImage';
 import CompanyImageItem from './CompanyImageItem';
 interface IProps {

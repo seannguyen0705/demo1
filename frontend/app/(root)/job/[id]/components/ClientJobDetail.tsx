@@ -1,6 +1,6 @@
 'use client';
 
-import { ICompanyImage } from '@/api/company-image/interface';
+import { ICompanyImage } from '@/apiService/company-image/interface';
 import JobDescription from '../../components/JobDescription';
 import JobRequirement from '../../components/JobRequirement.';
 import JobBenefit from '../../components/JobBenefit';

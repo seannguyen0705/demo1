@@ -1,9 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import axiosInstance from '@/config/axios-config';
-import { UpdateCandidateDto } from '@/api/candidate/interface';
+import { UpdateCandidateDto } from '@/apiService/candidate/interface';
 import { AxiosError } from 'axios';
-import { ErrorReponse } from '@/api/interface';
+import { ErrorReponse } from '@/apiService/interface';
 
 const updateCandidate = async (data: UpdateCandidateDto) => {
   return axiosInstance.put('candidates/me', data, {

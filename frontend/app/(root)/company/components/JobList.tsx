@@ -1,4 +1,4 @@
-import { IJob } from '@/api/job/interface';
+import { IJob } from '@/apiService/job/interface';
 import JobItem from '@/components/JobItem';
 interface IProps {
   jobs: IJob[];

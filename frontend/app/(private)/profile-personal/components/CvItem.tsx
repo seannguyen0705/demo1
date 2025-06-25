@@ -1,5 +1,5 @@
 'use client';
-import { ICv } from '@/api/cv/interface';
+import { ICv } from '@/apiService/cv/interface';
 import Link from 'next/link';
 import { format } from 'date-fns';
 import UpdateCv from './UpdateCv';

@@ -1,6 +1,6 @@
 import axiosInstance from '@/config/axios-config';
 import { useQuery } from '@tanstack/react-query';
-import { IContact } from '@/api/contact/interface';
+import { IContact } from '@/apiService/contact/interface';
 
 const getContactById = async (id: string) => {
   const response = await axiosInstance.get<{ data: IContact }>(`/contacts/${id}`);

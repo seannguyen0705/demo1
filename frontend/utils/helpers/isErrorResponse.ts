@@ -1,4 +1,4 @@
-import { ErrorReponse } from '@/api/interface';
+import { ErrorReponse } from '@/apiService/interface';
 
 export function isErrorResponse(response: object): response is ErrorReponse {
   if (!response) {

@@ -1,5 +1,5 @@
-import { IAddress } from '../address/interface';
-import { IFile } from '../file/interface';
+import { IAddress } from '@/apiService/address/interface';
+import { IFile } from '@/apiService/file/interface';
 
 interface ICompany {
   id: string;

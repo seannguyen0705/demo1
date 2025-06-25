@@ -1,4 +1,4 @@
-import { ICreateContact } from '@/api/contact/interface';
+import { ICreateContact } from '@/apiService/contact/interface';
 import axiosInstance from '@/config/axios-config';
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'sonner';

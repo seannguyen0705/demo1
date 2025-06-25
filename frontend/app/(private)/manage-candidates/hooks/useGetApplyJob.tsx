@@ -1,5 +1,5 @@
 import axiosInstance from '@/config/axios-config';
-import { QueryApplyJob } from '@/api/apply-job/interface';
+import { QueryApplyJob } from '@/apiService/apply-job/interface';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 const getApplyJob = async (queryString: string) => {
   try {

@@ -1,4 +1,4 @@
-import { IApplyJob } from '@/api/apply-job/interface';
+import { IApplyJob } from '@/apiService/apply-job/interface';
 import DialogProfile from './DialogProfile';
 import DialogApplyJob from './DialogApplỵJob';
 

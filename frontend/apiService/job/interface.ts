@@ -1,10 +1,10 @@
 import { JobType, JobStatus, SalaryType, JobLevel } from '@/utils/enums';
-import { ICompany } from '@/api/company/interface';
-import { IQueryPagination } from '../interface';
-import { IApplyJob } from '../apply-job/interface';
+import { ICompany } from '@/apiService/company/interface';
+import { IQueryPagination } from '@/apiService/interface';
+import { IApplyJob } from '@/apiService/apply-job/interface';
+import { IAddress } from '@/apiService/address/interface';
+import { ISkill } from '@/apiService/skill/interface';
 import { ISaveJob } from '../save-job/interfacet';
-import { IAddress } from '@/api/address/interface';
-import { ISkill } from '@/api/skill/interface';
 
 interface IJob {
   id: string;

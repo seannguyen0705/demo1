@@ -1,5 +1,5 @@
 import axiosInstance from '@/config/axios-config';
-import { IReview } from '@/api/review/interface';
+import { IReview } from '@/apiService/review/interface';
 import { useQuery } from '@tanstack/react-query';
 
 const getMyReview = async (companyId: string) => {

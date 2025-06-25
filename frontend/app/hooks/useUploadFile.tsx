@@ -2,7 +2,7 @@ import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import axiosInstance from '@/config/axios-config';
-import { IFile } from '@/api/file/interface';
+import { IFile } from '@/apiService/file/interface';
 
 async function uploadFile({ file, folder }: { file: Blob; folder: string }) {
   const formData = new FormData();

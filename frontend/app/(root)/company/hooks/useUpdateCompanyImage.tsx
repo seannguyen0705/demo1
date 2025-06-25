@@ -1,4 +1,4 @@
-import { updateCompanyImage } from '@/api/company-image/action';
+import { updateCompanyImage } from '@/apiService/company-image/action';
 import { isErrorResponse } from '@/utils/helpers/isErrorResponse';
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'sonner';

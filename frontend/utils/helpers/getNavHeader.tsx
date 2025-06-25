@@ -2,7 +2,7 @@ import { Briefcase, UserRound, Building, Settings, Mail, UsersRound, LayoutDashb
 
 import { JSX } from 'react';
 import { UserRole } from '../enums';
-import { IUser } from '@/api/interface';
+import { IUser } from '@/apiService/interface';
 
 interface NavItem {
   name: string;

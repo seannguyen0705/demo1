@@ -1,7 +1,7 @@
-import { findCompanyByName } from '@/api/company/query';
+import { findCompanyByName } from '@/apiService/company/query';
 import HeaderCompany from '../components/HeaderCompany';
-import { getJobByCompanyId } from '@/api/job/query';
-import { getStatisticsReviewCompany } from '@/api/review/query';
+import { getJobByCompanyId } from '@/apiService/job/query';
+import { getStatisticsReviewCompany } from '@/apiService/review/query';
 import CompanyInfo from '../components/CompanyInfo';
 import CompanyIntro from '../components/CompanyIntro';
 import CompanyBenefit from '../components/CompanyBenefit';

@@ -1,4 +1,4 @@
-import { getJobById } from '@/api/job/query';
+import { getJobById } from '@/apiService/job/query';
 import EditJob from './EditJobForm';
 import { notFound } from 'next/navigation';
 

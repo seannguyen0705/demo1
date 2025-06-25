@@ -13,7 +13,7 @@ import { useState } from 'react';
 import { Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
-import { IUser } from '@/api/interface';
+import { IUser } from '@/apiService/interface';
 import useDeleteCandidate from '../hooks/useDeleteCandidate';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';

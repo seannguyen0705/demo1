@@ -12,7 +12,7 @@ import CreateJobInfo from '../../create-job/components/CreateJobInfo';
 import CreateJobDescription from '../../create-job/components/CreateJobDescription';
 import CreateJobRequirement from '../../create-job/components/CreateJobRequirement';
 import CreateJobBenefit from '../../create-job/components/CreateJobBenefit';
-import { IJob } from '@/api/job/interface';
+import { IJob } from '@/apiService/job/interface';
 import useUpdatePublishedJob from '../hooks/useUpdatePublishedJob';
 import { format } from 'date-fns';
 import isExpired from '@/utils/helpers/isExpired';

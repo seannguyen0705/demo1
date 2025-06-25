@@ -1,4 +1,4 @@
-import { IUser } from '@/api/interface';
+import { IUser } from '@/apiService/interface';
 import axiosInstance from '@/config/axios-config';
 import { useQuery } from '@tanstack/react-query';
 

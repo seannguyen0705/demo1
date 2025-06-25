@@ -1,4 +1,4 @@
-import { ICv } from '@/api/cv/interface';
+import { ICv } from '@/apiService/cv/interface';
 
 import { format } from 'date-fns';
 import Link from 'next/link';

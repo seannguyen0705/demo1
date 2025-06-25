@@ -12,7 +12,7 @@ import {
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 
-import { IUser } from '@/api/interface';
+import { IUser } from '@/apiService/interface';
 
 import { UserStatus } from '@/utils/enums';
 import { CiLock } from 'react-icons/ci';

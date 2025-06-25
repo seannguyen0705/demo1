@@ -1,5 +1,5 @@
-import { IUpdateExperience } from '@/api/experience/interface';
-import { ErrorReponse } from '@/api/interface';
+import { IUpdateExperience } from '@/apiService/experience/interface';
+import { ErrorReponse } from '@/apiService/interface';
 import axiosInstance from '@/config/axios-config';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';

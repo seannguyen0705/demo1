@@ -6,7 +6,7 @@ import { Label, Pie, PieChart } from 'recharts';
 
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
-import { JobStatistics } from '@/api/job/interface';
+import { JobStatistics } from '@/apiService/job/interface';
 import NotePieChartJob from './NotePieChartJob';
 
 export const description = 'A donut chart with text';

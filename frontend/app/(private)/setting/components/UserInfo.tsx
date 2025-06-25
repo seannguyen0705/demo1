@@ -1,4 +1,4 @@
-import { IUser } from '@/api/interface';
+import { IUser } from '@/apiService/interface';
 import { Info, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
 

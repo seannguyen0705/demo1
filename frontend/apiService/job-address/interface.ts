@@ -1,5 +1,4 @@
-import { IProvince } from '@/api/province/interface';
-import { IAddress } from '../address/interface';
+import { IAddress } from '@/apiService/address/interface';
 
 interface IJobAddress {
   id: string;

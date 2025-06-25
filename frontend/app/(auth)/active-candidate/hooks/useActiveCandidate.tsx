@@ -1,4 +1,4 @@
-import { ActiveCandidateDto } from '@/api/auth/interface';
+import { ActiveCandidateDto } from '@/apiService/auth/interface';
 import axiosInstance from '@/config/axios-config';
 import { useMutation } from '@tanstack/react-query';
 

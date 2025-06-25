@@ -1,4 +1,4 @@
-import { IUser } from '@/api/interface';
+import { IUser } from '@/apiService/interface';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import useUpdateUser from '@/app/(private)/profile-personal/hooks/useUpdateUser';

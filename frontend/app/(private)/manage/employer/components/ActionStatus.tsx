@@ -3,7 +3,7 @@ import { Check } from 'lucide-react';
 import useUpdateEmployerStatus from '../hooks/useUpdateEmployerStatus';
 import ConfirmAction from '@/app/(private)/manage-candidates/components/ConfirmAction';
 import ConfirmBanEmployer from './ConfirmBanEmployer';
-import { IUser } from '@/api/interface';
+import { IUser } from '@/apiService/interface';
 import ConfirmUnbanEmployer from './ConfirmUnbanEmployer';
 interface IProps {
   employer: IUser;

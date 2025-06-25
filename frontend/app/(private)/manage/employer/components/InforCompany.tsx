@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { Building2, MapPin, Globe, FileText, Info } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
-import { ICompany } from '@/api/company/interface';
+import { ICompany } from '@/apiService/company/interface';
 
 interface IProps {
   company: ICompany;

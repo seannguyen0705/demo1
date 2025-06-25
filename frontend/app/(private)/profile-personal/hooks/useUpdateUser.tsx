@@ -1,11 +1,11 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { UserRole } from '@/utils/enums';
-import { UpdateCandidateDto } from '@/api/candidate/interface';
-import { UpdateEmployerDto } from '@/api/employer/interface';
+import { UpdateCandidateDto } from '@/apiService/candidate/interface';
+import { UpdateEmployerDto } from '@/apiService/employer/interface';
 import { toast } from 'sonner';
 import axiosInstance from '@/config/axios-config';
-import { ErrorReponse } from '@/api/interface';
+import { ErrorReponse } from '@/apiService/interface';
 import { AxiosError } from 'axios';
 
 interface IProps {

@@ -1,6 +1,6 @@
 'use client';
 
-import { IJob } from '@/api/job/interface';
+import { IJob } from '@/apiService/job/interface';
 import getStringSalary from '@/utils/helpers/getStringSalary';
 import { CircleCheckBig, CircleDollarSign } from 'lucide-react';
 import { format } from 'date-fns';

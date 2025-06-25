@@ -4,8 +4,8 @@ import JobInfo from '../../components/JobInfo';
 import JobDescription from '../../components/JobDescription';
 import CompanyImage from '@/app/(root)/company/components/CompanyImage';
 import JobRequirement from '../../components/JobRequirement.';
-import { getJobById } from '@/api/job/query';
-import { getCompanyImage } from '@/api/company-image/query';
+import { getJobById } from '@/apiService/job/query';
+import { getCompanyImage } from '@/apiService/company-image/query';
 
 interface IProps {
   jobId: string;

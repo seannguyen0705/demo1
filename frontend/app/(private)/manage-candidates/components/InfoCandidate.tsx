@@ -1,4 +1,4 @@
-import { IApplyJob } from '@/api/apply-job/interface';
+import { IApplyJob } from '@/apiService/apply-job/interface';
 import { formatDate } from 'date-fns';
 import { vi } from 'date-fns/locale';
 import { Calendar, Mail, Phone, User } from 'lucide-react';

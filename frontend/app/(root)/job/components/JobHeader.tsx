@@ -1,6 +1,6 @@
 import Image from 'next/image';
 
-import { IJob } from '@/api/job/interface';
+import { IJob } from '@/apiService/job/interface';
 import { CircleDollarSign, Heart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import getStringSalary from '@/utils/helpers/getStringSalary';

@@ -1,4 +1,4 @@
-import { ICompanyAddress } from '@/api/company-address/interface';
+import { ICompanyAddress } from '@/apiService/company-address/interface';
 import axiosInstance from '@/config/axios-config';
 import { useQuery } from '@tanstack/react-query';
 

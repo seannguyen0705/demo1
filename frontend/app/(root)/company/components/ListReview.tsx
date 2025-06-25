@@ -1,4 +1,4 @@
-import { QueryReview } from '@/api/review/interface';
+import { QueryReview } from '@/apiService/review/interface';
 import ReviewItem from './ReviewItem';
 import FilterReview from './FilterReview';
 import Pagination from '@/components/Pagination';

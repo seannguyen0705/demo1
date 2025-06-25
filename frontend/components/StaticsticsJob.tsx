@@ -12,7 +12,7 @@ import {
 import { ChartColumn } from 'lucide-react';
 
 import useGetStaticsticByJobId from '@/app/hooks/useGetStaticsticByJobId';
-import { IJob } from '@/api/job/interface';
+import { IJob } from '@/apiService/job/interface';
 import { Skeleton } from '@/components/ui/skeleton';
 import PieChartJob from './PieChartJob';
 interface IProps {

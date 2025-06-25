@@ -1,4 +1,4 @@
-import { IReview } from '@/api/review/interface';
+import { IReview } from '@/apiService/review/interface';
 import { Building2, Trash2 } from 'lucide-react';
 import Link from 'next/link';
 import DialogReview from './DialogReview';

@@ -21,7 +21,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import SelectExp from './SelectExp';
 import { isErrorResponse } from '@/utils/helpers/isErrorResponse';
 import MySkill from './MySkill';
-import { ICandidateSkill } from '@/api/candidate-skill/interface';
+import { ICandidateSkill } from '@/apiService/candidate-skill/interface';
 
 const schema = z.object({
   skill: z.object({

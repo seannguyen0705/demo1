@@ -1,5 +1,5 @@
-import { createReview } from '@/api/review/action';
-import { CreateReview } from '@/api/review/interface';
+import { createReview } from '@/apiService/review/action';
+import { CreateReview } from '@/apiService/review/interface';
 import { isErrorResponse } from '@/utils/helpers/isErrorResponse';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';

@@ -4,7 +4,7 @@ import useGetMe from '@/app/hooks/useGetMe';
 import { UserRole } from '@/utils/enums';
 import ClientJobDetail from './ClientJobDetail';
 import ManageJobDetail from './ManageJobDetail';
-import { ICompanyImage } from '@/api/company-image/interface';
+import { ICompanyImage } from '@/apiService/company-image/interface';
 interface IProps {
   jobId: string;
   companyImages: ICompanyImage[];

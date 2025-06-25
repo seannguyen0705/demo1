@@ -10,7 +10,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { ICompany } from '@/api/company/interface';
+import { ICompany } from '@/apiService/company/interface';
 import { useState } from 'react';
 import useUpdateCompanyInfo from '../hooks/useUpdateCompanyInfo';
 import { isErrorResponse } from '@/utils/helpers/isErrorResponse';

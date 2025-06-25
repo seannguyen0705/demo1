@@ -1,5 +1,5 @@
 'use client';
-import { IJob } from '@/api/job/interface';
+import { IJob } from '@/apiService/job/interface';
 import getStringSalary from '@/utils/helpers/getStringSalary';
 import { formatDistanceToNow } from 'date-fns';
 import { vi } from 'date-fns/locale';

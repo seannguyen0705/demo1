@@ -1,9 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import axiosInstance from '@/config/axios-config';
-import { ICreateExperience } from '@/api/experience/interface';
+import { ICreateExperience } from '@/apiService/experience/interface';
 import { AxiosError } from 'axios';
-import { ErrorReponse } from '@/api/interface';
+import { ErrorReponse } from '@/apiService/interface';
 
 const createExperience = async (data: ICreateExperience) => {
   return axiosInstance.post('experiences', data, {

@@ -1,8 +1,8 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { updatePublishedJob } from '@/api/job/action';
+import { updatePublishedJob } from '@/apiService/job/action';
 
-import { IUpdatePublishedJob } from '@/api/job/interface';
+import { IUpdatePublishedJob } from '@/apiService/job/interface';
 import { UseFormReturn } from 'react-hook-form';
 import { UpdateJobFormSchema } from '../[id]/EditJobForm';
 import { isErrorResponse } from '@/utils/helpers/isErrorResponse';

@@ -3,7 +3,7 @@
 import Editor from '@/components/Editor';
 import { useState } from 'react';
 import { Star } from 'lucide-react';
-import { IReview } from '@/api/review/interface';
+import { IReview } from '@/apiService/review/interface';
 import useUpdateReview from '../hooks/useUpdateReview';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';

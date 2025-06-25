@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { adminDeleteReview } from '@/api/review/action';
+import { adminDeleteReview } from '@/apiService/review/action';
 import { toast } from 'sonner';
 import { isErrorResponse } from '@/utils/helpers/isErrorResponse';
 

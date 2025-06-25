@@ -1,8 +1,8 @@
-import { ICreateSaveJob } from '@/api/save-job/interfacet';
+import { ICreateSaveJob } from '@/apiService/save-job/interfacet';
 import axiosInstance from '@/config/axios-config';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
-import { ErrorReponse } from '@/api/interface';
+import { ErrorReponse } from '@/apiService/interface';
 import { toast } from 'sonner';
 
 const createSaveJob = async (data: ICreateSaveJob) => {

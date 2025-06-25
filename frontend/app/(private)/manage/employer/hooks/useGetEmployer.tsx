@@ -1,4 +1,4 @@
-import { QueryEmployer } from '@/api/employer/interface';
+import { QueryEmployer } from '@/apiService/employer/interface';
 import axiosInstance from '@/config/axios-config';
 import { useQuery, keepPreviousData } from '@tanstack/react-query';
 const getEmployer = async (queryString: string) => {

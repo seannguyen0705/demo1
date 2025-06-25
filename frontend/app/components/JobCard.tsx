@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { MapPin, Clock, DollarSign, Briefcase, Heart } from 'lucide-react';
-import { IJob } from '@/api/job/interface';
+import { IJob } from '@/apiService/job/interface';
 import { vi } from 'date-fns/locale';
 import getShortStringSalary from '@/utils/helpers/getShortStringSalary';
 import Link from 'next/link';

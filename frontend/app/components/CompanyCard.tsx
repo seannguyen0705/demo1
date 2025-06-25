@@ -1,4 +1,4 @@
-import { ICompany } from '@/api/company/interface';
+import { ICompany } from '@/apiService/company/interface';
 import { Card } from '@/components/ui/card';
 import { ChevronRight } from 'lucide-react';
 import Image from 'next/image';

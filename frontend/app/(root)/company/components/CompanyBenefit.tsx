@@ -1,8 +1,8 @@
-import { ICompany } from '@/api/company/interface';
+import { ICompany } from '@/apiService/company/interface';
 import { cookies } from 'next/headers';
 import EditCompanyBenefit from './EditCompanyBenefit';
 import CompanyImage from './CompanyImage';
-import { getCompanyImage } from '@/api/company-image/query';
+import { getCompanyImage } from '@/apiService/company-image/query';
 
 interface IProps {
   company: ICompany;

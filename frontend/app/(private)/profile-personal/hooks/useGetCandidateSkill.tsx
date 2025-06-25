@@ -1,4 +1,4 @@
-import { ICandidateSkill } from '@/api/candidate-skill/interface';
+import { ICandidateSkill } from '@/apiService/candidate-skill/interface';
 import axiosInstance from '@/config/axios-config';
 import { useQuery } from '@tanstack/react-query';
 

@@ -1,7 +1,7 @@
 import DialogProfile from './DialogProfile';
 import ActionStatus from './ActionStatus';
 import ConfirmDeleteEmployer from './ConfirmDeleteEmployer';
-import { IUser } from '@/api/interface';
+import { IUser } from '@/apiService/interface';
 interface IProps {
   employer: IUser;
 }

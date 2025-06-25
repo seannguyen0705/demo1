@@ -1,4 +1,4 @@
-import { ResetPasswordDto } from '@/api/auth/interface';
+import { ResetPasswordDto } from '@/apiService/auth/interface';
 import axiosInstance from '@/config/axios-config';
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'sonner';

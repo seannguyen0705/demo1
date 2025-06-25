@@ -1,4 +1,4 @@
-import { JobStatistics } from '@/api/job/interface';
+import { JobStatistics } from '@/apiService/job/interface';
 import axiosInstance from '@/config/axios-config';
 import { useQuery } from '@tanstack/react-query';
 

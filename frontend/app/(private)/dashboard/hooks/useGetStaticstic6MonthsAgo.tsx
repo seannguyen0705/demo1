@@ -1,6 +1,6 @@
 import axiosInstance from '@/config/axios-config';
 import { useQuery } from '@tanstack/react-query';
-import { IStaticsticsCountIn6MonthsAgo } from '@/api/staticstics/interface';
+import { IStaticsticsCountIn6MonthsAgo } from '@/apiService/staticstics/interface';
 const getStaticstic6MonthsAgo = async () => {
   try {
     const response = await axiosInstance.get<{ data: IStaticsticsCountIn6MonthsAgo }>(

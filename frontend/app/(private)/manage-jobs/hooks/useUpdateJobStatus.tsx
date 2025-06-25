@@ -1,4 +1,4 @@
-import { updateJobStatus } from '@/api/job/action';
+import { updateJobStatus } from '@/apiService/job/action';
 import { JobStatus } from '@/utils/enums';
 import { useMutation } from '@tanstack/react-query';
 

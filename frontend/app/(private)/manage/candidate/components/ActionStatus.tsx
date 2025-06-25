@@ -4,7 +4,7 @@ import ConfirmAction from '@/app/(private)/manage-candidates/components/ConfirmA
 import { Check } from 'lucide-react';
 import useUpdateCandidateStatus from '../hooks/useUpdateCandidateStatus';
 import ConfirmBanCandidate from './ConfirmBanCandidate';
-import { IUser } from '@/api/interface';
+import { IUser } from '@/apiService/interface';
 import ConfirmUnbanCandidate from './ConfirmUnbanCandidate';
 interface IProps {
   candidate: IUser;

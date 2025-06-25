@@ -1,4 +1,4 @@
-import { getJobs } from '@/api/job/query';
+import { getJobs } from '@/apiService/job/query';
 import { Order, OrderByJob } from '@/utils/enums';
 import JobCard from './JobCard';
 

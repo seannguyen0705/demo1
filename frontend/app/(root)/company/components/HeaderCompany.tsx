@@ -1,5 +1,5 @@
-import { ICompany } from '@/api/company/interface';
-import { StatisticReviewCompany } from '@/api/review/interface';
+import { ICompany } from '@/apiService/company/interface';
+import { StatisticReviewCompany } from '@/apiService/review/interface';
 import { Briefcase, MapPinIcon, Star, UsersRound } from 'lucide-react';
 import Image from 'next/image';
 import StarRating from './StarRating';

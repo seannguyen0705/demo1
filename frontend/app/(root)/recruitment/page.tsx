@@ -2,7 +2,7 @@ import Intro from './components/Intro';
 import TopCompany from './components/TopCompany';
 import SpecialWeb from './components/SpecialWeb';
 import CreateBusiness from './components/CreateBusiness';
-import { getStaticsticsCount } from '@/api/staticstics/query';
+import { getStaticsticsCount } from '@/apiService/staticstics/query';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {

@@ -1,5 +1,5 @@
-import { ChangePasswordDto } from '@/api/auth/interface';
-import { ErrorReponse } from '@/api/interface';
+import { ChangePasswordDto } from '@/apiService/auth/interface';
+import { ErrorReponse } from '@/apiService/interface';
 import axiosInstance from '@/config/axios-config';
 import { useMutation } from '@tanstack/react-query';
 import { AxiosError } from 'axios';

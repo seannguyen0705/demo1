@@ -1,4 +1,4 @@
-import { IApplyJob } from '@/api/apply-job/interface';
+import { IApplyJob } from '@/apiService/apply-job/interface';
 import axiosInstance from '@/config/axios-config';
 import { useQuery } from '@tanstack/react-query';
 

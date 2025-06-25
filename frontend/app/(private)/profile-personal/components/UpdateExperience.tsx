@@ -25,7 +25,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import Editor from '@/components/Editor';
 import useUpdateExperience from '../hooks/useUpdateExperience';
-import { IExperience } from '@/api/experience/interface';
+import { IExperience } from '@/apiService/experience/interface';
 import { SquarePen } from 'lucide-react';
 const formSchema = z.object({
   workTitle: z.string().min(1, 'Tên công việc không được để trống'),

@@ -1,4 +1,4 @@
-import { IFile } from '@/api/file/interface';
+import { IFile } from '@/apiService/file/interface';
 import axiosInstance from '@/config/axios-config';
 import { UserRole } from '@/utils/enums';
 import { useMutation, useQueryClient } from '@tanstack/react-query';

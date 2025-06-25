@@ -1,5 +1,5 @@
 import axiosInstance from '@/config/axios-config';
-import { IUpdateUserStatus } from '@/api/interface';
+import { IUpdateUserStatus } from '@/apiService/interface';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 const updateCandidateStatus = async (id: string, data: IUpdateUserStatus) => {

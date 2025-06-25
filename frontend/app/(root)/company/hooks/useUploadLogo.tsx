@@ -1,4 +1,4 @@
-import { uploadLogo } from '@/api/company/action';
+import { uploadLogo } from '@/apiService/company/action';
 import { isErrorResponse } from '@/utils/helpers/isErrorResponse';
 
 import { useMutation } from '@tanstack/react-query';

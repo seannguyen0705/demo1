@@ -1,4 +1,4 @@
-import { getStaticsticsCount } from '@/api/staticstics/query';
+import { getStaticsticsCount } from '@/apiService/staticstics/query';
 import { BriefcaseBusiness, Building } from 'lucide-react';
 import { FaUsers } from 'react-icons/fa';
 

@@ -1,16 +1,11 @@
 'use client';
 
-import { login } from '@/api/auth/action';
-import { LoginDto, ResponseLoginDto } from '@/api/auth/interface';
+import { login } from '@/apiService/auth/action';
 
 import { UserRole } from '@/utils/enums';
 import { isErrorResponse } from '@/utils/helpers/isErrorResponse';
-
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import axios from 'axios';
-
 import { useRouter } from 'next/navigation';
-
 import { toast } from 'sonner';
 
 export default function useLogin() {

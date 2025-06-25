@@ -1,4 +1,4 @@
-import { IJob } from '@/api/job/interface';
+import { IJob } from '@/apiService/job/interface';
 import { JobStatus } from '@/utils/enums';
 import isExpired from '@/utils/helpers/isExpired';
 interface IProps {

@@ -1,5 +1,5 @@
 'use client';
-import { ICompanyImage } from '@/api/company-image/interface';
+import { ICompanyImage } from '@/apiService/company-image/interface';
 import { useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper/modules';

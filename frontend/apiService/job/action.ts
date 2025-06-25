@@ -1,14 +1,7 @@
 'use server';
 
 import actionFetch from '@/utils/helpers/actionFetch';
-import {
-  ICreateDraftJob,
-  ICreatePublishedJob,
-  IJob,
-  IUpdateJob,
-  IUpdateJobStatus,
-  IUpdatePublishedJob,
-} from './interface';
+import { ICreateDraftJob, ICreatePublishedJob, IJob, IUpdateJobStatus, IUpdatePublishedJob } from './interface';
 import { isErrorResponse } from '@/utils/helpers/isErrorResponse';
 import { revalidateTag } from 'next/cache';
 

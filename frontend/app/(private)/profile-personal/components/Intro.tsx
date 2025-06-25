@@ -1,4 +1,4 @@
-import { IUser } from '@/api/interface';
+import { IUser } from '@/apiService/interface';
 import { Skeleton } from '@/components/ui/skeleton';
 import EditIntro from './EditIntro';
 import { UserRole } from '@/utils/enums';

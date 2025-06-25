@@ -1,4 +1,4 @@
-import { IJob } from '@/api/job/interface';
+import { IJob } from '@/apiService/job/interface';
 import getStringSalary from '@/utils/helpers/getStringSalary';
 import { CircleDollarSign, Eye, EyeOff, Pencil, Trash } from 'lucide-react';
 import { Button } from '@/components/ui/button';

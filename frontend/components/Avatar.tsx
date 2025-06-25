@@ -5,7 +5,7 @@ import { ChevronDown } from 'lucide-react';
 import { useState } from 'react';
 
 import UserNavSide from './UserNavSide';
-import { IUser } from '@/api/interface';
+import { IUser } from '@/apiService/interface';
 import getUserAvatar from '@/utils/helpers/getUserAvatar';
 interface IProps {
   user: IUser;

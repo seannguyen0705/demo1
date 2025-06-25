@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import { registerCandidate } from '@/api/auth/action';
+import { registerCandidate } from '@/apiService/auth/action';
 import { toast } from 'sonner';
 import { isErrorResponse } from '@/utils/helpers/isErrorResponse';
 

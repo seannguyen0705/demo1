@@ -1,6 +1,6 @@
 import { useQuery, keepPreviousData } from '@tanstack/react-query';
 
-import { IQuerySkill, ISkillResponse } from '@/api/skill/interface';
+import { IQuerySkill, ISkillResponse } from '@/apiService/skill/interface';
 import axiosInstance from '@/config/axios-config';
 
 const getSkills = async ({ page = 1, limit = 10, keyword = '', excludeSkillIds = [] }: IQuerySkill) => {

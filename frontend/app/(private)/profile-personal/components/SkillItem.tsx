@@ -1,5 +1,5 @@
 'use client';
-import { ICandidateSkill } from '@/api/candidate-skill/interface';
+import { ICandidateSkill } from '@/apiService/candidate-skill/interface';
 import { X } from 'lucide-react';
 import useDeleteCandidateSkill from '../hooks/useDeleteCandidateSkill';
 import getStringSkillYear from '@/utils/helpers/getStringSkillYear';

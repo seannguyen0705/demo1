@@ -1,4 +1,4 @@
-import { uploadBackground } from '@/api/company/action';
+import { uploadBackground } from '@/apiService/company/action';
 import { isErrorResponse } from '@/utils/helpers/isErrorResponse';
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'sonner';

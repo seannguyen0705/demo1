@@ -1,5 +1,5 @@
-import { SearchParams } from '@/api/interface';
-import { getJobById, getJobs } from '@/api/job/query';
+import { SearchParams } from '@/apiService/interface';
+import { getJobById, getJobs } from '@/apiService/job/query';
 import JobItem from '@/components/JobItem';
 import Pagination from '@/components/Pagination';
 import JobDetail from './JobDetail';

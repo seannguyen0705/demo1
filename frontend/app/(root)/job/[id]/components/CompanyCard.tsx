@@ -1,4 +1,4 @@
-import { findCompanyByName } from '@/api/company/query';
+import { findCompanyByName } from '@/apiService/company/query';
 import Image from 'next/image';
 import Link from 'next/link';
 

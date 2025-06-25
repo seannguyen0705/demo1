@@ -1,4 +1,4 @@
-import { IUser } from '@/api/interface';
+import { IUser } from '@/apiService/interface';
 import { Skeleton } from '@/components/ui/skeleton';
 
 function SkeletonIntro() {

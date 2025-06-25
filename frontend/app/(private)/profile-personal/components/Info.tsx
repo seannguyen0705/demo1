@@ -1,4 +1,4 @@
-import { IUser } from '@/api/interface';
+import { IUser } from '@/apiService/interface';
 import { Skeleton } from '@/components/ui/skeleton';
 import getUserAvatar from '@/utils/helpers/getUserAvatar';
 import { Calendar, Globe, Loader2, Mail, MapPin, Phone, VenusAndMars } from 'lucide-react';

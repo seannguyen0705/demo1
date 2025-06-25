@@ -1,8 +1,8 @@
 import 'server-only';
 import { getAuthCookie } from '@/utils/helpers/getAuthCookie';
 import EXCEPTION_CODE from '../constants/exception';
-import { ErrorReponse } from '@/api/interface';
-import { refreshToken } from '@/api/auth/action';
+import { ErrorReponse } from '@/apiService/interface';
+import { refreshToken } from '@/apiService/auth/action';
 // use for post, put, delete
 export default async function actionFetch<T>(input: string, init?: RequestInit): Promise<{ data: T } | ErrorReponse> {
   try {

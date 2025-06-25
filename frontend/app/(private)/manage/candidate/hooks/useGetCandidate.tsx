@@ -1,4 +1,4 @@
-import { IQueryCandidate } from '@/api/candidate/interface';
+import { IQueryCandidate } from '@/apiService/candidate/interface';
 import axiosInstance from '@/config/axios-config';
 import { keepPreviousData } from '@tanstack/react-query';
 import { useQuery } from '@tanstack/react-query';

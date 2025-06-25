@@ -3,7 +3,7 @@ import JobInfo from './JobInfo';
 import JobRequirement from './JobRequirement.';
 import JobDescription from './JobDescription';
 import JobBenefit from './JobBenefit';
-import { IJob } from '@/api/job/interface';
+import { IJob } from '@/apiService/job/interface';
 import ClientJobHeader from './ClientJobHeader';
 interface IProps {
   job: IJob;

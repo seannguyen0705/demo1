@@ -1,4 +1,4 @@
-import { IJob } from '@/api/job/interface';
+import { IJob } from '@/apiService/job/interface';
 import JobSaveItem from './JobSaveItem';
 
 interface IProps {

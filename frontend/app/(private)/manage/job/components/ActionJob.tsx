@@ -1,7 +1,7 @@
 import ConfirmDeleteJob from '@/app/(private)/manage/job/components/ConfirmDeleteJob';
 import { BriefcaseBusiness } from 'lucide-react';
 import Link from 'next/link';
-import { IJob } from '@/api/job/interface';
+import { IJob } from '@/apiService/job/interface';
 interface IProps {
   job: IJob;
 }

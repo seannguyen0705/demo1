@@ -1,4 +1,4 @@
-import { ICv } from '@/api/cv/interface';
+import { ICv } from '@/apiService/cv/interface';
 import axiosInstance from '@/config/axios-config';
 import { useQuery } from '@tanstack/react-query';
 

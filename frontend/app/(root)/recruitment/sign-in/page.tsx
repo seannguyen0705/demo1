@@ -2,7 +2,7 @@ import LoginForm from '@/app/(auth)/components/LoginForm';
 import IntroCards from '../components/IntroCards';
 import TopCompany from '../components/TopCompany';
 import SpecialWeb from '../components/SpecialWeb';
-import { getStaticsticsCount } from '@/api/staticstics/query';
+import { getStaticsticsCount } from '@/apiService/staticstics/query';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {

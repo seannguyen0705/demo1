@@ -1,4 +1,4 @@
-import { IJob } from '@/api/job/interface';
+import { IJob } from '@/apiService/job/interface';
 import { ChevronsUp, Clock, MapPin } from 'lucide-react';
 import { BsPersonWorkspace } from 'react-icons/bs';
 import { formatDistanceToNow } from 'date-fns';

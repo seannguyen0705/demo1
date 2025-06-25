@@ -1,5 +1,5 @@
-import { updateCompany } from '@/api/company/action';
-import { IUpdateCompany } from '@/api/company/interface';
+import { updateCompany } from '@/apiService/company/action';
+import { IUpdateCompany } from '@/apiService/company/interface';
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { isErrorResponse } from '@/utils/helpers/isErrorResponse';

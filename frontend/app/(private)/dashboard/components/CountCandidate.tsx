@@ -1,4 +1,4 @@
-import { CountDate } from '@/api/staticstics/interface';
+import { CountDate } from '@/apiService/staticstics/interface';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { UserRound } from 'lucide-react';
 import CompareFigure from './CompareFigure';

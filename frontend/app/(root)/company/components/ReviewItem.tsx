@@ -1,5 +1,5 @@
 'use client';
-import { IReview } from '@/api/review/interface';
+import { IReview } from '@/apiService/review/interface';
 import { Star } from 'lucide-react';
 import StarRating from './StarRating';
 import ActionReview from './ActionReview';
