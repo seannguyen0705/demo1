@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import {
   BadRequestException,
   Catch,
@@ -15,7 +14,6 @@ import { SentryExceptionCaptured } from '@sentry/nestjs';
 import { BaseException } from '@/exceptions';
 import { Exception } from '@/utils/constants';
 import { isDevelopmentEnv } from '@/utils/helpers';
-
 import type { IBaseExceptionResponse } from '@/exceptions';
 
 @Catch()

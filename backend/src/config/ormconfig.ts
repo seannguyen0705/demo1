@@ -14,7 +14,7 @@ export const AppDataSource = new DataSource({
   username: configService.get('DB_USERNAME'),
   password: configService.get('DB_PASSWORD'),
   database: configService.get('DB_NAME'),
-  ssl: configService.get('DB_SSL') === 'true' ? { rejectUnauthorized: false } : false,
+  ssl: configService.get('DB_SSL') === 'true' ? true : false,
   logging: false,
   synchronize: false,
   entities: ['src/api/**/*.entity.ts'],

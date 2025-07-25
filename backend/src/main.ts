@@ -8,6 +8,6 @@ async function bootstrap() {
   const PORT = process.env.PORT || 8080;
   const MODE = process.env.NODE_ENV || Env.DEVELOPMENT;
 
-  return app.listen(PORT, () => console.log(`Server are running on ${PORT} in ${MODE} mode`));
+  return app.listen(PORT, () => console.log(`Server is running on ${PORT} in ${MODE} mode`));
 }
 bootstrap();

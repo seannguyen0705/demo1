@@ -10,4 +10,12 @@ export default {
       responses: [{ status: HttpStatus.OK, example: { data: 'OK' } }],
     },
   },
+  sentry: <IRouteParams>{
+    path: '/debug-sentry',
+    method: RequestMethod.GET,
+    jwtSecure: false,
+    swaggerInfo: {
+      responses: [{ status: HttpStatus.OK, example: { data: 'OK' } }],
+    },
+  },
 };

@@ -1,7 +1,5 @@
 import { InjectController, InjectRoute } from '@/decorators';
-
 import appRoutes from './app.routes';
-import { Get } from '@nestjs/common';
 
 @InjectController({
   name: 'core',
@@ -13,7 +11,7 @@ export class AppController {
     return 'Ok!';
   }
 
-  @Get('/debug-sentry')
+  @InjectRoute(appRoutes.sentry)
   getError() {
     throw new Error('My first Sentry error!');
   }
