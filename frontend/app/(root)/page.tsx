@@ -15,6 +15,10 @@ export const metadata: Metadata = {
       },
     ],
   },
+
+  other: {
+    'google-site-verification': process.env.GOOGLE_SITE_VERIFICATION || 'EwJTmmlMbOaGC9VO54i3ppzN1LHqN4FKogEfXOpUd7c',
+  },
 };
 
 export default function Home() {
