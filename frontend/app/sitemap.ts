@@ -1,5 +1,7 @@
 import { HOST } from '@/utils/constants';
 
+export const revalidate = 60 * 60;
+
 export default function sitemap() {
   return [
     // (root) routes
