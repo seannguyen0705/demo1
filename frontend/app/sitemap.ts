@@ -1,8 +1,9 @@
 import { HOST } from '@/utils/constants';
+import { MetadataRoute } from 'next';
 
-export const revalidate = 60 * 60;
+export const revalidate = 3600;
 
-export default function sitemap() {
+export default function sitemap(): MetadataRoute.Sitemap {
   return [
     // (root) routes
     {
